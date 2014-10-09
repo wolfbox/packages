@@ -1,0 +1,41 @@
+pkgname=curl
+pkgver=7.36.0
+pkgrel=1
+pkgdesc="A URL transfer tool and library."
+arch=("x86_64")
+url="http://curl.haxx.se"
+license=(custom)
+
+#depends=('musl' 'zlib' 'openssl' 'libidn')
+#makedepends=("llvm" 'xz')
+
+source=("http://curl.haxx.se/download/curl-${pkgver}.tar.bz2"
+		cacert.pem.xz)
+sha256sums=(1fbe82b89bcd6b7ccda8cb0ff076edc60e911595030e27689f4abd5ef7f3cfcd
+			1a4b4be73c6cc1bf03ee77005a6b3375bb30dd34b1229006fdddd3661ef7385e)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+	            --with-ca-bundle=/usr/share/curl/ca-bundle.crt
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	
+	# Set up certs
+	mkdir -p "${pkgdir}"/usr/share/curl
+	cp -a "${srcdir}"/cacert.pem.xz "${pkgdir}"/usr/share/curl/
+	( cd "${pkgdir}"/usr/share/curl
+	  xz -fd cacert.pem.xz
+	  mv cacert.pem ca-bundle.crt
+	  chmod 644 ca-bundle.crt	
+	)
+	
+	# Remove perl script
+	rm -f "${pkgdir}"/usr/man/man1/mk-ca-bundle.1
+}

@@ -1,0 +1,22 @@
+pkgname=mongodb26
+pkgver=2.6.5
+pkgrel=1
+pkgdesc="A document database."
+arch=("x86_64")
+url="http://www.mongodb.org"
+license=("AGPLv3")
+
+#depends=('glibc')
+provides=('mongodb=2.6.4')
+
+source=("http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${pkgver}.tgz")
+sha256sums=(28cb0c7a78156ebb2d5a91bf4ed99c2dc912f4658d6a377c919a2d5fa9b85eab)
+
+package() {
+	cd "${srcdir}/mongodb-linux-x86_64-${pkgver}"
+	mkdir -p "${pkgdir}"/usr/bin
+	mkdir -p "${pkgdir}"/usr/doc/mongodb-${pkgver}
+	
+	install -m 755 -t "${pkgdir}"/usr/bin bin/*
+	install -m 644 -t "${pkgdir}"/usr/doc/mongodb-${pkgver} README GNU-AGPL-3.0 THIRD-PARTY-NOTICES
+}

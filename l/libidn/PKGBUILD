@@ -1,0 +1,22 @@
+pkgname=libidn
+pkgver=1.25
+pkgrel=1
+pkgdesc="A name resolution library."
+arch=("x86_64")
+url="http://www.gnu.org/software/libidn"
+license=('GPLv2' 'LGPLv3')
+
+source=(http://ftp.gnu.org/gnu/libidn/libidn-${pkgver}.tar.gz)
+sha256sums=(7fe625328a6a5d837d723c462c1788affb84d9c9fc0ae5cd0ce9ac7724c34716)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+				--infodir=/usr/info
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}"
+}

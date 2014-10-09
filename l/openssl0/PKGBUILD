@@ -1,0 +1,58 @@
+pkgname=openssl0
+pkgver=0.9.8zb
+pkgrel=1
+pkgdesc="A legacy cryptography toolkit."
+arch=("x86_64")
+url="http://www.openssl.org"
+license=("custom")
+#makedepends=("llvm")
+
+provides=("openssl=${pkgver}")
+backup=('etc/ssl/openssl.cnf')
+
+source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz"
+		openssl.soname.diff.gz)
+sha256sums=(950e2298237de1697168debd42860bf41ead618e0c03dc9a3a56e23258e435be
+			922d68e43c06ccd56bd430a81d7ad752f620b5fb1b37e857d9a3662273c11d46)
+
+prepare() {
+	cd "${srcdir}/openssl-${pkgver}"
+	
+	# Lower the internal OpenSSL version number to improve application
+	# compatibility. This is very naughty, but it's what Slackware does...
+	sed -i "s/#define OPENSSL_VERSION_NUMBER.*/\/* Use 0x009080efL (0.9.8o) below to avoid pointlessly breaking the ABI *\/\n#define OPENSSL_VERSION_NUMBER 0x009080efL/g" crypto/opensslv.h 
+	
+	# Use .so.1, not .so.1.0.0:
+	zcat "${srcdir}"/openssl.soname.diff.gz | patch -p1 --backup --verbose --suffix=.orig
+}
+
+build() {
+	cd "${srcdir}/openssl-${pkgver}"
+	
+	# Ensure ls field counts are right for parsing
+	export LC_ALL=C
+	
+	# Disable RC5 due to patent expiring in 2015-03-03 
+	./config --prefix=/usr --openssldir=/etc/ssl \
+	         no-rc5 shared
+	make depend
+	make
+}
+
+package() {
+	cd "${srcdir}/openssl-${pkgver}"
+	make install INSTALL_PREFIX="${pkgdir}"
+	
+	# Fix libdir
+	mv "${pkgdir}"/usr/lib "${pkgdir}"/usr/lib64
+	
+	# Create symlinks
+	( cd "${pkgdir}"/usr/lib64 ; ldconfig -l lib*.so.* )	
+	
+	# Install copyright notice
+	mkdir -p "${pkgdir}"/usr/doc/openssl-${pkgver}/
+	cp -a LICENSE doc "${pkgdir}"/usr/doc/openssl-${pkgver}/
+
+	# What the heck are manpages doing in /etc?!
+	mv "${pkgdir}"/etc/ssl/man "${pkgdir}"/usr/
+}

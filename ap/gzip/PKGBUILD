@@ -1,0 +1,25 @@
+pkgname=gzip
+pkgver=1.6
+pkgrel=1
+pkgdesc="A file compressor utility."
+arch=("x86_64")
+url=""
+license=("GPLv3")
+#depends=("musl")
+#makedepends=("llvm")
+
+source=("http://ftp.gnu.org/gnu/gzip/gzip-1.6.tar.xz")
+sha256sums=("37dfed1a485d53212c43b3fa2a7c7952f09bf5cd86e37121c222341ee1b27847")
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	rm -f "${pkgdir}/usr/bin/uncompress"
+}

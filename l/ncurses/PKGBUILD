@@ -1,0 +1,54 @@
+pkgname=ncurses
+pkgver=5.9
+pkgrel=1
+pkgdesc="Free software emulation of curses."
+arch=("x86_64")
+url="http://www.gnu.org/software/ncurses"
+license=("LGPLv2")
+#depends=("musl")
+#makedepends=("llvm")
+
+source=("http://ftp.gnu.org/pub/gnu/ncurses/ncurses-${pkgver}.tar.gz"
+		"ncurses-5.9-20140308-patch.sh.xz"
+		"ncurses.mkhashsize.diff.gz")
+sha256sums=(9046298fb440324c9d4135ecea7879ffed8546dd1b58e59430ea07a4633f563b
+			16539b7f7a200fc638f6c338a0be60bdcf4a0f066cb3fa0c4f77fed3628232ea
+			a6af14d332a0d8d9bed0b48ec0f7148de89dcbc7505da5fc8636bbcac62be64c)
+
+X86_64OPTS=" --with-chtype=long --with-mmask-t=long "
+
+# XXX We aren't doing some of Slackware's patching because it's hard.
+#     Revisit this.
+
+build() {
+	cd "${srcdir}"
+	
+	( cd ncurses-"${pkgver}"
+	  xzcat "${srcdir}/ncurses-5.9-20140308-patch.sh.xz" > "${srcdir}/ncurses-5.9-20140308-patch.sh"
+	  bash "${srcdir}/ncurses-5.9-20140308-patch.sh"
+	  zcat "${srcdir}/ncurses.mkhashsize.diff.gz" | patch -p1 --verbose )
+
+	
+	mkdir -p ncurses{,w}-build
+	
+	FLAGS="--prefix=/usr --libdir=/usr/lib64 --with-gpm --disable-termcap
+	       --with-normal --with-shared --enable-symlinks --enable-pc-files
+	       --with-pkg-config-libdir=/usr/lib64/pkgconfig --without-debug
+	       --without-profile --without-ada ${X86_64OPTS}"
+
+	( cd ncursesw-build
+	  ../ncurses-${pkgver}/configure ${FLAGS} --enable-widec
+	  make )
+	
+	( cd ncurses-build
+	  ../ncurses-${pkgver}/configure ${FLAGS}
+	  make )
+}
+
+package() {
+	( cd "${srcdir}/ncurses-build"
+	  make install DESTDIR="${pkgdir}" )
+
+	( cd "${srcdir}/ncursesw-build"
+	  make install DESTDIR="${pkgdir}" )
+}

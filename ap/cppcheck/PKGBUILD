@@ -1,0 +1,24 @@
+# XXX Need to build manpage
+pkgname=cppcheck
+pkgver=1.66
+pkgrel=1
+arch=('x86_64')
+desc=("A lean C/C++ static analyzer.")
+url="http://cppcheck.sourceforge.net"
+license=(GPLv3)
+
+source=(http://downloads.sourceforge.net/project/cppcheck/cppcheck/1.66/cppcheck-${pkgver}.tar.bz2)
+sha256sums=(9469c23d39df5f03301fb0f9c29d75e9d63ed80d486cc6633145e3c95293c1b7)
+
+build() {
+	cd "${srcdir}"/cppcheck-${pkgver}
+	LANG='en_US.UTF-8' make CFGDIR=/usr/share/cppcheck/cfg
+}
+
+package() {
+	cd "${srcdir}"/cppcheck-${pkgver}
+	make install DESTDIR="${pkgdir}"
+	
+	mkdir -p "${pkgdir}"/usr/share/cppcheck/cfg
+	install ./cfg/* -t "${pkgdir}"/usr/share/cppcheck/cfg/
+}

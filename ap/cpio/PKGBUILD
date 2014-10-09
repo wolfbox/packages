@@ -1,0 +1,35 @@
+pkgname=cpio
+pkgver=2.11
+pkgrel=1
+pkgdesc="A backup and archiving utility."
+arch=("x86_64")
+url="https://www.gnu.org/software/cpio"
+license=("GPLv3")
+#depends=("musl")
+#makedepends=(llvm xz)
+
+source=("http://ftp.gnu.org/gnu/cpio/cpio-${pkgver}.tar.bz2"
+		cpio.32bit.crc.diff.xz
+		cpio-2.11-fgets.patch.xz)
+sha256sums=(bb820bfd96e74fc6ce43104f06fe733178517e7f5d1cdee553773e8eff7d5bbd
+			6d1cffada567c79190f74d6601d3553dc48a939c121a2fb15965d37bc1359a5a
+			4035ba285b14ef283487d1b589136b162f44d4c6f00227d48676ae454231ae28)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	
+	xzcat "${srcdir}/cpio.32bit.crc.diff.xz" | patch -p1 -F3
+	xzcat "${srcdir}/cpio-2.11-fgets.patch.xz" | patch -p1 # Patch from OpenELEC.tv
+	
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+				--docdir=/usr/doc/cpio-${pkgver} --infodir=/usr/info \
+				--enable-mt --with-rmt=/usr/bin/rmt
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	rm -rf "${pkgdir}/usr/libexec"
+}

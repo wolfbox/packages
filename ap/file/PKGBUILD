@@ -1,0 +1,34 @@
+pkgname=file
+pkgver=5.14
+pkgrel=1
+pkgdesc="A file identification toolkit."
+arch=("x86_64")
+url="http://darwinsys.com/file/"
+license=(custom)
+
+#depends=(glibc zlib)
+
+source=(ftp://ftp.astron.com/pub/file/file-${pkgver}.tar.gz)
+sha256sums=(461ba01dd0900a3b7c2dcd901b04903192c07887a9c1928af0be507572c77fe4)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+				--datadir=/etc --mandir=/usr/man --infodir=/usr/info \
+				--docdir=/usr/doc/file-${pkgver} --enable-fsect-man5 \
+				--disable-static
+	
+	# Generated libtool is buggy, apparently
+	cat $(which libtool) > libtool
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	mkdir -p "${pkgdir}"/usr/doc/file-${pkgver}
+	cp -a COPYING "${pkgdir}"/usr/doc/file-${pkgver}/
+	
+	rm -f "${pkgdir}"/usr/lib64/libmagic.a
+}

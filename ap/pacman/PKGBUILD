@@ -1,0 +1,25 @@
+pkgname=pacman
+pkgver=4.1.2
+pkgrel=1
+pkgdesc="A simple and fast package manager."
+arch=("x86_64")
+url="https://www.archlinux.org/pacman/"
+license=(GPLv2)
+#depends=('musl' 'bash' 'libarchive' 'curl' 'gpgme' 'libxml2')
+#makedepends=("llvm")
+
+source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz)
+sha256sums=(7c059b444735ee254cfbd8dc2fac8c5d61453601f8adaf001c7038cdc673334c)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+				--localstatedir=/var --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}

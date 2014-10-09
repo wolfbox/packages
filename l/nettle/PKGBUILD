@@ -1,0 +1,30 @@
+pkgname=nettle
+pkgver=2.7.1
+pkgrel=1
+pkgdesc="A low-level cryptograph library."
+arch=("x86_64")
+url="http://www.lysator.liu.se/~nisse/nettle/"
+license=("LGPLv2.1")
+
+#depends=(glibc gmp)
+
+source=("ftp://ftp.gnu.org/gnu/nettle/nettle-${pkgver}.tar.gz")
+sha256sums=(bc71ebd43435537d767799e414fce88e521b7278d48c860651216e1fc6555b40)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+				--localstatedir=/var --docdir=/usr/doc/nettle-${pkgver} \
+				--infodir=/usr/info --enable-shared
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
+
+check() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make check
+}

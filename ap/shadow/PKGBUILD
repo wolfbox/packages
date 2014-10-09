@@ -1,0 +1,57 @@
+pkgname=shadow
+pkgver=4.2.1
+pkgrel=1
+pkgdesc="The shadow password suite."
+arch=("x86_64")
+url="http://pkg-shadow.alioth.debian.org/releases/"
+license=(BSD)
+#depends=("musl")
+#makedepends=("llvm")
+
+source=("http://pkg-shadow.alioth.debian.org/releases/shadow-${pkgver}.tar.xz"
+		login.defs.xz
+		useradd.xz
+		shadow.CVE-2005-4890.relax.diff.gz
+		adduser.xz)
+sha256sums=(3b0893d1476766868cd88920f4f1231c4795652aa407569faff802bcda0f3d41
+			e45ac5a03a9575bec6e62d61f4acba0f21e6e2de17e2db73da67a27cb2807217
+			11625abe877a9eb3c9482ed8635a400d8935e11f4fbd962b5a6ab4fc277c444a
+			a40c53128efa73bfabea69e8740a2b6d19ff58bfb38864553848dd336bf162a3
+			b53e38fdb70ab9ec707a33cb690c6da1dc23f4db7b10eb3fa745db092688caba)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	zcat "${srcdir}/shadow.CVE-2005-4890.relax.diff.gz" | patch -p1
+	./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/man \
+				--bindir=/usr/bin --sbindir=/usr/bin \
+				--docdir=/usr/doc/shadow-${pkgver} --enable-subordinate-ids \
+				--disable-shared --without-libcrack
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+
+	# For some reason, shadow puts files in usr/sbin
+	mv "${pkgdir}"/usr/sbin/* "${pkgdir}"/usr/bin/
+	rmdir "${pkgdir}/usr/sbin"
+
+	# Replace login.defs
+	rm -f "${pkgdir}/etc/login.defs"
+	xzcat "${srcdir}/login.defs.xz" > "${pkgdir}/etc/login.defs"
+	
+	# Slackware doesn't like this
+	rm -f "${pkgdir}/etc/limits"
+	
+	# Add the slackware adduser script
+	xzcat "${srcdir}/adduser.xz" > "${pkgdir}/usr/bin/adduser"
+	chmod 0755 "${pkgdir}/usr/bin/adduser"
+	
+	# Add sulogin
+	cp -a "src/sulogin" "${pkgdir}/usr/bin/sulogin"
+
+	# Make permissions more strict on setuid
+	find "${pkgdir}" -type f -perm 4755 -exec chmod 4711 "{}" \;
+}

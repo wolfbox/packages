@@ -1,0 +1,73 @@
+pkgname=glibc
+pkgver=2.19
+pkgrel=1
+pkgdesc="The GNU libc."
+arch=("x86_64")
+url="http://www.gnu.org/s/libc/"
+license=(GPLv2, LGPLv2.1)
+
+#depends=('tzdata')
+#makedepends=(gcc)
+conflicts=(musl)
+
+options=(!strip)
+
+source=("ftp://ftp.gnu.org/gnu/libc/glibc-${pkgver}.tar.gz"
+		slackware-mods.tar.xz)
+sha256sums=(18ad6db70724699d264add80b1f813630d0141cf3a3558b4e1a7c15f6beac796
+			5bbfae1b7b3ae7f6ba256cdf9d16a48fa330f1a0ce9c6a093f7ebd40913ad0bf)
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+  # Use old-style locale directories rather than a single (and strangely
+  # formatted) /usr/lib/locale/locale-archive file:
+  zcat "${srcdir}"/glibc.locale.no-archive.diff.gz | patch -p1 --verbose || exit 1
+  # The is_IS locale is causing a strange error about the "echn" command
+  # not existing.  This patch reverts is_IS to the version shipped in
+  # glibc-2.5:
+  zcat "${srcdir}"/is_IS.diff.gz | patch -p1 --verbose || exit 1
+  # Fix NIS netgroups:
+  zcat "${srcdir}"/glibc.nis-netgroups.diff.gz | patch -p1 --verbose || exit 1
+  # Support ru_RU.CP1251 locale:
+  zcat "${srcdir}"/glibc.ru_RU.CP1251.diff.gz | patch -p1 --verbose || exit 1
+  # Fix resolver problem with glibc-2.9:
+  zcat "${srcdir}"/glibc-2.10-dns-no-gethostbyname4.diff.gz | patch -p0 --verbose || exit 1
+  # This reverts a patch that was made to glibc to fix "namespace leakage",
+  # which seems to cause some build failures (e.g. with conntrack):
+  zcat "${srcdir}"/glibc.revert.to.fix.build.breakages.diff.gz | patch -p1 --verbose || exit 1
+  # This partial security patch still applies and might be needed:
+  zcat "${srcdir}"/glibc.git-96611391ad8823ba58405325d78cefeae5cdf699-CVE-2010-3847b.patch.gz | patch -p1 --verbose || exit 1
+  # Make it harder for people to trick ldd into running code:
+  zcat "${srcdir}"/glibc.ldd.trace.through.dynamic.linker.diff.gz | patch -p1 --verbose || exit 1
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	mkdir -p build
+	cd build
+
+	../configure \
+    	--prefix=/usr \
+    	--libdir=/usr/lib64 \
+    	--sbindir=/usr/bin \
+    	--with-headers=/usr/include \
+    	--enable-add-ons=libidn,nptl \
+    	--enable-obsolete-rpc \
+    	--enable-profile \
+    	--infodir=/usr/info \
+    	--mandir=/usr/man \
+    	--with-tls \
+    	--with-__thread \
+    	--without-cvs
+
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"/build
+
+	make install install_root="${pkgdir}"
+	make localedata/install-locales install_root="${pkgdir}"
+}

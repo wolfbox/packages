@@ -1,0 +1,30 @@
+pkgname=lz4
+pkgver=r123
+pkgrel=1
+pkgdesc="An extremely fast compression tool."
+arch=("x86_64")
+url=""
+license=(BSD)
+#depends=("musl")
+#makedepends=("llvm")
+
+source=("https://github.com/Cyan4973/lz4/archive/${pkgver}.tar.gz")
+sha256sums=("ceb7b80490d60822cb29d2b372b70699aeb8b24bf988d1b169ff284176a44b32")
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	( cd "${pkgdir}"/usr/
+	  mv lib lib64
+	  mv share/man man )
+
+	DOCSDIR="${pkgdir}/usr/share/doc/lz4-${pkgver}"
+	mkdir -p "${DOCSDIR}"
+	install -m 644 LICENSE "${DOCSDIR}"
+}

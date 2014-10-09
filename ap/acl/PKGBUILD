@@ -1,0 +1,31 @@
+pkgname=acl
+pkgver=2.2.51
+pkgrel=1
+pkgdesc="Tools for using POSIX Access Control Lists."
+arch=("x86_64")
+url=""
+license=("LGPLv2.1" "GPLv2")
+#depends=("musl")
+#makedepends=("llvm")
+
+source=("http://download.savannah.gnu.org/releases/acl/acl-${pkgver}.src.tar.gz" "acl.destdir.diff.gz")
+sha256sums=("06854521cf5d396801af7e54b9636680edf8064355e51c07657ec7442a185225"
+			"211776d77fb17445801a00c2ce891d8ca57c041e22c556abdaf602223351502c")
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	zcat "${srcdir}/acl.destdir.diff.gz" | patch -p1
+	autoconf
+	./configure --prefix=/usr --sbindir=/usr/bin --bindir=/usr/bin \
+				--libdir=/usr/lib64 --libexecdir=/usr/lib64 --mandir=/usr/man \
+				--datadir=/usr/share
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	make install-dev DESTDIR="${pkgdir}"
+	make install-lib DESTDIR="${pkgdir}"
+}

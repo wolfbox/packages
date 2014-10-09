@@ -1,0 +1,35 @@
+pkgname=tzdata
+pkgver=2014h
+pkgrel=1
+pkgdesc="Timezone information database."
+arch=(x86_64)
+url="http://www.iana.org/time-zones"
+license=(GPL)
+
+options=('!emptydirs')
+
+source=(http://www.iana.org/time-zones/repository/releases/tzdata${pkgver}.tar.gz
+		http://www.iana.org/time-zones/repository/releases/tzcode${pkgver}.tar.gz)
+sha256sums=(e78152f616fb07c1dea124215ffca57d0de66d8897e00896086542e3de30f69e
+			a4d9788a1bb0aa314eae4986ee991425b83ecc47da0e84f626735846be1dbf44)
+
+timezones=('africa' 'antarctica' 'asia' 'australasia' 'europe' 'northamerica' \
+           'southamerica' 'pacificnew' 'etcetera' 'backward' 'systemv' \
+           'factory')
+
+build() {
+	cd "${srcdir}"
+	make zic
+}
+
+package() {
+	cd "${srcdir}"
+
+	./zic -d "${pkgdir}"/usr/share/zoneinfo ${timezones[@]}
+	./zic -d "${pkgdir}"/usr/share/zoneinfo/posix ${timezones[@]}
+	./zic -d "${pkgdir}"/usr/share/zoneinfo/right -L leapseconds ${timezones[@]}
+	install -m444 -t "${pkgdir}"/usr/share/zoneinfo iso3166.tab zone1970.tab
+
+	mkdir -p "${pkgdir}"/usr/bin
+	install -m755 -t "${pkgdir}"/usr/bin zic
+}

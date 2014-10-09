@@ -1,0 +1,59 @@
+pkgname=binutils
+pkgver=2.24.51.0.3
+pkgrel=1
+pkgdesc="GNU binary development tools."
+arch=("x86_64")
+url="http://www.gnu.org/software/binutils"
+license=(GPLv2)
+#depends=(glibc)
+#makedepends=(gcc)
+
+source=("https://www.kernel.org/pub/linux/devel/binutils/binutils-${pkgver}.tar.xz"
+		binutils.export.demangle.h.diff.gz
+		binutils.no-config-h-check.diff.gz)
+sha256sums=(a9c76fc79e6729243d1105c9f10a9781bdc27da3e3a167b0a2f52783c1910400
+			5860f065cf44a212699169eb4954da57eacfef17aef4b2237619d2403e38797c
+			51d543c617bf335b546d084624ae7109b789d17cb70805591de3fc2671e89f5f)
+
+TARGET=x86_64-foxbox-linux
+DEFAULT_LD=ld.bfd
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	
+	GOLD=" --enable-gold=yes --enable-ld=default "
+	# Apparently this causes issues. See Slackware's build script for details.
+	NO_INITFINI=" --disable-initfini-array "
+	
+	zcat "${srcdir}"/binutils.export.demangle.h.diff.gz | patch -p1
+	zcat "${srcdir}"/binutils.no-config-h-check.diff.gz | patch -p1
+	
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+				--infodir=/usr/info --with-docdir=/usr/doc/binutils-${pkgver} \
+				--enable-shared --enable-multilib --enable-64-bit-bfd \
+				--enable-plugins --enable-threads \
+				--enable-targets=i386-efi-pe,${TARGET} \
+				${GOLD} ${NO_INITFINI} --build=${TARGET}
+
+	make clean	
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+
+	# Install missing file
+	cp -a include/libiberty.h "${pkgdir}"/usr/include/
+	
+	# Move ldscripts
+	mv "${pkgdir}"/usr/${TARGET}/lib/ldscripts "${pkgdir}"/usr/lib64
+	#( cd "${pkgdir}"/usr/${TARGET}/ ; ln ../lib64
+	
+	# Set default linker
+	( cd "${pkgdir}"/usr/bin ; rm -f ld ; ln $DEFAULT_LD ld )
+
+	# Remove unneeded man pages
+	rm -f "${pkgdir}"/usr/man/man1/{dlltool,windres}.1
+}

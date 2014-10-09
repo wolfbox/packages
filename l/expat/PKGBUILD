@@ -1,0 +1,22 @@
+pkgname=expat
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="A XML library."
+arch=("x86_64")
+url="http://www.libexpat.org"
+license=("GPLv2")
+#makedepends=("llvm")
+
+source=("http://downloads.sourceforge.net/project/expat/expat/2.1.0/expat-2.1.0.tar.gz")
+sha256sums=(823705472f816df21c8f6aa026dd162b280806838bb55b3432b0fb1fcca7eb86)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,86 @@
+pkgname=udev
+pkgver=182
+pkgrel=1
+pkgdesc="The dynamic device directory system."
+arch=("x86_64")
+url=""
+license=("GPLv2")
+#depends=(musl)
+#makedepends=(llvm glib2 gobject2)
+
+source=("http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-182.tar.xz"
+        60-cdrom_id.rules.diff.gz
+        fix-42-usb-hid-pm.rules.diff.gz
+        rule_generator.diff.gz
+        udev-ata_id-fixup-all-8-not-only-6-bytes-of-the-fw_rev.patch.gz
+        config.tar.xz)
+sha256sums=(adb8892f3b8e4b7163703ed4a545774721a3d55a1062de001f08c477c03d97ab
+            2cd24da4f10386596ec130e7eff3dd7d2593df30b6d638e02fc5917b1d46c4b4
+            19f22783c2494f1f57daf3ed27104932098a49d59950fc5de7de7f0638531fa1
+            45422861c26a29735a0da298d2b6afde60898d6ef272b6881d5e7825a0ffe207
+            bbfb83103b062af64830ba0b082b2b451ac1f8ecf700d101c7161ce35437a454
+            e44afca98ebbbeba203facb38a6dd6e5556f5be917a23697f2feaa027ea35704)
+#            49d427488fd1f1008013c7da3f7fe0d588f81322499c7f84f7b5250b48a5d9ec)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	
+	# Slackware patches
+	# Fix ata_id
+	if [ ${pkgver} -ge 186 ] ; then
+		echo "Remove ata_id patch."
+		exit 1
+	fi
+	zcat "${srcdir}/udev-ata_id-fixup-all-8-not-only-6-bytes-of-the-fw_rev.patch.gz" | patch -p1 || exit 1
+
+	# Fix 42-usb-hid-pm.rules
+	if [ ${pkgver} -ge 187 ] ; then
+		echo "Remove 42-usb-hid-pm patch."
+		exit 1
+	fi
+	zcat "${srcdir}/fix-42-usb-hid-pm.rules.diff.gz" | patch -p1 || exit 1
+	
+	# Patch 60-cdrom_id.rules to create a full set of symlinks
+	zcat "${srcdir}/60-cdrom_id.rules.diff.gz" | patch -p1
+	
+	LIBS=-lrt ./configure --prefix=/usr --with-rootprefix=/ --libdir=/usr/lib64 \
+	            --with-rootlibdir=/lib64 \
+	            --with-firmware-path=/lib/firmware/updates:/lib/firmware \
+	            --sysconfdir=/etc \
+	            --bindir=/usr/bin \
+	            --sbindir=/usr/bin \
+	            --libexecdir=/lib \
+	            --enable-introspection \
+	            --mandir=/usr/man \
+	            --docdir=/usr/doc/udev-${pkgver} \
+	            --enable-floppy \
+	            --enable-static \
+	            --enable-rule_generator
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+
+	# multipath needs scsi_id
+	( cd "${pkgdir}/usr/bin" ; ln -s ../lib/udev/scsi_id scsi_id )
+
+	# Move udevd into a sane location
+	mv "${pkgdir}/lib/udev/udevd" "${pkgdir}/usr/bin"
+
+	# Don't package API documentation
+	rm -rf "${pkgdir}/usr/share/gtk-doc"
+	
+	mkdir -p "${pkgdir}/usr/doc/udev-${pkgver}"
+	cp -a COPYING* README* "${pkgdir}/usr/doc/udev-${pkgver}"
+	
+	# Install Slackware custom stuff
+	cp -a "${srcdir}/config/udev.conf" "${pkgdir}/etc/udev/udev.conf"
+	cp -a "${srcdir}"/config/rules.d/*.rules "${pkgdir}/lib/udev/rules.d/"
+
+	mkdir -p "${pkgdir}"/{run,etc/rc.d,etc/udev/rules.d,lib/firmware}
+	mkdir -p "${pkgdir}"/{etc,lib}/modprobe.d
+}
+

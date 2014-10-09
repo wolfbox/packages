@@ -1,0 +1,47 @@
+pkgname=oclint
+pkgver=0.7
+pkgrel=1
+arch=('x86_64')
+desc=("A metric-based C/C++/Objective-C static analyzer.")
+url="http://oclint.org"
+license=(BSD)
+
+#depends=('glibc' 'llvm' 'clang')
+
+source=(http://archives.oclint.org/releases/${pkgver}/oclint-${pkgver}-src.tar.gz
+		use-system-llvm.patch.xz
+		fix-lib64.patch.xz)
+sha256sums=(2e9bf9904fe2ad316136936ed1bcdbdb6009c9e3acd3c5d4c72b5a124716b505
+			3917fccca64d005407ece7c19462dd1f60c887fb5b9f343d6c87d899e39b5f16
+			9bfee4502ff03f98bb0d385beaf8ea379e0d4bce9d6e871c4a3421f5815c14f1)
+
+prepare() {
+	cd "${srcdir}"/oclint-${pkgver}-src
+	
+	# Add patch from the AUR
+	xzcat "${srcdir}"/use-system-llvm.patch.xz | patch -p1
+	
+	# "Fix" libdir issue
+	xzcat "${srcdir}"/fix-lib64.patch.xz | patch -p1
+}
+
+build() {
+	cd "${srcdir}"/oclint-${pkgver}-src/oclint-scripts
+	./buildAll.sh release
+}
+
+package() {
+	cd "${srcdir}"/oclint-${pkgver}-src
+
+	# Fix python path
+	sed -i '1 s/^.*$/#!\/usr\/bin\/env python2/' ./build/oclint-release/bin/oclint-json-compilation-database
+
+	mkdir -p "${pkgdir}"/usr/bin
+	cp ./build/oclint-release/bin/oclint "${pkgdir}"/usr/bin/
+	cp ./build/oclint-release/bin/oclint-${pkgver} "${pkgdir}"/usr/bin/
+	cp ./build/oclint-release/bin/oclint-json-compilation-database "${pkgdir}"/usr/bin/
+
+	# XXX this really shouldn't be in /usr/lib
+	mkdir -p "${pkgdir}"/usr/lib/oclint
+	cp -R ./build/oclint-release/lib/oclint/* "${pkgdir}"/usr/lib/oclint/
+}

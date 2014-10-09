@@ -1,0 +1,24 @@
+pkgname=nano
+pkgver=2.3.6
+pkgrel=1
+pkgdesc="A lightweight command line text editor."
+arch=("x86_64")
+url="http://www.nano-editor.org"
+license=("GPLv3")
+#depends=('glibc' 'ncurses' 'file')
+
+source=("http://www.nano-editor.org/dist/v2.3/nano-2.3.6.tar.gz")
+sha256sums=("a74bf3f18b12c1c777ae737c0e463152439e381aba8720b4bc67449f36a09534")
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+			    --enable-color --enable-multibuffer --enable-nanorc \
+			    --enable-utf8 --disable-wrapping-as-root
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}

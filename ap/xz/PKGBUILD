@@ -1,0 +1,26 @@
+pkgname=xz
+pkgver=5.0.5
+pkgrel=1
+pkgdesc="A LZMA-based file compression utility"
+arch=("x86_64")
+url=""
+license=("GPLv2", "LGPLv2", "custom")
+#depends=("musl")
+#makedepends=("llvm")
+
+source=("http://tukaani.org/xz/xz-${pkgver}.tar.xz")
+sha256sums=("3515c74d170d0f6ec00820de63106ad16c07bae55a59c174b4741242c76264a4")
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+				--docdir=/usr/doc/xz-${pkgver} --enable-shared --enable-static \
+				--disable-rpath
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}

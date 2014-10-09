@@ -1,0 +1,23 @@
+pkgname=libsodium
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="A fast and easy-to-use cryptography library."
+arch=("x86_64")
+url="http://libsodium.org"
+license=('ISC')
+
+depends=('glibc')
+
+source=(https://github.com/jedisct1/libsodium/releases/download/1.0.0/libsodium-${pkgver}.tar.gz)
+sha256sums=(ced1fe3d2066953fea94f307a92f8ae41bf0643739a44309cbe43aa881dbc9a5)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}"
+}

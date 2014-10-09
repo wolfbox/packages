@@ -1,0 +1,55 @@
+pkgname=bzip2
+pkgver=1.0.6
+pkgrel=1
+pkgdesc="A block-sorting file compressor."
+arch=("x86_64")
+url=""
+license=(custom)
+#depends=("musl")
+#makedepends=("llvm")
+
+source=("http://www.bzip.org/1.0.6/bzip2-${pkgver}.tar.gz" "bzip2.saneso.diff.gz")
+sha256sums=("a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd"
+			"e5b9411b65d6176da5f661329700497b11ae863723bbff06bf851dbcc26acacc")
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	zcat "${srcdir}/bzip2.saneso.diff.gz" | patch -p1
+	make -f Makefile-libbz2_so
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	mkdir -p "${pkgdir}/usr/include"
+	install -m 644 bzlib.h "${pkgdir}/usr/include/bzlib.h"
+
+	mkdir -p "${pkgdir}/usr/lib64"
+	install -m 644 libbz2.a "${pkgdir}/usr/lib64/libbz2.a"
+
+	mkdir -p "${pkgdir}/usr/lib64"
+	install -m 755 "libbz2.so.${pkgver}" "${pkgdir}/usr/lib64/libbz2.so.${pkgver}"
+	
+	mkdir -p "${pkgdir}/usr/bin"
+	install -m 755 bzip2-shared "${pkgdir}/usr/bin/bzip2"
+	install -m 755 bzip2recover "${pkgdir}/usr/bin/bzip2recover"
+	
+	mkdir -p "${pkgdir}/usr/man/man1"
+	install -m 644 bzip2.1 "${pkgdir}/usr/man/man1/bzip2.1"
+	echo '.so man1/bzip2.1' | gzip -9c > "${pkgdir}/usr/man/man1/bzip2recover.1.gz"
+	
+	mkdir -p "${pkgdir}/usr/doc/bzip2-${pkgver}"
+	install -m 644 CHANGES LICENSE "${pkgdir}/usr/doc/bzip2-${pkgver}"
+
+	( cd "${pkgdir}/usr/lib64/"
+	  rm -f libbz2.so.1.0 libbz2.so.1
+	  ln -sf "libbz2.so.${pkgver}" libbz2.so.1.0
+	  ln -sf libbz2.so.1.0 libbz2.so.1
+	)
+	
+	for file in bzdiff bzgrep bzmore ; do
+		install -m 755 "${file}" "${pkgdir}/usr/bin/${file}"
+		install -m 644 "${file}.1" "${pkgdir}/usr/man/man1/${file}.1" 
+	done
+}

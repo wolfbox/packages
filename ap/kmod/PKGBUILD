@@ -1,0 +1,30 @@
+pkgname=kmod
+pkgver=18
+pkgrel=1
+pkgdesc="Kernel module tools and library."
+arch=("x86_64")
+url=""
+license=(GPLv2)
+#depends=()
+#makedepends=(llvm xz zlib)
+
+source=("https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${pkgver}.tar.xz")
+sha256sums=(e16e57272b54acb219c465b334715cfdddb5d97ff5d8948d4830ca1a372a868e)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/lib64 --bindir=/usr/bin \
+				--sysconfdir=/etc --localstatedir=/var --mandir=/usr/man \
+				--docdir=/usr/doc/kmod-${pkgver} --with-xz --with-zlib
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	
+	( cd "${pkgdir}/usr/bin"
+	  for file in depmod insmod lsmod modinfo modprobe rmmod ; do
+	  	ln kmod $file
+	  done )
+}

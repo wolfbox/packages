@@ -1,0 +1,25 @@
+pkgname=udisks2
+pkgver=2.1.3
+pkgrel=1
+pkgdesc="Storage device daemon v2"
+arch=("x86_64")
+url="http://www.freedesktop.org/wiki/Software/udisks/"
+license=(GPLv2 LGPLv2)
+#depends=(musl dbus polkit)
+#makedepends=("llvm")
+
+source=(http://udisks.freedesktop.org/releases/udisks-${pkgver}.tar.bz2)
+sha256sums=(5cc92fd651ee49a7888f90d091282b949afc629b31fdb34e187208750720632d)
+
+build() {
+	cd "${srcdir}/udisks-${pkgver}"
+	./configure --prefix=/usr --sbindir=/usr/bin --libdir=/usr/lib64 \
+				--disable-static --mandir=/usr/man --sysconfdir=/etc \
+				--localstatedir=/var --docdir=/usr/doc/udisks2-${pkgver}
+	make
+}
+
+package() {
+	cd "${srcdir}/udisks-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}

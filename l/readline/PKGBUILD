@@ -1,0 +1,73 @@
+pkgname=readline
+_patchlevel=13
+_basever=5.2
+pkgver=${_basever}.${_patchlevel}
+pkgrel=1
+pkgdesc="A line input library with editing features."
+arch=("x86_64")
+url="http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html"
+license=("GPLv3")
+
+#depends=("ncurses")
+
+MIRROR="http://mirrors.ibiblio.org/gnu/ftp/gnu/readline"
+READLINE_PATCHES="${MIRROR}/readline-5.2-patches"
+source=("${MIRROR}/readline-${_basever}.tar.gz"
+		"${READLINE_PATCHES}/readline52-001"
+		"${READLINE_PATCHES}/readline52-002"
+		"${READLINE_PATCHES}/readline52-003"
+		"${READLINE_PATCHES}/readline52-004"
+		"${READLINE_PATCHES}/readline52-005"
+		"${READLINE_PATCHES}/readline52-006"
+		"${READLINE_PATCHES}/readline52-007"
+		"${READLINE_PATCHES}/readline52-008"
+		"${READLINE_PATCHES}/readline52-009"
+		"${READLINE_PATCHES}/readline52-010"
+		"${READLINE_PATCHES}/readline52-011"
+		"${READLINE_PATCHES}/readline52-012"
+		"${READLINE_PATCHES}/readline52-013")
+
+sha256sums=("12e88d96aee2cd1192500356f0535540db499282ca7f76339fb4228c31249f45"
+	"eac304c369154059f93049ada328739faaf40338d3cb1fb4b544c93d5ce3f8d5"
+	"9deacaef25507a0c2ae0b661bf9342559b59a2954d66ea3c5f5bcd900fdfcf78"
+	"2a55d2ecb1c9b0147aeb193a6323616ab31c1c525a83b2db3a994b15594ba934"
+	"a03b65633781efa7c3aae5d57162985e7b7a3c10acf0f2621be610e16f27e5f2"
+	"06001896514148a757ea6edbbd40c4fc4331dc653847244386c37b138b150f64"
+	"dfef3e982c0adf8bb5a9b7d0468ec8f5f18138b325e28759437464de5be71013"
+	"775b028c7b761397ac6ae1bdfbac7e896dc3b9b3adc2f91312499180ca13bdd1"
+	"a21b4e0bf0530b878bad24d5be23d18a9e03a75a31ae30844dc0933bb3d77ecd"
+	"138d5e0f0709a47a2d1621295a3dd5e3cc73b63b5cc28dab03abc4e94fe95ecf"
+	"83f8c1aadb86b1a2fad8821a9c6be72a8de5afd7fd9fde58a30b3b57d939693e"
+	"08ad3384ab0906e6fa4cc417eb8c43ff59375bcead15fd5c8e31730f0413b3d6"
+	"20f0243be2299c23213492cc2c19cfd15cc528d2b566a76a2de58306bb9e4c9e"
+	"0cc649516a5bdfa61c5e56937407570288b6972d75aa1bd060ad30ebe98144d5")
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${_basever}"
+
+	PATCHLEVEL=$( ls -1 "${srcdir}"/readline52-??? | wc -l )
+	if [ ${PATCHLEVEL} != ${_patchlevel} ] ; then
+		echo "Patch level is incorrect! Should be ${PATCHLEVEL}."
+		exit 1
+	fi
+
+	for file in "${srcdir}"/readline52-??? ; do
+		cat "${file}" | patch -p0 --verbose
+	done
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${_basever}"
+
+	./configure --prefix=/usr --libdir=/usr/lib64 --infodir=/usr/info \
+				--with-curses --enable-multibyte
+	make static shared
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${_basever}"
+	make install DESTDIR="${pkgdir}"
+	
+	mkdir -p "${pkgdir}/usr/doc/readline-${pkgver}"
+	cp -a COPYING* "${pkgdir}/usr/doc/readline-${pkgver}"
+}

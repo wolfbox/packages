@@ -1,0 +1,24 @@
+pkgname=json-c
+pkgver=0.12
+pkgrel=1
+pkgdesc="A C JSON library"
+arch=("x86_64")
+url="https://github.com/json-c/json-c/wiki"
+license=(MIT)
+#makedepends=("llvm")
+
+source=(https://s3.amazonaws.com/${pkgname}_releases/releases/${pkgname}-${pkgver}.tar.gz)
+sha256sums=(000c01b2b3f82dcb4261751eb71f1b084404fb7d6a282f06074d3c17078b9f3f)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	CFLAGS="${CFLAGS} -Wno-error"
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}

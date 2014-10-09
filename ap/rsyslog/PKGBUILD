@@ -1,0 +1,26 @@
+pkgname=rsyslog
+pkgver=8.4.2
+pkgrel=1
+pkgdesc="The rocket-fast syslog daemon."
+arch=("x86_64")
+url="http://www.rsyslog.com"
+license=(GPLv3)
+
+#depends=('zlib' 'libestr' 'liblogging' 'json-c' 'libuuid')
+
+source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz")
+sha256sums=(71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+				--sbindir=/usr/bin --sysconfdir=/etc \
+				--disable-generate-man-pages
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}

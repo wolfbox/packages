@@ -1,0 +1,22 @@
+pkgname=liblogging
+pkgver=1.0.4
+pkgrel=1
+pkgdesc="An easy-to-use logging library."
+arch=("x86_64")
+url="http://www.liblogging.org"
+license=(custom)
+
+source=(http://download.rsyslog.com/liblogging/liblogging-${pkgver}.tar.gz)
+sha256sums=(aceb5d2aa8bdc771ff66f407f9adf4176b654db63e34a8605795b68be537b81c)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+				--disable-journal
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}"
+}

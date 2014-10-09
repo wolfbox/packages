@@ -1,0 +1,31 @@
+pkgname=attr
+pkgver=2.4.46
+pkgrel=1
+pkgdesc="Tools for using extended file attributes."
+arch=("x86_64")
+url=""
+license=("LGPLv2.1" "GPLv2")
+#depends=("musl")
+#makedepends=(llvm)
+
+source=("http://download.savannah.gnu.org/releases/attr/attr-${pkgver}.src.tar.gz" "attr.destdir.diff.gz")
+sha256sums=("dcd69bdca7ff166bc45141eddbcf21967999a6b66b0544be12a1cc2fd6340e1f"
+			"e6c752612af3bcff3df86aed9354adde21d570517927561d034c2d2670c52a39")
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	zcat "${srcdir}/attr.destdir.diff.gz" | patch -p1
+	autoconf
+	./configure --prefix=/usr --exec-prefix=/usr --sbindir=/usr/bin --bindir=/usr/bin \
+				--libdir=/usr/lib64 --libexecdir=/usr/lib64 --mandir=/usr/man \
+				--datadir=/usr/share
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	make install-dev DESTDIR="${pkgdir}"
+	make install-lib DESTDIR="${pkgdir}"
+}
