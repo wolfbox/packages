@@ -1,0 +1,27 @@
+pkgname=hexedit
+pkgver=1.2.12
+pkgrel=1
+pkgdesc="Hexadecimal and ASCII file editor."
+arch=("x86_64")
+url="http://prigaux.chez.com/hexedit.html"
+license=('GPLv2')
+#depends=('glibc' 'ncurses')
+
+source=(http://rigaux.org/hexedit-${pkgver}.src.tgz)
+sha256sums=(bcffbf3d128516cc4e1da64485866fbb5f62754f2af8327e7a527855186ba10f)
+
+build() {
+	cd "${srcdir}/${pkgname}"
+	./configure --prefix=/usr \
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}"
+	
+	mkdir -p "${pkgdir}"/usr/bin
+	install -m 755 hexedit "${pkgdir}"/usr/bin/
+
+	mkdir -p "${pkgdir}"/usr/man/man1
+	install -m 644 hexedit.1 "${pkgdir}"/usr/man/man1/
+}
