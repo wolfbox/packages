@@ -1,0 +1,36 @@
+pkgname=libffi
+pkgver=3.0.13
+pkgrel=1
+pkgdesc="A portable Foreign Function Interface library."
+arch=("x86_64")
+url="http://sourceware.org/libffi/"
+license=('custom')
+
+#depends=('glibc')
+
+source=(ftp://sourceware.org/pub/libffi/libffi-${pkgver}.tar.gz
+        libffi.includedir.diff.gz)
+sha256sums=(1dddde1400c3bcb7749d398071af88c3e4754058d2d4c0b3696c2f82dc5cf11c
+            d466ffa1baf400d00ab8f3736753aae5bdee02c56e9425c070e00f99ad224d3c)
+
+prepare() {
+	cd "${srcdir}/libffi-${pkgver}"
+	zcat "${srcdir}"/libffi.includedir.diff.gz | patch -p1
+}
+
+build() {
+	cd "${srcdir}/libffi-${pkgver}"
+
+	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+	            --localstatedir=/var --mandir=/usr/man --infodir=/usr/man \
+	            --docdir=/usr/doc/libffi-${pkgver} --disable-static
+	make
+}
+
+package() {
+	cd "${srcdir}/libffi-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	mkdir -p "${pkgdir}"/usr/doc/libffi-${pkgver}
+	cp -a LICENSE "${pkgdir}"/usr/doc/libffi-${pkgver}/
+}

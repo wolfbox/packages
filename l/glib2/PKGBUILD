@@ -1,0 +1,26 @@
+pkgname=glib2
+pkgver=2.36.4
+pkgrel=1
+pkgdesc="A C utility library, often paired with GTK+."
+arch=("x86_64")
+url="https://wiki.gnome.org/Projects/GLib"
+license=("LGPLv2")
+
+#depends=('glibc' 'zlib' 'dbus' 'libffi')
+
+source=(https://download.gnome.org/sources/glib/2.36/glib-${pkgver}.tar.xz)
+sha256sums=(f654d2542329012d8475736a165dfbf82fadf3ee940c2e0e6ddd4b2fde5cad7e)
+
+build() {
+	cd "${srcdir}/glib-${pkgver}"
+	autoreconf --force --install
+
+	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+	            --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/glib-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
