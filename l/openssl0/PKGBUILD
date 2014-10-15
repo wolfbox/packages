@@ -1,18 +1,18 @@
 pkgname=openssl0
-pkgver=0.9.8zb
+pkgver=0.9.8zc
 pkgrel=1
 pkgdesc="A legacy cryptography toolkit."
 arch=("x86_64")
 url="http://www.openssl.org"
 license=("custom")
-#makedepends=("llvm")
 
+depends=('glibc')
 provides=("openssl=${pkgver}")
 backup=('etc/ssl/openssl.cnf')
 
 source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz"
 		openssl.soname.diff.gz)
-sha256sums=(950e2298237de1697168debd42860bf41ead618e0c03dc9a3a56e23258e435be
+sha256sums=(461cc694f29e72f59c22e7ea61bf44671a5fc2f8b3fc2eeac89714b7be915881
 			922d68e43c06ccd56bd430a81d7ad752f620b5fb1b37e857d9a3662273c11d46)
 
 prepare() {
