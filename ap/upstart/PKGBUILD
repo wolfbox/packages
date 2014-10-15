@@ -1,0 +1,28 @@
+pkgname=upstart
+pkgver=1.13.2
+pkgrel=1
+pkgdesc="An event-based init daemon."
+arch=("x86_64")
+url="http://upstart.ubuntu.com"
+license=('GPL2')
+
+#depends=('glibc' 'libnih' 'dbus' 'zlib' 'xz' 'attr' 'libcap' 'json-c')
+
+source=(http://upstart.ubuntu.com/download/${pkgver}/upstart-${pkgver}.tar.gz)
+sha256sums=(460183e3dd1dab9986cb9433ba5287684cf6eedd44afbebc13455566957ca3c0)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64 \
+	            --sbindir=/usr/bin --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+
+	mv "${pkgdir}"/usr/lib/* "${pkgdir}"/usr/lib64/
+	rmdir "${pkgdir}"/usr/lib
+}
