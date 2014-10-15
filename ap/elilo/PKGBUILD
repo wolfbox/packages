@@ -1,0 +1,40 @@
+pkgname=elilo
+pkgver=3.16
+pkgrel=1
+pkgdesc="The EFI LInux LOader."
+arch=("x86_64")
+url="http://sourceforge.net/projects/elilo/"
+license=(GPLv2)
+
+depends=('glibc')
+options=(!strip)
+
+source=(http://downloads.sourceforge.net/project/elilo/elilo/elilo-${pkgver}/elilo-${pkgver}-all.tar.gz)
+sha256sums=(69e361d95c01ea2657200b2215464fc0235b01d3e317d2f2276284259b06d392)
+
+prepare() {
+	cd "${srcdir}"/
+	tar -xf elilo-${pkgver}-source.tar.gz
+
+	cd "${srcdir}"/elilo-${pkgver}-source
+
+	# Fix build on non-Debian systems
+	sed -i "s,/usr/lib,/usr/lib64,g" Make.defaults
+	sed -i "s,EFICRT0.*= /usr/lib64,EFICRT0    = /usr/lib64/gnuefi,g" Make.defaults
+	sed -i "s,dpkg-architecture -qDEB_BUILD_ARCH,uname -m,g" Make.defaults
+}
+
+build() {
+	cd "${srcdir}"/elilo-${pkgver}-source
+	make
+}
+
+package() {
+	cd "${srcdir}"/elilo-${pkgver}-source
+
+	mkdir -p "${pkgdir}"/usr/bin
+	cp tools/eliloalt "${pkgdir}"/usr/bin
+	
+	mkdir -p "${pkgdir}"/boot
+	cp -a ../elilo*x86_64.efi "${pkgdir}"/boot/elilo-x86_64.efi
+}
