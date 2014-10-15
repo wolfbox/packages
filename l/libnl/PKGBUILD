@@ -1,0 +1,27 @@
+pkgname=libnl1
+pkgver=1.1.4
+pkgrel=1
+pkgdesc="Netlink socket library."
+arch=("x86_64")
+url="http://www.carisma.slowglass.com/~tgr/libnl"
+license=('LGPLv2.1')
+
+provides=('libnl=1.1.4')
+#depends=('glibc')
+
+source=(${url}/files/libnl-${pkgver}.tar.gz)
+sha256sums=(4f80c21fe5bbcdde6e72b59b4f98306063a41421f909887c34e58d93e746d063)
+
+build() {
+	cd "${srcdir}/libnl-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+	            --localstatedir=/var
+	make
+}
+
+package() {
+	cd "${srcdir}/libnl-${pkgver}"
+	make DESTDIR="${pkgdir}" install	
+	
+	chmod 755 "${pkgdir}"/usr/lib64/libnl*
+}
