@@ -1,0 +1,4 @@
+post_install() {
+	useradd -r -g daemon -d /var/lib/rsyslog  rsyslog
+	chown -R rsyslog:daemon /var/lib/rsyslog
+}

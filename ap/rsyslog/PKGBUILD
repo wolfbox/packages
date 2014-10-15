@@ -6,10 +6,15 @@ arch=("x86_64")
 url="http://www.rsyslog.com"
 license=(GPLv3)
 
-#depends=('zlib' 'libestr' 'liblogging' 'json-c' 'libuuid')
+backup=('etc/rsyslog.conf')
+depends=('glibc' 'zlib' 'libestr' 'liblogging' 'json-c' 'libuuid')
 
-source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz")
-sha256sums=(71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a)
+source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz"
+        rsyslog
+        rsyslog.conf)
+sha256sums=(71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a
+            87a3b72e3fb7173389705d29d3b9279f332535cdf4dd954d0d0d3084fbbc1002
+            624877f2147e9be89a1913bfbfaa73ae8dd726863336042b58caea008bf87721)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -23,4 +28,10 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	make install DESTDIR="${pkgdir}"
+	
+	mkdir -p "${pkgdir}/etc/init"
+	install -m 644 "${srcdir}"/rsyslog "${pkgdir}"/etc/init
+	
+	mkdir -p "${pkgdir}"/etc/
+	install -m 644 "${srcdir}"/rsyslog.conf "${pkgdir}"/etc/
 }
