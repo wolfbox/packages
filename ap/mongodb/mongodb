@@ -1,0 +1,9 @@
+description "The MongoDB database engine."
+version 2.6.5-1
+
+respawn
+setuid mongodb
+setgid daemon
+
+expect fork
+exec /usr/bin/mongod --config /etc/mongodb.conf

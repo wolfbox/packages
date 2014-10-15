@@ -6,11 +6,16 @@ arch=("x86_64")
 url="http://www.mongodb.org"
 license=("AGPLv3")
 
-#depends=('glibc')
+depends=('glibc')
 provides=('mongodb=2.6.4')
+install=mongodb.install
 
-source=("http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${pkgver}.tgz")
-sha256sums=(28cb0c7a78156ebb2d5a91bf4ed99c2dc912f4658d6a377c919a2d5fa9b85eab)
+source=("http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${pkgver}.tgz"
+        mongodb.conf
+        mongodb)
+sha256sums=(28cb0c7a78156ebb2d5a91bf4ed99c2dc912f4658d6a377c919a2d5fa9b85eab
+            57b5da6779a5d08764b4353bab403572a446030954a1b0ed8c5a59ccd783d685
+            f27d4c88dcdc646f2e4d31486ee0b3e7be36a37eee3d4535eceee593e480cba4)
 
 package() {
 	cd "${srcdir}/mongodb-linux-x86_64-${pkgver}"
@@ -19,4 +24,12 @@ package() {
 	
 	install -m 755 -t "${pkgdir}"/usr/bin bin/*
 	install -m 644 -t "${pkgdir}"/usr/doc/mongodb-${pkgver} README GNU-AGPL-3.0 THIRD-PARTY-NOTICES
+	
+	mkdir -p "${pkgdir}"/etc/init
+	install -m 644 "${srcdir}"/mongodb "${pkgdir}"/etc/init/
+	
+	mkdir -p "${pkgdir}"/etc
+	install -m 644 "${srcdir}"/mongodb.conf "${pkgdir}"/etc/
+	
+	install -dm700 "${pkgdir}"/var/lib/mongodb
 }

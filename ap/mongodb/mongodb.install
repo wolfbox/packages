@@ -1,0 +1,4 @@
+post_install() {
+	useradd -r -g daemon -d /var/lib/mongodb  mongodb
+	chown -R mongodb:daemon /var/lib/mongodb
+}
