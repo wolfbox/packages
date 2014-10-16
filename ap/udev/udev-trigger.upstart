@@ -1,0 +1,28 @@
+#!/bin/sh
+description "Trigger udev to reapply rules."
+task
+
+script
+    # If the persistent rules files do not exist, trigger an add event:
+    if [ ! -r /etc/udev/rules.d/70-persistent-net.rules -o ! -r /etc/udev/rules.d/70-persistent-cd.rules ]; then
+        # Test that we can actually write to the directory first:
+        if touch /etc/udev/rules.d/testfile 2> /dev/null ; then
+            rm -f /etc/udev/rules.d/testfile
+            # This should add persistent net/cd rules:
+
+            /usr/bin/udevadm trigger --type=devices --action=add
+            sleep 3
+            # Create the files if they don't exist at this point.
+            # If a machine does not have a network device or an optical
+            # device, we don't want to waste time trying to generate
+            # rules at every boot.
+            # To force another attempt, delete the file(s).
+            touch /etc/udev/rules.d/70-persistent-net.rules
+            touch /etc/udev/rules.d/70-persistent-cd.rules
+        fi
+    fi
+
+    /usr/bin/udevadm trigger --type=subsystems --action=change
+    /usr/bin/udevadm trigger --type=devices --action=change
+    /usr/bin/udevadm settle --timeout=120
+end script
