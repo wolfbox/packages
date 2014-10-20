@@ -6,8 +6,8 @@ arch=("x86_64")
 url="http://curl.haxx.se"
 license=(custom)
 
-#depends=('musl' 'zlib' 'openssl' 'libidn')
-#makedepends=("llvm" 'xz')
+depends=('glibc' 'zlib' 'openssl' 'libidn')
+makedepends=('xz')
 
 source=("http://curl.haxx.se/download/curl-${pkgver}.tar.bz2"
 		cacert.pem.xz)

@@ -1,0 +1,24 @@
+install_kernel() {
+	version=$(echo "${1}" | cut -d '-' -f 1)
+
+	ln /boot/vmlinuz-${version} /boot/vmlinuz
+	# If this fails, then the /boot filesystem may not support links. Fall
+	# back to copying.
+	if [ $? -gt 0 ]; then
+		cp /boot/vmlinuz-${version} /boot/vmlinuz
+	fi
+}
+
+post_install() {
+	version=${1}
+
+	install_kernel ${version}
+}
+
+post_upgrade() {
+	newversion=${1}
+	oldversion=${2}
+
+	mv /boot/vmlinuz /boot/vmlinuz-old	
+	install_kernel ${newversion}
+}

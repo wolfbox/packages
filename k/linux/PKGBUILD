@@ -1,23 +1,33 @@
+# TODO
+# Once we get Wolfbox running on real hardware, test performance and
+# compatibility with grsecurity. If, as I suspect, all is well, start
+# applying it here.
+
 pkgname=linux
-pkgver=3.16.6
+pkgver=3.17.1
 pkgrel=1
 pkgdesc="The Linux kernel."
 arch=("x86_64")
 url="http://www.kernel.org"
 license=('GPLv2')
 
-makedepends=('gcc' 'lz4')
+install=linux.install
+makedepends=('gcc' 'lz4' 'xz')
 
 source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.xz"
-		https://grsecurity.net/test/grsecurity-3.0-3.16.3-201409282025.patch
+		https://grsecurity.net/test/grsecurity-3.0-3.17.1-201410192051.patch
 		config.xz)
-sha256sums=(31e9dcffd79933040b8a91d36ac1d75fa4ad554656665c3d9c8fbd9fa73006f2
-			42ccb9171b698eb89a74be777710ecb0aaaad3173ab77461380acf3e42797f93
-			ff1cb95142166d8b72e0c3086a6a8c3098d895a98ccfc24377b795e40da5e86b)
+sha256sums=(2c9c002cf9618962883d82ba3e1caaea29af4ea37147a82bad422afdc8d21dc2
+			15bcd5b1d14e3cd47169816e95c29ebcd8d20dc3fc9fc8e97932d6d29a81c8db
+			e67708b0ccc752fd632632c51acb3499460857facc122a4ee62d4cc505b733b1)
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	xzcat "${srcdir}/config.xz" > .config
+}
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	xzcat "${srcdir}/config.xz" > .config
 	make -j2
 }
 
@@ -29,4 +39,6 @@ package() {
 	install -m 644 arch/x86/boot/bzImage "${pkgdir}"/boot/vmlinuz-${pkgver}
 	make modules_install INSTALL_MOD_PATH="${pkgdir}"
 	make headers_install INSTALL_HDR_PATH="${pkgdir}/usr"
+	
+	depmod -b "${pkgdir}" ${pkgver}
 }
