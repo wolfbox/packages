@@ -5,5 +5,4 @@ respawn
 setuid mongodb
 setgid daemon
 
-expect fork
 exec /usr/bin/mongod --config /etc/mongodb.conf
