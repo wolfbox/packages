@@ -1,0 +1,35 @@
+pkgname=libcap
+pkgver=2.24
+pkgrel=1
+pkgdesc="POSIX capability toolkit"
+arch=("x86_64")
+url="https://sites.google.com/site/fullycapable/"
+license=("GPLv2")
+
+options=('!staticlibs')
+install=libcap.install
+depends=('glibc' 'attr')
+
+source=(https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-${pkgver}.tar.xz
+        libcap.capability.h.fix.broken.includes.diff.gz)
+sha256sums=(cee4568f78dc851d726fc93f25f4ed91cc223b1fe8259daa4a77158d174e6c65
+            2e0eed9469e7e7dabb7d8419cca677f4f0a83c0b5ea493292511a24842ec0609)
+
+prepare() {
+	cd "${srcdir}"/${pkgname}-${pkgver}
+	zcat "${srcdir}"/libcap.capability.h.fix.broken.includes.diff.gz | patch -p1
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DYNAMIC=yes
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install FAKEROOT="${pkgdir}" prefix=/usr man_prefix=/usr RAISE_SETFCAP=no
+
+	mkdir -p "${pkgdir}"/usr/bin
+	mv "${pkgdir}"/usr/sbin/* "${pkgdir}"/usr/bin
+	rmdir "${pkgdir}"/usr/sbin
+}

@@ -1,0 +1,3 @@
+post_install() {
+    setcap cap_setfcap=i /usr/bin/setcap
+}
