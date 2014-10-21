@@ -1,0 +1,40 @@
+pkgname=python
+pkgver=3.4.2
+pkgrel=1
+pkgdesc="The Python programming langauge."
+arch=("x86_64")
+url="https://www.python.org"
+license=(custom)
+
+depends=('glibc' 'bzip2' 'zlib')
+optdepends=('ncurses' 'readline' 'gdbm' 'db48' 'xz' 'openssl' 'sqlite3' 'tk')
+
+source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz
+        python-x86_64.patch.xz)
+sha256sums=(1c6d9682d145c056537e477bbfa060ce727f9edd38df1827e0f970dcf04b2def
+            8ef48739581a0c28101d4a897baf2f6555fc91962d19adf95791ca7f055ae028)
+
+prepare() {
+	cd "${srcdir}"/Python-${pkgver}
+	
+	# Fix libdir
+	cat "${srcdir}"/python-x86_64.patch | patch -p1
+}
+
+build() {
+	cd "${srcdir}/Python-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+	            --with-threads --enable-ipv6 --enable-shared
+	make
+}
+
+package() {
+	cd "${srcdir}/Python-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	ln -s /usr/bin/python3 "${pkgdir}"/usr/bin/python
+	ln -s /usr/bin/python3-config "${pkgdir}"/usr/bin/python-config
+	
+	mkdir -p "${pkgdir}"/usr/doc/python-${pkgver}
+	install -m644 LICENSE "${pkgdir}"/usr/doc/python-${pkgver}
+}
