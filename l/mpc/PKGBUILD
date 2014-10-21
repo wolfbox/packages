@@ -1,0 +1,24 @@
+pkgname=mpc
+pkgver=0.9
+pkgrel=1
+pkgdesc="GNU complex floating-point library."
+arch=("x86_64")
+url="http://www.multiprecision.org/index.php?prog=mpc"
+license=('LGPLv3')
+
+depends=('glibc' 'gmp' 'mpfr')
+
+source=(http://www.multiprecision.org/mpc/download/mpc-${pkgver}.tar.gz)
+sha256sums=(fd3efe422f0d454592059e80f2c00d1a2e381bf2beda424c5094abd4deb049ac)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --infodir=/usr/info \
+                --enable-static=yes --enable-shared=yes
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}"
+}

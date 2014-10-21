@@ -1,0 +1,25 @@
+pkgname=mpfr
+pkgver=3.1.2
+pkgrel=1
+pkgdesc="GNU library for multi-precision floating point computations."
+arch=("x86_64")
+url="http://www.mpfr.org"
+license=('GPLv3' 'LGPLv3')
+
+depends=('glibc' 'gmp')
+
+source=(http://www.mpfr.org/mpfr-current/mpfr-${pkgver}.tar.xz)
+sha256sums=(399d0f47ef6608cc01d29ed1b99c7faff36d9994c45f36f41ba250147100453b)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --infodir=/usr/info \
+                --docdir=/usr/doc/mpfr-${pkgver} --enable-static=yes \
+                --enable-shared=yes
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}"
+}
