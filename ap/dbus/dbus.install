@@ -1,0 +1,3 @@
+post_install() {
+	useradd -r -g daemon -d /var/lib/messagebus -s /bin/false messagebus
+}
