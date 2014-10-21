@@ -1,0 +1,22 @@
+pkgname=filesystem
+pkgver=1
+pkgrel=1
+pkgdesc="Basic filesystem links for Wolf Box."
+arch=("x86_64")
+
+package() {
+	cd "${pkgdir}"
+	
+	mkdir -p {boot,dev,etc,etc/ld.so.conf.d,etc/profile.d,etc/skel,home,mnt}
+	mkdir -p {opt,proc,root,run,sys,tmp,usr,usr/bin,usr/include,usr/lib64}
+	mkdir -p {usr/lib/modprobe.d,usr/local,usr/local/bin,usr/local/etc}
+	mkdir -p {usr/local/include,usr/local/lib,usr/local/man,usr/local/share}
+	mkdir -p {usr/share,usr/man}
+	mkdir -p usr/man{1,2,3,4,5,6,7,8}
+	mkdir -p var/{lib,log,spool}
+
+	ln -s /usr/bin bin
+	ln -s /usr/bin usr/sbin
+	ln -s /usr/lib64 usr/lib
+	ln -s /run var/run
+}
