@@ -5,8 +5,8 @@ pkgdesc="A simple and fast package manager."
 arch=("x86_64")
 url="https://www.archlinux.org/pacman/"
 license=(GPLv2)
-#depends=('musl' 'bash' 'libarchive' 'curl' 'gpgme' 'libxml2')
-#makedepends=("llvm")
+
+depends=('glibc' 'bash' 'libarchive' 'curl' 'gpgme' 'libxml2' 'fakeroot')
 
 source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz)
 sha256sums=(7c059b444735ee254cfbd8dc2fac8c5d61453601f8adaf001c7038cdc673334c)

@@ -1,0 +1,23 @@
+pkgname=fakeroot
+pkgver=1.20.2
+pkgrel=1
+pkgdesc="Tool for simulating root."
+arch=("x86_64")
+url="http://packages.debian.org/fakeroot"
+license=(GPLv3)
+
+depends=('glibc')
+
+source=(http://ftp.debian.org/debian/pool/main/f/fakeroot/fakeroot_${pkgver}.orig.tar.bz2)
+sha256sums=(7c0a164d19db3efa9e802e0fc7cdfeff70ec6d26cdbdc4338c9c2823c5ea230c)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --disable-static
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
