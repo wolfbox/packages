@@ -6,8 +6,12 @@ arch=("x86_64")
 url=""
 license=(GPLv2)
 
-source=(https://www.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-${pkgver}.tar.xz)
-sha256sums=(4701305ae22790c3a92ce48e50794fa05b7ee01f4227f419a171c100d08986e8)
+depends=('glibc' 'ncurses')
+
+source=(https://www.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-${pkgver}.tar.xz
+        upstart-scripts.tar.xz)
+sha256sums=(4701305ae22790c3a92ce48e50794fa05b7ee01f4227f419a171c100d08986e8
+            31267cb1d16001a844e267bca0c64e0b016c2b911134dfa941bdfff4a808ea6e)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -15,7 +19,7 @@ build() {
 				--localstatedir=/var --mandir=/usr/man --infodir=/usr/info \
 				--docdir=/usr/doc/util-linux-${pkgver} --sbindir=/usr/bin \
 				--bindir=/usr/bin --disable-static --disable-uuidd \
-				--disable-login-utils
+				--disable-login-utils --disable-nologin
 	make
 }
 
@@ -26,4 +30,8 @@ package() {
 	# Fix the binary paths
 	mv "${pkgdir}"/usr/sbin/* "${pkgdir}"/usr/bin
 	rmdir "${pkgdir}"/usr/sbin
+
+	# Install the upstart scripts
+	mkdir -p "${pkgdir}"/etc/init
+	install -m 644 -t "${pkgdir}"/etc/init "${srcdir}"/upstart-scripts/*
 }
