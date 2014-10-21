@@ -1,0 +1,9 @@
+description "nginx http server"
+version 1.6.2
+
+start on network-services
+
+expect fork
+respawn
+
+exec /usr/bin/nginx

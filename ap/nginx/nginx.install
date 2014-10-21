@@ -1,0 +1,10 @@
+post_install() {
+    groupadd -r http
+    useradd -r http -g http -s /bin/false
+}
+
+post_upgrade() {
+    # Tell nginx to do a hot upgrade
+    pid=$(initctl status nginx | grep /running | awk '{print $NF}')
+    [ ! -z "${pid}" ] && kill -s USR2 "${pid}"
+}

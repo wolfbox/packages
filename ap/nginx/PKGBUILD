@@ -1,0 +1,60 @@
+pkgname=nginx
+pkgver=1.6.2
+pkgrel=1
+pkgdesc="A fast and lightweight HTTP server."
+arch=("x86_64")
+url="http://nginx.org"
+license=('custom')
+
+install=nginx.install
+depends=('glibc' 'zlib' 'pcre' 'openssl')
+
+source=(http://nginx.org/download/nginx-${pkgver}.tar.gz
+        nginx.upstart
+        nginx.install)
+sha256sums=(b5608c2959d3e7ad09b20fc8f9e5bd4bc87b3bc8ba5936a513c04ed8f1391a18
+            6a3ba7146573183552aa76c7e257875123b67fd0550276a0104b77846dc4d8a6
+            fffea3824ebef333bc416ce28a5da21fde7cfdce5f9a81d5f0eecf8b781c9a4a)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/etc/nginx \
+	            --conf-path=/etc/nginx/nginx.conf \
+	            --sbin-path=/usr/bin/nginx \
+	            --pid-path=/var/run/nginx.pid \
+	            --lock-path=/var/lock/nginx.lock \
+	            --http-log-path=/var/log/nginx/access.log \
+	            --error-log-path=stderr \
+	            --http-client-body-temp-path=/var/lib/nginx/client-body \
+	            --http-proxy-temp-path=/var/lib/nginx/proxy \
+	            --http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+	            --http-scgi-temp-path=/var/lib/nginx/scgi \
+	            --http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+	            --with-imap \
+	            --with-imap_ssl_module \
+	            --with-ipv6 \
+	            --with-pcre-jit \
+	            --with-http_dav_module \
+	            --with-http_ssl_module \
+	            --with-file-aio \
+	            --with-http_spdy_module \
+	            --with-http_gzip_static_module \
+	            --with-http_gunzip_module \
+	            --user=http \
+	            --group=http
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+
+	mkdir -p "${pkgdir}"/etc/init
+	install -m644 "${srcdir}"/nginx.upstart "${pkgdir}"/etc/init/nginx.conf
+
+	mkdir -p "${pkgdir}"/usr/man/man8
+	install -m644 man/nginx.8 "${pkgdir}"/usr/man/man8/
+
+	mkdir -p "${pkgdir}"/var/lib/nginx
+}
