@@ -1,0 +1,135 @@
+pkgbase=gcc
+pkgname=(gcc-libs gcc-go gcc-gfortran gcc)
+pkgver=4.8.3
+pkgrel=1
+pkgdesc="The GNU Compiler Collection."
+arch=("x86_64")
+url="http://gcc.gnu.org"
+license=(GPLv3)
+
+options=('strip')
+makedepends=('zlib')
+checkdepends=('autotext')
+
+source=(http://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2
+		gcc-no_fixincludes.diff.gz)
+
+sha256sums=(6a8e4f11b185f4fe2ed9d7fc053e80f8c7e73f800c045f51f9d8bea33f080f1e
+			cdf880bd4fc1a35f5f3c6ec7d2eb1ce7ab55bbf60aa64db495cb07071a7af40b)
+
+TARGET=x86_64-wolfbox-linux
+_target_dir=usr/lib64/gcc/${TARGET}/${pkgver}
+
+prepare() {
+	cd "${srcdir}"/gcc-${pkgver}
+
+	# No fixincludes
+	zcat "${srcdir}"/gcc-no_fixincludes.diff.gz | patch -p1
+	
+	mkdir -p "${srcdir}/build"
+}
+
+build() {
+	cd "${srcdir}/build"
+
+	../gcc-${pkgver}/configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+				--libexecdir=/usr/lib64 --infodir=/usr/info --enable-shared --enable-bootstrap \
+				--enable-languages=c,c++,objc,go,fortran,lto \
+				--enable-threads=posix --enable-checking=release \
+				--enable-objc-gc --with-system-zlib \
+				--with-python-dir=/lib64/python2.7/site-packages \
+				--disable-libunwind-exceptions --enable-__cxa_atexit \
+				--enable-libssp --enable-lto --with-gnu-ld --verbose \
+				--disable-gtktest --disable-multilib --target=${TARGET} \
+				--build=${TARGET} --host=${TARGET}
+	make
+}
+
+# Packaging functions
+package_gcc-libs() {
+	pkgdesc="${pkgdesc} - Runtime libraries."
+	depends=('glibc')
+	
+	# Set up our initial install tree
+	cd "${srcdir}/build"
+	rm -rf ../out
+	mkdir ../out
+	make install DESTDIR="${srcdir}"/out/
+
+	# KLUDGE ALERT
+	# Avoid ldconfig error
+	rm -f "${srcdir}"/out/usr/lib64/*gdb.py
+	
+	# Move runtime libraries
+	mkdir -p "${pkgdir}"/usr/lib64
+	mv "${srcdir}"/out/usr/lib64/lib{asan,atomic,gcc_s,gfortran,gomp,itm,objc,quadmath,stdc++,tsan}.so* "${pkgdir}"/usr/lib64/
+
+	# Info files
+	mkdir -p "${pkgdir}"/usr/info
+	mv "${srcdir}"/out/usr/info/lib{gomp,itm,quadmath}.info* "${pkgdir}"/usr/info/
+
+	# Locale	
+	mkdir -p "${pkgdir}"/usr/share/locale/de/LC_MESSAGES/
+	mkdir -p "${pkgdir}"/usr/share/locale/fr/LC_MESSAGES/
+	mv "${srcdir}"/out/usr/share/locale/de/LC_MESSAGES/libstdc++.mo "${pkgdir}"/usr/share/locale/de/LC_MESSAGES/
+	mv "${srcdir}"/out/usr/share/locale/fr/LC_MESSAGES/libstdc++.mo "${pkgdir}"/usr/share/locale/fr/LC_MESSAGES/
+
+	# License
+	mkdir -p "${pkgdir}"/usr/doc/gcc-libs-${pkgver}
+	install -m644 "${srcdir}"/gcc-${pkgver}/COPYING.RUNTIME "${pkgdir}"/usr/doc/gcc-libs-${pkgver}
+}
+
+package_gcc() {
+	pkgdesc="${pkgdesc} - C and C++ frontends."
+	depends=('glibc' 'gcc-libs' 'binutils' 'mpc')
+
+	mv "${srcdir}"/out/* "${pkgdir}"/
+
+	ln -s /usr/bin/cc "${pkgdir}"/usr/bin/c89
+	ln -s /usr/bin/cc "${pkgdir}"/usr/bin/c99
+}
+
+package_gcc-gfortran() {
+	pkgdesc="${pkgdesc} - Fortran support."
+	depends=('gcc')
+
+	mkdir -p "${pkgdir}"/usr/bin
+	mv "${srcdir}"/out/usr/bin/*gfortran "${pkgdir}"/usr/bin/
+	ln "${pkgdir}"/usr/bin/gfortran "${pkgdir}"/usr/bin/f95
+
+	mkdir -p "${pkgdir}"/usr/lib64
+	mv "${srcdir}"/out/usr/lib64/libgfortran.spec "${pkgdir}"/usr/lib64
+
+	mkdir -p "${pkgdir}"/${_target_dir}
+	mv "${srcdir}"/out/${_target_dir}/finclude "${pkgdir}"/${_target_dir}/
+	mv "${srcdir}"/out/${_target_dir}/{f951,libgfortranbegin.a} "${pkgdir}"/${_target_dir}/
+
+	mkdir -p "${pkgdir}"/usr/info
+	mv "${srcdir}"/out/usr/info/gfortran.info* "${pkgdir}"/usr/info
+
+	mkdir -p "${pkgdir}"/usr/man/man1
+	mv "${srcdir}"/out/usr/man/man1/gfortran* "${pkgdir}"/usr/man/man1
+}
+
+package_gcc-go() {
+	pkgdesc="${pkgdesc} - Go support."
+	depends=('gcc')
+	
+	mkdir -p "${pkgdir}"/usr/bin
+	mv "${srcdir}"/out/usr/bin/*gccgo "${pkgdir}"/usr/bin
+	
+	mkdir -p "${pkgdir}"/${_target_dir}
+	mv "${srcdir}"/out/usr/lib64/{libgo.so*,libgobegin.a,go} "${pkgdir}"/usr/lib64/
+	mv "${srcdir}"/out/${_target_dir}/go1 "${pkgdir}"/${_target_dir}/
+
+	mkdir -p "${pkgdir}"/usr/man/man1
+	mv "${srcdir}"/out/usr/man/man1/gccgo* "${pkgdir}"/usr/man/man1/
+
+	mkdir -p "${pkgdir}"/usr/info
+	mv "${srcdir}"/out/usr/info/gccgo* "${pkgdir}"/usr/info/
+}
+
+check() {
+	cd "${srcdir}/gcc-${pkgver}"
+	make -k check || true
+}
