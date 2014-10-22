@@ -18,6 +18,10 @@ sha256sums=(b5608c2959d3e7ad09b20fc8f9e5bd4bc87b3bc8ba5936a513c04ed8f1391a18
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
 	./configure --prefix=/etc/nginx \
 	            --conf-path=/etc/nginx/nginx.conf \
 	            --sbin-path=/usr/bin/nginx \
@@ -41,7 +45,8 @@ build() {
 	            --with-http_gzip_static_module \
 	            --with-http_gunzip_module \
 	            --user=http \
-	            --group=http
+	            --group=http \
+	            --with-ld-opt="${LDFLAGS}"
 	make
 }
 

@@ -1,6 +1,6 @@
 pkgbase=gcc
 pkgname=(gcc-libs gcc-go gcc-gfortran gcc)
-pkgver=4.8.3
+pkgver=4.9.1
 pkgrel=1
 pkgdesc="The GNU Compiler Collection."
 arch=("x86_64")
@@ -14,11 +14,10 @@ checkdepends=('autotext')
 source=(http://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2
 		gcc-no_fixincludes.diff.gz)
 
-sha256sums=(6a8e4f11b185f4fe2ed9d7fc053e80f8c7e73f800c045f51f9d8bea33f080f1e
+sha256sums=(d334781a124ada6f38e63b545e2a3b8c2183049515a1abab6d513f109f1d717e
 			cdf880bd4fc1a35f5f3c6ec7d2eb1ce7ab55bbf60aa64db495cb07071a7af40b)
 
-TARGET=x86_64-wolfbox-linux
-_target_dir=usr/lib64/gcc/${TARGET}/${pkgver}
+_target_dir=usr/lib64/gcc/${CHOST}/${pkgver}
 
 prepare() {
 	cd "${srcdir}"/gcc-${pkgver}
@@ -32,6 +31,12 @@ prepare() {
 build() {
 	cd "${srcdir}/build"
 
+	# GCC doesn't work well with _FORTIFY_SOURCE
+	# export CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+	export CPPFLAGS=""
+	export CCFLAGS=""
+	export CXXFLAGS=""
+
 	../gcc-${pkgver}/configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
 				--libexecdir=/usr/lib64 --infodir=/usr/info --enable-shared --enable-bootstrap \
 				--enable-languages=c,c++,objc,go,fortran,lto \
@@ -40,8 +45,8 @@ build() {
 				--with-python-dir=/lib64/python2.7/site-packages \
 				--disable-libunwind-exceptions --enable-__cxa_atexit \
 				--enable-libssp --enable-lto --with-gnu-ld --verbose \
-				--disable-gtktest --disable-multilib --target=${TARGET} \
-				--build=${TARGET} --host=${TARGET}
+				--disable-gtktest --disable-multilib --target=${CHOST} \
+				--build=${CHOST} --host=${CHOST}
 	make
 }
 
@@ -85,8 +90,9 @@ package_gcc() {
 
 	mv "${srcdir}"/out/* "${pkgdir}"/
 
-	ln -s /usr/bin/cc "${pkgdir}"/usr/bin/c89
-	ln -s /usr/bin/cc "${pkgdir}"/usr/bin/c99
+	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/c89
+	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/c99
+	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/cc
 }
 
 package_gcc-gfortran() {

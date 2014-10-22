@@ -12,18 +12,22 @@ depends=('glibc' 'bash' 'libarchive' 'curl' 'gpgme' 'libxml2' 'fakeroot')
 source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz
         makepkg.conf)
 sha256sums=(7c059b444735ee254cfbd8dc2fac8c5d61453601f8adaf001c7038cdc673334c
-            8309cefa626daff4334158df51e970807ca880cbecc252687ecc0086ffad4400)
+            a6fb810cb26fa63ab7f87d8db650bc08c016a3f22698e82e56e67a29a49a9ecc)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
 				--localstatedir=/var --mandir=/usr/man
 	make
+	make -C contrib
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	make install DESTDIR="${pkgdir}"
+	make install -C contrib DESTDIR="${pkgdir}"
 	install -m644 "${srcdir}"/makepkg.conf "${pkgdir}"/etc/
+	
+	rm -rf "${pkgdir}"/etc/bash_completion.d
 }
