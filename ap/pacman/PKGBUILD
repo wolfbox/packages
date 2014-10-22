@@ -6,10 +6,13 @@ arch=("x86_64")
 url="https://www.archlinux.org/pacman/"
 license=(GPLv2)
 
+backup=('etc/makepkg.conf' 'etc/pacman.conf')
 depends=('glibc' 'bash' 'libarchive' 'curl' 'gpgme' 'libxml2' 'fakeroot')
 
-source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz)
-sha256sums=(7c059b444735ee254cfbd8dc2fac8c5d61453601f8adaf001c7038cdc673334c)
+source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz
+        makepkg.conf)
+sha256sums=(7c059b444735ee254cfbd8dc2fac8c5d61453601f8adaf001c7038cdc673334c
+            8309cefa626daff4334158df51e970807ca880cbecc252687ecc0086ffad4400)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -22,4 +25,5 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	make install DESTDIR="${pkgdir}"
+	install -m644 "${srcdir}"/makepkg.conf "${pkgdir}"/etc/
 }
