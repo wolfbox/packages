@@ -31,8 +31,7 @@ prepare() {
 build() {
 	cd "${srcdir}/build"
 
-	# GCC doesn't work well with _FORTIFY_SOURCE
-	# export CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+	# GCC doesn't work well with our hardening options.
 	export CPPFLAGS=""
 	export CCFLAGS=""
 	export CXXFLAGS=""
@@ -45,8 +44,8 @@ build() {
 				--with-python-dir=/lib64/python2.7/site-packages \
 				--disable-libunwind-exceptions --enable-__cxa_atexit \
 				--enable-libssp --enable-lto --with-gnu-ld --verbose \
-				--disable-gtktest --disable-multilib --target=${CHOST} \
-				--build=${CHOST} --host=${CHOST}
+				--disable-gtktest --disable-multilib --enable-multiarch \
+				--target=${CHOST} --build=${CHOST} --host=${CHOST}
 	make
 }
 
