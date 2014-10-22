@@ -1,0 +1,40 @@
+pkgname=make
+pkgver=3.82
+pkgrel=1
+pkgdesc="The GNU Make build tool."
+arch=("x86_64")
+url="http://www.gnu.org/software/make/"
+license=('GPLv3')
+
+depends=('glibc')
+
+source=(http://ftp.gnu.org/gnu/make/make-${pkgver}.tar.bz2
+        make-3.82-android-build-fix.diff.gz
+        make-3.82-bugfixes.patch.gz
+        make-3.82-parallel-build.patch.gz)
+sha256sums=(e2c1a73f179c40c71e2fe8abf8a8a0688b8499538512984da4a76958d0402966
+            7e422ccd675c41270226340f5f1180707711e063c7bcaad974db11c767458696
+            d9cfb9ed0b10089c611b97e5a9d0ab30eb9619be48ae43dbcfbeb12ca1b41727
+            4e16ede494d5c4d6dc7a2954d3166f7b1532bc64c5c047ff32e94251970782d6)
+
+prepare() {
+	cd "${srcdir}"/${pkgname}-${pkgver}
+	
+	# Apply Slackware patches
+	cat "${srcdir}"/make-3.82-android-build.fix.diff | patch -p1
+	cat "${srcdir}"/make-3.82-bugfixes.patch | patch -p1
+	cat "${srcdir}"/make-3.82-parallel-build | patch -p1
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+	            --infodir=/usr/info
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
