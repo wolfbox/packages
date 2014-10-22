@@ -1,21 +1,22 @@
 pkgname=glibc
-pkgver=2.19
+pkgver=2.20
 pkgrel=1
 pkgdesc="The GNU libc."
 arch=("x86_64")
 url="http://www.gnu.org/s/libc/"
 license=(GPLv2, LGPLv2.1)
 
-#depends=('tzdata')
-#makedepends=(gcc)
+depends=('tzdata')
 conflicts=(musl)
 
 options=(!strip)
 
 source=("ftp://ftp.gnu.org/gnu/libc/glibc-${pkgver}.tar.gz"
-		slackware-mods.tar.xz)
-sha256sums=(18ad6db70724699d264add80b1f813630d0141cf3a3558b4e1a7c15f6beac796
-			5bbfae1b7b3ae7f6ba256cdf9d16a48fa330f1a0ce9c6a093f7ebd40913ad0bf)
+		slackware-mods.tar.xz
+		glibc.hardening.diff.xz)
+sha256sums=(37e1de410d572a19b707b99786db9822bb4775e9d70517d88937ab12e6d6debc
+			5bbfae1b7b3ae7f6ba256cdf9d16a48fa330f1a0ce9c6a093f7ebd40913ad0bf
+			20327ed1d30dbe7e2006f1a524de734dfe412456536fa3ca8e3dc5ea1080499f)
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -33,13 +34,13 @@ prepare() {
   zcat "${srcdir}"/glibc.ru_RU.CP1251.diff.gz | patch -p1 --verbose || exit 1
   # Fix resolver problem with glibc-2.9:
   zcat "${srcdir}"/glibc-2.10-dns-no-gethostbyname4.diff.gz | patch -p0 --verbose || exit 1
-  # This reverts a patch that was made to glibc to fix "namespace leakage",
-  # which seems to cause some build failures (e.g. with conntrack):
-  zcat "${srcdir}"/glibc.revert.to.fix.build.breakages.diff.gz | patch -p1 --verbose || exit 1
   # This partial security patch still applies and might be needed:
   zcat "${srcdir}"/glibc.git-96611391ad8823ba58405325d78cefeae5cdf699-CVE-2010-3847b.patch.gz | patch -p1 --verbose || exit 1
   # Make it harder for people to trick ldd into running code:
   zcat "${srcdir}"/glibc.ldd.trace.through.dynamic.linker.diff.gz | patch -p1 --verbose || exit 1
+
+  # unlink() hardening patch from Florian Weimer via Slackware
+  cat "${srcdir}"/glibc.hardening.diff | patch -p1
 }
 
 build() {
@@ -53,7 +54,7 @@ build() {
     	--libdir=/usr/lib64 \
     	--sbindir=/usr/bin \
     	--with-headers=/usr/include \
-    	--enable-add-ons=libidn,nptl \
+    	--enable-add-ons \
     	--enable-obsolete-rpc \
     	--enable-profile \
     	--infodir=/usr/info \
