@@ -1,0 +1,25 @@
+pkgname=ninja
+pkgver=1.5.1
+pkgrel=1
+pkgdesc="A small fast build tool."
+arch=("x86_64")
+url="http://martine.github.io.ninja"
+license=(Apache)
+
+depends=('glibc' 'gcc-libs')
+makedepends=('python')
+
+source=(ninja-${pkgver}.tar.gz::https://github.com/martine/ninja/archive/v${pkgver}.tar.gz)
+sha256sums=(fba77b9ed4b4dd0e86c4513776938dc64bd4508dc2055b04c0c6df68bcfa397d)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./bootstrap.py
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	mkdir -p "${pkgdir}"/usr/bin
+	install -m755 ninja "${pkgdir}"/usr/bin/
+}
