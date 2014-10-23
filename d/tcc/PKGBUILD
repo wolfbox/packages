@@ -1,0 +1,27 @@
+pkgname=tcc
+pkgver=0.9.26
+pkgrel=1
+pkgdesc="The Tiny C Compiler"
+arch=("x86_64")
+url="http://bellard.org/tcc/"
+license=('LGPLv2.1')
+
+depends=('glibc')
+
+source=(http://download.savannah.gnu.org/releases/tinycc/tcc-${pkgver}.tar.bz2)
+
+sha256sums=(521e701ae436c302545c3f973a9c9b7e2694769c71d9be10f70a2460705b6d71)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+	            --sysincludepaths=/usr/include/${MULTIARCH} \
+	            --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
