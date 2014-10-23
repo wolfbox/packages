@@ -1,0 +1,22 @@
+pkgname=scons
+pkgver=2.3.4
+pkgrel=1
+pkgdesc="The scons build system."
+arch=('any')
+url="http://www.scons.org"
+license=('MIT')
+
+depends=('python<3.0')
+
+source=(http://prdownloads.sourceforge.net/scons/scons-${pkgver}.tar.gz)
+sha256sums=(4b57d72066fed3b6ff65a7dd9f73633c9b1c09f87520e9b3aae84b3e4864b441)
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	python2 setup.py install --standard-lib --prefix=/usr \
+	                         --install-data=/usr/share --optimize=1 \
+	                         --root="${pkgdir}"
+
+	sed -i 's:^#!.*bin/env python:#!/usr/bin/env python2:' "${pkgdir}"/usr/bin/*
+}
