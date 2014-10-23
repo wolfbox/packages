@@ -10,22 +10,21 @@ provides=("python=${pkgver}")
 depends=('glibc' 'bzip2' 'zlib')
 optdepends=('ncurses' 'readline' 'gdbm' 'db48' 'xz' 'openssl' 'sqlite3' 'tk')
 
-source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz
-        python-x86_64.patch.xz)
-sha256sums=(edde10a0cb7d14e2735e682882d5b287028d1485c456758154c19573db68075a
-            5cf60ea209ee8a15b2d3a7451bca7ff8277f2eb318024f3574710894a9fd2046)
+source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz)
+sha256sums=(edde10a0cb7d14e2735e682882d5b287028d1485c456758154c19573db68075a)
 
 prepare() {
 	cd "${srcdir}"/Python-${pkgver}
 
 	# Fix libdir
-	cat "${srcdir}"/python-x86_64.patch | patch -p1
+	#cat "${srcdir}"/python-x86_64.patch | patch -p1
 }
 
 build() {
 	cd "${srcdir}/Python-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+	./configure --prefix=/usr --mandir=/usr/man \
 	            --with-threads --enable-ipv6 --enable-shared
+
 	make
 }
 
