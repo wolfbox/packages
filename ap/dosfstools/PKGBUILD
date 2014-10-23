@@ -1,0 +1,35 @@
+pkgname=dosfstools
+pkgver=3.0.26
+pkgrel=1
+pkgdesc="MS-DOS filesystem utilities."
+arch=("x86_64")
+url="http://daniel-baumann.ch/software/dosfstools"
+license=('GPLv3')
+
+depends=('glibc')
+
+source=("http://daniel-baumann.ch/files/software/dosfstools/dosfstools-${pkgver}.tar.xz")
+sha256sums=(468442fe8cd93961047d5cd67f7b67793126575103a67cd131330512b4893e75)
+
+prepare() {
+	cd "${srcdir}"/${pkgname}-${pkgver}
+
+	# Fix install paths
+	sed -i 's:PREFIX = /usr/local:PREFIX = /usr:' Makefile
+	sed -i 's:$(PREFIX)/sbin:$(PREFIX)/bin:' Makefile
+	sed -i 's:$(PREFIX)/share:$(PREFIX):' Makefile
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	# Fix docdir
+	cd "${pkgdir}"/usr/doc
+	mv dosfstools dosfstools-${pkgver}
+}
