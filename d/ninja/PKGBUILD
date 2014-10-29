@@ -3,7 +3,7 @@ pkgver=1.5.1
 pkgrel=1
 pkgdesc="A small fast build tool."
 arch=("x86_64")
-url="http://martine.github.io.ninja"
+url="http://martine.github.io/ninja"
 license=(Apache)
 
 depends=('glibc' 'gcc-libs')
