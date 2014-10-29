@@ -7,18 +7,20 @@ url="http://www.libarchive.org"
 license=("BSD")
 
 depends=('glibc' 'acl' 'attr' 'bzip2' 'expat' 'lzo' 'openssl' 'xz' 'zlib')
+makedepends=('autoconf' 'automake' 'bash')
 
-source=("http://www.libarchive.org/downloads/libarchive-${pkgver}.tar.gz")
-sha256sums=(eb87eacd8fe49e8d90c8fdc189813023ccc319c5e752b01fb6ad0cc7b2c53d5e)
+source=(git+https://github.com/wolfbox/libarchive.git#commit=658b4bf)
+sha256sums=(SKIP)
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd "${srcdir}/${pkgname}"
+	./build/autogen.sh
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 			    --localstatedir=/var --mandir=/usr/man --disable-static
 	make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd "${srcdir}/${pkgname}"
 	make DESTDIR="${pkgdir}" install
 }
