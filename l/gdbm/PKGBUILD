@@ -1,0 +1,23 @@
+pkgname=gdbm
+pkgver=1.11
+pkgrel=1
+pkgdesc="The GNU dbm library."
+arch=("x86_64")
+url="http://www.gnu.org.ua/software/gdbm/download.html"
+license=('GPLv3')
+
+depends=('glibc')
+
+source=(ftp://ftp.gnu.org/gnu/gdbm/gdbm-${pkgver}.tar.gz)
+sha256sums=(8d912f44f05d0b15a4a5d96a76f852e905d051bb88022fcdfd98b43be093e3c3)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
