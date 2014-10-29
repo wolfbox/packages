@@ -12,7 +12,7 @@ optdepends=('ncurses' 'readline' 'gdbm' 'db48' 'xz' 'openssl' 'sqlite3' 'tk')
 source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz
         python-libdir.diff.xz)
 sha256sums=(1c6d9682d145c056537e477bbfa060ce727f9edd38df1827e0f970dcf04b2def
-            a98f7537d6f67e0adcad8b613197a8447740057bb6466bfdcc0577ceac450dd6)
+            c3dd857f9a28cea07eb15261ca8bd11088e11e73b995f0b60e6a9b1a1a8305fb)
 
 prepare() {
 	cd "${srcdir}"/Python-${pkgver}
