@@ -1,0 +1,29 @@
+pkgname=autoconf
+pkgver=2.69
+pkgrel=1
+pkgdesc="The GNU build system generator."
+arch=("x86_64")
+url="http://www.gnu.org/software/autoconf/"
+license=('GPL')
+
+depends=('bash' 'm4')
+makedepends=('perl>=5.6')
+
+source=(http://ftp.gnu.org/gnu/autoconf/autoconf-${pkgver}.tar.xz)
+sha256sums=(64ebcec9f8ac5b2487125a86a7760d2591ac9e1d3dbd59489633f9de62a57684)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man --infodir=/usr/info \
+	            --docdir=/usr/doc/${pkgname}-${pkgver} --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}"
+	
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m644 COPYING* "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+}
