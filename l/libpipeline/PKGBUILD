@@ -1,0 +1,23 @@
+pkgname=libpipeline
+pkgver=1.4.0
+pkgrel=1
+pkgdesc="A subprocess pipeline manager library."
+arch=("x86_64")
+url="http://libpipeline.nongnu.org"
+license=('GPLv3')
+
+depends=('glibc')
+
+source=(http://download.savannah.gnu.org/releases/libpipeline/libpipeline-${pkgver}.tar.gz)
+sha256sums=(79c759e7fbf17b560a72edce3ff9bb308d7720306c2650e4fae541daabb89bb6)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
