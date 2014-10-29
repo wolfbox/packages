@@ -1,0 +1,25 @@
+pkgname=bison
+pkgver=2.7.1
+pkgrel=1
+pkgdesc="A yacc-like parser generator."
+arch=("x86_64")
+url="http://www.gnu.org/software/bison/"
+license=('GPLv3')
+
+depends=('glibc')
+
+source=(http://ftp.gnu.org/gnu/bison/bison-${pkgver}.tar.xz)
+sha256sums=(b409adcbf245baadb68d2f66accf6fdca5e282cafec1b865f4b5e963ba8ea7fb)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man --infodir=/usr/info \
+	            --docdir=/usr/doc/bison-${pkgver} --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}"
+}
