@@ -1,4 +1,4 @@
-pkgname=libassaun
+pkgname=libassuan
 pkgver=2.1.2
 pkgrel=1
 pkgdesc="Inter-process communication library for GPG."
