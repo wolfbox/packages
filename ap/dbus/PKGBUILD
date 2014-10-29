@@ -16,7 +16,7 @@ source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz"
 sha256sums=(c1a06bdac3e48c046bd54cf4acdd996fc7496cab803753d0de0982ccb2615749
             cd35621e4cc56403e9bb6ca6b431c8ae04f8cb8c626df40953e6f0f1bb488f64
             30bdcc5407a0bc08d98d21b949cf5535d1e08c64df28928ec8ce71c026ed8f39
-            3638404708600d19f0136d826f67be073a94d0e21324e0c61ec4ac99f8c71ace)
+            48863bb4ab2a2dea9616615b36747c360bf0b993fe8813e878f607cade2fad02)
 
 prepare() {
 	cd "${srcdir}"/dbus-${pkgver}
@@ -31,6 +31,11 @@ prepare() {
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	# Harden
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 	            --localstatedir=/var --mandir=/usr/man --infodir=/usr/info \
 	            --docdir=/usr/doc/dbus-${pkgver} --disable-doxygen-docs \
@@ -49,4 +54,6 @@ package() {
 	mkdir -p "${pkgdir}"/etc/init
 	install -m 644 "${srcdir}"/dbus.upstart "${pkgdir}"/etc/init/dbus.conf
 	rm -r "${pkgdir}"/etc/rc.d
+
+	chmod 700 "${pkgdir}"/var/run/dbus
 }
