@@ -1,0 +1,24 @@
+pkgname=wiredtiger
+pkgver=2.4.0
+pkgrel=1
+pkgdesc="A highly scalable NoSQL data storage platform."
+arch=("x86_64")
+url="http://wiredtiger.com"
+license=('GPL')
+
+depends=('glibc' 'zlib')
+
+source=(http://source.wiredtiger.com/releases/wiredtiger-${pkgver}.tar.bz2)
+sha256sums=(7a68920d9a001b3a780e85405a62c52ec1e59796400d627d345f8191bf6567d6)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+	            --enable-zlib
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
