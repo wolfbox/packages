@@ -2,7 +2,7 @@ pkgname=mercurial
 pkgver=3.1.2
 pkgrel=1
 pkgdesc="A free and fast distributed version control system."
-arch=('any')
+arch=('x86_64')
 url="http://mercurial.selenic.com"
 license=('GPLv2')
 
