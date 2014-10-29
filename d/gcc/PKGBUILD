@@ -88,7 +88,7 @@ package_gcc-libs() {
 
 package_gcc() {
 	pkgdesc="${pkgdesc} - C and C++ frontends."
-	depends=('glibc' 'gcc-libs' 'binutils' 'mpc')
+	depends=('glibc' 'gcc-libs' 'binutils' 'libmpc')
 
 	mv "${srcdir}"/out/* "${pkgdir}"/
 

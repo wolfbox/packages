@@ -1,4 +1,4 @@
-pkgname=mpc
+pkgname=libmpc
 pkgver=0.9
 pkgrel=1
 pkgdesc="GNU complex floating-point library."
@@ -12,13 +12,22 @@ source=(http://www.multiprecision.org/mpc/download/mpc-${pkgver}.tar.gz)
 sha256sums=(fd3efe422f0d454592059e80f2c00d1a2e381bf2beda424c5094abd4deb049ac)
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd "${srcdir}/mpc-${pkgver}"
+
+	# Derp derp autotools
+	export EGREP='grep -e'
+
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --infodir=/usr/info \
-                --enable-static=yes --enable-shared=yes
+                --enable-static=yes --enable-shared=yes --with-pic
 	make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd "${srcdir}/mpc-${pkgver}"
 	make install DESTDIR="${pkgdir}"
+}
+
+check() {
+	cd "${srcdir}"/mpc-${pkgver}
+	make check
 }
