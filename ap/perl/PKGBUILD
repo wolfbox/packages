@@ -1,0 +1,39 @@
+pkgname=perl
+pkgver=5.20.1
+pkgrel=1
+pkgdesc="The Practical Extraction and Report Language."
+arch=("x86_64")
+url="https://www.perl.org"
+license=('GPLv1' 'Artistic')
+
+depends=('glibc')
+
+source=(http://www.cpan.org/src/5.0/perl-${pkgver}.tar.gz)
+sha256sums=(fef10210f9e6f4dc2d190be0aee8e1fa2af664630f1d415868d33eebca26d4b5)
+
+build() {
+	cd ${srcdir}/${pkgname}-${pkgver}
+
+	./Configure -des -Dusethreads -Duseshrplib -Doptimize="${CFLAGS}" \
+	            -Dprefix=/usr -Dvendorprefix=/usr \
+	            -Dprivlib=/usr/share/perl5/ \
+	            -Darchlib=/usr/lib/${MULTIARCH}/perl5/ \
+	            -Dsitelib=/usr/local/share/perl5/ \
+	            -Dsitearch=/usr/local/lib/${MULTIARCH}/perl5/ \
+	            -Dvendorlib=/usr/share/perl5/vendor_perl \
+	            -Dvendorarch=/usr/lib/perl5/vendor_perl \
+	            -Dscriptdir=/usr/bin/ \
+	            -Dsitescript=/usr/local/bin/ \
+	            -Dman1dir=/usr/man/man1 -Dman3dir=/usr/man/man3
+
+  make
+}
+
+package() {
+	cd ${srcdir}/${pkgname}-${pkgver}
+
+	make DESTDIR="${pkgdir}" install
+
+	mkdir -p "${pkgdir}"/usr/doc/perl-${pkgver}
+	install -m644 Copying Artistic "${pkgdir}"/usr/doc/perl-${pkgver}/
+}
