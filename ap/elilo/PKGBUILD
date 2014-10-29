@@ -19,8 +19,8 @@ prepare() {
 	cd "${srcdir}"/elilo-${pkgver}-source
 
 	# Fix build on non-Debian systems
-	sed -i "s,/usr/lib,/usr/lib64,g" Make.defaults
-	sed -i "s,EFICRT0.*= /usr/lib64,EFICRT0    = /usr/lib64/gnuefi,g" Make.defaults
+	sed -i "s,/usr/lib,/usr/lib/${MULTIARCH},g" Make.defaults
+	sed -i "s,EFICRT0.*= /usr/lib/${MULTIARCH},EFICRT0    = /usr/lib/${MULTIARCH}/gnuefi,g" Make.defaults
 	sed -i "s,dpkg-architecture -qDEB_BUILD_ARCH,uname -m,g" Make.defaults
 }
 

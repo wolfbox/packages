@@ -1,5 +1,5 @@
 pkgname=bash
-_patchlevel=28
+_patchlevel=30
 _basever=4.3
 pkgver=${_basever}.${_patchlevel}
 pkgrel=1
@@ -7,7 +7,8 @@ pkgdesc="The GNU Bourne-Again SHell."
 arch=("x86_64")
 url="http://www.gnu.org/software/bash/"
 license=("GPLv3")
-#depends=("readline")
+
+depends=('glibc' 'readline')
 
 MIRROR="http://mirrors.ibiblio.org/gnu/ftp/gnu/bash"
 PATCH_DIR="${MIRROR}/bash-4.3-patches"
@@ -39,7 +40,9 @@ source=("${MIRROR}/bash-${_basever}.tar.gz"
 		${PATCH_DIR}/bash43-025
 		${PATCH_DIR}/bash43-026
 		${PATCH_DIR}/bash43-027
-		${PATCH_DIR}/bash43-028)
+		${PATCH_DIR}/bash43-028
+		${PATCH_DIR}/bash43-029
+		${PATCH_DIR}/bash43-030)
 sha256sums=(afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4
 			ecb3dff2648667513e31554b3ad054ccd89fce38e33367c9459ac3a285153742
 			eee7cd7062ab29a9e4f02924d9c367264dcb8b162703f74ff6eb8f175a91502b
@@ -68,7 +71,9 @@ sha256sums=(afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4
 			1e5186f5c4a619bb134a1177d9e9de879f3bb85d9c5726832b03a762a2499251
 			2ecc12201b3ba4273b63af4e9aad2305168cf9babf6d11152796db08724c214d
 			1eb76ad28561d27f7403ff3c76a36e932928a4b58a01b868d663c165f076dabe
-			e8b0dbed4724fa7b9bd8ff77d12c7f03da0fbfc5f8251ef5cb8511eb082b469d)
+			e8b0dbed4724fa7b9bd8ff77d12c7f03da0fbfc5f8251ef5cb8511eb082b469d
+			4cc4a397fe6bc63ecb97d030a4e44258ef2d4e076d0e90c77782968cc43d6292
+			85434f8a2f379d0c49a3ff6d9ffa12c8b157188dd739e556d638217d2a58385b)
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${_basever}"

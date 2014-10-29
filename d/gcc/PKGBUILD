@@ -17,13 +17,16 @@ source=(http://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2
 sha256sums=(d334781a124ada6f38e63b545e2a3b8c2183049515a1abab6d513f109f1d717e
 			cdf880bd4fc1a35f5f3c6ec7d2eb1ce7ab55bbf60aa64db495cb07071a7af40b)
 
-_target_dir=usr/lib64/gcc/${CHOST}/${pkgver}
+_target_dir=usr/lib/${MULTIARCH}/gcc/${CHOST}/${pkgver}
 
 prepare() {
 	cd "${srcdir}"/gcc-${pkgver}
 
 	# No fixincludes
 	zcat "${srcdir}"/gcc-no_fixincludes.diff.gz | patch -p1
+
+	# Fix libdir
+	sed -i "/m64=/s/lib64/${MULTIARCH}/" gcc/config/i386/t-linux64
 	
 	mkdir -p "${srcdir}/build"
 }
@@ -36,12 +39,12 @@ build() {
 	export CCFLAGS=""
 	export CXXFLAGS=""
 
-	../gcc-${pkgver}/configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
-				--libexecdir=/usr/lib64 --infodir=/usr/info --enable-shared --enable-bootstrap \
+	../gcc-${pkgver}/configure --prefix=/usr --mandir=/usr/man \
+				--libexecdir=/usr/lib/${MULTIARCH} --libdir=/usr/lib/${MULTIARCH} \
+				--infodir=/usr/info --enable-shared --enable-bootstrap \
 				--enable-languages=c,c++,objc,go,fortran,lto \
 				--enable-threads=posix --enable-checking=release \
 				--enable-objc-gc --with-system-zlib \
-				--with-python-dir=/lib64/python2.7/site-packages \
 				--disable-libunwind-exceptions --enable-__cxa_atexit \
 				--enable-libssp --enable-lto --with-gnu-ld --verbose \
 				--disable-gtktest --disable-multilib --enable-multiarch \
@@ -62,11 +65,11 @@ package_gcc-libs() {
 
 	# KLUDGE ALERT
 	# Avoid ldconfig error
-	rm -f "${srcdir}"/out/usr/lib64/*gdb.py
+	rm -f "${srcdir}"/out/usr/lib/${MULTIARCH}/*gdb.py
 	
 	# Move runtime libraries
-	mkdir -p "${pkgdir}"/usr/lib64
-	mv "${srcdir}"/out/usr/lib64/lib{asan,atomic,gcc_s,gfortran,gomp,itm,objc,quadmath,stdc++,tsan}.so* "${pkgdir}"/usr/lib64/
+	mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH}
+	mv "${srcdir}"/out/usr/lib/${MULTIARCH}/lib{asan,atomic,gcc_s,gfortran,gomp,itm,objc,quadmath,stdc++,tsan}.so* "${pkgdir}"/usr/lib/${MULTIARCH}
 
 	# Info files
 	mkdir -p "${pkgdir}"/usr/info
@@ -102,8 +105,8 @@ package_gcc-gfortran() {
 	mv "${srcdir}"/out/usr/bin/*gfortran "${pkgdir}"/usr/bin/
 	ln "${pkgdir}"/usr/bin/gfortran "${pkgdir}"/usr/bin/f95
 
-	mkdir -p "${pkgdir}"/usr/lib64
-	mv "${srcdir}"/out/usr/lib64/libgfortran.spec "${pkgdir}"/usr/lib64
+	mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH}
+	mv "${srcdir}"/out/usr/lib/${MULTIARCH}/libgfortran.spec "${pkgdir}"/usr/lib/${MULTIARCH}
 
 	mkdir -p "${pkgdir}"/${_target_dir}
 	mv "${srcdir}"/out/${_target_dir}/finclude "${pkgdir}"/${_target_dir}/
@@ -124,7 +127,7 @@ package_gcc-go() {
 	mv "${srcdir}"/out/usr/bin/*gccgo "${pkgdir}"/usr/bin
 	
 	mkdir -p "${pkgdir}"/${_target_dir}
-	mv "${srcdir}"/out/usr/lib64/{libgo.so*,libgobegin.a,go} "${pkgdir}"/usr/lib64/
+	mv "${srcdir}"/out/usr/lib/${MULTIARCH}/{libgo.so*,libgobegin.a,go} "${pkgdir}"/usr/lib/${MULTIARCH}
 	mv "${srcdir}"/out/${_target_dir}/go1 "${pkgdir}"/${_target_dir}/
 
 	mkdir -p "${pkgdir}"/usr/man/man1

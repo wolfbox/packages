@@ -5,8 +5,8 @@ pkgdesc="Free software emulation of curses."
 arch=("x86_64")
 url="http://www.gnu.org/software/ncurses"
 license=("LGPLv2")
-#depends=("musl")
-#makedepends=("llvm")
+
+depends=('glibc')
 
 source=("http://ftp.gnu.org/pub/gnu/ncurses/ncurses-${pkgver}.tar.gz"
 		"ncurses-5.9-20140308-patch.sh.xz"
@@ -31,9 +31,9 @@ build() {
 	
 	mkdir -p ncurses{,w}-build
 	
-	FLAGS="--prefix=/usr --libdir=/usr/lib64 --with-gpm --disable-termcap
+	FLAGS="--prefix=/usr --libdir=/usr/lib/${MULTIARCH} --with-gpm --disable-termcap
 	       --with-normal --with-shared --enable-symlinks --enable-pc-files
-	       --with-pkg-config-libdir=/usr/lib64/pkgconfig --without-debug
+	       --with-pkg-config-libdir=/usr/lib/${MULTIARCH}/pkgconfig --without-debug
 	       --without-profile --without-ada ${X86_64OPTS}"
 
 	( cd ncursesw-build

@@ -10,32 +10,38 @@ provides=("python=${pkgver}")
 depends=('glibc' 'bzip2' 'zlib')
 optdepends=('ncurses' 'readline' 'gdbm' 'db48' 'xz' 'openssl' 'sqlite3' 'tk')
 
-source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz)
-sha256sums=(edde10a0cb7d14e2735e682882d5b287028d1485c456758154c19573db68075a)
+source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz
+        python-libdir.diff.xz)
+sha256sums=(edde10a0cb7d14e2735e682882d5b287028d1485c456758154c19573db68075a
+            c70f080faa8dc54657036876627b0aedc8ace4935cacdcc16c236eb636538aeb)
 
 prepare() {
 	cd "${srcdir}"/Python-${pkgver}
 
-	# Fix libdir
-	#cat "${srcdir}"/python-x86_64.patch | patch -p1
+ 	# Fix libdir
+	cat ../python-libdir.diff | patch -p1
+	sed -i "s:@MULTIARCH@:${MULTIARCH}:" Modules/getpath.c
 }
 
 build() {
 	cd "${srcdir}/Python-${pkgver}"
-	./configure --prefix=/usr --mandir=/usr/man \
+	./configure --prefix=/usr --mandir=/usr/man --libdir=/usr/lib/${MULTIARCH} \
 	            --with-threads --enable-ipv6 --enable-shared
 
-	make
+	make	
 }
 
 package() {
 	cd "${srcdir}/Python-${pkgver}"
 
 	make install DESTDIR="${pkgdir}"
+	
+	# Remove things that are canonically shipped in our Python 3 package.
 	rm "${pkgdir}"/usr/bin/python
 	rm "${pkgdir}"/usr/bin/python-config
 	rm "${pkgdir}"/usr/bin/2to3
-	
+
+	# Install license info
 	mkdir -p "${pkgdir}"/usr/doc/python-${pkgver}
 	install -m644 LICENSE "${pkgdir}"/usr/doc/python-${pkgver}
 }

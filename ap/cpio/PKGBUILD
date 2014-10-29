@@ -5,8 +5,9 @@ pkgdesc="A backup and archiving utility."
 arch=("x86_64")
 url="https://www.gnu.org/software/cpio"
 license=("GPLv3")
-#depends=("musl")
-#makedepends=(llvm xz)
+
+depends=('glibc')
+makedepends=('xz')
 
 source=("http://ftp.gnu.org/gnu/cpio/cpio-${pkgver}.tar.bz2"
 		cpio.32bit.crc.diff.xz
@@ -21,7 +22,7 @@ build() {
 	xzcat "${srcdir}/cpio.32bit.crc.diff.xz" | patch -p1 -F3
 	xzcat "${srcdir}/cpio-2.11-fgets.patch.xz" | patch -p1 # Patch from OpenELEC.tv
 	
-	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
 				--docdir=/usr/doc/cpio-${pkgver} --infodir=/usr/info \
 				--enable-mt --with-rmt=/usr/bin/rmt
 	make

@@ -17,7 +17,7 @@ sha256sums=(1fbe82b89bcd6b7ccda8cb0ff076edc60e911595030e27689f4abd5ef7f3cfcd
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
-	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
 	            --with-ca-bundle=/usr/share/curl/ca-bundle.crt
 	make
 }

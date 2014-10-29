@@ -15,11 +15,11 @@ sha256sums=(4701305ae22790c3a92ce48e50794fa05b7ee01f4227f419a171c100d08986e8
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 				--localstatedir=/var --mandir=/usr/man --infodir=/usr/info \
 				--docdir=/usr/doc/util-linux-${pkgver} --sbindir=/usr/bin \
 				--bindir=/usr/bin --disable-static --disable-uuidd \
-				--disable-login-utils --disable-nologin
+				--disable-login --disable-nologin
 	make
 }
 

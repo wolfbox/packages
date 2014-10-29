@@ -5,14 +5,15 @@ pkgdesc="A XML library."
 arch=("x86_64")
 url="http://www.libexpat.org"
 license=("GPLv2")
-#makedepends=("llvm")
+
+depends=('glibc')
 
 source=("http://downloads.sourceforge.net/project/expat/expat/2.1.0/expat-2.1.0.tar.gz")
 sha256sums=(823705472f816df21c8f6aa026dd162b280806838bb55b3432b0fb1fcca7eb86)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man
 	make
 }
 

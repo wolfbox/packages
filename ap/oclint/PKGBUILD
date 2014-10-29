@@ -6,7 +6,7 @@ desc=("A metric-based C/C++/Objective-C static analyzer.")
 url="http://oclint.org"
 license=(BSD)
 
-#depends=('glibc' 'llvm' 'clang')
+depends=('glibc' 'llvm')
 
 source=(http://archives.oclint.org/releases/${pkgver}/oclint-${pkgver}-src.tar.gz
 		use-system-llvm.patch.xz

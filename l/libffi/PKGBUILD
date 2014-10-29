@@ -6,7 +6,7 @@ arch=("x86_64")
 url="http://sourceware.org/libffi/"
 license=('custom')
 
-#depends=('glibc')
+depends=('glibc')
 
 source=(ftp://sourceware.org/pub/libffi/libffi-${pkgver}.tar.gz
         libffi.includedir.diff.gz)
@@ -21,7 +21,7 @@ prepare() {
 build() {
 	cd "${srcdir}/libffi-${pkgver}"
 
-	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 	            --localstatedir=/var --mandir=/usr/man --infodir=/usr/man \
 	            --docdir=/usr/doc/libffi-${pkgver} --disable-static
 	make

@@ -5,8 +5,8 @@ pkgdesc="The shadow password suite."
 arch=("x86_64")
 url="http://pkg-shadow.alioth.debian.org/releases/"
 license=(BSD)
-#depends=("musl")
-#makedepends=("llvm")
+
+depends=('glibc')
 
 source=("http://pkg-shadow.alioth.debian.org/releases/shadow-${pkgver}.tar.xz"
 		login.defs.xz

@@ -7,7 +7,7 @@ arch=("x86_64")
 url="http://www.sqlite.org"
 license=('custom')
 
-#depends=('glibc' 'ncurses' 'readline')
+depends=('glibc' 'ncurses' 'readline')
 
 source=(http://www.sqlite.org/2014/sqlite-autoconf-${_amalver}.tar.gz)
 sha256sums=(53bab14255bc16c3d73fdbe54b364c1764709d68dda167587f8026c98b9f4e95)
@@ -17,7 +17,7 @@ build() {
 	
 	export CFLAGS="${CFLAGS} -DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_SECURE_DELETE=1"
 	
-	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 	            --localstatedir=/var --mandir=/usr/man --enable-threadsafe \
 	            --enable-static=no
 	make

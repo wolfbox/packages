@@ -6,13 +6,15 @@ arch=("x86_64")
 url="http://www.zlib.net"
 license=(custon)
 
+depends=('glibc')
+
 source=(http://zlib.net/zlib-1.2.8.tar.gz)
 sha256sums=(36658cb768a54c1d4dec43c3116c27ed893e88b02ecfcb44f2166f9c0b7f2a0d)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-	CC=gcc ./configure --prefix=/usr --libdir=/usr/lib64 --shared --64
+	CC=gcc ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --shared --64
 	make
 }
 

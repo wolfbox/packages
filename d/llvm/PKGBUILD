@@ -6,9 +6,7 @@ arch=("x86_64")
 url="http://llvm.org"
 license=('BSD')
 
-#depends=('glibc')
-
-TARGET=x86_64-wolfbox-linux
+depends=('glibc')
 
 source=(http://llvm.org/releases/${pkgver}/llvm-3.5.0.src.tar.xz
         http://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz)
@@ -22,11 +20,11 @@ prepare() {
 
 build() {
 	cd "${srcdir}"/${pkgname}-${pkgver}.src
-	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 	            --localstatedir=/var --mandir=/usr/man --enable-optimized \
 	            --disable-assertions --enable-pic --enable-shared \
 	            --with-clang-resource-dir="../lib64/clang/${pkgver}" \
-	            --build=${TARGET} --host=${TARGET}
+	            --build=${CHOST} --host=${CHOST}
 
 	# Fix hardcoded libdir
 	sed -i "s|\$(PROJ_prefix)/lib|\$(PROJ_prefix)/lib64|" \
@@ -50,26 +48,26 @@ package() {
 	
 	# Add target symlinks
 	( cd "${pkgdir}"/usr/bin
-	  ln clang ${TARGET}-clang
-	  ln clang++ ${TARGET}-clang++
+	  ln clang ${CHOST}-clang
+	  ln clang++ ${CHOST}-clang++
 	)
 	
 	# Install static analyzer
-	mkdir -p "${pkgdir}"/usr/lib64/clang-analyzer
+	mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH}/clang-analyzer
 	cp -pr tools/clang/tools/scan-{build,view} \
-	    "${pkgdir}"/usr/lib64/clang-analyzer/
+	    "${pkgdir}"/usr/lib/${MULTIARCH}/clang-analyzer/
 	
 	for i in scan-{build,view}; do
-		ln -s /usr/lib64/clang-analyzer/$i/$i "${pkgdir}"/usr/bin/$i
+		ln -s /usr/lib/${MULTIARCH}/clang-analyzer/$i/$i "${pkgdir}"/usr/bin/$i
 	done
 	
-	ln -s /usr/bin/clang "${pkgdir}"/usr/lib64/clang-analyzer/scan-build/clang
+	ln -s /usr/bin/clang "${pkgdir}"/usr/lib/${MULTIARCH}/clang-analyzer/scan-build/clang
 	
 	# Remove example libraries
-	rm -f "${pkgdir}"/usr/lib64/LLVMHello*
+	rm -f "${pkgdir}"/usr/lib/${MULTIARCH}/LLVMHello*
 	
 	# Fix up manpages
 	mv "${pkgdir}"/usr/share/man "${pkgdir}"/usr/man
-	mv "${pkgdir}"/usr/lib64/clang-analyzer/scan-build/scan-build.1 "${pkgdir}"/usr/man/man1
+	mv "${pkgdir}"/usr/lib/${MULTIARCH}/clang-analyzer/scan-build/scan-build.1 "${pkgdir}"/usr/man/man1
 	
 }

@@ -13,7 +13,7 @@ sha256sums=(fd3efe422f0d454592059e80f2c00d1a2e381bf2beda424c5094abd4deb049ac)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --infodir=/usr/info \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --infodir=/usr/info \
                 --enable-static=yes --enable-shared=yes
 	make
 }

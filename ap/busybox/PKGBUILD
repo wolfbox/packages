@@ -5,8 +5,8 @@ pkgdesc=""
 arch=("x86_64")
 url="http://busybox.net"
 license=("GPLv3")
-#depends=("musl" "ncurses")
-#makedepends=("llvm")
+
+depends=('glibc' 'ncurses')
 
 MIRROR="http://busybox.net/downloads"
 PATCHES="${MIRROR}/fixes-${pkgver}/busybox-${pkgver}"

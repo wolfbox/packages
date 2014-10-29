@@ -6,14 +6,18 @@ arch=("x86_64")
 url="http://upstart.ubuntu.com"
 license=('GPL2')
 
-#depends=('glibc' 'libnih' 'dbus' 'zlib' 'xz' 'attr' 'libcap' 'json-c')
+depends=('glibc' 'libnih' 'dbus' 'zlib' 'xz' 'attr' 'json-c')
 
 source=(http://upstart.ubuntu.com/download/${pkgver}/upstart-${pkgver}.tar.gz)
 sha256sums=(460183e3dd1dab9986cb9433ba5287684cf6eedd44afbebc13455566957ca3c0)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib64 \
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib/${MULTIARCH} \
 	            --sbindir=/usr/bin --mandir=/usr/man
 	make
 }
@@ -23,6 +27,7 @@ package() {
 
 	make install DESTDIR="${pkgdir}"
 
-	mv "${pkgdir}"/usr/lib/* "${pkgdir}"/usr/lib64/
-	rmdir "${pkgdir}"/usr/lib
+	# Fix pkgconfig path
+	cd "${pkgdir}"/usr/lib
+	mv pkgconfig "${MULTIARCH}"/
 }

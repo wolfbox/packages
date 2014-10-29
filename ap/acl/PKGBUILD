@@ -5,8 +5,8 @@ pkgdesc="Tools for using POSIX Access Control Lists."
 arch=("x86_64")
 url=""
 license=("LGPLv2.1" "GPLv2")
-#depends=("musl")
-#makedepends=("llvm")
+
+depends=('glibc')
 
 source=("http://download.savannah.gnu.org/releases/acl/acl-${pkgver}.src.tar.gz" "acl.destdir.diff.gz")
 sha256sums=("06854521cf5d396801af7e54b9636680edf8064355e51c07657ec7442a185225"
@@ -17,8 +17,8 @@ build() {
 	zcat "${srcdir}/acl.destdir.diff.gz" | patch -p1
 	autoconf
 	./configure --prefix=/usr --sbindir=/usr/bin --bindir=/usr/bin \
-				--libdir=/usr/lib64 --libexecdir=/usr/lib64 --mandir=/usr/man \
-				--datadir=/usr/share
+				--libdir=/usr/lib/${MULTIARCH} --libexecdir=/usr/lib/${MULTIARCH} \
+				--mandir=/usr/man --datadir=/usr/share
 	make
 }
 

@@ -11,7 +11,7 @@ sha256sums=(aceb5d2aa8bdc771ff66f407f9adf4176b654db63e34a8605795b68be537b81c)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
 				--disable-journal
 	make
 }

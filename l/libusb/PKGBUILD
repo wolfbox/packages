@@ -6,14 +6,14 @@ arch=("x86_64")
 url="http://libusb.org"
 license=('LGPLv2.1')
 
-#depends=('glibc')
+depends=('glibc')
 
 source=(http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-${pkgver}/libusb-${pkgver}.tar.bz2)
 sha256sums=(e920eedc2d06b09606611c99ec7304413c6784cba6e33928e78243d323195f9b)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
 	            --docdir=/usr/doc/libusb-${pkgver} --disable-static
 	make
 }

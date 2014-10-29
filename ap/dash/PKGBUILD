@@ -5,7 +5,8 @@ pkgdesc="A POSIX-compliant implementation of /bin/sh that aims to be as small as
 arch=("x86_64")
 url="http://gondor.apana.org.au/~herbert/dash/"
 license=("BSD")
-#makedepends=("llvm")
+
+makedepends=('glibc')
 
 source=("http://gondor.apana.org.au/~herbert/dash/files/dash-${pkgver}.tar.gz")
 sha256sums=("c6db3a237747b02d20382a761397563d813b306c020ae28ce25a1c3915fac60f")
@@ -19,4 +20,8 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
+	
+	# Make default sh
+	( cd "${pkgdir}"/usr/bin
+	  ln -s /usr/bin/dash sh)
 }

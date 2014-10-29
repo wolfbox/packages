@@ -5,8 +5,8 @@ pkgdesc="Tools for using extended file attributes."
 arch=("x86_64")
 url=""
 license=("LGPLv2.1" "GPLv2")
-#depends=("musl")
-#makedepends=(llvm)
+
+depends=('glibc')
 
 source=("http://download.savannah.gnu.org/releases/attr/attr-${pkgver}.src.tar.gz" "attr.destdir.diff.gz")
 sha256sums=("dcd69bdca7ff166bc45141eddbcf21967999a6b66b0544be12a1cc2fd6340e1f"
@@ -17,8 +17,8 @@ build() {
 	zcat "${srcdir}/attr.destdir.diff.gz" | patch -p1
 	autoconf
 	./configure --prefix=/usr --exec-prefix=/usr --sbindir=/usr/bin --bindir=/usr/bin \
-				--libdir=/usr/lib64 --libexecdir=/usr/lib64 --mandir=/usr/man \
-				--datadir=/usr/share
+				--libdir=/usr/lib/${MULTIARCH} --libexecdir=/usr/lib/${MULTIARCH} \
+				--mandir=/usr/man --datadir=/usr/share
 	make
 }
 

@@ -5,14 +5,13 @@ pkgdesc="A realtime compression library."
 arch=("x86_64")
 url="http://www.oberhumer.com/opernsource/lzo"
 license=("GPLv2")
-#makedepends=("llvm")
 
 source=("http://www.oberhumer.com/opensource/lzo/download/lzo-2.08.tar.gz")
 sha256sums=(ac1b3e4dee46febe9fd28737eb7f5692d3232ef1a01da10444394c3d47536614)
 
 build() {
 	cd "${srcdir}/lzo-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --disable-static --enable-shared
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --disable-static --enable-shared
 	make
 }
 

@@ -9,16 +9,22 @@ license=(custom)
 depends=('glibc' 'bzip2' 'zlib')
 optdepends=('ncurses' 'readline' 'gdbm' 'db48' 'xz' 'openssl' 'sqlite3' 'tk')
 
-source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz)
-sha256sums=(1c6d9682d145c056537e477bbfa060ce727f9edd38df1827e0f970dcf04b2def)
+source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz
+        python-libdir.diff.xz)
+sha256sums=(1c6d9682d145c056537e477bbfa060ce727f9edd38df1827e0f970dcf04b2def
+            SKIP)
 
 prepare() {
 	cd "${srcdir}"/Python-${pkgver}
+
+	# Fix libdir
+	cat ../python-libdir.diff | patch -p1
+	sed -i "s:@MULTIARCH@:${MULTIARCH}:" Modules/getpath.c
 }
 
 build() {
 	cd "${srcdir}/Python-${pkgver}"
-	./configure --prefix=/usr --mandir=/usr/man \
+	./configure --prefix=/usr --mandir=/usr/man --libdir=/usr/lib/${MULTIARCH} \
 	            --with-threads --enable-ipv6 --enable-shared
 	make
 }

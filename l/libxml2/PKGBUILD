@@ -6,7 +6,7 @@ arch=("x86_64")
 url="http://xmlsoft.org"
 license=('custom')
 
-#depends=('glibc' 'xz' 'zlib')
+depends=('glibc' 'xz' 'zlib')
 
 source=(ftp://xmlsoft.org/libxml2/libxml2-${pkgver}.tar.gz
 		libxml2.do-not-check-crc.diff.xz)
@@ -22,7 +22,7 @@ prepare() {
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man
 	make
 }
 

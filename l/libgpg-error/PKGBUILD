@@ -5,14 +5,13 @@ pkgdesc=""
 arch=("x86_64")
 url="https://www.gnupg.org/related_software/libgpg-error/index.html"
 license=("GPLv2")
-#makedepends=("llvm")
 
 source=("ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-${pkgver}.tar.bz2")
 sha256sums=(ae3376480a073b120c7add08f1e6cfcc08500648ccf22461cd42db6224a218c0)
 
 build() {
 	cd "${srcdir}/libgpg-error-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
 				--infodir=/usr/info --docdir=/usr/doc/libgpg-error-${pkgver} \
 				--enable-shared=yes --enable-static=yes
 	make

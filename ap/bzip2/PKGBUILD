@@ -5,8 +5,8 @@ pkgdesc="A block-sorting file compressor."
 arch=("x86_64")
 url=""
 license=(custom)
-#depends=("musl")
-#makedepends=("llvm")
+
+depends=('glibc')
 
 source=("http://www.bzip.org/1.0.6/bzip2-${pkgver}.tar.gz" "bzip2.saneso.diff.gz")
 sha256sums=("a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd"
@@ -25,11 +25,9 @@ package() {
 	mkdir -p "${pkgdir}/usr/include"
 	install -m 644 bzlib.h "${pkgdir}/usr/include/bzlib.h"
 
-	mkdir -p "${pkgdir}/usr/lib64"
-	install -m 644 libbz2.a "${pkgdir}/usr/lib64/libbz2.a"
-
-	mkdir -p "${pkgdir}/usr/lib64"
-	install -m 755 "libbz2.so.${pkgver}" "${pkgdir}/usr/lib64/libbz2.so.${pkgver}"
+	mkdir -p "${pkgdir}/usr/lib/${MULTIARCH}"
+	install -m 644 libbz2.a "${pkgdir}/usr/lib/${MULTIARCH}/libbz2.a"
+	install -m 755 "libbz2.so.${pkgver}" "${pkgdir}/usr/lib/${MULTIARCH}/libbz2.so.${pkgver}"
 	
 	mkdir -p "${pkgdir}/usr/bin"
 	install -m 755 bzip2-shared "${pkgdir}/usr/bin/bzip2"
@@ -42,7 +40,7 @@ package() {
 	mkdir -p "${pkgdir}/usr/doc/bzip2-${pkgver}"
 	install -m 644 CHANGES LICENSE "${pkgdir}/usr/doc/bzip2-${pkgver}"
 
-	( cd "${pkgdir}/usr/lib64/"
+	( cd "${pkgdir}/usr/lib/${MULTIARCH}/"
 	  rm -f libbz2.so.1.0 libbz2.so.1
 	  ln -sf "libbz2.so.${pkgver}" libbz2.so.1.0
 	  ln -sf libbz2.so.1.0 libbz2.so.1

@@ -1,5 +1,5 @@
 pkgname=readline
-_patchlevel=13
+_patchlevel=14
 _basever=5.2
 pkgver=${_basever}.${_patchlevel}
 pkgrel=1
@@ -8,7 +8,7 @@ arch=("x86_64")
 url="http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html"
 license=("GPLv3")
 
-#depends=("ncurses")
+depends=('glibc' 'ncurses')
 
 MIRROR="http://mirrors.ibiblio.org/gnu/ftp/gnu/readline"
 READLINE_PATCHES="${MIRROR}/readline-5.2-patches"
@@ -25,7 +25,8 @@ source=("${MIRROR}/readline-${_basever}.tar.gz"
 		"${READLINE_PATCHES}/readline52-010"
 		"${READLINE_PATCHES}/readline52-011"
 		"${READLINE_PATCHES}/readline52-012"
-		"${READLINE_PATCHES}/readline52-013")
+		"${READLINE_PATCHES}/readline52-013"
+		"${READLINE_PATCHES}/readline52-014")
 
 sha256sums=("12e88d96aee2cd1192500356f0535540db499282ca7f76339fb4228c31249f45"
 	"eac304c369154059f93049ada328739faaf40338d3cb1fb4b544c93d5ce3f8d5"
@@ -40,7 +41,8 @@ sha256sums=("12e88d96aee2cd1192500356f0535540db499282ca7f76339fb4228c31249f45"
 	"83f8c1aadb86b1a2fad8821a9c6be72a8de5afd7fd9fde58a30b3b57d939693e"
 	"08ad3384ab0906e6fa4cc417eb8c43ff59375bcead15fd5c8e31730f0413b3d6"
 	"20f0243be2299c23213492cc2c19cfd15cc528d2b566a76a2de58306bb9e4c9e"
-	"0cc649516a5bdfa61c5e56937407570288b6972d75aa1bd060ad30ebe98144d5")
+	"0cc649516a5bdfa61c5e56937407570288b6972d75aa1bd060ad30ebe98144d5"
+	"6f1a68320d01522ca1ea5a737124ecc8739f3dcbfea2dee21e3ccf839a21a817")
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${_basever}"
@@ -59,7 +61,7 @@ prepare() {
 build() {
 	cd "${srcdir}/${pkgname}-${_basever}"
 
-	./configure --prefix=/usr --libdir=/usr/lib64 --infodir=/usr/info \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --infodir=/usr/info \
 				--with-curses --enable-multibyte
 	make static shared
 }

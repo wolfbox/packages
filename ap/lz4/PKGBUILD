@@ -3,10 +3,10 @@ pkgver=r123
 pkgrel=1
 pkgdesc="An extremely fast compression tool."
 arch=("x86_64")
-url=""
+url="https://code.google.com/p/lz4"
 license=(BSD)
-#depends=("musl")
-#makedepends=("llvm")
+
+depends=('glibc')
 
 source=("https://github.com/Cyan4973/lz4/archive/${pkgver}.tar.gz")
 sha256sums=("ceb7b80490d60822cb29d2b372b70699aeb8b24bf988d1b169ff284176a44b32")
@@ -21,7 +21,8 @@ package() {
 
 	make install DESTDIR="${pkgdir}"
 	( cd "${pkgdir}"/usr/
-	  mv lib lib64
+	  mkdir lib/${MULTIARCH}
+	  mv lib/* lib/${MULTIARCH}
 	  mv share/man man )
 
 	DOCSDIR="${pkgdir}/usr/share/doc/lz4-${pkgver}"

@@ -6,8 +6,8 @@ arch=("x86_64")
 url="http://www.gnu.org/s/libc/"
 license=(GPLv2, LGPLv2.1)
 
-depends=('tzdata')
-conflicts=(musl)
+depends=('linux' 'tzdata')
+conflicts=('musl')
 
 options=(!strip)
 
@@ -41,6 +41,13 @@ prepare() {
 
   # unlink() hardening patch from Florian Weimer via Slackware
   cat "${srcdir}"/glibc.hardening.diff | patch -p1
+  
+  # Set some paths properly
+  echo slibdir=/lib/${MULTIARCH} > configparms
+  echo rtlddir=/lib/${MULTIARCH} >> configparms
+  echo sbindir=/usr/bin >> configparms
+  echo rootsbindir=/usr/bin >> configparms
+  
 }
 
 build() {
@@ -49,14 +56,21 @@ build() {
 	mkdir -p build
 	cd build
 
+	# Hardening flags don't play nicely with glibc
+	export CPPFLAGS=""
+	export CFLAGS=""
+	export CXXFLAGS=""
+
 	../configure \
     	--prefix=/usr \
-    	--libdir=/usr/lib64 \
+    	--libdir=/usr/lib/${MULTIARCH} \
+    	--libexecdir=/usr/lib/${MULTIARCH} \
     	--sbindir=/usr/bin \
     	--with-headers=/usr/include \
     	--enable-add-ons \
     	--enable-obsolete-rpc \
     	--enable-profile \
+    	--enable-stackguard-randomization \
     	--infodir=/usr/info \
     	--mandir=/usr/man \
     	--with-tls \
@@ -71,4 +85,10 @@ package() {
 
 	make install install_root="${pkgdir}"
 	make localedata/install-locales install_root="${pkgdir}"
+	
+#	( cd "${pkgdir}"
+#	  mv sbin/* usr/bin/
+#	  rmdir sbin
+#	  mv lib64/* lib/${MULTIARCH}/
+#	  rmdir lib64 )
 }

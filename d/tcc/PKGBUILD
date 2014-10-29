@@ -9,7 +9,6 @@ license=('LGPLv2.1')
 depends=('glibc')
 
 source=(http://download.savannah.gnu.org/releases/tinycc/tcc-${pkgver}.tar.bz2)
-
 sha256sums=(521e701ae436c302545c3f973a9c9b7e2694769c71d9be10f70a2460705b6d71)
 
 build() {

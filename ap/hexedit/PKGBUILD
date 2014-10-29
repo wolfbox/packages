@@ -5,14 +5,15 @@ pkgdesc="Hexadecimal and ASCII file editor."
 arch=("x86_64")
 url="http://prigaux.chez.com/hexedit.html"
 license=('GPLv2')
-#depends=('glibc' 'ncurses')
+
+depends=('glibc' 'ncurses')
 
 source=(http://rigaux.org/hexedit-${pkgver}.src.tgz)
 sha256sums=(bcffbf3d128516cc4e1da64485866fbb5f62754f2af8327e7a527855186ba10f)
 
 build() {
 	cd "${srcdir}/${pkgname}"
-	./configure --prefix=/usr \
+	./configure --prefix=/usr
 	make
 }
 

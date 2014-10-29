@@ -6,8 +6,8 @@ arch=("x86_64")
 url=""
 license=("GPLv2")
 
-depends=('glibc' 'libuuid' 'xz' 'zlib' 'kmod' 'util-linux')
-makedepends=('gcc' 'glib2' 'gobject2')
+depends=('glibc' 'xz' 'zlib' 'kmod' 'util-linux')
+makedepends=('gcc' 'glib2' 'gobject-introspection')
 
 source=("http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-182.tar.xz"
         60-cdrom_id.rules.diff.gz
@@ -46,9 +46,13 @@ build() {
 	
 	# Patch 60-cdrom_id.rules to create a full set of symlinks
 	zcat "${srcdir}/60-cdrom_id.rules.diff.gz" | patch -p1
+
+	# Harden
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 	
-	LIBS=-lrt ./configure --prefix=/usr --with-rootprefix=/ --libdir=/usr/lib64 \
-	            --with-rootlibdir=/lib64 \
+	LIBS=-lrt ./configure --prefix=/usr --with-rootprefix=/ --libdir=/usr/lib/${MULTIARCH} \
+	            --with-rootlibdir=/lib \
 	            --with-firmware-path=/lib/firmware/updates:/lib/firmware \
 	            --sysconfdir=/etc \
 	            --bindir=/usr/bin \

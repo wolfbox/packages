@@ -13,7 +13,7 @@ sha256sums=(5cc92fd651ee49a7888f90d091282b949afc629b31fdb34e187208750720632d)
 
 build() {
 	cd "${srcdir}/udisks-${pkgver}"
-	./configure --prefix=/usr --sbindir=/usr/bin --libdir=/usr/lib64 \
+	./configure --prefix=/usr --sbindir=/usr/bin --libdir=/usr/lib/${MULTIARCH} \
 				--disable-static --mandir=/usr/man --sysconfdir=/etc \
 				--localstatedir=/var --docdir=/usr/doc/udisks2-${pkgver}
 	make

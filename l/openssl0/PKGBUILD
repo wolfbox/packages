@@ -33,7 +33,7 @@ build() {
 	export LC_ALL=C
 	
 	# Disable RC5 due to patent expiring in 2015-03-03 
-	./config --prefix=/usr --openssldir=/etc/ssl \
+	./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib/${MULTIARCH} \
 	         no-rc5 shared
 	make depend
 	make
@@ -43,11 +43,8 @@ package() {
 	cd "${srcdir}/openssl-${pkgver}"
 	make install INSTALL_PREFIX="${pkgdir}"
 	
-	# Fix libdir
-	mv "${pkgdir}"/usr/lib "${pkgdir}"/usr/lib64
-	
 	# Create symlinks
-	( cd "${pkgdir}"/usr/lib64 ; ldconfig -l lib*.so.* )	
+	( cd "${pkgdir}"/usr/lib/${MULTIARCH} ; ldconfig -l lib*.so.* )	
 	
 	# Install copyright notice
 	mkdir -p "${pkgdir}"/usr/doc/openssl-${pkgver}/

@@ -6,14 +6,14 @@ arch=("x86_64")
 url="http://darwinsys.com/file/"
 license=(custom)
 
-#depends=(glibc zlib)
+depends=('glibc' 'zlib')
 
 source=(ftp://ftp.astron.com/pub/file/file-${pkgver}.tar.gz)
 sha256sums=(461ba01dd0900a3b7c2dcd901b04903192c07887a9c1928af0be507572c77fe4)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 				--datadir=/etc --mandir=/usr/man --infodir=/usr/info \
 				--docdir=/usr/doc/file-${pkgver} --enable-fsect-man5 \
 				--disable-static
@@ -30,5 +30,5 @@ package() {
 	mkdir -p "${pkgdir}"/usr/doc/file-${pkgver}
 	cp -a COPYING "${pkgdir}"/usr/doc/file-${pkgver}/
 	
-	rm -f "${pkgdir}"/usr/lib64/libmagic.a
+	rm -f "${pkgdir}"/usr/lib/${MULTIARCH}/libmagic.a
 }

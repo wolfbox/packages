@@ -6,12 +6,14 @@ arch=("x86_64")
 url="https://www.gnupg.org/related_software/libassuan/index.html"
 license=("GPLv3")
 
+depends=('glibc' 'libgpg-error')
+
 source=("ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-${pkgver}.tar.bz2")
 sha256sums=(39f8a7c9349aaaf7ccd937b90660153ec4d2d4df2465018754e5bcae5b1db77b)
 
 build() {
 	cd "${srcdir}/libassuan-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
 				--infodir=/usr/info --docdir=/usr/doc/libassuan-${pkgver}
 	make
 }

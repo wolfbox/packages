@@ -15,7 +15,7 @@ depends=('glibc')
 source=(https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-${pkgver}.tar.xz)
 sha256sums=(c4023d8d722a1ed673474ca0e5a2d61ebd747cc7001a91321757422d9074c97e)
 
-OPTIONS="LIBDIR=/usr/lib64 DOCDIR=/usr/doc/iproute2-${pkgver} MANDIR=/usr/man CONFDIR=/etc/iproute2 SBINDIR=/usr/bin"
+OPTIONS="LIBDIR=/usr/lib/${MULTIARCH} DOCDIR=/usr/doc/iproute2-${pkgver} MANDIR=/usr/man CONFDIR=/etc/iproute2 SBINDIR=/usr/bin"
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"

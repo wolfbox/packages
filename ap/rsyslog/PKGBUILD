@@ -8,7 +8,7 @@ license=(GPLv3)
 
 install=rsyslog.install
 backup=('etc/rsyslog.conf')
-depends=('glibc' 'zlib' 'libestr' 'liblogging' 'json-c' 'libuuid')
+depends=('glibc' 'zlib' 'libestr' 'liblogging' 'json-c')
 
 source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz"
         rsyslog.upstart
@@ -19,7 +19,12 @@ sha256sums=(71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --mandir=/usr/man \
+
+	# Harden
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
 				--sbindir=/usr/bin --sysconfdir=/etc \
 				--disable-generate-man-pages
 	make

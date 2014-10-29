@@ -13,7 +13,7 @@ sha256sums=(dee2eda37f4ff541f30019932db0c37f6f77a30ba3609234933b1818f9b07071)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib64 --infodir=/usr/info \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --infodir=/usr/info \
 				--with-gnu-ld --enable-cxx
 	make
 }
