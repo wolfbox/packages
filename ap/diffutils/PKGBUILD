@@ -1,0 +1,25 @@
+pkgname=diffutils
+pkgver=3.3
+pkgrel=1
+pkgdesc="Tools for comparing files and creating patches."
+arch=("x86_64")
+url="http://savannah.gnu.org/projects/diffutils/"
+license=('GPLv3')
+
+depends=('glibc')
+
+source=(http://ftpmirror.gnu.org/diffutils/diffutils-${pkgver}.tar.xz)
+sha256sums=(a25e89a8ab65fded1731e4186be1bb25cda967834b6df973599cdcd5abdfc19c)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --mandir=/usr/man \
+	            --infodir=/usr/info
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
