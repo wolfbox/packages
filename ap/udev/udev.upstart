@@ -5,8 +5,8 @@ version 182
 
 oom score -1
 
-start on runlevel [12345]
-expect daemon
+start on stopped rundir
+expect fork
 
 pre-start script
     UDEV_ROOT=/dev
@@ -22,28 +22,6 @@ pre-start script
         mount -n -o mode=0620,gid=5 -t devpts devpts $UDEV_ROOT/pts
         fi
     }
-
-    # Sanity check #1, udev requires that the kernel support devtmpfs:
-    if ! grep -wq devtmpfs /proc/filesystems ; then
-        echo "Sorry, but you need devtmpfs support in the kernel to use udev."
-        echo "Both of these options are needed:  CONFIG_DEVTMPFS=y CONFIG_DEVTMPFS_MOUNT=y"
-        echo
-        echo "FATAL:  Refusing to start udev"
-        exit 1
-    fi
-
-    # Sanity check #2, udev requires that the kernel support tmpfs:
-    if ! grep -wq tmpfs /proc/filesystems ; then
-        echo "Sorry, but you need tmpfs support in the kernel to use udev."
-        echo
-        echo "FATAL:  Refusing to start udev"
-        exit 1
-    fi
-
-    # Disable hotplug helper since udevd listens to netlink:
-    if [ -e /proc/sys/kernel/hotplug ]; then
-        echo "" > /proc/sys/kernel/hotplug
-    fi
 
 	if grep -qw devtmpfs /proc/filesystems ; then
 	    if ! check_mounted $UDEV_ROOT devtmpfs ; then

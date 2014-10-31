@@ -7,7 +7,7 @@ url=""
 license=("GPLv2")
 
 depends=('glibc' 'xz' 'zlib' 'kmod' 'util-linux')
-makedepends=('gcc' 'glib2' 'gobject-introspection')
+makedepends=('gcc' 'glib2' 'gobject-introspection' 'usbutils')
 
 source=("http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-182.tar.xz"
         60-cdrom_id.rules.diff.gz
@@ -23,7 +23,7 @@ sha256sums=(adb8892f3b8e4b7163703ed4a545774721a3d55a1062de001f08c477c03d97ab
             45422861c26a29735a0da298d2b6afde60898d6ef272b6881d5e7825a0ffe207
             bbfb83103b062af64830ba0b082b2b451ac1f8ecf700d101c7161ce35437a454
             e44afca98ebbbeba203facb38a6dd6e5556f5be917a23697f2feaa027ea35704
-            88c01a632c0a9db829b9330205d9b5734c0052dcacaa12461dede2bbce181f42
+            84b7d7678824096fc622b783c23e3ea2be7c0dcff00afb336db0a68fa1d27be9
             72dfad59ea457bacfda11e48a5e2aab489800ebd879c4ce10d9223ddc91a0eff)
 
 build() {
@@ -92,6 +92,6 @@ package() {
 	mkdir -p "${pkgdir}"/{etc,lib}/modprobe.d
 	
 	mkdir -p "${pkgdir}"/etc/init
-	install -m644 "${srcdir}"/udev.upstart "${pkgdir}"/etc/init/udev
-	install -m644 "${srcdir}"/udev-trigger.upstart "${pkgdir}"/etc/init/udev-trigger
+	install -m644 "${srcdir}"/udev.upstart "${pkgdir}"/etc/init/udev.conf
+	install -m644 "${srcdir}"/udev-trigger.upstart "${pkgdir}"/etc/init/udev-trigger.conf
 }
