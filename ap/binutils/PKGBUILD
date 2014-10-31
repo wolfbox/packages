@@ -59,6 +59,7 @@ package() {
 	# Set default linker
 	( cd "${pkgdir}"/usr/bin ; rm -f ld ; ln -s /usr/bin/$DEFAULT_LD ld )
 
-	# Remove unneeded man pages
+	# Remove unneeded documentation
 	rm -f "${pkgdir}"/usr/man/man1/{dlltool,windres}.1
+	rm -f "${pkgdir}"/usr/info/standards*
 }
