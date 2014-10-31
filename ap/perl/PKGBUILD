@@ -8,8 +8,8 @@ license=('GPLv1' 'Artistic')
 
 depends=('glibc')
 
-source=(http://www.cpan.org/src/5.0/perl-${pkgver}.tar.gz)
-sha256sums=(fef10210f9e6f4dc2d190be0aee8e1fa2af664630f1d415868d33eebca26d4b5)
+source=(http://www.cpan.org/src/5.0/perl-${pkgver}.tar.bz2)
+sha256sums=(ede5ded37e7fb6139b04728cfca826f17076f9888dbfd100a56834dbeb04657c)
 
 build() {
 	cd ${srcdir}/${pkgname}-${pkgver}
@@ -24,7 +24,8 @@ build() {
 	            -Dvendorarch=/usr/lib/perl5/vendor_perl \
 	            -Dscriptdir=/usr/bin/ \
 	            -Dsitescript=/usr/local/bin/ \
-	            -Dman1dir=/usr/man/man1 -Dman3dir=/usr/man/man3
+	            -Dman1dir=/usr/man/man1 -Dman3dir=/usr/man/man3 \
+	            -Dman1ext=1perl -Dman3ext=3perl
 
   make
 }
