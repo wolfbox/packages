@@ -1,0 +1,27 @@
+pkgname=neon
+pkgver=0.29.6
+pkgrel=1
+pkgdesc="HTTP and WebDAV client library."
+arch=("x86_64")
+url="https://www.webdav.org/neon/"
+license=('GPL')
+
+depends=('glibc' 'openssl' 'zlib' 'expat')
+
+source=(http://www.webdav.org/neon/neon-${pkgver}.tar.gz)
+sha256sums=(9c640b728d6dc80ef1e48f83181166ab6bc95309cece5537e01ffdd01b96eb43)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
+	            --enable-shared --disable-static --with-ssl=openssl --with-expat \
+	            --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	
+	mv "${pkgdir}"/usr/share/doc "${pkgdir}"/usr
+}
