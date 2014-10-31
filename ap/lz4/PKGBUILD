@@ -13,16 +13,14 @@ sha256sums=("ceb7b80490d60822cb29d2b372b70699aeb8b24bf988d1b169ff284176a44b32")
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	make
+	make LIBDIR=/usr/lib/${MULTIARCH}
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make install DESTDIR="${pkgdir}"
+	make install DESTDIR="${pkgdir}" LIBDIR=/usr/lib/${MULTIARCH}
 	( cd "${pkgdir}"/usr/
-	  mkdir lib/${MULTIARCH}
-	  mv lib/* lib/${MULTIARCH}
 	  mv share/man man )
 
 	DOCSDIR="${pkgdir}/usr/share/doc/lz4-${pkgver}"
