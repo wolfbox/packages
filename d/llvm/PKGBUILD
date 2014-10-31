@@ -15,7 +15,7 @@ sha256sums=(28e199f368ef0a4666708f31c7991ad3bcc3a578342b0306526dd35f07595c03
 
 prepare() {
 	cd "${srcdir}"/${pkgname}-${pkgver}.src/tools
-	mv ../../cfe-"${pkgver}".src ./clang
+	mv ../../cfe-"${pkgver}".src ./clang || true
 }
 
 build() {
