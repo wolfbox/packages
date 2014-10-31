@@ -1,0 +1,31 @@
+pkgname=perl-xml-parser
+pkgver=2.41
+pkgrel=1
+pkgdesc="XML parser for Perl"
+arch=("x86_64")
+url="http://search.cpan.org/dist/XML-Parser"
+license=('GPL' 'PerlArtistic')
+
+depends=('perl' 'expat')
+
+source=(http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/XML-Parser-${pkgver}.tar.gz)
+sha256sums=(b48197cd2265a26c5f016489f11a7b450d8833cb8b3d6a46ee15975740894de9)
+
+build() {
+	cd "${srcdir}/XML-Parser-${pkgver}"
+
+	perl Makefile.PL INSTALLDIRS=vendor
+	make
+}
+
+package() {
+	cd "${srcdir}/XML-Parser-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
+
+check() {
+	cd "${srcdir}/XML-Parser-${pkgver}"
+
+	make test
+}
