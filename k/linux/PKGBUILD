@@ -1,10 +1,5 @@
-# TODO
-# Once we get Wolfbox running on real hardware, test performance and
-# compatibility with grsecurity. If, as I suspect, all is well, start
-# applying it here.
-
 pkgname=linux
-pkgver=3.17.1
+pkgver=3.17.2
 pkgrel=1
 pkgdesc="The Linux kernel."
 arch=("x86_64")
@@ -14,12 +9,12 @@ license=('GPLv2')
 install=linux.install
 makedepends=('gcc' 'lz4' 'xz')
 
-source=("https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.xz"
-		https://grsecurity.net/test/grsecurity-3.0-3.17.1-201410192051.patch
-		config.xz)
-sha256sums=(2c9c002cf9618962883d82ba3e1caaea29af4ea37147a82bad422afdc8d21dc2
-			15bcd5b1d14e3cd47169816e95c29ebcd8d20dc3fc9fc8e97932d6d29a81c8db
-			e67708b0ccc752fd632632c51acb3499460857facc122a4ee62d4cc505b733b1)
+source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.xz
+        https://grsecurity.net/test/grsecurity-3.0-3.17.1-201410192051.patch
+        config.xz)
+sha256sums=(f9221dc0878955318ab57b8bb5ea1f26cbbaa39359c91d0f6c8de74d68aea796
+            15bcd5b1d14e3cd47169816e95c29ebcd8d20dc3fc9fc8e97932d6d29a81c8db
+            d9e1a26266391d6872120c88fcbf78ff82615f0f977c6f5b338b67fe379f7e3a)
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -28,7 +23,7 @@ prepare() {
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	make -j2
+	make ${MAKEFLAGS}
 }
 
 package() {
