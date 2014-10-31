@@ -12,12 +12,12 @@ depends=('glibc' 'bash' 'libarchive' 'curl' 'gpgme' 'libxml2' 'fakeroot')
 source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz
         makepkg.conf)
 sha256sums=(7c059b444735ee254cfbd8dc2fac8c5d61453601f8adaf001c7038cdc673334c
-            a6fb810cb26fa63ab7f87d8db650bc08c016a3f22698e82e56e67a29a49a9ecc)
+            f834a404fb47862563141bcc1bfecd2fb3540ef1b0e44476a03e12734949a01a)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-				--localstatedir=/var --mandir=/usr/man
+				--localstatedir=/var --mandir=/usr/man --build=${CHOST}
 	make
 	make -C contrib
 }
