@@ -1,0 +1,36 @@
+pkgname=apr
+pkgver=1.5.1
+pkgrel=1
+pkgdesc="The Apache Portable Runtime library."
+arch=("x86_64")
+url="https://apr.apache.org"
+license=('Apache')
+
+depends=('glibc')
+
+source=(http://apache.mirrors.pair.com//apr/apr-${pkgver}.tar.bz2)
+sha256sums=(e94abe431d4da48425fcccdb27b469bd0f8151488f82e5630a56f26590e198ac)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --with-installbuilddir=/usr/lib/${MULTIARCH}/apr-${pkgver}/build-1 \
+	            --disable-static \
+	            --with-devrandom=/dev/urandom \
+	            --enable-nonportable-atomics \
+	            --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	mkdir -p "${pkgdir}"/usr/doc/apr-${pkgver}
+	install -m644 LICENSE "${pkgdir}"/usr/doc/apr-${pkgver}/
+
+	# These aren't useful in a package, and creep me out
+	sed -i 's:APR_SOURCE_DIR=.*::' "${pkgdir}"/usr/bin/apr-1-config
+	sed -i 's:APR_BUILD_DIR=.*::' "${pkgdir}"/usr/bin/apr-1-config
+}
