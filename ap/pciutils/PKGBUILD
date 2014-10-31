@@ -1,0 +1,26 @@
+pkgname=pciutils
+pkgver=3.2.1
+pkgrel=1
+pkgdesc="PCI information utilities"
+arch=("x86_64")
+url="http://mj.ucw.cz/sw/pciutils/"
+license=(GPLv2)
+
+depends=('glibc' 'zlib' 'xz' 'kmod')
+
+source=(ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-${pkgver}.tar.gz)
+sha256sums=(b31131b721fa26378b4af61b1c49986ff40fe590bc210545b210b6b774337858)
+
+_makeargs="PREFIX=/usr SBINDIR=/usr/bin LIBDIR=/usr/lib/${MULTIARCH} MANDIR=/usr/man SHARED=yes ZLIB=yes IDSDIR=/usr/share/hwdata"
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make ${_makeargs} "OPT=${CFLAGS}"
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install install-lib ${_makeargs} DESTDIR="${pkgdir}"
+	rm -rf "${pkgdir}"/usr/share
+}
