@@ -1,0 +1,41 @@
+pkgname=procps-ng
+pkgver=3.3.10
+pkgrel=1
+pkgdesc=""
+arch=("x86_64")
+url="http://sourceforge.net/projects/procps-ng/"
+license=('GPLv2' 'LGPLv2')
+
+depends=('glibc' 'ncurses')
+
+source=(http://downloads.sourceforge.net/project/procps-ng/Production/procps-ng-${pkgver}.tar.xz)
+sha256sums=(a02e6f98974dfceab79884df902ca3df30b0e9bad6d76aee0fb5dce17f267f04)
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	# Fix build
+	sed 's:<ncursesw/:<:g' -i watch.c	
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	# Disable kill because it is provided by util-linux
+	./configure --prefix=/usr \
+	            --exec-prefix=/ \
+	            --bindir=/usr/bin \
+	            --sbindir=/usr/bin \
+	            --docdir=/usr/doc/${pkgname}-${pkgver} \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --without-systemd \
+	            --disable-kill \
+	            --enable-watch8bit
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
