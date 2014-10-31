@@ -22,14 +22,19 @@ prepare() {
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	make DYNAMIC=yes
+	make prefix=/usr lib=lib/${MULTIARCH}
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	make install FAKEROOT="${pkgdir}" prefix=/usr man_prefix=/usr RAISE_SETFCAP=no
+	make install FAKEROOT="${pkgdir}" \
+	             SBINDIR="${pkgdir}"/usr/bin \
+	             prefix=/usr \
+	             lib=lib/${MULTIARCH} \
+	             man_prefix=/usr \
+	             RAISE_SETFCAP=no
 
-	mkdir -p "${pkgdir}"/usr/bin
-	mv "${pkgdir}"/usr/sbin/* "${pkgdir}"/usr/bin
-	rmdir "${pkgdir}"/usr/sbin
+	#mkdir -p "${pkgdir}"/usr/bin
+	#mv "${pkgdir}"/usr/sbin/* "${pkgdir}"/usr/bin
+	#rmdir "${pkgdir}"/usr/sbin
 }
