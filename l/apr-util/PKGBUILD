@@ -1,0 +1,37 @@
+pkgname=apr-util
+pkgver=1.5.4
+pkgrel=1
+pkgdesc="The Apache Portable Runtime utilities."
+arch=("x86_64")
+url="https://apr.apache.org"
+license=('Apache')
+
+depends=('glibc' 'apr' 'expat' 'openldap' 'sqlite3')
+
+source=(http://apache.mirrors.pair.com//apr/apr-util-${pkgver}.tar.bz2)
+sha256sums=(a6cf327189ca0df2fb9d5633d7326c460fe2b61684745fd7963e79a6dd0dc82e)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --with-apr=/usr \
+	            --with-ldap \
+	            --with-expat=/usr \
+	            --without-sqlite2 \
+	            --without-berkeley-db \
+	            --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m644 LICENSE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+
+	# These aren't useful in a package, and creep me out
+	sed -i 's:APU_SOURCE_DIR=.*::' "${pkgdir}"/usr/bin/apu-1-config
+	sed -i 's:APU_BUILD_DIR=.*::' "${pkgdir}"/usr/bin/apu-1-config
+}
