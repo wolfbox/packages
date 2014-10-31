@@ -1,0 +1,29 @@
+pkgname=coreutils
+pkgver=8.23
+pkgrel=1
+pkgdesc="The GNU core system utilities."
+arch=("x86_64")
+url="http://www.gnu.org/software/coreutils"
+license=('GPLv3')
+
+depends=('glibc' 'gmp' 'openssl' 'acl' 'attr' 'libcap')
+
+source=(ftp://ftp.gnu.org/gnu/coreutils/coreutils-${pkgver}.tar.xz)
+sha256sums=(ec43ca5bcfc62242accb46b7f121f6b684ee21ecd7d075059bf650ff9e37b82d)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --mandir=/usr/man \
+	            --infodir=/usr/info	\
+	            --with-gmp \
+	            --with-openssl=yes \
+	            --enable-no-install-program=groups,hostname,kill,uptime \
+	            --libexecdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
