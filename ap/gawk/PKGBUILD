@@ -1,0 +1,27 @@
+pkgname=gawk
+pkgver=4.1.1
+pkgrel=1
+pkgdesc="The GNU implementation of the text awk editing language."
+arch=("x86_64")
+url="https://www.gnu.org/software/gawk/"
+license=('GPLv3')
+
+depends=('glibc')
+
+source=(http://ftpmirror.gnu.org/gawk/gawk-${pkgver}.tar.xz)
+sha256sums=(efd4c6aafb1ce996309fc903ceb625e7012221c464eb72483dbb23adef1ee8db)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --libexecdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --infodir=/usr/info
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
