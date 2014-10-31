@@ -1,0 +1,26 @@
+pkgname=grep
+pkgver=2.20
+pkgrel=1
+pkgdesc="A tool for finding lines in an input matching a pattern."
+arch=("x86_64")
+url="https://www.gnu.org/software/grep/"
+license=('GPLv3')
+
+depends=('glibc' 'pcre')
+
+source=(http://ftpmirror.gnu.org/grep/grep-${pkgver}.tar.xz)
+sha256sums=(f0af452bc0d09464b6d089b6d56a0a3c16672e9ed9118fbe37b0b6aeaf069a65)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --mandir=/usr/man \
+	            --infodir=/usr/info
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
