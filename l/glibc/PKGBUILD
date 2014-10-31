@@ -46,8 +46,7 @@ prepare() {
   echo slibdir=/lib/${MULTIARCH} > configparms
   echo rtlddir=/lib/${MULTIARCH} >> configparms
   echo sbindir=/usr/bin >> configparms
-  echo rootsbindir=/usr/bin >> configparms
-  
+  echo rootsbindir=/usr/bin >> configparms  
 }
 
 build() {
@@ -55,6 +54,8 @@ build() {
 
 	mkdir -p build
 	cd build
+
+	cp ../configparms ./
 
 	# Hardening flags don't play nicely with glibc
 	export CPPFLAGS=""
@@ -86,9 +87,7 @@ package() {
 	make install install_root="${pkgdir}"
 	make localedata/install-locales install_root="${pkgdir}"
 	
-#	( cd "${pkgdir}"
-#	  mv sbin/* usr/bin/
-#	  rmdir sbin
-#	  mv lib64/* lib/${MULTIARCH}/
-#	  rmdir lib64 )
+	# Install a link of ld-linux into /lib64 for compatibility
+	mkdir -p "${pkgdir}"/lib64
+	ln -s /lib/${MULTIARCH}/ld-linux-${CARCH}.so.2 "${pkgdir}"/lib64
 }
