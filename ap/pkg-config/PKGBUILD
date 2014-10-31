@@ -1,0 +1,27 @@
+pkgname=pkg-config
+pkgver=0.28
+pkgrel=1
+pkgdesc="System compilationg flag manager."
+arch=("x86_64")
+url="http://www.freedesktop.org/wiki/Software/pkg-config/"
+license=("GPLv2+")
+
+depends=('glibc' 'glib2')
+
+source=(http://pkgconfig.freedesktop.org/releases/pkg-config-${pkgver}.tar.gz)
+sha256sums=(6b6eb31c6ec4421174578652c7e141fdaae2dabad1021f420d8713206ac1f845)
+
+PKG_CONFIG_SEARCH_PATHS=/usr/local/lib/${MULTIARCH}/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/${MULTIARCH}/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
+
+build() {
+	cd "${srcdir}/pkg-config-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+	            --with-pc-path="${PKG_CONFIG_SEARCH_PATHS}" \
+	            --host="${CHOST}"
+	make
+}
+
+package() {
+	cd "${srcdir}/pkg-config-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
