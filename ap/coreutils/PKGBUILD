@@ -26,4 +26,6 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
+	
+	ln "${pkgdir}"/usr/bin/install "${pkgdir}"/usr/bin/ginstall
 }
