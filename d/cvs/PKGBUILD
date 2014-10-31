@@ -1,0 +1,40 @@
+pkgname=cvs
+pkgver=1.11.23
+pkgrel=1
+pkgdesc="A legacy software version control package."
+arch=("x86_64")
+url="http://www.nongnu.org/cvs/"
+license=('GPLv1' 'GPLv2')
+
+depends=('glibc')
+
+source=(http://ftp.gnu.org/non-gnu/cvs/source/stable/${pkgver}/cvs-${pkgver}.tar.bz2
+        cvs.crypt-2.diff.gz
+        cvs.getline64.diff.gz)
+sha256sums=(400f51b59d85116e79b844f2d5dbbad4759442a789b401a94aa5052c3d7a4aa9
+            9d130385245d3d4804db8696930cb933ab76d02ef84a7265289ceddd76c82498
+            dae793c3f07dd8c9d98132bd797140bd125dfd48178557eb60749e9211dd4d51)
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	# Support modern glibc crypt()
+	cat ../cvs.crypt-2.diff | patch -p1
+
+	# Fix compilation error
+	cat ../cvs.getline64.diff | patch -p1
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --mandir=/usr/man \
+	            --infodir=/usr/info
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
