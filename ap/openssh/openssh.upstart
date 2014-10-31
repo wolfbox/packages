@@ -1,0 +1,7 @@
+description "nginx http server"
+
+start on network-services
+
+respawn
+
+exec /usr/bin/opensshd -D

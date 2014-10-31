@@ -1,0 +1,4 @@
+post_install() {
+    groupadd -r opensshd
+    useradd -r opensshd -g opensshd -s /bin/false
+}

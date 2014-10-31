@@ -1,0 +1,44 @@
+pkgname=openssh
+pkgver=6.7p1
+pkgrel=1
+pkgdesc="Secure Shell daemon and clients."
+arch=("x86_64")
+url="https://www.openssh.com"
+license=('BSD')
+
+install=openssh.install
+backup=('etc/ssh/ssh_config' 'etc/ssh/sshd_config')
+depends=('glibc' 'openssl' 'libedit')
+
+source=(ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz
+        openssh.upstart)
+sha256sums=(b2f8394eae858dabbdef7dac10b99aec00c95462753e80342e530bbb6f725507
+            0f08e04d751fd67d9f761fc0dd79f39892615c3d61c620e5e0cfb010d8512e49)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	
+	# Build PIE and with immediate symbol binding for security
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+	
+	./configure --prefix=/usr --mandir=/usr/man --sbindir=/usr/bin \
+	            --libexecdir=/usr/lib/${MULTIARCH}/ssh \
+	            --sysconfdir=/etc/ssh \
+	            --without-pam \
+	            --with-libedit \
+	            --with-default-path=/usr/local/bin:/usr/bin \
+	            --with-privsep-path=/var/empty \
+	            --with-privsep-user=sshd \
+	            --build="${CHOST}"
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+
+	mkdir -p "${pkgdir}"/etc/init
+	install -m644 "${srcdir}"/openssh.upstart "${pkgdir}"/etc/init/openssh.conf
+}
