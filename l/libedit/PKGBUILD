@@ -1,0 +1,24 @@
+pkgname=libedit
+_basever=20140620-3.1
+pkgver=${_basever/-/_}
+pkgrel=1
+pkgdesc="A free line editing library."
+arch=("x86_64")
+url="http://thrysoee.dk/editline/"
+license=('BSD')
+
+depends=('glibc' 'ncurses')
+
+source=(http://thrysoee.dk/editline/libedit-${_basever}.tar.gz)
+sha256sums=(a22b9b2a8cf4aec9ff51a57e8c848b69640d0195282159d245d8137a19bfcaf2)
+
+build() {
+	cd "${srcdir}/libedit-${_basever}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --enable-widec
+	make
+}
+
+package() {
+	cd "${srcdir}/libedit-${_basever}"
+	make DESTDIR="${pkgdir}" install
+}
