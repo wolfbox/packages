@@ -1,0 +1,36 @@
+pkgname=subversion
+pkgver=1.8.10
+pkgrel=1
+pkgdesc="A software revision control system."
+arch=("x86_64")
+url="https://subversion.apache.org"
+license=('Apache')
+
+depends=('glibc' 'zlib' 'openssl' 'file' 'expat' 'sqlite3'
+         'openldap' 'neon' 'apr' 'apr-util' 'util-linux' 'cyrus-sasl')
+
+source=(http://www.eng.lsu.edu/mirrors/apache/subversion/subversion-${pkgver}.tar.bz2)
+sha256sums=(1cc900c8a7974337c3ed389dc6b5c59012ec48c7d4107ae31fd7c929ded47dcc)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --docdir=/usr/doc/${pkgname}-${pkgver} \
+	            --enable-shared --disable-static \
+	            --with-zlib=/usr \
+	            --with-pic \
+	            --with-openssl
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	make install-tools DESTDIR="${pkgdir}"
+	
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m 644 LICENSE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+}
