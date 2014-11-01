@@ -6,18 +6,27 @@ arch=("x86_64")
 url="http://git-scm.com"
 license=('GPLv2')
 
-depends=('glibc' 'zlib' 'openssl' 'perl')
+makedepends=('python2')
+depends=('glibc' 'zlib' 'openssl' 'perl' 'curl' 'expat')
+optdepends=('python2'
+            'subversion')
 
 source=(http://www.kernel.org/pub/software/scm/git/git-${pkgver}.tar.xz)
 sha256sums=(7b27c8978bccf436f3c2b8c6142f35b236edd34ef7c778b1333166c098c7a18b)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	make prefix=/usr gitexecdir=/usr/lib/${MULTIARCH}/git-core all
+
+	./configure --prefix=/usr \
+	            --mandir=/usr/man \
+	            --libexecdir=/usr/lib/${MULTIARCH} \
+	            --with-python=/usr/bin/python2 \
+	            --without-tcltk
+	make
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make prefix=/usr install DESTDIR="${pkgdir}"
+	make install DESTDIR="${pkgdir}" INSTALLDIRS=vendor
 }
