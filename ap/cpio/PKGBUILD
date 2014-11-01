@@ -33,4 +33,6 @@ package() {
 
 	make install DESTDIR="${pkgdir}"
 	rm -rf "${pkgdir}/usr/libexec"
+	
+	mv "${pkgdir}"/usr/bin/cpio "${pkgdir}"/usr/bin/gcpio
 }
