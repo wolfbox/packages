@@ -23,4 +23,10 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}"
 	make DESTDIR="${pkgdir}" install
+	
+	# Make bsdtar the default tar
+	ln "${pkgdir}"/usr/bin/bsdtar "${pkgdir}"/usr/bin/tar
+
+	# Make bsdcpio the default cpio
+	ln "${pkgdir}"/usr/bin/bsdcpio "${pkgdir}"/usr/bin/cpio
 }
