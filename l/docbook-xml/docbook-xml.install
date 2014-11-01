@@ -1,0 +1,50 @@
+post_install() {
+	# Populate /etc/xml/catalog
+	if [ ! -e /etc/xml/catalog ] ; then
+		xmlcatalog --noout --create /etc/xml/catalog
+	fi
+
+	xmlcatalog --noout --create "${pkgdir}"/etc/xml/catalog
+		xmlcatalog --noout --add "delegatePublic" \
+		"-//OASIS//ENTITIES DocBook XML" \
+		"file:///etc/xml/docbook" \
+		/etc/xml/catalog &&
+	xmlcatalog --noout --add "delegatePublic" \
+		"-//OASIS//DTD DocBook XML" \
+		"file:///etc/xml/docbook" \
+		/etc/xml/catalog &&
+	xmlcatalog --noout --add "delegateSystem" \
+		"http://www.oasis-open.org/docbook/" \
+		"file:///etc/xml/docbook" \
+		/etc/xml/catalog &&
+	xmlcatalog --noout --add "delegateURI" \
+		"http://www.oasis-open.org/docbook/" \
+		"file:///etc/xml/docbook" \
+		/etc/xml/catalog
+
+	# Install compatibility rules into catalog
+	for DTDVERSION in 4.1.2 4.2 4.3 4.4
+	do
+		xmlcatalog --noout --add "delegateSystem" \
+			"http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
+			"file:///etc/xml/docbook" \
+			/etc/xml/catalog
+		xmlcatalog --noout --add "delegateURI" \
+			"http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
+			"file:///etc/xml/docbook" \
+			/etc/xml/catalog
+	done
+}
+
+post_upgrade() {
+	if [ $(vercmp $2 4.5) -ge 0 ]; then
+		# Downgrade
+		post_remove
+	fi
+
+	post_install
+}
+
+post_remove() {
+	xmlcatalog --noout --del file:///etc/xml/docbook-xml /etc/xml/catalog
+}
