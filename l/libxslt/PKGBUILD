@@ -1,0 +1,32 @@
+pkgname=libxslt
+pkgver=1.1.28
+pkgrel=1
+pkgdesc="XML transformation library."
+arch=('x86_64')
+url="http://xmlsoft.org/XSLT/"
+license=('custom')
+
+depends=('glibc' 'libxml2' 'libgcrypt' 'zlib' 'xz' 'libgpg-error')
+
+source=(ftp://xmlsoft.org/libxslt/libxslt-${pkgver}.tar.gz)
+sha256sums=(5fc7151a57b89c03d7b825df5a0fae0a8d5f05674c0e7cf2937ecec4d54a028c)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --with-python=/usr/bin/python2 --with-crypto
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	
+	# Remove docs
+	rm -rf "${pkgdir}"/usr/share/doc
+
+	# Install license file
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m644 COPYING "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+}
