@@ -1,0 +1,27 @@
+# /etc/profile: This file contains system-wide defaults used by
+# all Bourne (and related) shells.
+
+# Set the values for some environment variables:
+export HOSTNAME="`cat /etc/HOSTNAME`"
+
+# Set the default system $PATH:
+export PATH="/usr/local/bin:/usr/bin"
+
+# Default umask.  A umask of 022 prevents new files from being created group
+# and world writable.
+umask 022
+
+# Append any additional sh scripts found in /etc/profile.d/:
+for profile_script in /etc/profile.d/*.sh ; do
+  if [ -x $profile_script ]; then
+    . $profile_script
+  fi
+done
+
+if test "$BASH" && test -r /etc/bash/bash.bashrc ; then
+	. /etc/bash.bashrc
+fi
+
+unset TERMCAP
+unset MANPATH
+unset profile_script

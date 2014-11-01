@@ -3,6 +3,14 @@ pkgver=1
 pkgrel=1
 pkgdesc="Basic filesystem links for Wolf Box."
 arch=("x86_64")
+license=('MIT')
+
+source=('profile'
+        'os-release'
+        'ld.so.conf.in')
+sha256sums=(5c267921bd166261a742eef03a5dc0a565d182fada79cb99b0591377f6076fc6
+            afcb1e99cc96919e4f36ff2c5827eb239a526ec84d47b77662d36e43d12ce842
+            dec78757d3be768a9e47c1eb49073cd23827b6cb35b970217e07598e36d9e280)
 
 package() {
 	cd "${pkgdir}"
@@ -18,4 +26,8 @@ package() {
 	ln -s /usr/bin bin
 	ln -s /usr/bin usr/sbin
 	ln -s /run var/run
+	
+	install -m755 "${srcdir}"/profile etc/
+	install -m644 "${srcdir}"/os-release etc/
+	sed "s:@MULTIARCH@:${MULTIARCH}:" "${srcdir}"/ld.so.conf.in > etc/ld.so.conf
 }

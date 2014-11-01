@@ -1,0 +1,3 @@
+/lib/@MULTIARCH@
+/usr/lib/@MULTIARCH@
+/usr/local/lib/@MULTIARCH@
