@@ -6,7 +6,7 @@ arch=("x86_64")
 url="http://git-scm.com"
 license=('GPLv2')
 
-makedepends=('python2')
+makedepends=('python2' 'asciidoc' 'xmlto' 'docbook-xsl' 'docbook-xml')
 depends=('glibc' 'zlib' 'openssl' 'perl' 'curl' 'expat')
 optdepends=('python2'
             'subversion')
@@ -22,11 +22,11 @@ build() {
 	            --libexecdir=/usr/lib/${MULTIARCH} \
 	            --with-python=/usr/bin/python2 \
 	            --without-tcltk
-	make
+	make all doc
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make install DESTDIR="${pkgdir}" INSTALLDIRS=vendor
+	make install install-doc DESTDIR="${pkgdir}" INSTALLDIRS=vendor
 }
