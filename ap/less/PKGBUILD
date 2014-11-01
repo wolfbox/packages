@@ -22,4 +22,8 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
+
+	mkdir -p "${pkgdir}"/etc/profile.d	
+	echo -e "#!/bin/sh\nexport LESS='-RM'" > less.sh
+	install -m755 less.sh "${pkgdir}"/etc/profile.d/
 }
