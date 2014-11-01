@@ -14,8 +14,8 @@ source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz"
         rsyslog.upstart
         rsyslog.conf)
 sha256sums=(71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a
-            4423077338a0c1e91ad49948a9e3a750ce0b509296c65f3de81bbb757b8067d6
-            624877f2147e9be89a1913bfbfaa73ae8dd726863336042b58caea008bf87721)
+            38d5ad0e9da5e6e5284e8c00e4692c35156b33d7bc36b10d54567e2eae1ca304
+            5a0507d45ce53e0f8d16e639b729c067b977bf02718288664aff2b2bfba3fdff)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -41,5 +41,8 @@ package() {
 	mkdir -p "${pkgdir}"/etc/
 	install -m 644 "${srcdir}"/rsyslog.conf "${pkgdir}"/etc/
 
+	mkdir -p "${pkgdir}"/var/run/rsyslog
 	mkdir -p "${pkgdir}"/var/lib/rsyslog
+	mkdir -p "${pkgdir}"/var/log/syslog
+	chmod 770 "${pkgdir}"/var/log/syslog
 }

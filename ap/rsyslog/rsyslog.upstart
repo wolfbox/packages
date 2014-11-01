@@ -2,12 +2,8 @@ description "rsyslog logging daemon"
 version 8.4.2-1
 
 oom score -1
-start on runlevel [12345]
-stop on runlevel [!12345]
+start on filesystem
 
 respawn
-setuid rsyslog
-setgid daemon
 
-expect fork
-exec /usr/bin/rsyslogd -n
+exec /usr/bin/rsyslogd -n -i /var/run/rsyslog/rsyslog.pid
