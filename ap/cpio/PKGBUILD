@@ -35,4 +35,5 @@ package() {
 	rm -rf "${pkgdir}/usr/libexec"
 	
 	mv "${pkgdir}"/usr/bin/cpio "${pkgdir}"/usr/bin/gcpio
+	mv "${pkgdir}"/usr/man/man1/cpio.1 "${pkgdir}"/usr/man/man1/gcpio.1
 }
