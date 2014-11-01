@@ -1,0 +1,25 @@
+pkgname=less
+pkgver=458
+pkgrel=1
+pkgdesc="An advanced screen pager."
+arch=("x86_64")
+url="http://www.greenwoodsoftware.com/less/"
+license=('GPLv3')
+
+depends=('glibc' 'ncurses' 'pcre')
+
+source=(http://www.greenwoodsoftware.com/less/less-${pkgver}.tar.gz)
+sha256sums=(e536c7819ede54b3d487f0ffc4c14b3620bed83734d92a81e89f62346db0fcac)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --mandir=/usr/man \
+	            --with-regex=pcre
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
