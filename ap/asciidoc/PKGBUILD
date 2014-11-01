@@ -1,0 +1,28 @@
+pkgname=asciidoc
+pkgver=8.6.9
+pkgrel=1
+pkgdesc="An extremely fast compression tool."
+arch=('any')
+url="http://www.methods.co.nz/asciidoc/"
+license=('GPLv2')
+
+depends=('python2')
+
+source=(http://downloads.sourceforge.net/project/asciidoc/asciidoc/${pkgver}/asciidoc-${pkgver}.tar.gz)
+sha256sums=(78db9d0567c8ab6570a6eff7ffdf84eadd91f2dfc0a92a2d0105d323cab4e1f0)
+
+prepare() {
+	cd "${srcdir}"/${pkgname}-${pkgver}
+	find ./ -name "*.py" -exec sed -i 's:#!/usr/bin/env python:#!/usr/bin/env python2:' \{} \;
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --mandir=/usr/man
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
