@@ -1,0 +1,24 @@
+pkgname=psmisc
+pkgver=22.21
+pkgrel=1
+pkgdesc="A suite of extra process utilities."
+arch=("x86_64")
+url="http://psmisc.sourceforge.net"
+license=('GPLv2')
+
+depends=('glibc' 'ncurses')
+
+source=(http://downloads.sourceforge.net/project/psmisc/psmisc/psmisc-${pkgver}.tar.gz)
+sha256sums=(97323cad619210845b696d7d722c383852b2acb5c49b5b0852c4f29c77a8145a)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
