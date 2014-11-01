@@ -28,4 +28,8 @@ package() {
 	make DESTDIR="${pkgdir}" install
 	
 	ln "${pkgdir}"/usr/bin/install "${pkgdir}"/usr/bin/ginstall
+	
+	mkdir -p "${pkgdir}"/etc/profile.d
+	echo -e "#!/bin/sh\nalias ls='ls --color=auto'" > coreutils.sh
+	install -m755 coreutils.sh "${pkgdir}"/etc/profile.d/
 }
