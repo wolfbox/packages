@@ -12,7 +12,7 @@ depends=('glibc')
 source=(http://www.courtesan.com/sudo/dist/sudo-${pkgver}.tar.gz
         sudoers.conf)
 sha256sums=(8133849418fa18cf6b6bb6893d1855ff7afe21db8923234a00bf045c90fba1ad
-            4266af8507eb5722c10aa0eea63f12d1e59d5e9efcdc8e9efbd72fb39d17b8a9)
+            edde4ddd9a5daaf56a4f4047645cc742a431177fd7bec2797742fd61addc6c05)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -34,6 +34,8 @@ package() {
 	# Install our sudoers file
 	install -m644 "${srcdir}"/sudoers.conf "${pkgdir}"/etc/sudoers
 
-	# Lock down permissions on sudo
+	# Lock down permissions
 	chmod 4711 "${pkgdir}"/usr/bin/sudo
+	chmod 600 "${pkgdir}"/etc/sudoers
+	chmod 700 "${pkgdir}"/etc/sudoers.d
 }
