@@ -30,4 +30,11 @@ package() {
 	# Fix pkgconfig path
 	cd "${pkgdir}"/usr/lib
 	mv pkgconfig "${MULTIARCH}"/
+
+	# Remove unused SysV compatibility
+	rm "${pkgdir}"/etc/init/rc*
+
+	# Remove bridges, since they seem to trip an exception in upstart.
+	# This is a purely short-term "solution"
+	rm "${pkgdir}"/etc/init/upstart*
 }
