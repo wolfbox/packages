@@ -4,4 +4,4 @@ start on network-services
 
 respawn
 
-exec /usr/bin/opensshd -D
+exec /usr/bin/sshd -D
