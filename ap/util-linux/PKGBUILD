@@ -11,7 +11,7 @@ depends=('glibc' 'ncurses')
 source=(https://www.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-${pkgver}.tar.xz
         upstart-scripts.tar.xz)
 sha256sums=(4701305ae22790c3a92ce48e50794fa05b7ee01f4227f419a171c100d08986e8
-            31267cb1d16001a844e267bca0c64e0b016c2b911134dfa941bdfff4a808ea6e)
+            647e08c8d1a3c2f8c741281a7c73fefcd78ec80d3f0ed56802b2c7c93c9aab34)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -35,3 +35,4 @@ package() {
 	mkdir -p "${pkgdir}"/etc/init
 	install -m 644 -t "${pkgdir}"/etc/init "${srcdir}"/upstart-scripts/*
 }
+
