@@ -9,15 +9,18 @@ license=('GPLv2')
 install=linux.install
 makedepends=('gcc' 'lz4' 'xz')
 
+_grsecver=3.0-3.17.2-201410312213
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.xz
-        https://grsecurity.net/test/grsecurity-3.0-3.17.1-201410192051.patch
+        https://grsecurity.net/test/grsecurity-${_grsecver}.patch
         config.xz)
 sha256sums=(f9221dc0878955318ab57b8bb5ea1f26cbbaa39359c91d0f6c8de74d68aea796
-            15bcd5b1d14e3cd47169816e95c29ebcd8d20dc3fc9fc8e97932d6d29a81c8db
-            d9e1a26266391d6872120c88fcbf78ff82615f0f977c6f5b338b67fe379f7e3a)
+            aa8816e1182792ed976c10ba407278d68ca18a7e3bb62b51ea0c9263ab71604a
+            362419ede85a9286eb760c8c60f738ba7523e5841222e2a80a27ac1018b3df98)
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
+	
+	cat ../grsecurity-${_grsecver}.patch | patch -p1
 	xzcat "${srcdir}/config.xz" > .config
 }
 
@@ -35,5 +38,5 @@ package() {
 	make modules_install INSTALL_MOD_PATH="${pkgdir}"
 	make headers_install INSTALL_HDR_PATH="${pkgdir}/usr"
 	
-	depmod -b "${pkgdir}" ${pkgver}
+	depmod -b "${pkgdir}" ${pkgver}-grsec
 }
