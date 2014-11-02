@@ -1,0 +1,39 @@
+pkgname=sudo
+pkgver=1.8.11p2
+pkgrel=1
+pkgdesc="A tool for giving and logging limited root privileges to select users."
+arch=('x86_64')
+url="http://www.courtesan.com/sudo/sudo.html"
+license=('ISC')
+
+backup=('etc/sudoers')
+depends=('glibc')
+
+source=(http://www.courtesan.com/sudo/dist/sudo-${pkgver}.tar.gz
+        sudoers.conf)
+sha256sums=(8133849418fa18cf6b6bb6893d1855ff7afe21db8923234a00bf045c90fba1ad
+            4266af8507eb5722c10aa0eea63f12d1e59d5e9efcdc8e9efbd72fb39d17b8a9)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now"
+	./configure --prefix=/usr --sbindir=/usr/bin --mandir=/usr/man \
+	            --libexecdir=/usr/lib/${MULTIARCH} --docdir=/usr/doc/sudo-${pkgver} \
+	            --with-env-editor --disable-pam-session --with-pam=no \
+	            --with-rundir=/var/lib/sudo --with-vardir=/var/lib/sudo --without-lecture \
+	            --with-logging=syslog --with-logfac=auth --with-secure-path \
+	            --enable-pie
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	# Install our sudoers file
+	install -m644 "${srcdir}"/sudoers.conf "${pkgdir}"/etc/sudoers
+
+	# Lock down permissions on sudo
+	chmod 4711 "${pkgdir}"/usr/bin/sudo
+}
