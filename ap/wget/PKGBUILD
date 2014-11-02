@@ -1,0 +1,31 @@
+pkgname=wget
+pkgver=1.16
+pkgrel=1
+pkgdesc="A tool for retrieving files over the network."
+arch=('x86_64')
+url="http://www.gnu.org/software/wget"
+license=('GPLv3')
+
+depends=('glibc' 'openssl' 'zlib' 'pcre' 'util-linux')
+
+source=(http://ftpmirror.gnu.org/wget/wget-${pkgver}.tar.xz)
+sha256sums=(9261dd090a17687b6dc0682a257e90a926def15624b650e8f799af57e5c8b0e7)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	# Harden
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	./configure --prefix=/usr \
+	            --mandir=/usr/man \
+	            --infodir=/usr/info \
+	            --with-ssl=openssl
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
