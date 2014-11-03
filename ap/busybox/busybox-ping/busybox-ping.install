@@ -1,0 +1,9 @@
+post_upgrade() {
+	setcap cap_net_raw=ep /usr/bin/ping
+	setcap cap_net_raw=ep /usr/bin/ping6
+}
+
+post_install() {
+	post_upgrade
+}
+

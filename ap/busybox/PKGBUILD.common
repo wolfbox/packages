@@ -1,0 +1,65 @@
+pkgver=1.22.1
+arch=("x86_64")
+url="http://busybox.net"
+license=("GPLv3")
+
+makedepends=('perl')
+
+MIRROR="http://busybox.net/downloads"
+PATCHES="${MIRROR}/fixes-${pkgver}/busybox-${pkgver}"
+source=(${MIRROR}/busybox-${pkgver}
+		${PATCHES}-ash.patch
+		${PATCHES}-date.patch
+		${PATCHES}-iplink.patch
+		${PATCHES}-nc.patch
+		${PATCHES}-zcat-no-ext.patch
+		${PATCHES}-lzop.patch
+		busybox.pod.in
+		PKGBUILD.common)
+sha256sums=(ae0b029d0a9e4dd71a077a790840e496dd838998e4571b87b60fed7462b6678b
+			c3b5b5c5522fda8014b12a23c370d7f70f6d1625fefa93a62c5c14414528ad12
+			8502dd7454e948a56fcd8201f4fe9d629d2844b9df2bacff7ee0bb09398d12e8
+			186b41734e43ee117cb367055ce6a4d5b3aac671c09d71f2a6347793874d653b
+			0d2f9ba2e9e5db813fe9feb6fc84052ac85403ce2debefb8b1281a05aadec052
+			d9843cc5a62d25d328344d31e1d1dc81a245add647bb377d6a871d5f7c1b2cbe
+			cc70144cd273464502e04050abb1bd1d2a36d9a7f4aeef2b2f8172f6c7bc18eb
+			dd2ba8ffaa94bcc66e5d69fa8fb5a4f40092ff44f6fd33e0e7e4b41f1ec83a2a
+			SKIP)
+
+prepare() {
+	cd "${srcdir}/busybox-${pkgver}"
+
+	for patch in "${srcdir}"/*.patch ; do
+		cat "${patch}" | patch -p1 -Nf
+	done
+
+	cp "${srcdir}/config" .config
+}
+
+build() {
+	cd "${srcdir}"/busybox-${pkgver}
+	make
+}
+
+compile_manpages() {
+	_title="${1}"
+	_name="${2}" || "${pkgname}"
+
+	mkdir -p "${pkgdir}"/usr/man/man1
+
+	for file in "${pkgdir}"/usr/bin/*; do
+		_name=$(basename "${file}")
+		_usage=$("${file}" --help 2>&1)
+		
+		# Remove the opening BusyBox stanza from the usage
+		_usage="$(echo "${_usage}" | awk '!/BusyBox/')"
+
+		_podpath="${pkgdir}"/usr/man/man1/${_name}
+		cp "${srcdir}"/busybox.pod.in "${_podpath}".pod.in
+		awk -v n="${_name}" -v u="${_usage}" '{gsub(/@USAGE@/,u) gsub(/@NAME@/,n)}1' "${_podpath}.pod.in" > "${_podpath}".pod
+		#awk -v r="${_usage}" '{gsub(/@USAGE@/,r)}1' "${_podpath}.pod.in" > "${_podpath}".pod
+		pod2man "${_podpath}".pod --center "${_title}" -r "${_name}" > "${_podpath}".1
+
+		rm "${_podpath}".pod.in "${_podpath}".pod
+	done
+}

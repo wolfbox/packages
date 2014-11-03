@@ -1,0 +1,26 @@
+. ./PKGBUILD.common
+
+pkgname=busybox-ping
+pkgrel=1
+pkgdesc="A lightweight collection of tools for pinging."
+install=busybox-ping.install
+
+depends=('glibc' 'libcap')
+conflicts=('iputils')
+
+source+=(config.xz)
+sha256sums+=(527382d6da4e72761fdde0d37c92d70a2ffe276b794d7a3b75f12d4fcb134828)
+
+package() {
+	cd "${srcdir}/busybox-${pkgver}"
+	make install CONFIG_PREFIX="${pkgdir}"
+
+	# Unify everything under /usr/bin
+	cd "${pkgdir}"
+	mkdir -p usr/bin
+	mv bin/* usr/bin/
+	mv usr/sbin/* usr/bin
+	rmdir bin usr/sbin
+	
+	compile_manpages "Ping Utilities" "ping"
+}
