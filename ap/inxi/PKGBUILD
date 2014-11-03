@@ -1,0 +1,22 @@
+pkgname=inxi
+pkgver=2.2.14
+pkgrel=1
+pkgdesc="A tool for dumping system information for convenient inspection."
+arch=("x86_64")
+url="https://code.google.com/p/inxi/"
+license=('GPLv3')
+
+depends=('bash' 'coreutils' 'pciutils' 'procps-ng')
+optdepends=('iproute2' 'lm-sensors' 'file')
+
+source=(https://inxi.googlecode.com/svn/tarballs/inxi_${pkgver}.tar.gz)
+sha256sums=(c7acc482e860864d69365c2548b2efcfd334432dc053568a4dce37d6699146e5)
+
+package() {
+	cd "${srcdir}"
+	mkdir -p "${pkgdir}"/usr/bin
+	mkdir -p "${pkgdir}"/usr/man/man1
+
+	install -m755 inxi "${pkgdir}"/usr/bin
+	install -m644 inxi.1 "${pkgdir}"/usr/man/man1
+}
