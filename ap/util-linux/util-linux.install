@@ -1,0 +1,8 @@
+post_upgrade() {
+	setcap cap_sys_admin=ep /usr/bin/mount
+	setcap cap_sys_admin=ep /usr/bin/umount
+}
+
+post_install() {
+	post_upgrade
+}

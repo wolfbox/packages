@@ -3,8 +3,9 @@ pkgver=2.25.1
 pkgrel=1
 pkgdesc="A broad collection of Linux system utilities."
 arch=("x86_64")
-url=""
+url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=(GPLv2)
+install=util-linux.install
 
 depends=('glibc' 'ncurses')
 
@@ -34,5 +35,7 @@ package() {
 	# Install the upstart scripts
 	mkdir -p "${pkgdir}"/etc/init
 	install -m 644 -t "${pkgdir}"/etc/init "${srcdir}"/upstart-scripts/*
+	
+	# Remove setuid-root permissions
+	chmod -s "${pkgdir}"/usr/bin/{mount,umount,wall}
 }
-
