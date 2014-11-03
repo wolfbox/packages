@@ -1,0 +1,33 @@
+pkgname=xfsprogs
+pkgver=3.2.1
+pkgrel=1
+pkgdesc="Tools for the SGI XFS filesystems."
+arch=('x86_64')
+url=""
+license=('GPLv2' 'LGPLv2.1')
+
+depends=('glibc' 'util-linux')
+
+source=(ftp://oss.sgi.com/projects/xfs/cmd_tars/xfsprogs-${pkgver}.tar.gz)
+sha256sums=(83f8ea4c38fe9f42b9f12cd523519287a9695f2cf4f3064e9e9a839f71185767)
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	./configure --prefix=/usr \
+	            --sbindir=/usr/bin \
+	            --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}" PKG_ROOT_SBIN_DIR='/usr/bin'
+	mkdir -p "${pkgdir}"/usr/lib/
+	mv "${pkgdir}"/lib "${pkgdir}"/usr/lib/${MULTIARCH}
+	
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	mv "${pkgdir}"/usr/share/doc/${pkgname}/* "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+	rm "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/CHANGES.gz
+}
