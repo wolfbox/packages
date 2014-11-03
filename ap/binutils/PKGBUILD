@@ -22,39 +22,37 @@ prepare() {
 	
 	# Fix build with _FORTIFY_SOURCE
 	sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" libiberty/configure
+
+	# Apply Slackware patches
+	zcat "${srcdir}"/binutils.export.demangle.h.diff.gz | patch -p1
+	zcat "${srcdir}"/binutils.no-config-h-check.diff.gz | patch -p1
 }
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
-	GOLD=" --enable-gold=yes --enable-ld=default "
-	# Apparently this causes issues. See Slackware's build script for details.
-	NO_INITFINI=" --disable-initfini-array "
-	
-	zcat "${srcdir}"/binutils.export.demangle.h.diff.gz | patch -p1
-	zcat "${srcdir}"/binutils.no-config-h-check.diff.gz | patch -p1
-
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
 				--infodir=/usr/info --with-docdir=/usr/doc/binutils-${pkgver} \
 				--enable-shared --enable-multilib --enable-64-bit-bfd \
 				--enable-plugins --enable-threads \
 				--enable-targets=i386-efi-pe,${CHOST} --disable-werror \
-				${GOLD} ${NO_INITFINI} --build=${CHOST}
+				--enable-gold=yes --enable-ld=default --disable-initfini-array \
+				--build=${CHOST}
 
-	make clean	
-	make
+	make clean
+	make tooldir=/usr
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make install DESTDIR="${pkgdir}"
+	make install tooldir=/usr DESTDIR="${pkgdir}"
 
 	# Install missing file
 	cp -a include/libiberty.h "${pkgdir}"/usr/include/
 	
 	# Move ldscripts
-	mv "${pkgdir}"/usr/${CHOST}/lib/ldscripts "${pkgdir}"/usr/lib/${MULTIARCH}/
+	mv "${pkgdir}"/usr/lib/ldscripts "${pkgdir}"/usr/lib/${MULTIARCH}/
 	
 	# Set default linker
 	( cd "${pkgdir}"/usr/bin ; rm -f ld ; ln -s /usr/bin/$DEFAULT_LD ld )
