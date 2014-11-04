@@ -20,22 +20,25 @@ prepare() {
 
 build() {
 	cd "${srcdir}"/${pkgname}-${pkgver}.src
+
+	export CC=gcc
+	export CXX=g++
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 	            --localstatedir=/var --mandir=/usr/man --enable-optimized \
 	            --disable-assertions --enable-pic --enable-shared \
-	            --with-clang-resource-dir="../lib64/clang/${pkgver}" \
+	            --with-clang-resource-dir="../lib/${MULTIARCH}/clang/${pkgver}" \
 	            --build=${CHOST} --host=${CHOST}
 
 	# Fix hardcoded libdir
-	sed -i "s|\$(PROJ_prefix)/lib|\$(PROJ_prefix)/lib64|" \
+	sed -i "s|\$(PROJ_prefix)/lib|\$(PROJ_prefix)/lib/${MULTIARCH}|" \
 		Makefile.config
-	sed -i "s|\$(PROJ_prefix)/lib|\$(PROJ_prefix)/lib64|" \
+	sed -i "s|\$(PROJ_prefix)/lib|\$(PROJ_prefix)/lib/${MULTIARCH}|" \
 		tools/clang/lib/Headers/Makefile
-	sed -i "s|\"lib\"|\"lib64\"|" \
+	sed -i "s|\"lib\"|\"lib/${MULTIARCH}\"|" \
 		tools/clang/lib/Frontend/CompilerInvocation.cpp
-	sed -i "s|\"lib\"|\"lib64\"|" \
+	sed -i "s|\"lib\"|\"lib/${MULTIARCH}\"|" \
 		tools/clang/lib/Driver/Tools.cpp
-	sed -i "s|ActiveLibDir = ActivePrefix + \"/lib\"|ActiveLibDir = ActivePrefix + \"/lib64\"|g" \
+	sed -i "s|ActiveLibDir = ActivePrefix + \"/lib\"|ActiveLibDir = ActivePrefix + \"/lib/${MULTIARCH}\"|g" \
 		tools/llvm-config/llvm-config.cpp
 
 	make
