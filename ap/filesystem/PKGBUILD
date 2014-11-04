@@ -16,7 +16,7 @@ source=('profile'
         'gshadow'
         'hosts'
         'hostname')
-sha256sums=('5c267921bd166261a742eef03a5dc0a565d182fada79cb99b0591377f6076fc6'
+sha256sums=('5c56e94f10e8a87a82954801459eb4cd588bcb234af354ea08dbf2761ea62f1e'
             'afcb1e99cc96919e4f36ff2c5827eb239a526ec84d47b77662d36e43d12ce842'
             'dec78757d3be768a9e47c1eb49073cd23827b6cb35b970217e07598e36d9e280'
             '08fad18e4a2289c039f9c0eef4999aa54d84992e51e617ce683ecd9b5c2e02a0'

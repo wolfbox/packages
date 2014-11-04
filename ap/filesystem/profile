@@ -18,7 +18,7 @@ for profile_script in /etc/profile.d/*.sh ; do
   fi
 done
 
-if test "$BASH" && test -r /etc/bash/bash.bashrc ; then
+if test "$BASH" && test -r /etc/bash.bashrc ; then
 	. /etc/bash.bashrc
 fi
 
