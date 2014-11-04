@@ -89,5 +89,5 @@ package() {
 	
 	# Install a link of ld-linux into /lib64 for compatibility
 	mkdir -p "${pkgdir}"/lib64
-	ln -s /lib/${MULTIARCH}/ld-linux-${CARCH}.so.2 "${pkgdir}"/lib64
+	ln -s /lib/${MULTIARCH}/ld-linux-${CARCH/_/-}.so.2 "${pkgdir}"/lib64
 }
