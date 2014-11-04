@@ -4,30 +4,56 @@ pkgrel=1
 pkgdesc="Basic filesystem links for Wolf Box."
 arch=("x86_64")
 license=('MIT')
+backup=('etc/passwd' 'etc/group' 'etc/ld.so.conf' 'etc/shadow' 'etc/gshadow'
+        'etc/hosts' 'etc/hostname')
 
 source=('profile'
         'os-release'
-        'ld.so.conf.in')
-sha256sums=(5c267921bd166261a742eef03a5dc0a565d182fada79cb99b0591377f6076fc6
-            afcb1e99cc96919e4f36ff2c5827eb239a526ec84d47b77662d36e43d12ce842
-            dec78757d3be768a9e47c1eb49073cd23827b6cb35b970217e07598e36d9e280)
+        'ld.so.conf.in'
+        'passwd'
+        'group'
+        'shadow'
+        'gshadow'
+        'hosts'
+        'hostname')
+sha256sums=('5c267921bd166261a742eef03a5dc0a565d182fada79cb99b0591377f6076fc6'
+            'afcb1e99cc96919e4f36ff2c5827eb239a526ec84d47b77662d36e43d12ce842'
+            'dec78757d3be768a9e47c1eb49073cd23827b6cb35b970217e07598e36d9e280'
+            '08fad18e4a2289c039f9c0eef4999aa54d84992e51e617ce683ecd9b5c2e02a0'
+            'c0b705a8a21a431d0c4b11e63e0977947e24ea0545c22e69e2b8f1e0c2750cb1'
+            '8bf8b6e07db4ff19eb73daffa71fca87f846a79a52b29d4f4b80981ff82a0ae5'
+            'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+            '1f2b341cf1f7caf4c9c137f511691cc82b31c82106e7ab111b29a557b58e1d02'
+            'f86d965dfd9c291a8cc38b75f06be00157ecfc324b5301654f83a449a723ae2d')
 
 package() {
 	cd "${pkgdir}"
 	
-	mkdir -p {boot,dev,etc,etc/ld.so.conf.d,etc/profile.d,etc/skel,home,mnt}
-	mkdir -p {opt,proc,root,run,sys,tmp,usr,usr/bin,usr/include,usr/lib64}
-	mkdir -p {usr/lib/modprobe.d,usr/local,usr/local/bin,usr/local/etc}
-	mkdir -p {usr/local/include,usr/local/lib,usr/local/man,usr/local/share}
-	mkdir -p {usr/share,usr/man}
-	mkdir -p usr/man{1,2,3,4,5,6,7,8}
+	install -d -m555 proc
+	install -d -m555 sys
+	install -d -m750 root
+	install -d -m777 tmp
+	
+	mkdir -p {boot,dev,home,mnt,media,opt,run,lib}
+	mkdir -p etc/{ld.so.conf.d,profile.d,skel}
+	mkdir -p usr/{bin,include,lib,lib/modprobe.d,man,info,share}
+	mkdir -p usr/man/man{1,2,3,4,5,6,7,8}
+	mkdir -p usr/local/{bin,lib,etc,share,man,info,include}
 	mkdir -p var/{lib,log,spool}
 
 	ln -s /usr/bin bin
 	ln -s /usr/bin usr/sbin
+	ln -s /usr/sbin sbin
 	ln -s /run var/run
+	ln -s /proc/self/mounts etc/mtab
 	
 	install -m755 "${srcdir}"/profile etc/
 	install -m644 "${srcdir}"/os-release etc/
+	install -m644 "${srcdir}"/passwd etc/
+	install -m644 "${srcdir}"/group etc/
+	install -m600 "${srcdir}"/shadow etc/
+	install -m600 "${srcdir}"/gshadow etc/
+	install -m644 "${srcdir}"/hostname etc/
+	install -m644 "${srcdir}"/hosts etc/
 	sed "s:@MULTIARCH@:${MULTIARCH}:" "${srcdir}"/ld.so.conf.in > etc/ld.so.conf
 }
