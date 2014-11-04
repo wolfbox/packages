@@ -14,7 +14,7 @@ source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz"
         rsyslog.upstart
         rsyslog.conf)
 sha256sums=(71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a
-            38d5ad0e9da5e6e5284e8c00e4692c35156b33d7bc36b10d54567e2eae1ca304
+            0f0f9b1d2d9c92b6175aede5e50fbf1f2ad95bc9c6ccd08fb554374518da58d9
             5a0507d45ce53e0f8d16e639b729c067b977bf02718288664aff2b2bfba3fdff)
 
 build() {

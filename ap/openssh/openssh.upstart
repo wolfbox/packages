@@ -1,6 +1,7 @@
-description "nginx http server"
+description "openssh server"
 
 start on network-services
+stop on runlevel [06]
 
 respawn
 

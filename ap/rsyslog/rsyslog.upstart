@@ -3,6 +3,7 @@ version 8.4.2-1
 
 oom score -1
 start on filesystem
+stop on runlevel [06]
 
 respawn
 

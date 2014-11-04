@@ -13,7 +13,7 @@ depends=('glibc' 'openssl' 'libedit')
 source=(ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz
         openssh.upstart)
 sha256sums=(b2f8394eae858dabbdef7dac10b99aec00c95462753e80342e530bbb6f725507
-            92bde0b901b03553d8384170d0a9039251c8678b95847c07bb43692a8ba54ade)
+            b82076e064667967354ddf57686fc7c76ef641aba11936586abe6ffa0de3609c)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"

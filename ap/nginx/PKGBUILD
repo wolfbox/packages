@@ -13,7 +13,7 @@ source=(http://nginx.org/download/nginx-${pkgver}.tar.gz
         nginx.upstart
         nginx.install)
 sha256sums=(b5608c2959d3e7ad09b20fc8f9e5bd4bc87b3bc8ba5936a513c04ed8f1391a18
-            6a3ba7146573183552aa76c7e257875123b67fd0550276a0104b77846dc4d8a6
+            f3dc142c75622f59bd04aa9669b30ea24e2ee2ebba7cac2fabfed69d14be8e75
             fffea3824ebef333bc416ce28a5da21fde7cfdce5f9a81d5f0eecf8b781c9a4a)
 
 build() {
