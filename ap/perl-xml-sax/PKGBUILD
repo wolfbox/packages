@@ -1,0 +1,42 @@
+pkgname=perl-xml-sax
+pkgver=0.99
+pkgrel=1
+pkgdesc="An event-based XML API for Perl."
+arch=('any')
+url="http://search.cpan.org/dist/XML-SAX"
+license=('GPLv1' 'PerlArtistic')
+options=('!emptydirs')
+
+# From Arch
+install=perl-xml-sax.install
+
+depends=('perl' 'perl-xml-sax-base' 'perl-xml-namespacesupport')
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GR/GRANTM/XML-SAX-${pkgver}.tar.gz
+        perl-xml-sax.patch)
+sha256sums=(32b04b8e36b6cc4cfc486de2d859d87af5386dd930f2383c49347050d6f5ad84
+            cf5452ccd81b7eb9cd50315a25747099628a6c0442ea3a6c3849edc3e7e4af18)
+
+prepare() {
+	cd "${srcdir}"/XML-SAX-${pkgver}
+
+	# Apply patch from Arch Linux that fixes installation
+	cat "${srcdir}"/perl-xml-sax.patch | patch -p1
+}
+
+build() {
+	cd "${srcdir}"/XML-SAX-${pkgver}
+	perl Makefile.PL INSTALLDIRS=vendor
+	make
+}
+
+check() {
+	cd "${srcdir}"/XML-SAX-${pkgver}
+	make test
+}
+
+package() {
+	cd "${srcdir}/XML-SAX-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
