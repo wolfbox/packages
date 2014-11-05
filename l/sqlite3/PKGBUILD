@@ -1,5 +1,5 @@
 pkgname=sqlite3
-pkgver=3.8.6
+pkgver=3.8.7.1
 _amalver=3080600
 pkgrel=1
 pkgdesc="A lightweight embedded SQL database engine."
