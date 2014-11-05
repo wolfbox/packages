@@ -1,0 +1,32 @@
+pkgname=iptables
+pkgver=1.4.21
+pkgrel=1
+pkgdesc="IP packet filter administration tools"
+arch=("x86_64")
+url="http://netfilter.org/projects/iptables/index.html"
+license=('GPLv2')
+
+depends=('glibc' 'libusb' 'libpcap' 'libnl3')
+
+source=(ftp://ftp.netfilter.org/pub/iptables/iptables-${pkgver}.tar.bz2)
+sha256sums=('52004c68021da9a599feed27f65defcfb22128f7da2c0531c0f75de0f479d3e0')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --sbindir=/usr/bin \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --docdir=/usr/doc/iptables-${pkgver} \
+	            --enable-devel \
+	            --enable-libipq \
+	            --enable-bpf-compiler \
+	            --disable-static
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}" LIBDIR=/usr/lib/${MULTIARCH}
+}
