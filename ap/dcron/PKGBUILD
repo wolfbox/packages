@@ -1,0 +1,39 @@
+pkgname=dcron
+pkgver=4.5
+pkgrel=1
+pkgdesc="A clean periodical command scheduler."
+arch=("x86_64")
+url="http://www.jimpryor.net/linux/dcron.html"
+license=('GPL')
+
+depends=('glibc')
+
+source=(http://www.jimpryor.net/linux/releases/dcron-${pkgver}.tar.gz
+        dcron.upstart)
+sha256sums=('9e50edb6f5bd8153b16bad05087d985e5153ce45cc01ae77e7f842213fb4a824'
+            '0cd2a153858e40974405792b4024bf99708a099bf20717d7d045c58fd055bb92')
+
+_MAKEOPTS="PREFIX=/usr SBINDIR=/usr/bin BINDIR=/usr/bin MANDIR=/usr/man CRONTABS=/var/lib/cron/crontabs CRONSTAMPS=/var/lib/cron/cronstamps SHELL=/usr/bin/sh"
+
+prepare() {
+	cd "${srcdir}"/${pkgname}-${pkgver}
+
+	# We don't use /var/spool, so update the manpages accordingly
+	sed -i "s:/var/spool:/var/lib:" crond.8 crontab.1
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+	make ${_MAKEOPTS} LDFLAGS="${LDFLAGS}"
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" ${_MAKEOPTS} install
+
+	mkdir -p "${pkgdir}"/etc/init
+	install -m644 "${srcdir}"/dcron.upstart "${pkgdir}"/etc/init/dcron.conf
+}

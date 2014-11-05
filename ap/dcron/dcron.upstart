@@ -1,0 +1,7 @@
+description "The dcron task scheduling daemon"
+
+start on filesystem
+respawn
+expect fork
+
+exec /usr/bin/crond -S -b
