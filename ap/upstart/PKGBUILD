@@ -26,6 +26,7 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	make install DESTDIR="${pkgdir}"
+	mkdir -p "${pkgdir}"/var/log/upstart
 
 	# Fix pkgconfig path
 	cd "${pkgdir}"/usr/lib
