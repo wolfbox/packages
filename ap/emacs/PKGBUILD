@@ -1,0 +1,42 @@
+pkgname=emacs
+pkgver=24.4
+pkgrel=1
+pkgdesc="The GNU Emacs editor."
+arch=('x86_64')
+url="http://www.gnu.org/software/emacs/"
+license=("GPLv3")
+
+depends=('glibc' 'ncurses' 'acl' 'dbus' 'libxml2' 'gpm' 'zlib' 'xz'
+         'gmp' 'libffi' 'glib2' 'gnutls' 'p11-kit')
+
+source=(http://ftpmirror.gnu.org/emacs/emacs-${pkgver}.tar.xz)
+sha256sums=('47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --libexecdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --infodir=/usr/info \
+	            --without-x \
+	            --without-gconf \
+	            --without-gsettings \
+	            --with-sound=no \
+	            --build="${CHOST}"
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	
+	# Avoid ctags collisions
+	( cd "${pkgdir}"
+	  mv usr/bin/ctags usr/bin/ctags-emacs
+	  mv usr/man/man1/ctags.1.gz usr/man/man1/ctags-emacs.1.gz )
+
+	rm "${pkgdir}"/usr/info/info.info*
+	
+	chmod 755 "${pkgdir}"/usr/var/games/emacs
+	chown -R root:games "${pkgdir}"/var/games
+}
