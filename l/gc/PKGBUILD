@@ -1,0 +1,36 @@
+pkgname=gc
+pkgver=7.4.2
+pkgrel=1
+pkgdesc="The Boehm-Demers-Weiser conservative garbage collection library."
+arch=('x86_64')
+url="http://www.hboehm.info/gc/"
+license=('custom')
+
+depends=('glibc' 'libatomic_ops')
+
+source=(http://www.hboehm.info/gc/gc_source/gc-${pkgver}.tar.gz)
+sha256sums=('63320ad7c45460e4a40e03f5aa4c6893783f21a16416c3282b994f933312afa2')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --infodir=/usr/info \
+	            --disable-static \
+	            --enable-cplusplus \
+	            --enable-large-config \
+	            --enable-parallel-mark \
+	            --enable-threads=posix \
+	            --disable-rpath
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	rm -r "${pkgdir}"/usr/share
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m644 README.QUICK "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+}

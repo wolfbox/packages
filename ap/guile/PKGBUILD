@@ -1,0 +1,33 @@
+pkgname=guile
+pkgver=2.0.11
+pkgrel=1
+pkgdesc="The GNU Scheme application extension language."
+arch=('x86_64')
+url="https://www.gnu.org/software/guile"
+license=('GPLv3')
+
+depends=('glibc' 'libffi' 'gmp' 'libunistring' 'openssl' 'gc')
+
+source=(http://ftpmirror.gnu.org/guile/guile-${pkgver}.tar.xz)
+sha256sums=('aed0a4a6db4e310cbdfeb3613fa6f86fddc91ef624c1e3f8937a6304c69103e2')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --infodir=/usr/info \
+	            --mandir=/usr/man \
+	            --with-threads \
+	            --disable-static \
+	            --disable-error-on-warning
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	# Move scheme files out of our library path to avoid ldconfig errors	
+	mkdir -p "${pkgdir}"/usr/share/gdb/auto-load/usr/lib/${MULTIARCH}
+	mv "${pkgdir}"/usr/lib/${MULTIARCH}/libguile*-gdb.scm "${pkgdir}"/usr/share/gdb/auto-load/usr/lib/${MULTIARCH}/
+}
