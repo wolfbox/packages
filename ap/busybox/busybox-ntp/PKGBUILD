@@ -4,8 +4,8 @@ pkgname=busybox-ntp
 pkgrel=1
 pkgdesc="A lightweight ntp client and daemon."
 
-depends=('glibc' 'libcap')
-conflicts=('iputils')
+depends=('glibc')
+conflicts=('ntp')
 
 source+=(config.xz
          ntpd.pod)
