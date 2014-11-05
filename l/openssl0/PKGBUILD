@@ -1,14 +1,14 @@
 pkgname=openssl0
 pkgver=0.9.8zc
 pkgrel=1
-pkgdesc="A legacy cryptography toolkit."
+pkgdesc="A legacy cryptography toolkit - compatibility libraries"
 arch=("x86_64")
 url="http://www.openssl.org"
 license=("custom")
+options=(!makeflags)
 
 depends=('glibc')
 provides=("openssl=${pkgver}")
-backup=('etc/ssl/openssl.cnf')
 
 source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz"
 		openssl.soname.diff.gz)
@@ -41,15 +41,15 @@ build() {
 
 package() {
 	cd "${srcdir}/openssl-${pkgver}"
-	make install INSTALL_PREFIX="${pkgdir}"
+
+	# Copy .so's
+	mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH}
+	install -m755 *.so.* "${pkgdir}"/usr/lib/${MULTIARCH}/
 	
 	# Create symlinks
 	( cd "${pkgdir}"/usr/lib/${MULTIARCH} ; ldconfig -l lib*.so.* )	
-	
-	# Install copyright notice
-	mkdir -p "${pkgdir}"/usr/doc/openssl-${pkgver}/
-	cp -a LICENSE doc "${pkgdir}"/usr/doc/openssl-${pkgver}/
 
-	# What the heck are manpages doing in /etc?!
-	mv "${pkgdir}"/etc/ssl/man "${pkgdir}"/usr/
+	# Install copyright notice
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+	cp -a LICENSE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
 }
