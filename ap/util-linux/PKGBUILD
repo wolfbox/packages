@@ -20,7 +20,7 @@ build() {
 				--localstatedir=/var --mandir=/usr/man --infodir=/usr/info \
 				--docdir=/usr/doc/util-linux-${pkgver} --sbindir=/usr/bin \
 				--bindir=/usr/bin --disable-static --disable-uuidd \
-				--disable-login --disable-nologin
+				--disable-login --disable-nologin --disable-sulogin
 	make
 }
 
