@@ -1,0 +1,33 @@
+pkgname=p11-kit
+pkgver=0.22.1
+pkgrel=1
+pkgdesc="A PKCS#11 cryptography toolkit."
+arch=("x86_64")
+url="http://p11-glue.freedesktop.org/p11-kit.html"
+license=('BSD')
+
+depends=('glibc' 'libtasn1' 'libffi')
+
+source=(http://p11-glue.freedesktop.org/releases/p11-kit-${pkgver}.tar.gz)
+sha256sums=('ef3a339fcf6aa0e32c8c23f79ba7191e57312be2bda8b24e6d121c2670539a5c')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --sysconfdir=/etc \
+	            --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+
+	rm -r "${pkgdir}"/usr/share/gtk-doc
+
+	install -Dm644 COPYING "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/COPYING
+
+	# Module directory
+	mkdir -p "${pkgdir}"/etc/pkcs11/modules
+}

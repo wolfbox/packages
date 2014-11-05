@@ -6,7 +6,7 @@ arch=("x86_64")
 url="http://www.gnu.org/software/gnutls/"
 license=('GPLv3' 'LGPLv2.1')
 
-depends=('glibc' 'guile' 'zlib' 'nettle')
+depends=('glibc' 'guile' 'zlib' 'nettle' 'libtasn1')
 
 source=(ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-${pkgver}.tar.xz)
 sha256sums=('a20d95a434a670afe5ce66430ae56151bbbe14456a0517ce775c46b1d4183dcf')
@@ -15,8 +15,7 @@ build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
 	            --libdir=/usr/lib/${MULTIARCH} \
-	            --enable-static=no \
-	            --with-included-libtasn1
+	            --enable-static=no
 	make
 }
 
