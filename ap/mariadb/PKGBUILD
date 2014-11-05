@@ -1,0 +1,62 @@
+pkgname=mariadb
+pkgver=10.0.14
+pkgrel=1
+pkgdesc="A community fork of the MySQL database engine."
+arch=('x86_64')
+url="https://mariadb.org"
+license=('GPLv2' 'LGPLv2.1')
+options=('emptydirs')
+
+makedepends=('cmake')
+depends=('glibc' 'gcc-libs' 'zlib' 'ncurses' 'openssl' 'pcre' 'libaio' 'jemalloc')
+
+source=(https://downloads.mariadb.org/interstitial/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz)
+sha256sums=(ac0eca4ebb278aa304236bf6dbd5e8c9cf285431333f1379051c231c08e2e31d)
+
+build() {
+	cd "${srcdir}"
+	mkdir -p build && cd build
+
+	export CFLAGS="${CFLAGS} -Wno-error -fPIE"
+	export CXXFLAGS="${CXXFLAGS} -Wno-error -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	cmake ../${pkgname}-${pkgver}/ -DCMAKE_INSTALL_PREFIX=/usr \
+	                               -DSYSCONFDIR=/etc/mysql \
+	                               -DMYSQL_DATADIR=/var/lib/mysql \
+	                               -DINSTALL_MANDIR=man \
+	                               -DINSTALL_INFODIR=share/mysql/docs \
+	                               -DINSTALL_DOCREADMEDIR=doc/${pkgname}-${pkgver} \
+	                               -DINSTALL_LIBDIR=lib/${MULTIARCH} \
+	                               -DINSTALL_PLUGINDIR=lib/${MULTIARCH}/mysql/plugin \
+	                               -DINSTALL_SCRIPTDIR=bin \
+	                               -DINCLUDEDIR=include/mysql \
+	                               -DINSTALL_SUPPORTFILESDIR=share/mysql \
+	                               -DINSTALL_MYSQLSHAREDIR=share/mysql \
+	                               -DINSTALL_SHAREDIR=share/mysql \
+	                               -DINSTALL_DOCDIR=doc/${pkgname}-${pkgver} \
+	                               -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
+	                               -DDEFAULT_CHARSET=utf8 \
+	                               -DDEFAULT_COLLATION=utf8_general_ci \
+	                               -DWITH_READLINE=ON \
+	                               -DWITH_JEMALLOC=ON \
+	                               -DWITH_ZLIB=system \
+	                               -DWITH_PCRE=system \
+	                               -DWITH_SSL=system \
+	                               -DWITH_EXTRA_CHARSETS=complex \
+	                               -DWITHOUT_EXAMPLE_STORAGE_ENGINE=1 \
+	                               -DWITHOUT_FEDERATED_STORAGE_ENGINE=1 \
+	                               -DWITHOUT_PBXT_STORAGE_ENGINE=1 \
+	                               -DCMAKE_C_FLAGS="${CFLAGS} -fPIC -fno-strict-aliasing -DBIG_JOINS=1 -fomit-frame-pointer -fno-delete-null-pointer-checks" \
+	                               -DCMAKE_CXX_FLAGS="${CXXFLAGS} -fPIC -fno-strict-aliasing -DBIG_JOINS=1 -felide-constructors -fno-rtti -fno-delete-null-pointer-checks" \
+	                               -DWITH_MYSQLD_LDFLAGS="${LDFLAGS}"
+	make
+}
+
+package() {
+	cd "${srcdir}"/build
+	make install DESTDIR="${pkgdir}"
+	
+	rm -r "${pkgdir}"/usr/{data,mysql-test,sql-bench}
+	rm "${pkgdir}"/usr/man/man1/mysql-test-run.*
+}
