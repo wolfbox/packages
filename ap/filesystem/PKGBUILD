@@ -2,7 +2,7 @@ pkgname=filesystem
 pkgver=1
 pkgrel=1
 pkgdesc="Basic filesystem links for Wolf Box."
-arch=("x86_64")
+arch=('any')
 license=('MIT')
 backup=('etc/passwd' 'etc/group' 'etc/ld.so.conf' 'etc/shadow' 'etc/gshadow'
         'etc/hosts' 'etc/hostname')
@@ -39,7 +39,7 @@ package() {
 	mkdir -p usr/{bin,include,lib,lib/modprobe.d,man,info,share}
 	mkdir -p usr/man/man{1,2,3,4,5,6,7,8}
 	mkdir -p usr/local/{bin,lib,etc,share,man,info,include}
-	mkdir -p var/{lib,log,spool}
+	mkdir -p var/{lib,log}
 
 	ln -s /usr/bin bin
 	ln -s /usr/bin usr/sbin
