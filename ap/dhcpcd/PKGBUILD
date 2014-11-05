@@ -1,0 +1,38 @@
+pkgname=dhcpcd
+pkgver=6.6.0
+pkgrel=1
+pkgdesc="A DHCP network autoconfiguration implementation"
+arch=("x86_64")
+url="http://roy.marples.name/projects/dhcpcd/"
+license=('BSD')
+options=('emptydirs')
+backup=('etc/dhcpcd.conf')
+
+depends=('glibc')
+
+source=("http://roy.marples.name/downloads/dhcpcd/dhcpcd-${pkgver}.tar.bz2")
+sha256sums=('16b94272cbb9ca22cb74c4421ee745f56850121613f6256587adb4e988c17fd0')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	./configure --prefix=/usr \
+	            --sbindir=/usr/bin \
+	            --sysconfdir=/etc \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --libexecdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --dbdir=/var/lib/dhcpcd \
+	            --rundir=/run \
+	            --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
