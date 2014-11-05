@@ -1,0 +1,24 @@
+. ./PKGBUILD.common
+
+pkgname=busybox-ntp
+pkgrel=1
+pkgdesc="A lightweight ntp client and daemon."
+
+depends=('glibc' 'libcap')
+conflicts=('iputils')
+
+source+=(config.xz
+         ntpd.pod)
+sha256sums+=(9a15c5d93b01748288bce9ec0b9e6fe5503c67c5e5338b28170a16dedf2d9c2a
+             a18b0239de23a00977ec4e269539d0ef03691e662808a1af5d6417a8c5826b4a)
+
+package() {
+	cd "${srcdir}/busybox-${pkgver}"
+	make install CONFIG_PREFIX="${pkgdir}"
+
+	rm -r "${pkgdir}"/bin
+	mv "${pkgdir}"/usr/sbin "${pkgdir}"/usr/bin
+
+	mkdir -p "${pkgdir}"/usr/man/man1
+	pod2man -c "Network Time Tools" -r "ntp" "${srcdir}"/ntpd.pod > "${pkgdir}"/usr/man/man1/ntpd.1
+}

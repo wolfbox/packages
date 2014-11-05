@@ -21,6 +21,7 @@ package() {
 	mv bin/* usr/bin/
 	mv usr/sbin/* usr/bin
 	rmdir bin usr/sbin
-	
+
+	rm usr/bin/busybox
 	compile_manpages "Ping Utilities" "ping"
 }

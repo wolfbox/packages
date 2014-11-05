@@ -42,14 +42,18 @@ build() {
 }
 
 compile_manpages() {
+	msg "Creating manpages"
+
 	_title="${1}"
 	_name="${2}" || "${pkgname}"
 
 	mkdir -p "${pkgdir}"/usr/man/man1
 
 	for file in "${pkgdir}"/usr/bin/*; do
+		echo "${file}"
 		_name=$(basename "${file}")
-		_usage=$("${file}" --help 2>&1)
+		# Some applets will return an error, but still give us what we need
+		_usage=$("${file}" --help 2>&1) || true
 		
 		# Remove the opening BusyBox stanza from the usage
 		_usage="$(echo "${_usage}" | awk '!/BusyBox/')"
@@ -57,7 +61,6 @@ compile_manpages() {
 		_podpath="${pkgdir}"/usr/man/man1/${_name}
 		cp "${srcdir}"/busybox.pod.in "${_podpath}".pod.in
 		awk -v n="${_name}" -v u="${_usage}" '{gsub(/@USAGE@/,u) gsub(/@NAME@/,n)}1' "${_podpath}.pod.in" > "${_podpath}".pod
-		#awk -v r="${_usage}" '{gsub(/@USAGE@/,r)}1' "${_podpath}.pod.in" > "${_podpath}".pod
 		pod2man "${_podpath}".pod --center "${_title}" -r "${_name}" > "${_podpath}".1
 
 		rm "${_podpath}".pod.in "${_podpath}".pod

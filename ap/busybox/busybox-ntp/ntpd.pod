@@ -1,0 +1,48 @@
+=head1 NAME
+
+ntpd - network time protocol client/server
+
+=head1 SYNOPSIS
+
+B<ntpd> [B<-dnqNwl>] [B<-S> I<PROG>] [B<-p> I<PEER>]...
+
+=head1 DESCRIPTION
+
+B<ntpd> has two functions: to synchronize a system's clock with another
+machine, and to host a server so that other machines can synchronize with
+this system.
+
+B<-d>            Verbose
+
+B<-n>            Do not daemonize
+
+B<-q>            Quit after clock is set
+
+B<-N>            Run at high priority
+
+B<-w>            Do not set time (only query peers), implies -n
+
+B<-l>            Run as server on port 123
+
+B<-S> I<PROG>    Run PROG after stepping time, stratum change, and every 11 mins
+
+B<-p> I<PEER>    Obtain time from PEER (may be repeated)
+
+=head1 EXAMPLES
+
+=head2 Synchronize
+
+Most users will use the following command to ensure their computer's clock is
+accurate:
+
+=over
+
+B<ntpd -nq -p pool.ntp.org>
+
+=back
+
+=head1 AUTHORS
+
+This command is part of the L<BusyBox|http://busybox.net> tool collection.
+
+=cut
