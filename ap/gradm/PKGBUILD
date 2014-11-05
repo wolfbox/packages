@@ -1,0 +1,30 @@
+pkgname=gradm
+_ver=3.0-201408301734
+pkgver=${_ver/-/_}
+pkgrel=1
+pkgdesc=""
+arch=("x86_64")
+url="https://grsecurity.net"
+license=('GPLv2')
+backup=('etc/grsec/learn_config' 'etc/grsec/policy')
+
+depends=('glibc')
+
+source=(https://grsecurity.net/stable/gradm-${_ver}.tar.gz)
+sha256sums=('b190e5afecdf3ac5020a4e5e4b698645f1c01b20d036129dd8b609c4bd0c319c')
+
+build() {
+	cd "${srcdir}"/${pkgname}
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+	make OPT_FLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
+}
+
+package() {
+	cd "${srcdir}"/${pkgname}
+
+	make install DESTDIR="${pkgdir}" MANDIR=/usr/man
+	mv "${pkgdir}"/sbin "${pkgdir}"/usr/bin
+	rm -r "${pkgdir}"/dev
+}
