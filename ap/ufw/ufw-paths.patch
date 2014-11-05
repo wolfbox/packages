@@ -1,0 +1,37 @@
+diff -ru ufw-0.33.orig/setup.py ufw-0.33/setup.py
+--- ufw-0.33.orig/setup.py	2012-08-17 17:12:49.000000000 -0400
++++ ufw-0.33/setup.py	2014-11-05 04:38:52.613081517 -0500
+@@ -99,9 +99,9 @@
+         if self.root != None:
+             prefix = self.root + real_prefix
+ 
+-        script = os.path.join(prefix, 'sbin', 'ufw')
+-        manpage = os.path.join(prefix, 'share', 'man', 'man8', 'ufw.8')
+-        manpage_f = os.path.join(prefix, 'share', 'man', 'man8', \
++        script = os.path.join(prefix, 'bin', 'ufw')
++        manpage = os.path.join(prefix, 'man', 'man8', 'ufw.8')
++        manpage_f = os.path.join(prefix, 'man', 'man8', \
+                                  'ufw-framework.8')
+ 
+         for f in [ script, manpage, manpage_f ]:
+diff -ru ufw-0.33.orig/src/util.py ufw-0.33/src/util.py
+--- ufw-0.33.orig/src/util.py	2012-08-17 17:12:49.000000000 -0400
++++ ufw-0.33/src/util.py	2014-11-05 04:39:55.845083252 -0500
+@@ -700,7 +700,7 @@
+     return network == orig_network
+ 
+ 
+-def get_iptables_version(exe="/sbin/iptables"):
++def get_iptables_version(exe="/usr/bin/iptables"):
+     '''Return iptables version'''
+     (rc, out) = cmd([exe, '-V'])
+     if rc != 0:
+@@ -709,7 +709,7 @@
+     return re.sub('^v', '', tmp[1])
+ 
+ 
+-def get_netfilter_capabilities(exe="/sbin/iptables"):
++def get_netfilter_capabilities(exe="/usr/bin/iptables"):
+     '''Return capabilities set for netfilter to support new features. Callers
+        must be root.'''
+     def test_cap(exe, chain, rule):

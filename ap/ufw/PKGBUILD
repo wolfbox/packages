@@ -1,0 +1,24 @@
+pkgname=ufw
+pkgver=0.33
+pkgrel=1
+pkgdesc="The Uncomplicated Firewall"
+arch=('any')
+url="https://launchpad.net/ufw"
+license=('GPLv3')
+
+depends=('python' 'gettext' 'iptables')
+
+source=(https://launchpad.net/ufw/${pkgver}/${pkgver}/+download/ufw-${pkgver}.tar.gz
+        ufw-paths.patch)
+sha256sums=('5f85a8084ad3539b547bec097286948233188c971f498890316dec170bdd1da8'
+            '8a36f23b1c5b8b94fc62c5b51fd40be7ce16269c309e61aea2295e960305f2a6')
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	cat "${srcdir}"/ufw-paths.patch | patch -p1
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	python setup.py install --root="${pkgdir}"
+}
