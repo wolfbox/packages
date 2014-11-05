@@ -1,0 +1,23 @@
+pkgname=libaio
+pkgver=0.3.109
+pkgrel=1
+pkgdesc="Asynchronous I/O library"
+arch=("x86_64")
+url="http://lse.sourceforge.net/io/aio.html"
+license=('LGPLv2.1')
+options=(!staticlibs !emptydirs)
+
+source=(https://git.fedorahosted.org/cgit/libaio.git/snapshot/libaio-${pkgver}.tar.xz)
+sha256sums=('f6f980aab6d4a98737fca4384cfbb0c00dfebe012ee6566769e4cc070012da58')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	mkdir -p "${pkgdir}"/usr/bin
+	make prefix="${pkgdir}" libdir="${pkgdir}"/usr/lib/${MULTIARCH} install
+}
