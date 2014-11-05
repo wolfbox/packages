@@ -1,12 +1,13 @@
-pkgname=openssl1
+pkgname=openssl
 pkgver=1.0.1j
 pkgrel=1
 pkgdesc="A legacy cryptography toolkit."
 arch=("x86_64")
 url="http://www.openssl.org"
 license=("custom")
+options=(!makeflags)
 
-depends=('glibc')
+depends=('glibc' 'zlib')
 provides=("openssl=${pkgver}")
 backup=('etc/ssl/openssl.cnf')
 
@@ -34,14 +35,15 @@ build() {
 	
 	# Disable RC5 due to patent expiring in 2015-03-03 
 	./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib/${MULTIARCH} \
-	         no-rc5 shared
+	         no-rc5 shared zlib "${CPPFLAGS} ${CFLAGS} ${LDFLAGS} -Wa,--noexecstack"
+
 	make depend
 	make
 }
 
 package() {
 	cd "${srcdir}/openssl-${pkgver}"
-	make install INSTALL_PREFIX="${pkgdir}"
+	make install INSTALL_PREFIX="${pkgdir}" MANDIR=/usr/man MANSUFFIX=ssl
 
 	# Create symlinks
 	( cd "${pkgdir}"/usr/lib/${MULTIARCH} ; ldconfig -l lib*.so.* )	
@@ -49,7 +51,4 @@ package() {
 	# Install copyright notice
 	mkdir -p "${pkgdir}"/usr/doc/openssl-${pkgver}/
 	cp -a LICENSE doc "${pkgdir}"/usr/doc/openssl-${pkgver}/
-
-	# What the heck are manpages doing in /etc?!
-	mv "${pkgdir}"/etc/ssl/man "${pkgdir}"/usr/
 }
