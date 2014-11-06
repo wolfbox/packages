@@ -3,7 +3,7 @@ pkgver=2.08
 pkgrel=1
 pkgdesc="A realtime compression library."
 arch=("x86_64")
-url="http://www.oberhumer.com/opernsource/lzo"
+url="http://www.oberhumer.com/opensource/lzo"
 license=("GPLv2")
 
 source=("http://www.oberhumer.com/opensource/lzo/download/lzo-2.08.tar.gz")
