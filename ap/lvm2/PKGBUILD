@@ -1,0 +1,60 @@
+_realname=LVM
+pkgname=lvm2
+pkgver=2.2.02.111
+pkgrel=1
+pkgdesc=""
+arch=("x86_64")
+url="https://www.sourceware.org/lvm2/"
+license=('GPLv2' 'LGPLv2.1')
+backup=('etc/lvm/lvm.conf')
+
+depends=('glibc' 'readline' 'util-linux' 'ncurses' 'udev')
+
+source=(ftp://sources.redhat.com/pub/lvm2/LVM${pkgver}.tgz{,.asc})
+sha256sums=('6d8f3e72fe07f614315d8e0c2d9f93c5fc7a4360d14e4f9b805750e21593dd24'
+            'SKIP')
+
+build() {
+	cd "${srcdir}/${_realname}${pkgver}"
+
+	# uid 0 = root
+	# gid 6 = disk
+	./configure --prefix=/usr \
+	            --sbindir=/usr/bin \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --with-usrlibdir=/usr/lib/${MUTIARCH} \
+	            --mandir=/usr/man \
+	            --enable-cmdlib \
+	            --enable-dmeventd \
+	            --enable-applib \
+	            --enable-realtime \
+	            --disable-udev-systemd-background-jobs \
+	            --with-lvm1=internal \
+	            --enable-pkgconfig \
+	            --enable-udev_sync \
+	            --enable-udev_ryles \
+	            --with-udev-prefix="" \
+	            --with-device-uid=0 \
+	            --with-device-gid=6 \
+	            --with-device-mode=0660 \
+	            --with-default-locking-dir=/run/lock/lvm \
+	            --with-default-run-dir=/run/lvm \
+	            --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${_realname}${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+
+	# These links are all screwed up
+	msg "Cleaning up links"
+	for file in "${pkgdir}"/usr/lib/*.so*; do
+		_base=$(basename "${file}")
+		_target=$(basename $(readlink "${file}"))
+		ln -s ${_target} "${pkgdir}"/usr/lib/${MULTIARCH}/${_base}
+	done
+	
+	rm "${pkgdir}"/usr/lib/*.so*
+}
