@@ -51,9 +51,12 @@ build() {
 	export CFLAGS="${CFLAGS} -fPIE"
 	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 	
-	LIBS=-lrt ./configure --prefix=/usr --with-rootprefix=/ --libdir=/usr/lib/${MULTIARCH} \
+	LIBS=-lrt ./configure --prefix=/usr \
+	            --with-rootprefix=/ \
+	            --libdir=/usr/lib/${MULTIARCH} \
 	            --with-rootlibdir=/lib \
 	            --with-firmware-path=/lib/firmware/updates:/lib/firmware \
+	            --with-rootlibdir=/lib/${MULTIARCH} \
 	            --sysconfdir=/etc \
 	            --bindir=/usr/bin \
 	            --sbindir=/usr/bin \
