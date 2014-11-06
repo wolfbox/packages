@@ -1,13 +1,15 @@
 pkgname=libgpg-error
-pkgver=1.11
+pkgver=1.17
 pkgrel=1
-pkgdesc=""
+pkgdesc="A common library for working with gnupg errors"
 arch=("x86_64")
 url="https://www.gnupg.org/related_software/libgpg-error/index.html"
 license=("GPLv2")
 
-source=("ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-${pkgver}.tar.bz2")
-sha256sums=(ae3376480a073b120c7add08f1e6cfcc08500648ccf22461cd42db6224a218c0)
+source=(ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-${pkgver}.tar.bz2{,.sig})
+
+sha256sums=('3ff4e5a71116eb862cd14185fcd282850927b8608e3b4186834fd940fbef57b5'
+            'SKIP')
 
 build() {
 	cd "${srcdir}/libgpg-error-${pkgver}"

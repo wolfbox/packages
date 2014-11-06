@@ -1,0 +1,45 @@
+pkgname=gnupg
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="The GNU Privacy Guard cryptography tool"
+arch=("x86_64")
+url="http://gnupg.org"
+license=('GPLv3' 'LGPLv3')
+
+depends=('glibc' 'libgpg-error' 'libgcrypt>=1.6' 'npth' 'zlib' 'readline'
+         'ncurses' 'libassuan' 'libksba')
+
+source=(ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-${pkgver}.tar.bz2{,.sig})
+sha256sums=('16a8c3f50a15bf37d2dfb1c5e4bb3ec533e1d0b6a4043ff3680a376a3ad4058b'
+            'SKIP')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	./configure --prefix=/usr \
+	            --sbindir=/usr/bin \
+	            --sysconfdir=/etc \
+	            --infodir=/usr/info \
+	            --docdir=/usr/doc/${pkgname}-${pkgver} \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --libexecdir=/usr/lib/${MULTIARCH}/gnupg \
+	            --mandir=/usr/man \
+	            --enable-large-secmem \
+	            --with-capabilities \
+	            --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}"
+	
+	# Link gpg to gpg2
+	( cd "${pkgdir}"/usr
+	  ln -s gpg2 bin/gpg
+	  ln -s gpgv2 bin/gpgv
+	  ln -s gpg2.1.gz man/man1/ )
+}
