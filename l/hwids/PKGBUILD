@@ -18,5 +18,5 @@ package() {
 	cd "${srcdir}/hwids-hwids-${pkgver}"
 	
 	mkdir -p "${pkgdir}"/usr/share/hwdata
-	install -m644 pci.ids.gz usb.ids.gz "${pkgdir}"/usr/share/hwdata/
+	install -m644 pci.ids usb.ids.gz "${pkgdir}"/usr/share/hwdata/
 }
