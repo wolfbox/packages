@@ -14,9 +14,9 @@ source+=(config.xz
          ntpd.upstart
          busybox-ntpd-norootcheck.patch)
 
-sha256sums+=(9a15c5d93b01748288bce9ec0b9e6fe5503c67c5e5338b28170a16dedf2d9c2a
+sha256sums+=(10f6c9ff21b73f2f63df9412ad977a79c8ba733df4daf5d3cc87f1c6989453a7
              a18b0239de23a00977ec4e269539d0ef03691e662808a1af5d6417a8c5826b4a
-             ab57b9193aaf2b04463f65bce18acea84c84203bb1b7dfebb8c3ee88decf7a47
+             d11b7f78181c447b3dc3d7b17bdcfd08b5b103347cac0e7fc16f32a94022dd13
              d0df998395bd1d68c8e7c496d0056d11a1aacf555591c7726bc47c8bf1cd6604)
 
 package() {
