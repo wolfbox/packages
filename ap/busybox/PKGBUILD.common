@@ -7,7 +7,7 @@ makedepends=('perl')
 
 MIRROR="http://busybox.net/downloads"
 PATCHES="${MIRROR}/fixes-${pkgver}/busybox-${pkgver}"
-source=(${MIRROR}/busybox-${pkgver}
+source=(${MIRROR}/busybox-${pkgver}.tar.bz2
 		${PATCHES}-ash.patch
 		${PATCHES}-date.patch
 		${PATCHES}-iplink.patch

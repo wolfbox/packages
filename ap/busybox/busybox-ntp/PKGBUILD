@@ -3,21 +3,31 @@
 pkgname=busybox-ntp
 pkgrel=1
 pkgdesc="A lightweight ntp client and daemon."
+install=ntp.install
+backup=('etc/ntpd.conf')
 
 depends=('glibc')
 conflicts=('ntp')
 
 source+=(config.xz
-         ntpd.pod)
+         ntpd.pod
+         ntpd.upstart
+         busybox-ntpd-norootcheck.patch)
+
 sha256sums+=(9a15c5d93b01748288bce9ec0b9e6fe5503c67c5e5338b28170a16dedf2d9c2a
-             a18b0239de23a00977ec4e269539d0ef03691e662808a1af5d6417a8c5826b4a)
+             a18b0239de23a00977ec4e269539d0ef03691e662808a1af5d6417a8c5826b4a
+             ab57b9193aaf2b04463f65bce18acea84c84203bb1b7dfebb8c3ee88decf7a47
+             d0df998395bd1d68c8e7c496d0056d11a1aacf555591c7726bc47c8bf1cd6604)
 
 package() {
 	cd "${srcdir}/busybox-${pkgver}"
-	make install CONFIG_PREFIX="${pkgdir}"
 
-	rm -r "${pkgdir}"/bin
-	mv "${pkgdir}"/usr/sbin "${pkgdir}"/usr/bin
+	mkdir -p "${pkgdir}"/usr/bin
+	install -m700 busybox "${pkgdir}"/usr/bin/ntpd
+
+	mkdir -p "${pkgdir}"/etc/init
+	install -m644 "${srcdir}"/ntpd.upstart "${pkgdir}"/etc/init/ntpd.conf
+	echo "pool.ntp.org" > "${pkgdir}"/etc/ntpd.conf
 
 	mkdir -p "${pkgdir}"/usr/man/man1
 	pod2man -c "Network Time Tools" -r "ntp" "${srcdir}"/ntpd.pod > "${pkgdir}"/usr/man/man1/ntpd.1

@@ -1,0 +1,13 @@
+post_install() {
+	useradd -rU ntpd -s /bin/false -d /dev/null 2>/dev/null || true
+	post_upgrade
+}
+
+post_upgrade() {
+	chown ntpd:ntpd /usr/bin/ntpd
+	setcap cap_sys_time=ep /usr/bin/ntpd
+}
+
+post_remove() {
+	userdel ntpd
+}

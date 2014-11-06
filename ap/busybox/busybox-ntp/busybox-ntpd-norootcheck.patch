@@ -1,0 +1,14 @@
+diff -ru busybox-1.22.1.orig/networking/ntpd.c busybox-1.22.1/networking/ntpd.c
+--- busybox-1.22.1.orig/networking/ntpd.c	2014-11-06 09:49:56.935487994 -0500
++++ busybox-1.22.1/networking/ntpd.c	2014-11-06 09:50:23.626660444 -0500
+@@ -2067,8 +2067,8 @@
+ 
+ 	srandom(getpid());
+ 
+-	if (getuid())
+-		bb_error_msg_and_die(bb_msg_you_must_be_root);
++	/*if (getuid())
++		bb_error_msg_and_die(bb_msg_you_must_be_root);*/
+ 
+ 	/* Set some globals */
+ 	G.stratum = MAXSTRAT;
