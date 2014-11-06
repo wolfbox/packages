@@ -1,0 +1,25 @@
+pkgname=nasm
+pkgver=2.11.06
+pkgrel=1
+pkgdesc="The NASM x86 assembler"
+arch=("x86_64")
+url="http://www.nasm.us"
+license=('BSD')
+
+depends=('glibc')
+
+source=(http://www.nasm.us/pub/nasm/releasebuilds/${pkgver}/nasm-${pkgver}.tar.xz)
+sha256sums=('90f60d95a15b8a54bf34d87b9be53da89ee3d6213ea739fb2305846f4585868a')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr \
+	            --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install INSTALLROOT="${pkgdir}"
+}
