@@ -1,0 +1,35 @@
+_basename=libpng
+pkgname=libpng12
+pkgver=1.2.51
+pkgrel=1
+pkgdesc="A library for working with the PNG image format - Legacy"
+arch=("x86_64")
+url="http://www.libpng.org/pub/png/libpng.html"
+license=('custom')
+options=(!staticlibs)
+
+provides=("libpng=${pkgver}")
+depends=('glibc' 'zlib')
+
+source=(http://downloads.sourceforge.net/project/libpng/libpng12/${pkgver}/libpng-${pkgver}.tar.xz)
+sha256sums=('c7d7b813b022afd70474f78bcc3655c7bb54edbf28dd4652e5521cbb6da56d4a')
+
+build() {
+	cd "${srcdir}/${_basename}-${pkgver}"
+
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd "${srcdir}/${_basename}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m644 LICENSE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	
+	rm -r "${pkgdir}"/usr/include
+	rm -r "${pkgdir}"/usr/bin
+	rm -r "${pkgdir}"/usr/share
+	rm -r "${pkgdir}"/usr/lib/${MULTIARCH}/{libpng.*,pkgconfig/libpng.pc}
+}
