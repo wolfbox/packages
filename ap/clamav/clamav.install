@@ -1,0 +1,9 @@
+post_install() {
+	useradd -Ur clamav -s /usr/bin/false -c "Clam AntiVirus" -d /dev/null 2>/dev/null || true	
+	chown -R clamav:clamav /var/lib/clamav
+}
+
+post_remove() {
+	userdel clamav
+	rm -rf /var/lib/clamav
+}

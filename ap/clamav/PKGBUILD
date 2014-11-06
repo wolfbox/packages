@@ -1,0 +1,42 @@
+pkgname=clamav
+pkgver=0.98.4
+pkgrel=1
+pkgdesc="A malware detection tool"
+arch=("x86_64")
+url="http://www.clamav.net"
+license=('GPLv2' 'LGPLv2.1')
+install=clamav.install
+backup=('etc/freshclam.conf')
+
+depends=('gcc-libs' 'glibc' 'zlib' 'bzip2' 'openssl' 'curl' 'xz' 'libxml2')
+
+source=("http://downloads.sourceforge.net/project/clamav/clamav/${pkgver}/clamav-${pkgver}.tar.gz")
+sha256sums=('d3006747abcf750f395a8bfa8267ab314c7b63196c4b41e7717948aaaafa3e1c')
+
+build() {
+	cd "${srcdir}"/${pkgname}-${pkgver}
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export CXXFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	./configure --prefix=/usr \
+	            --sbindir=/usr/bin \
+	            --sysconfdir=/etc \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --sysconfdir=/etc \
+	            --mandir=/usr/man \
+	            --enable-llvm \
+	            --with-dbdir=/var/lib/clamav \
+	            --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}"/${pkgname}-${pkgver}
+	make install DESTDIR="${pkgdir}"
+	
+	mkdir -p "${pkgdir}"/var/lib/clamav
+	( cd "${pkgdir}"/etc
+	  mv freshclam.conf.sample freshclam.conf )
+}
