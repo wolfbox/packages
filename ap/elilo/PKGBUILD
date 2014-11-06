@@ -6,7 +6,7 @@ arch=("x86_64")
 url="http://sourceforge.net/projects/elilo/"
 license=(GPLv2)
 
-depends=('glibc')
+depends=('glibc' 'gnu-efi')
 options=(!strip)
 
 source=(http://downloads.sourceforge.net/project/elilo/elilo/elilo-${pkgver}/elilo-${pkgver}-all.tar.gz)
@@ -20,7 +20,7 @@ prepare() {
 
 	# Fix build on non-Debian systems
 	sed -i "s,/usr/lib,/usr/lib/${MULTIARCH},g" Make.defaults
-	sed -i "s,EFICRT0.*= /usr/lib/${MULTIARCH},EFICRT0    = /usr/lib/${MULTIARCH}/gnuefi,g" Make.defaults
+	sed -i "s,EFICRT0.*= /usr/lib/${MULTIARCH},EFICRT0    = /usr/lib/${MULTIARCH},g" Make.defaults
 	sed -i "s,dpkg-architecture -qDEB_BUILD_ARCH,uname -m,g" Make.defaults
 }
 
