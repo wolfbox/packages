@@ -1,0 +1,24 @@
+pkgname=efivar
+pkgver=0.15
+pkgrel=1
+pkgdesc=""
+arch=("x86_64")
+url=""
+license=('LGPLv2.1')
+
+depends=('glibc' 'popt')
+
+source=(https://github.com/vathpela/efivar/releases/download/${pkgver}/efivar-${pkgver}.tar.bz2)
+sha256sums=('08251e10dbee8a5a9851d859b98fc6cb479acfced38695a101bd8ed2a447051e')
+
+_OPTIONS="libdir=${pkgdir}/usr/lib/${MULTIARCH} mandir=${pkgdir}/usr/man"
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make ${_OPTIONS}
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install DESTDIR="${pkgdir}" ${_OPTIONS}
+}
