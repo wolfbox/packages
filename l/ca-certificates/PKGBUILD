@@ -1,0 +1,47 @@
+pkgname=ca-certificates
+pkgver=20141019
+pkgrel=1
+pkgdesc="A collection of CA certificates"
+arch=("x86_64")
+url="http://packages.qa.debian.org/c/ca-certificates.html"
+license=('MPL2' 'GPL2')
+install=ca-certificates.install
+
+depends=('run-parts')
+makedepends=('python2' 'sed')
+
+source=(http://ftp.de.debian.org/debian/pool/main/c/ca-certificates/ca-certificates_${pkgver}.tar.xz
+        confd.patch)
+sha256sums=('684902d3f4e9ad27829f4af0d9d2d588afed03667997579b9c2be86fcd1eb73a'
+            '6a6efe688bd7f40dc57d07ad6bfdbb83f4853a1964c55e0620e833e6c2945dab')
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	sed -i "s:python :python2 :" mozilla/Makefile
+	sed -i "s:usr/sbin:usr/bin:" sbin/Makefile
+
+	# Apply the Arch patch that splits up ca-certificates.conf into a conf.d
+	# directory.
+	cat "${srcdir}"/confd.patch | patch -p1
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	mkdir -p "${pkgdir}"/etc/ca-certificates/update.d
+	mkdir -p "${pkgdir}"/etc/ca-certificates/conf.d
+	mkdir -p "${pkgdir}"/usr/bin
+	mkdir -p "${pkgdir}"/usr/share/ca-certificates
+
+	printf "%s\n" mozilla/*.crt > "${pkgdir}"/etc/ca-certificates/conf.d/mozilla.conf
+
+	make DESTDIR="${pkgdir}" install
+	
+	# Remove SPI-cacert; as far as I can tell, it's just a Debian thing
+	rm -r "${pkgdir}"/usr/share/ca-certificates/spi-inc.org
+}
