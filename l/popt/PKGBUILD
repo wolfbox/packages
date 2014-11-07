@@ -1,0 +1,31 @@
+pkgname=popt
+pkgver=1.16
+pkgrel=1
+pkgdesc="A command line parsing library"
+arch=("x86_64")
+url="http://directory.fsf.org/wiki/Popt"
+license=('custom')
+
+depends=('glibc')
+
+source=(http://rpm5.org/files/popt/popt-${pkgver}.tar.gz)
+sha256sums=('e728ed296fe9f069a0e005003c3d6b2dde3d9cad453422a10d6558616d304cc8')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m644 COPYING "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+
+	mv "${pkgdir}"/usr/lib/pkgconfig "${pkgdir}"/usr/lib/${MULTIARCH}/
+}
