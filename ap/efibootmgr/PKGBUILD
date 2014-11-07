@@ -1,0 +1,28 @@
+pkgname=efibootmgr
+pkgver=0.11.0
+pkgrel=1
+pkgdesc="A tool for working with the UEFI firmware configuration"
+arch=("x86_64")
+url="https://github.com/vathpela/efibootmgr"
+license=('GPLv2')
+
+depends=('glibc' 'efivar' 'pciutils')
+
+source=(https://github.com/vathpela/efibootmgr/releases/download/efibootmgr-${pkgver}/efibootmgr-${pkgver}.tar.bz2{,.sig})
+sha256sums=('f27ce3d7588512017bceb2d2a29aef110499a662a21550afa1158f9950f976d1'
+            'SKIP')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make EXTRA_CFLAGS="-Os"
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	install -d "${pkgdir}"/usr/bin
+	install -m755 src/efibootmgr/efibootmgr "${pkgdir}"/usr/bin/
+	
+	install -d "${pkgdir}"/usr/man/man8
+	install -m644 src/man/man8/efibootmgr.8 "${pkgdir}"/usr/man/man8/
+}
