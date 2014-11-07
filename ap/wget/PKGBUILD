@@ -5,6 +5,7 @@ pkgdesc="A tool for retrieving files over the network."
 arch=('x86_64')
 url="http://www.gnu.org/software/wget"
 license=('GPLv3')
+backup=('etc/wgetrc')
 
 depends=('glibc' 'openssl' 'zlib' 'pcre' 'util-linux')
 
@@ -19,6 +20,7 @@ build() {
 	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 
 	./configure --prefix=/usr \
+	            --sysconfdir=/etc \
 	            --mandir=/usr/man \
 	            --infodir=/usr/info \
 	            --with-ssl=openssl
