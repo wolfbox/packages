@@ -1,5 +1,5 @@
 pkgname=curl
-pkgver=7.36.0
+pkgver=7.39.0
 pkgrel=1
 pkgdesc="A URL transfer tool and library."
 arch=("x86_64")
@@ -7,12 +7,12 @@ url="http://curl.haxx.se"
 license=(custom)
 
 depends=('glibc' 'zlib' 'openssl' 'libidn')
-makedepends=('xz')
 
-source=("http://curl.haxx.se/download/curl-${pkgver}.tar.bz2"
-		cacert.pem.xz)
-sha256sums=(1fbe82b89bcd6b7ccda8cb0ff076edc60e911595030e27689f4abd5ef7f3cfcd
-			1a4b4be73c6cc1bf03ee77005a6b3375bb30dd34b1229006fdddd3661ef7385e)
+source=(http://curl.haxx.se/download/curl-${pkgver}.tar.bz2{,.asc}
+		http://curl.haxx.se/ca/cacert.pem)
+sha256sums=('b222566e7087cd9701b301dd6634b360ae118cc1cbc7697e534dc451102ea4e0'
+            'SKIP'
+            'SKIP')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -29,9 +29,8 @@ package() {
 	
 	# Set up certs
 	mkdir -p "${pkgdir}"/usr/share/curl
-	cp -a "${srcdir}"/cacert.pem.xz "${pkgdir}"/usr/share/curl/
+	cp -a "${srcdir}"/cacert.pem "${pkgdir}"/usr/share/curl/
 	( cd "${pkgdir}"/usr/share/curl
-	  xz -fd cacert.pem.xz
 	  mv cacert.pem ca-bundle.crt
 	  chmod 644 ca-bundle.crt	
 	)
