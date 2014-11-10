@@ -1,0 +1,21 @@
+pkgname=dri2proto
+pkgver=2.8
+pkgrel=1
+pkgdesc=""
+arch=('any')
+url="http://xorg.freedesktop.org"
+license=('x11')
+
+source=(http://xorg.freedesktop.org/releases/individual/proto/dri2proto-${pkgver}.tar.bz2)
+sha256sums=('f9b55476def44fc7c459b2537d17dbc731e36ed5d416af7ca0b1e2e676f8aa04')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --docdir=/usr/doc/${pkgdir}-${pkgver}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
