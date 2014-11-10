@@ -12,21 +12,41 @@ B<ntpd> has two functions: to synchronize a system's clock with another
 machine, and to host a server so that other machines can synchronize with
 this system.
 
-B<-d>            Verbose
+=over 4
 
-B<-n>            Do not daemonize
+=item B<-d>
 
-B<-q>            Quit after clock is set
+Verbose
 
-B<-N>            Run at high priority
+=item B<-n>
 
-B<-w>            Do not set time (only query peers), implies -n
+Do not daemonize
 
-B<-l>            Run as server on port 123
+=item B<-q>
 
-B<-S> I<PROG>    Run PROG after stepping time, stratum change, and every 11 mins
+Quit after clock is set
 
-B<-p> I<PEER>    Obtain time from PEER (may be repeated)
+=item B<-N>
+
+Run at a high priority
+
+=item B<-w>
+
+Do not set time (only query peers), implies -n
+
+=item B<-l>
+
+Run as server on port 123
+
+=item B<-S> I<PROG>
+
+Run PROG after stepping time, stratum change, and every 11 mins
+
+=item B<-p> I<PEER>
+
+Obtain time from PEER (may be repeated)
+
+=back
 
 =head1 EXAMPLES
 

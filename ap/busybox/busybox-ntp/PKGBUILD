@@ -15,7 +15,7 @@ source+=(config.xz
          busybox-ntpd-norootcheck.patch)
 
 sha256sums+=(10f6c9ff21b73f2f63df9412ad977a79c8ba733df4daf5d3cc87f1c6989453a7
-             a18b0239de23a00977ec4e269539d0ef03691e662808a1af5d6417a8c5826b4a
+             86d0eddb948400ce4c6dda8b30a8e47f974b223dbac04188dbc6957bb9c2b337
              d11b7f78181c447b3dc3d7b17bdcfd08b5b103347cac0e7fc16f32a94022dd13
              d0df998395bd1d68c8e7c496d0056d11a1aacf555591c7726bc47c8bf1cd6604)
 
