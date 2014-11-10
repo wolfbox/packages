@@ -6,6 +6,7 @@ arch=("x86_64")
 url="http://gondor.apana.org.au/~herbert/dash/"
 license=("BSD")
 
+provides=('sh')
 makedepends=('glibc')
 
 source=("http://gondor.apana.org.au/~herbert/dash/files/dash-${pkgver}.tar.gz")
