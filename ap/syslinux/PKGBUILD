@@ -1,0 +1,34 @@
+pkgname=syslinux
+pkgver=6.03
+pkgrel=1
+pkgdesc="A lightweight and versatile suite of bootloaders."
+arch=("x86_64")
+url="http://www.syslinux.org"
+license=('GPLv2')
+options=(!makeflags !buildflags)
+backup=('boot/syslinux/syslinux.cfg')
+
+depends=('glibc')
+
+source=(https://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-${pkgver}.tar.xz
+        syslinux.cfg)
+sha256sums=('26d3986d2bea109d5dc0e4f8c4822a459276cf021125e8c9f23c3cca5d8c850e'
+            '8295e8344b58d15525bc5559e1a12a84d791b2aaf275f05df2aca24ec8f70150')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make clean
+	make installer
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make install INSTALLROOT="${pkgdir}" \
+	             SBINDIR=/usr/bin \
+	             MANDIR=/usr/man \
+	             AUXDIR=/usr/lib/syslinux
+
+	# Install our template config
+	mkdir -p "${pkgdir}"/boot/syslinux
+	install -m644 "${srcdir}"/syslinux.cfg "${pkgdir}"/boot/syslinux/syslinux.cfg
+}
