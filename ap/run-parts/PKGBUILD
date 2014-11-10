@@ -1,0 +1,26 @@
+pkgname=run-parts
+pkgver=0.1
+pkgrel=1
+pkgdesc="A tool for running scripts in a directory"
+arch=('any')
+url="https://github.com/wolfbox/run-parts"
+license=('MIT')
+
+makedepends=('perl')
+depends=('sh' 'sed')
+
+source=(https://github.com/wolfbox/run-parts/archive/v${pkgver}.tar.gz)
+sha256sums=('939ce28cb38ab9cedc3ab88891df2d4910e0f4bbd374dd8f9fc06406edb93bea')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	mkdir -p "${pkgdir}"/usr/bin
+	mkdir -p "${pkgdir}"/usr/man/man1
+	make install PREFIX="${pkgdir}"/usr MANDIR="${pkgdir}"/usr/man
+}
