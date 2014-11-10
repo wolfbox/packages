@@ -11,7 +11,7 @@ depends=('glibc')
 source=(http://www.jimpryor.net/linux/releases/dcron-${pkgver}.tar.gz
         dcron.upstart)
 sha256sums=('9e50edb6f5bd8153b16bad05087d985e5153ce45cc01ae77e7f842213fb4a824'
-            '0cd2a153858e40974405792b4024bf99708a099bf20717d7d045c58fd055bb92')
+            '5ead7b10465eae57911370902b24a035f8f51294022d0cd75f59d859b2450e2d')
 
 _MAKEOPTS="PREFIX=/usr SBINDIR=/usr/bin BINDIR=/usr/bin MANDIR=/usr/man CRONTABS=/var/lib/cron/crontabs CRONSTAMPS=/var/lib/cron/cronstamps SHELL=/usr/bin/sh"
 
