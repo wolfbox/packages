@@ -43,7 +43,8 @@ package() {
 	( cd "${pkgdir}/usr/lib/${MULTIARCH}/"
 	  rm -f libbz2.so.1.0 libbz2.so.1
 	  ln -sf "libbz2.so.${pkgver}" libbz2.so.1.0
-	  ln -sf libbz2.so.1.0 libbz2.so.1
+	  ln -sf libbz2.so.${pkgver} libbz2.so.1
+	  ln -sf libbz2.so.${pkgver} libbz2.so
 	)
 	
 	for file in bzdiff bzgrep bzmore ; do
