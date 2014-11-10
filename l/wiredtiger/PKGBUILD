@@ -1,20 +1,20 @@
 pkgname=wiredtiger
-pkgver=2.4.0
+pkgver=2.4.1
 pkgrel=1
 pkgdesc="A highly scalable NoSQL data storage platform."
 arch=("x86_64")
 url="http://wiredtiger.com"
 license=('GPL')
 
-depends=('glibc' 'zlib')
+depends=('glibc' 'zlib' 'bzip2' 'snappy')
 
 source=(http://source.wiredtiger.com/releases/wiredtiger-${pkgver}.tar.bz2)
-sha256sums=(7a68920d9a001b3a780e85405a62c52ec1e59796400d627d345f8191bf6567d6)
+sha256sums=('378f90339db11c3dfb17a3093811740383cd5f1588785dc4a0f47955d1281f77')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
-	            --enable-zlib
+	            --enable-zlib --enable-bzip2 --enable-snappy
 	make
 }
 
