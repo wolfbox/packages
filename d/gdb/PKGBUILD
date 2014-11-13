@@ -32,5 +32,8 @@ package() {
 	rm -f "${pkgdir}"/usr/lib/${MULTIARCH}/{libbfd*,libiberty*,libopcodes*}
 	rm -f "${pkgdir}"/usr/info/{annotate*,bfd*,configure*,standards*}
 	rm -rf "${pkgdir}"/usr/include
-	rm -r "${pkgdir}"/usr/share
+
+	# Remove duplicate locale files
+	find "${pkgdir}"/usr/share/locale -name "bfd.mo" -exec rm {} \;
+	find "${pkgdir}"/usr/share/locale -name "opcodes.mo" -exec rm {} \;
 }
