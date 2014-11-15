@@ -1,0 +1,25 @@
+pkgname=perl-error
+pkgver=0.17022
+pkgrel=1
+pkgdesc="An object-oriented error-handling library for Perl"
+arch=('any')
+url="http://search.cpan.org/dist/Error/"
+license=('GPLv1' 'PerlArtistic')
+options=('!emptydirs')
+
+depends=('perl')
+
+source=(http://search.cpan.org/CPAN/authors/id/S/SH/SHLOMIF/Error-${pkgver}.tar.gz)
+sha256sums=('cab74f04fb3af7088cefc2f6f96800ee52d34b82928bbb35ca51a0e5b5f9f7ef')
+
+build() {
+	cd "${srcdir}"/Error-${pkgver}
+	perl Makefile.PL INSTALLDIRS=vendor
+	make
+}
+
+package() {
+	cd "${srcdir}/Error-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
