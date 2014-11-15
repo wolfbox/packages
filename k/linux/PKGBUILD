@@ -1,5 +1,5 @@
 pkgname=linux
-pkgver=3.17.2
+pkgver=3.17.3
 pkgrel=1
 pkgdesc="The Linux kernel."
 arch=("x86_64")
@@ -9,13 +9,13 @@ license=('GPLv2')
 install=linux.install
 makedepends=('gcc' 'lz4' 'xz')
 
-_grsecver=3.0-3.17.2-201410312213
+_grsecver=3.0-${pkgver}-201411150027
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.xz
         https://grsecurity.net/test/grsecurity-${_grsecver}.patch
         config.xz)
-sha256sums=(f9221dc0878955318ab57b8bb5ea1f26cbbaa39359c91d0f6c8de74d68aea796
-            aa8816e1182792ed976c10ba407278d68ca18a7e3bb62b51ea0c9263ab71604a
-            362419ede85a9286eb760c8c60f738ba7523e5841222e2a80a27ac1018b3df98)
+sha256sums=('f1ff54a392db4ad6432d07671f19c7da7cb73cae2bd7ea84369492abc8c172c2'
+            '23ad271cc8b563d13b1fd8509a60a65da5683b2cdd6f7288afacbfd1dfb56ea6'
+            '362419ede85a9286eb760c8c60f738ba7523e5841222e2a80a27ac1018b3df98')
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
