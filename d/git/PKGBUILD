@@ -7,7 +7,7 @@ url="http://git-scm.com"
 license=('GPLv2')
 
 makedepends=('python2' 'asciidoc' 'xmlto' 'docbook-xsl' 'docbook-xml')
-depends=('glibc' 'zlib' 'openssl' 'perl' 'curl' 'expat')
+depends=('glibc' 'zlib' 'openssl' 'perl' 'perl-error' 'curl' 'expat')
 optdepends=('python2'
             'subversion')
 
