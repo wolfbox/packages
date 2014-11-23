@@ -10,16 +10,31 @@ msg_error() {
     printf "%b%s%b\n" "\033[31;1m" "${NAME}: ${1}" "\033[0m"
 }
 
+emit_event() {
+    event_name="${1}"
+
+    for script in /etc/rc.d/events/*."${event_name}"_${NAME} ; do
+        if [ -x "${script}" ] && [ ! -r "${script}".disabled ]; then
+            "${script}"
+        fi
+    done
+}
+
 dispatch_command() {
-    command="service_${1}"
+    command="${1}"
+    shift 1
     
-    "${command}" 2> /dev/null
+    "service_${command}" 2> /dev/null
     if [ $? -eq 127 ]; then
         service_help 2> /dev/null
         if [ $? -eq 127 ]; then
-            echo "${NAME} has no function ${1}"
+            echo "${NAME} has no help"
         fi
+
+        return 1
     fi
+ 
+    emit_event "${command}"
 }
 
 kill_pidfile() {
