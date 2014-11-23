@@ -1,0 +1,2 @@
+#!/usr/bin/sh
+/etc/rc.d/ntpd start
