@@ -11,12 +11,11 @@ conflicts=('ntp')
 
 source+=(config.xz
          ntpd.pod
-         ntpd.upstart
+         ntpd
          busybox-ntpd-norootcheck.patch)
-
 sha256sums+=(10f6c9ff21b73f2f63df9412ad977a79c8ba733df4daf5d3cc87f1c6989453a7
              86d0eddb948400ce4c6dda8b30a8e47f974b223dbac04188dbc6957bb9c2b337
-             d11b7f78181c447b3dc3d7b17bdcfd08b5b103347cac0e7fc16f32a94022dd13
+             5ded9dd34b699e084365bbac48af0a0e5e1882d30478d80c77daa2cf207f00c4
              d0df998395bd1d68c8e7c496d0056d11a1aacf555591c7726bc47c8bf1cd6604)
 
 package() {
@@ -25,8 +24,8 @@ package() {
 	mkdir -p "${pkgdir}"/usr/bin
 	install -m700 busybox "${pkgdir}"/usr/bin/ntpd
 
-	mkdir -p "${pkgdir}"/etc/init
-	install -m644 "${srcdir}"/ntpd.upstart "${pkgdir}"/etc/init/ntpd.conf
+	mkdir -p "${pkgdir}"/etc/rc.d
+	install -m755 "${srcdir}"/ntpd "${pkgdir}"/etc/rc.d/ntpd
 	echo "pool.ntp.org" > "${pkgdir}"/etc/ntpd.conf
 
 	mkdir -p "${pkgdir}"/usr/man/man1

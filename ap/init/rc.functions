@@ -3,20 +3,39 @@
 NAME="$(basename "${0}")"
 
 msg() {
-	printf "%b%s%b\n" "\033[37;1m" "${NAME}: ${1}" "\033[0m"
+    printf "%b%s%b\n" "\033[37;1m" "${NAME}: ${1}" "\033[0m"
 }
 
 msg_error() {
-	printf "%b%s%b\n" "\033[31;1m" "${NAME}: ${1}" "\033[0m"
+    printf "%b%s%b\n" "\033[31;1m" "${NAME}: ${1}" "\033[0m"
 }
 
 dispatch_command() {
-	command="service_${1}"
-	"${command}" 2> /dev/null
-	if [ $? -eq 127 ]; then
-		service_help 2> /dev/null
-		if [ $? -eq 127 ]; then
-			echo "${NAME} has no function ${1}"
-		fi
-	fi
+    command="service_${1}"
+    
+    "${command}" 2> /dev/null
+    if [ $? -eq 127 ]; then
+        service_help 2> /dev/null
+        if [ $? -eq 127 ]; then
+            echo "${NAME} has no function ${1}"
+        fi
+    fi
+}
+
+kill_pidfile() {
+    sig="${2}"
+    if [ -z "${sig}" ]; then
+        sig=TERM
+    fi
+
+    kill -s "${sig}" $(cat "${1}")
+}
+
+status_pidfile() {
+    pid=$(cat "${1}")
+    if [ $? -ne 0 ]; then
+        msg "not running"
+    else
+        msg "running as PID ${pid}"
+    fi
 }
