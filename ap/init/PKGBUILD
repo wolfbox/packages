@@ -11,10 +11,12 @@ depends=('glibc')
 
 source=(https://github.com/arachsys/init/archive/init-${pkgver}.tar.gz
         rc.startup
-        rc.shutdown)
+        rc.shutdown
+        rc.functions)
 sha256sums=('87b80e77935ace9e18e8e70255f046281550686526e5607912221ab6a1344e10'
             '44d52f0c9dcb3ee8b9aca79553041f502ea1484449ca79c1a5d0363bddc270a6'
-            '246c24765a0fedecfe7f284a11ab63be391fcb8aa8fb7917f7d6164aebd620e9')
+            '246c24765a0fedecfe7f284a11ab63be391fcb8aa8fb7917f7d6164aebd620e9'
+            '47d68c79eb9706a0096967fb342c9c5bd2f3ff956dcd07626ed7c91d5cd649ab')
 
 build() {
 	cd "${srcdir}"/init-${pkgname}-${pkgver}
@@ -31,6 +33,7 @@ package() {
 	rm "${pkgdir}"/usr/bin/syslog*
 	rm "${pkgdir}"/usr/bin/uevent*
 	
-	mkdir -p "${pkgdir}"/etc
+	mkdir -p "${pkgdir}"/etc/rc.d
 	install -m744 rc.startup rc.shutdown "${pkgdir}"/etc/
+	install -m644 rc.functions "${pkgdir}"/etc/rc.d/
 }
