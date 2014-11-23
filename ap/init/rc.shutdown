@@ -1,0 +1,49 @@
+#!/usr/bin/sh
+
+genocide() {
+    SIGNAL=${1}
+
+    for pid in $(ps -eo pid=); do
+        if [ \( $pid -eq 1 \) -o \( $pid -eq $$ \) ]; then
+            continue
+        fi
+
+        kill -${SIGNAL} $pid > /dev/null 2>/dev/null || true
+    done
+}
+
+close_entropy() {
+    # Carry a random seed between reboots.
+    # Use the pool size from /proc, or 4096 bits:
+    if [ -r /proc/sys/kernel/random/poolsize ]; then
+        /usr/bin/dd if=/dev/urandom of=/etc/random-seed count=1 bs=$(expr $(cat /proc/sys/kernel/random/poolsize) / 8) 2> /dev/null
+    else
+        /usr/bin/dd if=/dev/urandom of=/etc/random-seed count=1 bs=512 2> /dev/null
+    fi
+    /usr/bin/chmod 600 /etc/random-seed
+}
+
+close_hwclock() {
+    if grep -q "^UTC" /etc/hardwareclock 2> /dev/null ; then
+        /usr/bin/hwclock --utc --systohc
+    else
+        /usr/bin/hwclock --localtime --systohc
+    fi
+}
+
+close_entropy &
+close_hwclock &
+wait
+
+sync
+
+# Give everything five seconds to shut down cleanly.
+echo "Sending SIGTERM..."
+genocide TERM
+sleep 5
+
+echo "Sending SIGKILL..."
+genocide KILL
+
+echo "Remounting..."
+umount -ar || true

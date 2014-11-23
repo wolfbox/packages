@@ -1,0 +1,227 @@
+#!/usr/bin/sh
+
+setup_rundir() {
+    /usr/bin/mount -v proc /proc -n -t proc 2> /dev/null
+
+    if [ -d /sys ]; then
+        if ! grep -wq sysfs /proc/mounts ; then
+            /usr/bin/mount -v sysfs /sys -n -t sysfs
+        fi
+    fi
+
+    if ! grep -wq "tmpfs /run tmpfs" /proc/mounts ; then
+        /usr/bin/mount -v -n -t tmpfs tmpfs /run -o mode=0755
+    fi
+}
+
+setup_cgroups() {
+    if grep -wq cgroup /proc/filesystems ; then
+        PATH=$PATH:/usr/bin:/sbin:/usr/sbin
+        if [ -d /sys/fs/cgroup ]; then
+            # See linux-*/Documentation/cgroups/cgroups.txt (section 1.6)
+            # Check if we have some tools to autodetect the available cgroup controllers
+            if [ -x /usr/bin/lssubsys -a -x /usr/bin/tr -a -x /usr/bin/sed ]; then
+                # Mount a tmpfs as the cgroup filesystem root
+                mount -t tmpfs -o mode=0755 cgroup_root /sys/fs/cgroup
+                # Autodetect available controllers and mount them in subfolders
+                controllers="$(lssubsys -a 2>/dev/null | tr '\n' ' ' | sed s/.$//)"
+                for i in $controllers; do
+                    mkdir /sys/fs/cgroup/$i
+                    mount -t cgroup -o $i $i /sys/fs/cgroup/$i
+                done
+                unset i controllers
+            else
+                # We can't use autodetection so fall back mounting them all together
+                mount -t cgroup cgroup /sys/fs/cgroup
+            fi
+        else
+            mkdir -p /dev/cgroup
+            mount -t cgroup cgroup /dev/cgroup
+        fi
+    fi
+}
+
+setup_hwclock() {
+    if grep -wq "^UTC" /etc/hardwareclock ; then
+        /usr/bin/hwclock --utc --hctosys
+    else
+        /usr/bin/hwclock --localtime --hctosys
+    fi
+}
+
+setup_entropy() {
+    if [ -f /etc/random-seed ]; then
+        echo "Using /etc/random-seed to initialize /dev/urandom."
+        cat /etc/random-seed > /dev/urandom
+    fi
+    # Use the pool size from /proc, or 4096 bits:
+    if [ -r /proc/sys/kernel/random/poolsize ]; then
+        dd if=/dev/urandom of=/etc/random-seed count=1 bs=$(expr $(cat /proc/sys/kernel/random/poolsize) / 8) 2> /dev/null
+    else
+        dd if=/dev/urandom of=/etc/random-seed count=1 bs=512 2> /dev/null
+    fi
+    chmod 600 /etc/random-seed
+}
+
+setup_misc() {
+    # Create /tmp/{.ICE-unix,.X11-unix} if they are not present:
+    if [ ! -e /tmp/.ICE-unix ]; then
+        mkdir -p /tmp/.ICE-unix
+        chmod 1777 /tmp/.ICE-unix
+    fi
+    if [ ! -e /tmp/.X11-unix ]; then
+        mkdir -p /tmp/.X11-unix
+        chmod 1777 /tmp/.X11-unix
+    fi
+
+    # Create a fresh utmp file:
+    touch /var/run/utmp
+    chown root:utmp /var/run/utmp
+    chmod 664 /var/run/utmp
+
+    # Update all the shared library links:
+    if [ -x /usr/bin/ldconfig ]; then
+        /usr/bin/ldconfig &
+    fi
+
+    # Remove stale hunt sockets so the game can start.
+    if [ -r /tmp/hunt -o -r /tmp/hunt.stats ]; then
+        echo "Removing your stale hunt sockets from /tmp."
+        /usr/bin/rm -f /tmp/hunt*
+    fi
+
+    # Ensure basic filesystem permissions sanity.
+    chmod 755 / 2> /dev/null
+    chmod 1777 /tmp /var/tmp
+}
+
+setup_dmesg() {
+# Set the permissions on /var/log/dmesg according to whether the kernel
+# permits non-root users to access kernel dmesg information:
+if [ -r /proc/sys/kernel/dmesg_restrict ]; then
+    if [ $(cat /proc/sys/kernel/dmesg_restrict) = 1 ]; then
+        touch /var/log/dmesg
+        chmod 640 /var/log/dmesg
+    fi
+    else
+        touch /var/log/dmesg
+        chmod 644 /var/log/dmesg
+    fi
+    # Save the contents of 'dmesg':
+    /usr/bin/dmesg -s 65536 > /var/log/dmesg
+}
+
+setup_root_filesystem() {
+    # See if a forced filesystem check was requested at shutdown:
+    if [ -r /etc/forcefsck ]; then
+        FORCEFSCK="-f"
+    fi
+
+    RETVAL=0
+    echo "Checking root filesystem:"
+    /usr/bin/fsck $FORCEFSCK -C -a /
+    RETVAL=$?
+
+    if [ $RETVAL -gt 3 ]; then
+    # XXX Critical error requiring manual fixes
+    echo "Filesystem errors not repairable automatically."
+        PS1="(Repair filesystem) \#"; export PS1
+        sulogin
+    elif [ $RETVAL -ge 1 ]; then
+        echo "Filesystems repaired; rebooting"
+        /usr/bin/umount -a -r
+        /usr/bin/mount -n -o remount,ro /
+        sleep 2
+        reboot -f
+    fi
+
+    # Remount the root filesystem in read-write mode
+    /usr/bin/mount -w -v -n -o remount /
+}
+
+setup_filesystems() {
+    # Add /proc and /sys mounts to /etc/mtab:
+    if [ -d /proc/sys ]; then
+        /usr/bin/mount -f proc /proc -t proc
+    fi
+    if [ -d /sys/bus ]; then
+        /usr/bin/mount -f sysfs /sys -t sysfs
+    fi
+
+    # Configure runtime kernel parameters:
+    if [ -x /usr/bin/sysctl -a -r /etc/sysctl.conf ]; then
+        /usr/bin/sysctl -e -p /etc/sysctl.conf
+    fi
+
+    # Check all the non-root filesystems:
+    if [ ! -r /etc/fastboot ]; then
+        echo "Checking non-root filesystems:"
+        /usr/bin/fsck $FORCEFSCK -C -R -A -a | true
+    fi
+
+    # Mount usbfs only if it is found in /etc/fstab:
+    if grep -wq usbfs /proc/filesystems; then
+        if ! grep -wq usbfs /proc/mounts ; then
+            if grep -wq usbfs /etc/fstab; then
+                /usr/bin/mount -v /proc/bus/usb
+            fi
+        fi
+    fi
+
+    echo "Mounting non-root local filesystems:"
+    /usr/bin/mount -a -v -t nonfs,nosmbfs,nocifs,noproc,nosysfs,nodevpts || true
+
+    # Enable swapping again.  This is needed in case a swapfile is used,
+    # as it can't be enabled until the filesystem it resides on has been
+    # mounted read-write.
+    /usr/bin/swapon -a 2> /dev/null
+
+    # Update the current kernel level in the /etc/motd (Message Of The Day) file,
+    # if the first line of that file begins with the word 'Linux'.
+    # You are free to modify the rest of the file as you see fit.
+    if [ -x /usr/bin/sed ]; then
+        /usr/bin/sed -i "{1s/^Linux.*/$(/usr/bin/uname -sr)\./}" /etc/motd
+    fi
+
+    # Mount any additional filesystem types that haven't already been mounted:
+    mount -a -v 2> /dev/null | grep -v "already mounted" || true
+}
+
+setup_hostname() {
+    # Set the hostname.
+    if [ -r /etc/HOSTNAME ]; then
+        /usr/bin/hostname $(cat /etc/HOSTNAME | cut -f1 -d .)
+    else
+        # fall back on the default:
+        echo "wolfbox.example.com" > /etc/HOSTNAME
+        /usr/bin/hostname wolfbox
+    fi
+}
+
+setup_rundir
+
+/etc/rc.d/udev start &
+setup_cgroups &
+setup_hwclock &
+setup_hostname &
+wait
+
+setup_root_filesystem
+
+setup_filesystems &
+setup_entropy &
+setup_misc &
+setup_dmesg &
+wait
+
+daemon -r /usr/bin/agetty --noclear 38400 tty1 linux
+daemon -r /usr/bin/agetty 38400 tty2 linux
+daemon -r /usr/bin/agetty 38400 tty3 linux
+daemon -r /usr/bin/agetty 38400 tty4 linux
+daemon -r /usr/bin/agetty 38400 tty5 linux
+daemon -r /usr/bin/agetty 38400 tty6 linux
+
+# Start the local setup procedure.
+if [ -x /etc/rc.d/rc.local ]; then
+    . /etc/rc.d/rc.local
+fi
