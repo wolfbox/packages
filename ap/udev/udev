@@ -1,0 +1,91 @@
+#!/usr/bin/sh
+
+. /etc/rc.d/rc.functions
+
+UDEV_ROOT=/dev
+
+check_mounted() {
+    grep -E -q "^[^[:space:]]+ $1 $2" /proc/mounts
+    return $?
+}
+
+mount_devpts() {
+    if ! check_mounted $UDEV_ROOT/pts devpts ; then
+        mkdir $UDEV_ROOT/pts 2> /dev/null
+        mount -n -o mode=0620,gid=5 -t devpts devpts $UDEV_ROOT/pts
+    fi
+}
+
+service_start() {
+	if grep -qw devtmpfs /proc/filesystems ; then
+	    if ! check_mounted $UDEV_ROOT devtmpfs ; then
+	        # umount shm if needed
+		    check_mounted $UDEV_ROOT/shm tmpfs && umount -l $UDEV_ROOT/shm
+
+		    # Umount pts if needed, we will remount it later:
+		    check_mounted $UDEV_ROOT/pts devpts && umount -l $UDEV_ROOT/pts
+
+		    # Mount tmpfs on $UDEV_ROOT:
+		    mount -n -t devtmpfs devtmpfs $UDEV_ROOT
+	    fi
+	else
+		# Mount tmpfs on $UDEV_ROOT:
+		if ! check_mounted $UDEV_ROOT tmpfs ; then
+		  # umount shm if needed
+		  check_mounted $UDEV_ROOT/shm tmpfs && umount -l $UDEV_ROOT/shm
+
+		  # Umount pts if needed, we will remount it later:
+		  check_mounted $UDEV_ROOT/pts devpts && umount -l $UDEV_ROOT/pts
+
+		  # Mount tmpfs on $UDEV_ROOT:
+		  # the -n is because we don't want $UDEV_ROOT umounted when
+		  # someone (rc.[06]) calls umount -a
+		  mount -n -o mode=0755 -t tmpfs tmpfs $UDEV_ROOT
+		fi
+	fi
+
+	# Mount devpts
+	mount_devpts
+
+    /usr/bin/udevd --daemon
+
+    /usr/bin/udevadm trigger --type=subsystems --action=add &
+    /usr/bin/udevadm trigger --type=devices --action=add &
+    wait
+}
+
+service_trigger() {
+    # If the persistent rules files do not exist, trigger an add event:
+    if [ ! -r /etc/udev/rules.d/70-persistent-net.rules -o ! -r /etc/udev/rules.d/70-persistent-cd.rules ]; then
+        # Test that we can actually write to the directory first:
+        if touch /etc/udev/rules.d/testfile 2> /dev/null ; then
+            rm -f /etc/udev/rules.d/testfile
+            # This should add persistent net/cd rules:
+
+            /usr/bin/udevadm trigger --type=devices --action=add
+            sleep 3
+            # Create the files if they don't exist at this point.
+            # If a machine does not have a network device or an optical
+            # device, we don't want to waste time trying to generate
+            # rules at every boot.
+            # To force another attempt, delete the file(s).
+            touch /etc/udev/rules.d/70-persistent-net.rules
+            touch /etc/udev/rules.d/70-persistent-cd.rules
+        fi
+    fi
+
+    /usr/bin/udevadm trigger --type=subsystems --action=change
+    /usr/bin/udevadm trigger --type=devices --action=change
+    /usr/bin/udevadm settle --timeout=120
+}
+
+service_reload() {
+	udevadm control --reload
+	cp --preserve=all --recursive --update /lib/udev/devices/* $UDEV_ROOT
+}
+
+service_help() {
+	echo "udev [start | trigger | reload]"
+}
+
+dispatch_command "${1}"

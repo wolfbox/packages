@@ -15,16 +15,14 @@ source=("http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev-182.tar.xz"
         rule_generator.diff.gz
         udev-ata_id-fixup-all-8-not-only-6-bytes-of-the-fw_rev.patch.gz
         config.tar.xz
-        udev.upstart
-        udev-trigger.upstart)
-sha256sums=(adb8892f3b8e4b7163703ed4a545774721a3d55a1062de001f08c477c03d97ab
-            2cd24da4f10386596ec130e7eff3dd7d2593df30b6d638e02fc5917b1d46c4b4
-            19f22783c2494f1f57daf3ed27104932098a49d59950fc5de7de7f0638531fa1
-            45422861c26a29735a0da298d2b6afde60898d6ef272b6881d5e7825a0ffe207
-            bbfb83103b062af64830ba0b082b2b451ac1f8ecf700d101c7161ce35437a454
-            e44afca98ebbbeba203facb38a6dd6e5556f5be917a23697f2feaa027ea35704
-            84b7d7678824096fc622b783c23e3ea2be7c0dcff00afb336db0a68fa1d27be9
-            72dfad59ea457bacfda11e48a5e2aab489800ebd879c4ce10d9223ddc91a0eff)
+        udev)
+sha256sums=('adb8892f3b8e4b7163703ed4a545774721a3d55a1062de001f08c477c03d97ab'
+            '2cd24da4f10386596ec130e7eff3dd7d2593df30b6d638e02fc5917b1d46c4b4'
+            '19f22783c2494f1f57daf3ed27104932098a49d59950fc5de7de7f0638531fa1'
+            '45422861c26a29735a0da298d2b6afde60898d6ef272b6881d5e7825a0ffe207'
+            'bbfb83103b062af64830ba0b082b2b451ac1f8ecf700d101c7161ce35437a454'
+            'e44afca98ebbbeba203facb38a6dd6e5556f5be917a23697f2feaa027ea35704'
+            '59936bc62b74ff4cd70e565ab6cf2730b9f88708da846ae543980330fdf9221f')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -95,6 +93,5 @@ package() {
 	mkdir -p "${pkgdir}"/{etc,lib}/modprobe.d
 	
 	mkdir -p "${pkgdir}"/etc/init
-	install -m644 "${srcdir}"/udev.upstart "${pkgdir}"/etc/init/udev.conf
-	install -m644 "${srcdir}"/udev-trigger.upstart "${pkgdir}"/etc/init/udev-trigger.conf
+	install -m755 "${srcdir}"/udev "${pkgdir}"/etc/rc.d/udev
 }
