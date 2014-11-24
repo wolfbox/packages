@@ -1,5 +1,5 @@
 pkgname=libpng
-pkgver=1.6.14
+pkgver=1.6.15
 pkgrel=1
 pkgdesc="A library for working with the PNG image format"
 arch=("x86_64")
@@ -8,8 +8,9 @@ license=('custom')
 
 depends=('glibc' 'zlib')
 
-source=(http://downloads.sourceforge.net/project/libpng/libpng16/${pkgver}/libpng-${pkgver}.tar.xz)
-sha256sums=('968443a5505815a2a9fbfba87584e4237f8255cfa7b33a18484462db13e4b444')
+source=(http://downloads.sourceforge.net/project/libpng/libpng16/${pkgver}/libpng-${pkgver}.tar.xz{,.asc})
+sha256sums=('ad7046f1548b01b736c347d3125598ba507cbd1c9a0f0a1ffcc8df5aaafa53b7'
+            'SKIP')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
