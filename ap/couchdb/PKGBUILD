@@ -1,0 +1,48 @@
+_fullname=apache-couchdb
+pkgname=couchdb
+pkgver=1.6.1
+pkgrel=1
+pkgdesc=""
+arch=("x86_64")
+url="http://couchdb.apache.org"
+license=('Apache2')
+install=couchdb.install
+backup=('etc/couchdb/local.ini'
+        'etc/logrotate.d/couchdb')
+
+depends=('erlang' 'js185' 'curl')
+
+source=(http://mirrors.gigenet.com/apache/couchdb/source/${pkgver}/apache-couchdb-${pkgver}.tar.gz
+        http://www.us.apache.org/dist/couchdb/source/${pkgver}/apache-couchdb-${pkgver}.tar.gz.asc
+        couchdb
+        couchdb.system_ready)
+sha256sums=('5a601b173733ce3ed31b654805c793aa907131cd70b06d03825f169aa48c8627'
+            'SKIP'
+            '7aef5d8626bf665b905b30fe0467ab95cbf5cc6b16730788184f95daa20cd852'
+            'd494fe1e75249cbdc19091da6ddb966033193bcc789b44c05c9c1b64424283b9')
+
+prepare() {
+	cd "${srcdir}"/${_fullname}-${pkgver}
+	sed -i "s:/bin/sh:/usr/bin/bash:" configure
+	sed -i "s:-Werror::g" src/couchdb/priv/Makefile.*
+}
+
+build() {
+	cd "${srcdir}/${_fullname}-${pkgver}"
+
+	./configure --prefix=/usr \
+	            --sysconfdir=/etc \
+	            --localstatedir=/var \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --disable-init
+	make
+}
+
+package() {
+	cd "${srcdir}/${_fullname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	
+	mkdir -p "${pkgdir}"/etc/rc.d/events
+	install -m755 "${srcdir}"/couchdb "${pkgdir}"/etc/rc.d
+	install -m755 "${srcdir}"/couchdb.system_ready "${pkgdir}"/etc/rc.d/events
+}

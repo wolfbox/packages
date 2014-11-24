@@ -1,0 +1,12 @@
+post_install() {
+	id couchdb &> /dev/null || \
+		useradd -r -U -c "CouchDB daemon" -d /var/lib/couchdb -s /usr/bin/false couchdb
+	chown -R couchdb.couchdb /var/{lib,log,run}/couchdb
+}
+
+post_upgrade() {
+	id couchdb &> /dev/null || \
+		useradd -r -U -c "CouchDB daemon" -d /var/lib/couchdb -s /usr/bin/false couchdb
+	mkdir -p /var/run/couchdb
+	chown -R couchdb.couchdb /var/{lib,log,run}/couchdb
+}

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+. /etc/rc.d/rc.functions
+
+service_start() {
+	daemon -u couchdb \
+	       -p /var/run/couchdb.pid \
+	       -r \
+	       /usr/bin/couchdb
+}
+
+service_stop() {
+    kill_pidfile /var/run/couchdb.pid
+}
+
+service_status() {
+    status_pidfile /var/run/couchdb.pid
+}
+
+service_help() {
+	echo "couchdb [start | stop | status]"
+}
+
+dispatch_command "${1}"
