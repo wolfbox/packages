@@ -10,10 +10,11 @@ install=openssh.install
 backup=('etc/ssh/ssh_config' 'etc/ssh/sshd_config')
 depends=('glibc' 'openssl' 'libedit')
 
-source=(ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz
-        openssh.upstart)
-sha256sums=(b2f8394eae858dabbdef7dac10b99aec00c95462753e80342e530bbb6f725507
-            b82076e064667967354ddf57686fc7c76ef641aba11936586abe6ffa0de3609c)
+source=(ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz{,.asc}
+        openssh)
+sha256sums=('b2f8394eae858dabbdef7dac10b99aec00c95462753e80342e530bbb6f725507'
+            'SKIP'
+            '552433794faf34a817b1f25f3a6360fba30a72ebdb6555ea1b47dd19a45021eb')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -39,6 +40,6 @@ package() {
 
 	make install DESTDIR="${pkgdir}"
 
-	mkdir -p "${pkgdir}"/etc/init
-	install -m644 "${srcdir}"/openssh.upstart "${pkgdir}"/etc/init/openssh.conf
+	mkdir -p "${pkgdir}"/etc/rc.d
+	install -m755 "${srcdir}"/openssh "${pkgdir}"/etc/rc.d/
 }

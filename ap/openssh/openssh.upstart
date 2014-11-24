@@ -1,8 +1,0 @@
-description "openssh server"
-
-start on network-services
-stop on runlevel [06]
-
-respawn
-
-exec /usr/bin/sshd -D
