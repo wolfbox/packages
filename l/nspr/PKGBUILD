@@ -1,0 +1,34 @@
+pkgname=nspr
+pkgver=4.10.7
+pkgrel=1
+pkgdesc="Netscape Portable Runtime"
+arch=("x86_64")
+url="http://www.mozilla.org/projects/nspr/"
+license=('MPL' 'GPL')
+
+depends=('glibc')
+
+source=(http://download.cdn.mozilla.net/pub/mozilla.org/nspr/releases/v${pkgver}/src/nspr-${pkgver}.tar.gz)
+sha256sums=('389af5cfa863ea9bc6de7b30c15f8a4f9bddd8002f8c6fdc8b33caef43893938')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}/nspr"
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --libexecdir=/usr/lib/${MULTIARCH} \
+	            --includedir=/usr/include/nspr \
+	            --enable-64bit \
+	            --enable-optimize \
+	            --disable-debug
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}/nspr"
+	make DESTDIR="${pkgdir}" install
+
+	ln -s nspr.pc "${pkgdir}"/usr/lib/${MULTIARCH}/pkgconfig/mozilla-nspr.pc
+	rm -r "${pkgdir}"/usr/bin/{compile-et.pl,prerr.properties} \
+	      "${pkgdir}"/usr/include/nspr/md
+}
