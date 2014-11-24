@@ -1,6 +1,6 @@
 _basename=libpng
 pkgname=libpng12
-pkgver=1.2.51
+pkgver=1.2.52
 pkgrel=1
 pkgdesc="A library for working with the PNG image format - Legacy"
 arch=("x86_64")
@@ -11,8 +11,9 @@ options=(!staticlibs)
 provides=("libpng=${pkgver}")
 depends=('glibc' 'zlib')
 
-source=(http://downloads.sourceforge.net/project/libpng/libpng12/${pkgver}/libpng-${pkgver}.tar.xz)
-sha256sums=('c7d7b813b022afd70474f78bcc3655c7bb54edbf28dd4652e5521cbb6da56d4a')
+source=(http://downloads.sourceforge.net/project/libpng/libpng12/${pkgver}/libpng-${pkgver}.tar.xz{,.asc})
+sha256sums=('d4fb0fbf14057ad6d0319034188fc2aecddb493da8e3031b7b072ed28f510ec0'
+            'SKIP')
 
 build() {
 	cd "${srcdir}/${_basename}-${pkgver}"
