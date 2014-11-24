@@ -1,0 +1,29 @@
+pkgname=dbus-glib
+pkgver=0.102
+pkgrel=1
+pkgdesc="DBus bindings for GLib"
+arch=("x86_64")
+url="http://www.freedesktop.org/wiki/Software/DBusBindings/"
+license=('GPLv2' 'custom')
+
+depends=('glibc' 'dbus' 'glib2' 'expat' 'zlib' 'libffi')
+
+source=(http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-${pkgver}.tar.gz{,.asc})
+sha256sums=('6964ed585bb8149a14ab744b5ded5e77cf71ec5446e6dcc5fcf5eebcc52df29c'
+            'SKIP')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
+	            --libexecdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	rm -r "${pkgdir}"/usr/share
+	
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m644 COPYING "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+}
