@@ -1,15 +1,15 @@
 pkgname=kmod
-pkgver=18
+pkgver=19
 pkgrel=1
 pkgdesc="Kernel module tools and library."
 arch=("x86_64")
 url=""
-license=(GPLv2)
+license=(LGPLv2.1)
 
 depends=('glibc' 'xz' 'zlib')
 
 source=("https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${pkgver}.tar.xz")
-sha256sums=(e16e57272b54acb219c465b334715cfdddb5d97ff5d8948d4830ca1a372a868e)
+sha256sums=('3e7fee6eeff5435848b2dcc852bc8959066478d687d232284d67300c071e7b14')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
