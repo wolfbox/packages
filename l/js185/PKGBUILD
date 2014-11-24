@@ -1,0 +1,32 @@
+pkgname=js185
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Legacy JavaScript interpreter."
+arch=("x86_64")
+url="https://developer.mozilla.org/En/SpiderMonkey/1.8.5"
+license=('MPL')
+options=(!staticlibs)
+
+depends=('glibc' 'nspr')
+
+source=(http://ftp.mozilla.org/pub/mozilla.org/js/js185-${pkgver}.tar.gz)
+sha256sums=('5d12f7e1f5b4a99436685d97b9b7b75f094d33580227aa998c406bbae6f2a687')
+
+build() {
+	cd "${srcdir}/js-1.8.5/js/src"
+
+	unset CPPFLAGS
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --enable-threadsafe \
+	            --with-system-nspr
+	make
+}
+
+package() {
+	cd "${srcdir}/js-1.8.5/js/src"
+	make DESTDIR="${pkgdir}" install
+	
+	# Fix symlinks
+	( cd "${pkgdir}"/usr/lib/${MULTIARCH}
+	  ln -sf libmozjs185.so.1.0.0 libmozjs185.so.1.0
+	  ln -sf libmozjs185.so.1.0 libmozjs1.8.5.so )
+}
