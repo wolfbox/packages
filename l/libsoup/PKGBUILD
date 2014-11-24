@@ -1,0 +1,24 @@
+pkgname=libsoup
+pkgver=2.48.0
+pkgrel=1
+pkgdesc="The GNOME HTTP toolkit."
+arch=("x86_64")
+url="https://wiki.gnome.org/action/show/Projects/libsoup"
+license=('LGPLv2')
+
+depends=('glibc' 'dbus' 'glib2' 'glib-networking' 'libffi' 'libxml2' 'zlib'
+         'xz' 'sqlite3')
+
+source=(http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.48/libsoup-${pkgver}.tar.xz)
+sha256sums=('ea34dd64fe44343445daf6dd690d0691e9d973468de44878da97371c16d89784')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}
