@@ -1,0 +1,24 @@
+#!/bin/sh
+
+. /etc/rc.d/rc.functions
+
+service_start() {
+	daemon -u mongodb \
+	       -p /var/run/mongodb.pid \
+	       -r \
+	       /usr/bin/mongod --config /etc/mongodb.conf
+}
+
+service_stop() {
+    kill_pidfile /var/run/mongodb.pid
+}
+
+service_status() {
+    status_pidfile /var/run/mongodb.pid
+}
+
+service_help() {
+	echo "mongodb [start | stop | status]"
+}
+
+dispatch_command "${1}"

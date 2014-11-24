@@ -1,4 +1,9 @@
 post_install() {
-	useradd -r -g daemon -d /var/lib/mongodb  mongodb
-	chown -R mongodb:daemon /var/lib/mongodb
+    id mongodb &> /dev/null || \
+        useradd -r -U -d /var/lib/mongodb mongodb
+    chown -R mongodb:mongodb /var/lib/mongodb
+}
+
+post_upgrade() {
+	post_install
 }
