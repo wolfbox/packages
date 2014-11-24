@@ -9,12 +9,12 @@ license=('GPLv2')
 install=linux.install
 makedepends=('gcc' 'lz4' 'xz')
 
-_grsecver=3.0-${pkgver}-201411220955
+_grsecver=3.0-${pkgver}-201411231452
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.xz
         https://grsecurity.net/test/grsecurity-${_grsecver}.patch
         config.xz)
 sha256sums=('4a55419c946a45c62a96b0313eff574c38650a3a270b2acd8168ec888a4fd02b'
-            '425fbdf1921d8ac1904b32e01e610454b8411a53151360fb8b77b693ea8e85c7'
+            '4db8d062a6acdbbcf23067f945608836acc0ab47e8ab3ac5dc1e2f1a428d48db'
             '362419ede85a9286eb760c8c60f738ba7523e5841222e2a80a27ac1018b3df98')
 
 prepare() {
