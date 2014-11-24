@@ -1,5 +1,5 @@
 pkgname=dbus
-pkgver=1.6.24
+pkgver=1.6.26
 pkgrel=1
 pkgdesc="The D-Bus userspace message bus system."
 arch=("x86_64")
@@ -12,11 +12,13 @@ depends=('glibc' 'expat')
 source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz"
         dbus-1.6.x-allow_root_globally.diff.gz
         dbus.set.home.diff.gz
-        dbus.upstart)
-sha256sums=(c1a06bdac3e48c046bd54cf4acdd996fc7496cab803753d0de0982ccb2615749
-            cd35621e4cc56403e9bb6ca6b431c8ae04f8cb8c626df40953e6f0f1bb488f64
-            30bdcc5407a0bc08d98d21b949cf5535d1e08c64df28928ec8ce71c026ed8f39
-            48863bb4ab2a2dea9616615b36747c360bf0b993fe8813e878f607cade2fad02)
+        dbus
+        dbus.filesystem)
+sha256sums=('cd274341e14ad27c16f73f4d4f8c801bdae75a4cca21765cc9c1957f48b85c8e'
+            'cd35621e4cc56403e9bb6ca6b431c8ae04f8cb8c626df40953e6f0f1bb488f64'
+            '30bdcc5407a0bc08d98d21b949cf5535d1e08c64df28928ec8ce71c026ed8f39'
+            '5a825c71fa65b15418c1b5a9a1b5bf7ebbb731858d5022c007ad6d019b5411ae'
+            '8dc424c7e30f19bb1b4e1ee569629c6f515e858e958a66080fb8fc16b6aca213')
 
 prepare() {
 	cd "${srcdir}"/dbus-${pkgver}
@@ -51,9 +53,10 @@ package() {
 
 	make install DESTDIR="${pkgdir}"
 	
-	mkdir -p "${pkgdir}"/etc/init
-	install -m 644 "${srcdir}"/dbus.upstart "${pkgdir}"/etc/init/dbus.conf
 	rm -r "${pkgdir}"/etc/rc.d
+	mkdir -p "${pkgdir}"/etc/rc.d/events
+	install -m755 "${srcdir}"/dbus "${pkgdir}"/etc/rc.d/
+	install -m755 "${srcdir}"/dbus.filesystem "${pkgdir}"/etc/rc.d/events/
 
 	chmod 700 "${pkgdir}"/var/run/dbus
 }

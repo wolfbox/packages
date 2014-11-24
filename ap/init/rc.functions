@@ -13,7 +13,7 @@ msg_error() {
 emit_event() {
     event_name="${1}"
 
-    for script in /etc/rc.d/events/*."${event_name}"_${NAME} ; do
+    for script in /etc/rc.d/events/*."${event_name}" ; do
         if [ -x "${script}" ] && [ ! -r "${script}".disabled ]; then
             "${script}"
         fi
@@ -34,7 +34,7 @@ dispatch_command() {
         return 1
     fi
  
-    emit_event "${command}"
+    emit_event "${command}_${NAME}"
 }
 
 kill_pidfile() {

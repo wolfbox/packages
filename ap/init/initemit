@@ -1,0 +1,13 @@
+#!/usr/bin/sh
+. /etc/rc.d/rc.functions
+
+if [ "${1}" = "-h" ] ||
+   [ "${1}" = "--help" ] ||
+   [ -z "${1}" ]; then
+    echo "initemit: runs init script helpers ending in a string."
+	echo "initemit [event]"
+	echo "initemit [-h | --help]: Show this help"
+	exit 0
+fi
+
+emit_event "${1}"

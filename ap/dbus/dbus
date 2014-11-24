@@ -1,0 +1,25 @@
+#!/usr/bin/sh
+
+. /etc/rc.d/rc.functions
+
+service_start() {
+	/usr/bin/dbus-uuidgen --ensure
+	daemon -u messagebus \
+	       -p /var/run/dbus.pid \
+	       -r \
+	       /usr/bin/dbus-daemon --system --nofork --nopidfile
+}
+
+service_stop() {
+    kill_pidfile /var/run/dbus.pid
+}
+
+service_status() {
+    status_pidfile /var/run/dbus.pid
+}
+
+service_help() {
+	echo "dbus [start | stop | status]"
+}
+
+dispatch_command "${1}"

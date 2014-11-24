@@ -7,16 +7,18 @@ url="https://github.com/archsys/init"
 license=('MIT')
 
 conflicts=('upstart')
-depends=('glibc')
+depends=('glibc' 'sh')
 
 source=(https://github.com/arachsys/init/archive/init-${pkgver}.tar.gz
         rc.startup
         rc.shutdown
-        rc.functions)
+        rc.functions
+        initemit)
 sha256sums=('87b80e77935ace9e18e8e70255f046281550686526e5607912221ab6a1344e10'
-            '44d52f0c9dcb3ee8b9aca79553041f502ea1484449ca79c1a5d0363bddc270a6'
+            'bfa4415a39af15082770f13435862098ac68328852eb21e2e01f84a6d6656f5c'
             '246c24765a0fedecfe7f284a11ab63be391fcb8aa8fb7917f7d6164aebd620e9'
-            '6ff695cfad4f820365b42814793405fd8fdc60d861ed7117a00160e5d8acdbb5')
+            '812f1a44bc2b319dddb068a03ffa394bbb1a865ef167af810d52c58170af617e'
+            '4f6c6a12e4999c9db1a5f273c81eb5dd714706c8bedb61c57130e7de9c95cfe1')
 
 build() {
 	cd "${srcdir}"/init-${pkgname}-${pkgver}
@@ -36,4 +38,6 @@ package() {
 	mkdir -p "${pkgdir}"/etc/rc.d/events
 	install -m744 rc.startup rc.shutdown "${pkgdir}"/etc/
 	install -m644 rc.functions "${pkgdir}"/etc/rc.d/
+
+	install -m755 initemit "${pkgdir}"/usr/bin
 }
