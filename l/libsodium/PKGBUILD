@@ -1,5 +1,5 @@
 pkgname=libsodium
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 pkgdesc="A fast and easy-to-use cryptography library."
 arch=("x86_64")
@@ -8,8 +8,8 @@ license=('ISC')
 
 depends=('glibc')
 
-source=(https://github.com/jedisct1/libsodium/releases/download/1.0.0/libsodium-${pkgver}.tar.gz)
-sha256sums=(ced1fe3d2066953fea94f307a92f8ae41bf0643739a44309cbe43aa881dbc9a5)
+source=(https://github.com/jedisct1/libsodium/releases/download/${pkgver}/libsodium-${pkgver}.tar.gz)
+sha256sums=('c3090887a4ef9e2d63af1c1e77f5d5a0656fadb5105ebb9fb66a302210cb3af5')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
