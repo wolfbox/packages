@@ -1,5 +1,5 @@
 pkgname=libxml2
-pkgver=2.9.1
+pkgver=2.9.2
 pkgrel=1
 pkgdesc="XML parser library."
 arch=("x86_64")
@@ -8,10 +8,11 @@ license=('custom')
 
 depends=('glibc' 'xz' 'zlib')
 
-source=(ftp://xmlsoft.org/libxml2/libxml2-${pkgver}.tar.gz
+source=(ftp://xmlsoft.org/libxml2/libxml2-${pkgver}.tar.gz{,.asc}
 		libxml2.do-not-check-crc.diff.xz)
-sha256sums=(fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb
-			c195673ede058de75c24d94bf42b5ac971a5877131c839bbd55fbc84eac495fe)
+sha256sums=('5178c30b151d044aefb1b08bf54c3003a0ac55c59c866763997529d60770d5bc'
+            'SKIP'
+            'c195673ede058de75c24d94bf42b5ac971a5877131c839bbd55fbc84eac495fe')
 
 prepare() {
 	cd "${srcdir}"/libxml2-${pkgver}
