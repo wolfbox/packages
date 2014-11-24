@@ -1,5 +1,5 @@
 pkgname=glib2
-pkgver=2.36.4
+pkgver=2.42.1
 pkgrel=1
 pkgdesc="A C utility library, often paired with GTK+."
 arch=("x86_64")
@@ -9,8 +9,8 @@ license=("LGPLv2")
 depends=('glibc' 'zlib' 'dbus' 'libffi')
 makedepends=('python2')
 
-source=(https://download.gnome.org/sources/glib/2.36/glib-${pkgver}.tar.xz)
-sha256sums=(f654d2542329012d8475736a165dfbf82fadf3ee940c2e0e6ddd4b2fde5cad7e)
+source=(https://download.gnome.org/sources/glib/2.42/glib-${pkgver}.tar.xz)
+sha256sums=('8f3f0865280e45b8ce840e176ef83bcfd511148918cc8d39df2ee89b67dcf89a')
 
 build() {
 	cd "${srcdir}/glib-${pkgver}"
@@ -24,4 +24,6 @@ build() {
 package() {
 	cd "${srcdir}/glib-${pkgver}"
 	make DESTDIR="${pkgdir}" install
+
+	rm -r "${pkgdir}"/usr/share/gtk-doc
 }
