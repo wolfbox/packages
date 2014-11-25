@@ -5,7 +5,9 @@ pkgdesc="Authentication policy framework."
 arch=("x86_64")
 url="http://www.freedesktop.org/wiki/software/polkit"
 license=('LGPLv2')
+install=polkit.install
 
+makedepends=('gobject-introspection')
 depends=('gcc-libs' 'glibc' 'glib2' 'libffi' 'zlib' 'expat' 'js185')
 
 source=(http://www.freedesktop.org/software/polkit/releases/polkit-${pkgver}.tar.gz{,.sign})
@@ -14,15 +16,26 @@ sha256sums=('d695f43cba4748a822fbe864dd32c4887c5da1c71694a47693ace5e88fcf6af6'
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
 	            --libexecdir=/usr/lib/${MULTIARCH} \
+	            --mandir=/usr/man \
+	            --sysconfdir=/etc \
+	            --localstatedir=/var \
 	            --with-authfw=shadow \
 	            --enable-verbose-mode \
+	            --disable-static \
+	            --enable-introspection \
+	            --enable-man-pages \
 	            --disable-gtk-doc
 	make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	make DESTDIR="${pkgdir}" install
+	( cd "${srcdir}/${pkgname}-${pkgver}"
+	  make DESTDIR="${pkgdir}" install )
 }

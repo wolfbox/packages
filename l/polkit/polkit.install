@@ -1,0 +1,9 @@
+post_install() {
+	id polkitd &> /dev/null || \
+		useradd -r -U -c "Policy Kit Daemon" -d / -s /usr/bin/false polkitd
+    passwd -l polkitd &>/dev/null
+}
+
+post_upgrade() {
+    post_install
+}

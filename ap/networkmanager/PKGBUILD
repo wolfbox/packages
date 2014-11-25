@@ -4,16 +4,19 @@ pkgrel=1
 pkgdesc="A pain-free networking service for desktops and laptops."
 arch=("x86_64")
 url="https://wiki.gnome.org/Projects/NetworkManager"
-license=('GPL')
+license=('GPL' 'LGPLv2')
+backup=('etc/NetworkManager/NetworkManager.conf')
 
-makedepends=('dbus-glib')
+makedepends=('dbus-glib' 'vala')
 depends=('glibc' 'dbus' 'dbus-glib' 'libndp' 'libsoup' 'nss' 'polkit'
          'readline' 'udev' 'libnl3' 'libffi' 'nspr' 'zlib' 'ncurses')
 
 source=(https://download.gnome.org/sources/NetworkManager/0.9/NetworkManager-${pkgver}.tar.xz
+        NetworkManager.conf
         networkmanager
         networkmanager.start_dbus)
 sha256sums=('66a88346bb04d4f402540281181340313b2ec433e75aa9d9ea13f31697f9487e'
+            'ac30cf5d6f795a4a85f33aefc351f74b1d21d7a9856878e73f9c69930f326fe8'
             '721da6306c687a95d5ae697ce65cea8057d74c1854834e1c1af76d7cd42d0984'
             'b6a0d94d494e86cd51dc6ba136911d7c1b01e54c9e0e24bc816f54ef644d3114')
 
@@ -30,6 +33,9 @@ build() {
 	            --libexecdir=/usr/lib/${MULTIARCH} \
 	            --sbindir=/usr/bin \
 	            --mandir=/usr/man \
+	            --with-dhcpcd=/usr/bin/dhcpcd \
+	            --with-dhclient=/usr/bin/dhclient \
+	            --with-crypto=nss \
 	            --without-modem-manager-1
 	make
 }
@@ -41,4 +47,5 @@ package() {
 	mkdir -p "${pkgdir}"/etc/rc.d/events
 	install -m755 "${srcdir}"/networkmanager "${pkgdir}"/etc/rc.d/
 	install -m755 "${srcdir}"/networkmanager.start_dbus "${pkgdir}"/etc/rc.d/events/
+	install -m 644 "${srcdir}"/NetworkManager.conf "${pkgdir}"/etc/NetworkManager/
 }
