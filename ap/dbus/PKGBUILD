@@ -40,9 +40,9 @@ build() {
 
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
 	            --localstatedir=/var --mandir=/usr/man --infodir=/usr/info \
-	            --docdir=/usr/doc/dbus-${pkgver} --disable-doxygen-docs \
-	            --enable-shared=yes --enable-static=no --enable-inotify \
-	            --with-system-pid-file=/var/run/dbus/dbus.pid \
+	            --libexecdir=/usr/lib/${MULTIARCH} --docdir=/usr/doc/dbus-${pkgver} \
+	            --disable-doxygen-docs --enable-shared=yes --enable-static=no \
+	            --enable-inotify --with-system-pid-file=/var/run/dbus/dbus.pid \
 	            --with-system-socket=/var/run/dbus/system_bus_socket \
 	            --disable-tests
 	make
