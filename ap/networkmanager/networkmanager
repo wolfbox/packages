@@ -1,0 +1,28 @@
+#!/usr/bin/sh
+
+. /etc/rc.d/rc.functions
+PIDFILE=/var/run/networkmanager.pid
+
+service_start() {
+    daemon -p "${PIDFILE}" \
+           -r \
+           /usr/bin/NetworkManager -n
+
+    ( if [ -r "${PIDFILE}" ]; then
+          /usr/bin/nm-online -sq && /usr/bin/initemit networking
+      fi ) &
+}
+
+service_stop() {
+    kill_pidfile "${PIDFILE}"
+}
+
+service_status() {
+    status_pidfile "${PIDFILE}"
+}
+
+service_help() {
+    echo "networkmanager [start | stop | status]"
+}
+
+dispatch_command "${1}"

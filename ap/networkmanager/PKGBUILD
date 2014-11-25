@@ -1,0 +1,44 @@
+pkgname=networkmanager
+pkgver=0.9.10.0
+pkgrel=1
+pkgdesc="A pain-free networking service for desktops and laptops."
+arch=("x86_64")
+url="https://wiki.gnome.org/Projects/NetworkManager"
+license=('GPL')
+
+makedepends=('dbus-glib')
+depends=('glibc' 'dbus' 'dbus-glib' 'libndp' 'libsoup' 'nss' 'polkit'
+         'readline' 'udev' 'libnl3' 'libffi' 'nspr' 'zlib' 'ncurses')
+
+source=(https://download.gnome.org/sources/NetworkManager/0.9/NetworkManager-${pkgver}.tar.xz
+        networkmanager
+        networkmanager.start_dbus)
+sha256sums=('66a88346bb04d4f402540281181340313b2ec433e75aa9d9ea13f31697f9487e'
+            '721da6306c687a95d5ae697ce65cea8057d74c1854834e1c1af76d7cd42d0984'
+            'b6a0d94d494e86cd51dc6ba136911d7c1b01e54c9e0e24bc816f54ef644d3114')
+
+build() {
+	cd "${srcdir}/NetworkManager-${pkgver}"
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export CXXFLAGS="${CXXFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	./configure --prefix=/usr \
+	            --sysconfdir=/etc \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --libexecdir=/usr/lib/${MULTIARCH} \
+	            --sbindir=/usr/bin \
+	            --mandir=/usr/man \
+	            --without-modem-manager-1
+	make
+}
+
+package() {
+	cd "${srcdir}/NetworkManager-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+	mkdir -p "${pkgdir}"/etc/rc.d/events
+	install -m755 "${srcdir}"/networkmanager "${pkgdir}"/etc/rc.d/
+	install -m755 "${srcdir}"/networkmanager.start_dbus "${pkgdir}"/etc/rc.d/events/
+}
