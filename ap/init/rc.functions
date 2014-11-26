@@ -14,7 +14,7 @@ emit_event() {
     event_name="${1}"
 
     for script in /etc/rc.d/events/*."${event_name}" ; do
-        if [ -x "${script}" ] && [ ! -r "${script}".disabled ]; then
+        if [ -x "${script}" ] && [ ! -r "${script}".disable ]; then
             "${script}"
         fi
     done
@@ -53,6 +53,17 @@ status_pidfile() {
         msg "not running"
         return 2
     else
+        # Probably running, but make sure this isn't a stale PID file somehow
+        if [ $(id -u) -eq 0 ] && [ ! -d /proc/${pid} ]; then
+            msg "Removing stale PID file"
+            if ! rm "${1}"; then
+                msg_error "Failed cleaning up stale PID"
+                return 1
+            fi
+            status_pidfile
+            return $?
+        fi
+
         msg "running; managed by PID ${pid}"
         return 0
     fi

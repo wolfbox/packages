@@ -6,13 +6,15 @@ arch=("x86_64")
 url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=(GPLv2)
 install=util-linux.install
+backup=('etc/sysctl.conf')
+options=(emptydirs)
 
 depends=('glibc' 'ncurses')
 
 source=(https://www.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-${pkgver}.tar.xz
-        upstart-scripts.tar.xz)
-sha256sums=(4701305ae22790c3a92ce48e50794fa05b7ee01f4227f419a171c100d08986e8
-            647e08c8d1a3c2f8c741281a7c73fefcd78ec80d3f0ed56802b2c7c93c9aab34)
+        sysctl.conf)
+sha256sums=('4701305ae22790c3a92ce48e50794fa05b7ee01f4227f419a171c100d08986e8'
+            '2c557a432be353b099ac241e9f62d8be80a4b354e3f31635365e4eed1a576632')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -32,10 +34,9 @@ package() {
 	mv "${pkgdir}"/usr/sbin/* "${pkgdir}"/usr/bin
 	rmdir "${pkgdir}"/usr/sbin
 
-	# Install the upstart scripts
-	mkdir -p "${pkgdir}"/etc/init
-	install -m 644 -t "${pkgdir}"/etc/init "${srcdir}"/upstart-scripts/*
-	
+	mkdir -p "${pkgdir}"/etc/sysctl.d
+	install -m600 "${srcdir}"/sysctl.conf "${pkgdir}"/etc/
+
 	# Remove setuid-root permissions
-	chmod -s "${pkgdir}"/usr/bin/{mount,umount,wall}
+	chmod -s "${pkgdir}"/usr/bin/{mount,umount,wall}	
 }
