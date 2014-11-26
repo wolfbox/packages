@@ -168,5 +168,8 @@ elif [ "${mode}" = 'disable' ]; then
 fi
 
 if [ "${have_arg}" = 'no' ] || [ "${display_plain}" = 'yes' ]; then
+    if [ ! "$(id -u)" -eq 0 ]; then
+        echo "Not root; some results may be incorrectly shown as not running." >&2
+    fi
     display
 fi
