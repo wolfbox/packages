@@ -214,7 +214,7 @@ setup_misc &
 setup_dmesg &
 wait
 
-( /usr/bin/initemit filesystem ) &
+/usr/bin/initemit filesystem &
 
 daemon -r /usr/bin/agetty --noclear 38400 tty1 linux
 daemon -r /usr/bin/agetty 38400 tty2 linux
@@ -222,6 +222,8 @@ daemon -r /usr/bin/agetty 38400 tty3 linux
 daemon -r /usr/bin/agetty 38400 tty4 linux
 daemon -r /usr/bin/agetty 38400 tty5 linux
 daemon -r /usr/bin/agetty 38400 tty6 linux
+
+/usr/bin/initemit system_ready
 
 # Start the local setup procedure.
 if [ -x /etc/rc.d/rc.local ]; then

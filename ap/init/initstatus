@@ -1,0 +1,157 @@
+#!/usr/bin/sh
+set -e
+
+RCDIR=/etc/rc.d
+EVENTSDIR="${RCDIR}"/events
+EVENT_FIELD_WIDTH=20
+
+usage() {
+    echo "Usage: ${0} [-p]"
+    echo "       ${0} --enable  <service>[.<event>]"
+    echo "       ${0} --disable <service>[.<event>]"
+    echo "    -p          Don't print table headers or colors"
+    echo "    --enable    Turn on an event handler, or all event handlers for a service"
+    echo "                if no event is specified"
+    echo "    --disable   Disable an event handler, or all event handlers for a service"
+    echo "    -h, --help  Show this help"
+
+    exit ${1}
+}
+
+display_plain='no'
+have_arg='no'
+parse_state='parse'
+mode=''
+service=''
+
+for arg in "$@"; do
+    have_arg='yes'
+
+    if [ "${parse_state}" = 'get_service' ]; then
+        service="${arg}"
+        parse_state='parse'
+        continue
+    fi
+
+    case ${arg} in
+        --enable)
+            parse_state='get_service'
+            mode='enable'
+            ;;
+        --disable)
+            parse_state='get_service'
+            mode='disable'
+            ;;
+        -p) display_plain='yes' ;;
+        -h|--help) usage 0 ;;
+        *) usage 1 ;;
+    esac
+done
+
+display() {
+    if [ "${display_plain}" = 'no' ]; then
+        FONT_BOLD="\033[37;1m"
+        FONT_RED="\033[31;1m"
+        FONT_RESET="\033[0m"
+
+        data="Service:Event:Enabled\n"
+        data="${data}-------:-----:-------\n"
+    fi
+
+    for service in "${RCDIR}"/*; do
+        if [ ! -f "${service}" ] || [ ! -x "${service}" ]; then
+            continue
+        fi
+
+        name="$(basename "${service}")"
+    
+        # Ensure that the given name matches our requirements
+        case "${name}" in
+            *[!a-zA-Z0-9\-]*) continue ;;
+            *) :
+        esac
+
+        data="${data}${name}"
+
+        # List events, and which are enabled
+        done_event='no'
+        for event in "${EVENTSDIR}/${name}".*; do
+            if [ ! -f "${event}" ] || [ ! -x "${service}" ]; then
+                continue
+            fi
+
+            base_event="$(basename "${event}")"
+    
+            case "${base_event}" in "${name}".*.disable) continue ;; esac
+
+            event_name="${base_event##*.}"
+
+            if [ "${done_event}" = 'no' ]; then
+                data="${data}:${event_name}"
+            else
+                data="${data}\n:${event_name}"
+            fi
+
+            if [ -f /etc/rc.d/events/"${base_event}".disable ]; then
+                data="${data}:${FONT_RED}N${FONT_RESET}"
+            else
+                data="${data}:${FONT_BOLD}Y${FONT_RESET}"
+            fi
+
+            done_event='yes'
+        done
+
+        if [ "${display_plain}" = 'no' ]; then
+            data="${data}\n"
+        fi
+
+        data="${data}::\n"
+    done
+
+    printf "${data}" | column -t -s ':'
+}
+
+enable() {
+    request="${1}"
+    event_name="${request##*.}"
+    if [ "${event_name}" = "${request}" ]; then
+        rm "${EVENTSDIR}/${request}".*.disable 2>/dev/null || true
+    else
+        rm "${EVENTSDIR}/${request}.disable" 2>/dev/null || true
+    fi
+}
+
+disable() {
+    request="${1}"
+    event_name="${request##*.}"
+    if [ "${event_name}" = "${request}" ]; then
+        for f in "${EVENTSDIR}/${request}".*; do
+            if [ ! -x "${f}" ]; then
+                continue
+            fi
+
+            touch "${f}".disable
+        done
+    else
+        touch "${EVENTSDIR}/${request}.disable"
+    fi
+}
+
+# Sanity-check arguments
+if [ -z "${service}" ] && [ ! -z "${mode}" ]; then
+    usage 1
+fi
+
+if [ ! -z "${service}" ] && [ -z "${mode}" ]; then
+    usage 1
+fi
+
+if [ "${mode}" = 'enable' ]; then
+    enable "${service}"
+elif [ "${mode}" = 'disable' ]; then
+    disable "${service}"
+fi
+
+if [ "${have_arg}" = 'no' ] || [ "${display_plain}" = 'yes' ]; then
+    display
+fi
