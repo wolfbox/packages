@@ -3,7 +3,6 @@ set -e
 
 RCDIR=/etc/rc.d
 EVENTSDIR="${RCDIR}"/events
-EVENT_FIELD_WIDTH=20
 
 usage() {
     echo "Usage: ${0} [-p]"
@@ -15,7 +14,7 @@ usage() {
     echo "    --disable   Disable an event handler, or all event handlers for a service"
     echo "    -h, --help  Show this help"
 
-    exit ${1}
+    exit "${1}"
 }
 
 display_plain='no'
@@ -67,7 +66,7 @@ display() {
     
         # Ensure that the given name matches our requirements
         case "${name}" in
-            *[!a-zA-Z0-9\-]*) continue ;;
+            *[!a-zA-Z0-9-]*) continue ;;
             *) :
         esac
 
@@ -108,7 +107,7 @@ display() {
         data="${data}::\n"
     done
 
-    printf "${data}" | column -t -s ':'
+    printf "%b" "${data}" | column -t -s ':'
 }
 
 enable() {

@@ -20,7 +20,7 @@ sha256sums=('87b80e77935ace9e18e8e70255f046281550686526e5607912221ab6a1344e10'
             '246c24765a0fedecfe7f284a11ab63be391fcb8aa8fb7917f7d6164aebd620e9'
             '812f1a44bc2b319dddb068a03ffa394bbb1a865ef167af810d52c58170af617e'
             '4f6c6a12e4999c9db1a5f273c81eb5dd714706c8bedb61c57130e7de9c95cfe1'
-            '5682d385a0dea8f67f16a2b5405a9bb5a83ca4b0e8fc95a39bbd00cf48a740b6')
+            '375244fe71a97efab8320e5e35b2effa4c7d9c2f6440e57b163bdca59728ec1b')
 
 build() {
 	cd "${srcdir}"/init-${pkgname}-${pkgver}
