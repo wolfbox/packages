@@ -1,5 +1,0 @@
-description "Update the manpage index"
-start on file FILE=/usr/man/
-task
-
-exec mandb
