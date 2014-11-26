@@ -12,11 +12,11 @@ conflicts=('ntp')
 source+=(config.xz
          ntpd.pod
          ntpd
-         ntpd.start_networking
+         ntpd.networking
          busybox-ntpd-norootcheck.patch)
 sha256sums+=(10f6c9ff21b73f2f63df9412ad977a79c8ba733df4daf5d3cc87f1c6989453a7
              86d0eddb948400ce4c6dda8b30a8e47f974b223dbac04188dbc6957bb9c2b337
-             5ded9dd34b699e084365bbac48af0a0e5e1882d30478d80c77daa2cf207f00c4
+             48ea2a0841212e8fcb47611a40a9587884fc9581be3f882e4381a6f13e8a0149
              d0f7989679d653e661481b2ed1bf228fb6d9aae77e512ef82e9ad30f4031299c
              d0df998395bd1d68c8e7c496d0056d11a1aacf555591c7726bc47c8bf1cd6604)
 
@@ -28,7 +28,7 @@ package() {
 
 	mkdir -p "${pkgdir}"/etc/rc.d/events
 	install -m755 "${srcdir}"/ntpd "${pkgdir}"/etc/rc.d/
-	install -m755 "${srcdir}"/ntpd.start_networking "${pkgdir}"/etc/rc.d/events
+	install -m755 "${srcdir}"/ntpd.networking "${pkgdir}"/etc/rc.d/events
 	echo "pool.ntp.org" > "${pkgdir}"/etc/ntpd.conf
 
 	mkdir -p "${pkgdir}"/usr/man/man1

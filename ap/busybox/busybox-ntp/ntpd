@@ -1,24 +1,9 @@
 #!/usr/bin/sh
 
-. /etc/rc.d/rc.functions
+. /etc/rc.d/rc.pidfile
 
-service_start() {
-	daemon -u ntpd \
-	       -p /var/run/ntpd.pid \
-	       -r \
-	       /usr/bin/ntpd -n -p "$(cat /etc/ntpd.conf 2>/dev/null || echo pool.ntp.org)"
-}
-
-service_stop() {
-    kill_pidfile /var/run/ntpd.pid
-}
-
-service_status() {
-    status_pidfile /var/run/ntpd.pid
-}
-
-service_help() {
-    echo "ntpd [start | stop | status]"
-}
+respawn
+user ntpd
+run /usr/bin/ntpd -n -p "$(cat /etc/ntpd.conf 2>/dev/null || echo pool.ntp.org)"
 
 dispatch_command "${1}"

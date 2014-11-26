@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-. /etc/rc.d/rc.functions
+. /etc/rc.d/rc.pidfile
 
 UDEV_ROOT=/dev
 
@@ -16,7 +16,7 @@ mount_devpts() {
     fi
 }
 
-service_start() {
+pre_start() {
 	if grep -qw devtmpfs /proc/filesystems ; then
 	    if ! check_mounted $UDEV_ROOT devtmpfs ; then
 	        # umount shm if needed
@@ -46,9 +46,9 @@ service_start() {
 
 	# Mount devpts
 	mount_devpts
+}
 
-    /usr/bin/udevd --daemon
-
+post_start() {
     /usr/bin/udevadm trigger --type=subsystems --action=add &
     /usr/bin/udevadm trigger --type=devices --action=add &
     wait
@@ -84,8 +84,14 @@ service_reload() {
 	cp --preserve=all --recursive --update /lib/udev/devices/* $UDEV_ROOT
 }
 
-service_help() {
-	echo "udev [start | trigger | reload]"
+service_stop() {
+    msg_error "Stopping udev not supported"
 }
+
+service_help() {
+	echo "udev [start | status | trigger | reload]"
+}
+
+run /usr/bin/udevd
 
 dispatch_command "${1}"
