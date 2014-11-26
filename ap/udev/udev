@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-. /etc/rc.d/rc.pidfile
+. /etc/rc.d/rc.functions
 
 UDEV_ROOT=/dev
 
@@ -16,42 +16,46 @@ mount_devpts() {
     fi
 }
 
-pre_start() {
-	if grep -qw devtmpfs /proc/filesystems ; then
-	    if ! check_mounted $UDEV_ROOT devtmpfs ; then
-	        # umount shm if needed
-		    check_mounted $UDEV_ROOT/shm tmpfs && umount -l $UDEV_ROOT/shm
+service_start() {
+    # Don't start udev if it's already running
+    if service_status > /dev/null; then
+        return 0
+    fi
 
-		    # Umount pts if needed, we will remount it later:
-		    check_mounted $UDEV_ROOT/pts devpts && umount -l $UDEV_ROOT/pts
+    if grep -qw devtmpfs /proc/filesystems ; then
+        if ! check_mounted $UDEV_ROOT devtmpfs ; then
+            # umount shm if needed
+            check_mounted $UDEV_ROOT/shm tmpfs && umount -l $UDEV_ROOT/shm
 
-		    # Mount tmpfs on $UDEV_ROOT:
-		    mount -n -t devtmpfs devtmpfs $UDEV_ROOT
-	    fi
-	else
-		# Mount tmpfs on $UDEV_ROOT:
-		if ! check_mounted $UDEV_ROOT tmpfs ; then
-		  # umount shm if needed
-		  check_mounted $UDEV_ROOT/shm tmpfs && umount -l $UDEV_ROOT/shm
+            # Umount pts if needed, we will remount it later:
+            check_mounted $UDEV_ROOT/pts devpts && umount -l $UDEV_ROOT/pts
 
-		  # Umount pts if needed, we will remount it later:
-		  check_mounted $UDEV_ROOT/pts devpts && umount -l $UDEV_ROOT/pts
+            # Mount tmpfs on $UDEV_ROOT:
+            mount -n -t devtmpfs devtmpfs $UDEV_ROOT
+        fi
+    else
+        # Mount tmpfs on $UDEV_ROOT:
+        if ! check_mounted $UDEV_ROOT tmpfs ; then
+            # umount shm if needed
+            check_mounted $UDEV_ROOT/shm tmpfs && umount -l $UDEV_ROOT/shm
 
-		  # Mount tmpfs on $UDEV_ROOT:
-		  # the -n is because we don't want $UDEV_ROOT umounted when
-		  # someone (rc.[06]) calls umount -a
-		  mount -n -o mode=0755 -t tmpfs tmpfs $UDEV_ROOT
-		fi
-	fi
+            # Umount pts if needed, we will remount it later:
+            check_mounted $UDEV_ROOT/pts devpts && umount -l $UDEV_ROOT/pts
 
-	# Mount devpts
-	mount_devpts
-}
+            # Mount tmpfs on $UDEV_ROOT:
+            # the -n is because we don't want $UDEV_ROOT umounted when
+            # someone (rc.[06]) calls umount -a
+            mount -n -o mode=0755 -t tmpfs tmpfs $UDEV_ROOT
+        fi
+    fi
 
-post_start() {
-    /usr/bin/udevadm trigger --type=subsystems --action=add &
-    /usr/bin/udevadm trigger --type=devices --action=add &
-    wait
+    # Mount devpts
+    mount_devpts
+
+    /usr/bin/udevd --daemon
+
+    /usr/bin/udevadm trigger --type=subsystems --action=add
+    /usr/bin/udevadm trigger --type=devices --action=add
 }
 
 service_trigger() {
@@ -80,18 +84,22 @@ service_trigger() {
 }
 
 service_reload() {
-	udevadm control --reload
-	cp --preserve=all --recursive --update /lib/udev/devices/* $UDEV_ROOT
+    udevadm control --reload
+    cp --preserve=all --recursive --update /lib/udev/devices/* $UDEV_ROOT
 }
 
-service_stop() {
-    msg_error "Stopping udev not supported"
+service_status() {
+    if pgrep udevd > /dev/null; then
+        msg "running"
+        return 0
+    else
+        msg "not running"
+        return 2
+    fi
 }
 
 service_help() {
-	echo "udev [start | status | trigger | reload]"
+    echo "udev [start | trigger | reload | status]"
 }
-
-run /usr/bin/udevd
 
 dispatch_command "${1}"
