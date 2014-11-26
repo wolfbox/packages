@@ -25,7 +25,8 @@ dispatch_command() {
     shift 1
     
     "service_${command}" 2> /dev/null
-    if [ $? -eq 127 ]; then
+    result="$?"
+    if [ "${result}" -eq 127 ]; then
         service_help 2> /dev/null
         if [ $? -eq 127 ]; then
             echo "${NAME} has no help"
@@ -33,8 +34,8 @@ dispatch_command() {
 
         return 1
     fi
- 
-    emit_event "${command}_${NAME}"
+
+    return "${result}"
 }
 
 kill_pidfile() {
@@ -50,7 +51,9 @@ status_pidfile() {
     pid=$(cat "${1}")
     if [ $? -ne 0 ]; then
         msg "not running"
+        return 2
     else
-        msg "running as PID ${pid}"
+        msg "running; managed by PID ${pid}"
+        return 0
     fi
 }

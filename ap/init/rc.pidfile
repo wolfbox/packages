@@ -1,0 +1,78 @@
+#!/usr/bin/sh
+
+. /etc/rc.d/rc.functions
+PIDFILE="/var/run/${NAME}.pid"
+
+_user_option=''
+_respawn_option=''
+_command=''
+
+user() {
+    _user_option="-u ${1}"
+}
+
+respawn() {
+    _respawn_option="-r"
+}
+
+run() {
+    _command=${@}
+}
+
+pre_start() {
+    :
+}
+
+post_start() {
+    :
+}
+
+pre_stop() {
+    :
+}
+
+post_stop() {
+    :
+}
+
+# Default handlers
+service_status() {
+    status_pidfile "${PIDFILE}"
+}
+
+service_start() {
+    if [ ! pre_start ]; then
+        msg_error "Not starting"
+        return 1
+    fi
+
+    if [ -z "${_command}" ]; then
+        msg_error "No command supplied"
+        return 1
+    fi
+
+    daemon -p "${PIDFILE}" ${_user_option} ${_respawn_option} \
+           ${_command}
+
+    post_start
+
+    # If the daemon exited immediately, let the caller know
+    if ! service_status > /dev/null; then
+        msg_error "Failed to start"
+        return 1
+    fi
+
+    emit_event "start_${NAME}"
+}
+
+service_stop() {
+    pre_stop
+    kill_pidfile "${PIDFILE}"
+
+    post_stop
+    emit_event "stop_${NAME}"
+}
+
+service_help() {
+    echo "${NAME}: [ start | stop | status | help ]"
+}

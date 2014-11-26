@@ -57,12 +57,13 @@ validate_name() {
 
 display() {
     if [ "${display_plain}" = 'no' ]; then
+        FONT_PADDING=" "
         FONT_BOLD="\033[37;1m"
         FONT_RED="\033[31;1m"
         FONT_RESET="\033[0m"
 
-        data="Service:Event:Enabled\n"
-        data="${data}-------:-----:-------\n"
+        data="Service:Running:  Event:  Enabled\n"
+ data="${data}-------:-------:  -----:  -------\n"
     fi
 
     for service in "${RCDIR}"/*; do
@@ -77,6 +78,13 @@ display() {
         fi
 
         data="${data}${name}"
+
+        # Check if the service is running
+        if "${service}" status >/dev/null; then
+            data="${data}:${FONT_BOLD}Y${FONT_RESET}"
+        else
+            data="${data}:${FONT_RED}N${FONT_RESET}"
+        fi
 
         # List events, and which are enabled
         done_event='no'
@@ -96,7 +104,7 @@ display() {
             if [ "${done_event}" = 'no' ]; then
                 data="${data}:${event_name}"
             else
-                data="${data}\n:${event_name}"
+                data="${data}\n:${FONT_BOLD} ${FONT_RESET}:${event_name}"
             fi
 
             if [ -f /etc/rc.d/events/"${base_event}".disable ]; then
@@ -112,7 +120,7 @@ display() {
             data="${data}\n"
         fi
 
-        data="${data}::\n"
+        data="${data}\n"
     done
 
     printf "%b" "${data}" | column -t -s ':'

@@ -13,14 +13,16 @@ source=(https://github.com/arachsys/init/archive/init-${pkgver}.tar.gz
         rc.startup
         rc.shutdown
         rc.functions
+        rc.pidfile
         initemit
         initstatus)
 sha256sums=('87b80e77935ace9e18e8e70255f046281550686526e5607912221ab6a1344e10'
             'b143a88465c83a8ebf0c146b1d0fff7bb4558406751bfaae1276baa7f4568452'
             '246c24765a0fedecfe7f284a11ab63be391fcb8aa8fb7917f7d6164aebd620e9'
-            '812f1a44bc2b319dddb068a03ffa394bbb1a865ef167af810d52c58170af617e'
+            'aa6649f002a5cf13cd956083341730c56fbd685519cd264bf4e72ab0cd05235c'
+            'a6f03e219fedfe8fefe4da16bd09523bb35f9f4f2271ca2b9e332058d40a513c'
             '4f6c6a12e4999c9db1a5f273c81eb5dd714706c8bedb61c57130e7de9c95cfe1'
-            'b15c545308b85aaae18cb9f04a03d29f14222c9704451f593907438c8b33f079')
+            '4d53f5cae132415a48a8653c4cf361570bb86849d6ecdcb8952a17f77bf92cea')
 
 build() {
 	cd "${srcdir}"/init-${pkgname}-${pkgver}
@@ -40,6 +42,7 @@ package() {
 	mkdir -p "${pkgdir}"/etc/rc.d/events
 	install -m744 rc.startup rc.shutdown "${pkgdir}"/etc/
 	install -m644 rc.functions "${pkgdir}"/etc/rc.d/
+	install -m644 rc.pidfile "${pkgdir}"/etc/rc.d/
 
 	install -m755 initemit "${pkgdir}"/usr/bin
 	install -m755 initstatus "${pkgdir}"/usr/bin
