@@ -1,9 +1,0 @@
-description "The dcron task scheduling daemon"
-
-start on filesystem
-stop on runlevel [06]
-
-respawn
-expect fork
-
-exec /usr/bin/crond -S -b

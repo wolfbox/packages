@@ -9,9 +9,11 @@ license=('GPL')
 depends=('glibc')
 
 source=(http://www.jimpryor.net/linux/releases/dcron-${pkgver}.tar.gz
-        dcron.upstart)
+        dcron
+        dcron.filesystem)
 sha256sums=('9e50edb6f5bd8153b16bad05087d985e5153ce45cc01ae77e7f842213fb4a824'
-            '5ead7b10465eae57911370902b24a035f8f51294022d0cd75f59d859b2450e2d')
+            '461d88ec67e39a5b38bb43a081c0f426e2593b08370a83228406b96064443997'
+            'c4b78cea7a6fff00edf9b9056d3274ec7786cd5b5ad4093f4e711bf827e6fde0')
 
 _MAKEOPTS="PREFIX=/usr SBINDIR=/usr/bin BINDIR=/usr/bin MANDIR=/usr/man CRONTABS=/var/lib/cron/crontabs CRONSTAMPS=/var/lib/cron/cronstamps SHELL=/usr/bin/sh"
 
@@ -34,6 +36,7 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" ${_MAKEOPTS} install
 
-	mkdir -p "${pkgdir}"/etc/init
-	install -m644 "${srcdir}"/dcron.upstart "${pkgdir}"/etc/init/dcron.conf
+	mkdir -p "${pkgdir}"/etc/rc.d/events
+	install -m755 "${srcdir}"/dcron "${pkgdir}"/etc/rc.d/
+	install -m755 "${srcdir}"/dcron.filesystem "${pkgdir}"/etc/rc.d/events/
 }
