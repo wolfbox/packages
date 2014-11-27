@@ -13,12 +13,14 @@ usage() {
     echo "    -h, --help:    Show this help"
     echo "    -n <NAME>:     Set the cgroup name to use"
     echo "    -e <NAME>:     Create as a child of an existing cgroup"
+    echo "    -u <USER>:     Execute <COMMAND> as the given user"
     exit "${1}"
 }
 
 get_oldest_pid() {
-    for pid in "$(cat "${tasks_path}")"; do
+    for pid in $(cat "${tasks_path}"); do
         echo "${pid}"
+        return 0
     done
 }
 
@@ -27,7 +29,7 @@ sendsigs() {
     signal="${1}"
     pid="$(get_oldest_pid)"
     echo "Sending signal ${signal} to ${pid}"
-    kill -s ${signal} ${pid} || true
+    kill -s "${signal}" "${pid}" || true
 }
 
 setup() {
@@ -51,7 +53,7 @@ setup() {
         exit 1
     fi
 
-    self="${CGROUP_ROOT}"/cpuset/"${parent_cgroup}"/"${real_name}"
+    self="${CGROUP_ROOT}/cpuset/${parent_cgroup}/${real_name}"
     if ! mkdir -p "${self}"; then
         echo "Failed to create cgroup at ${self}"
         exit 1
@@ -75,7 +77,7 @@ setup() {
     echo 0 > tasks
 
     echo "Starting ${command}: handler pid $$"
-    "${command}" "${@}" &
+    su -s "${command}" "${user}" -- "${@}" &
 
     # Remove ourselves from this cgroup, now that our child process has been
     # added.
@@ -112,6 +114,11 @@ while true; do
         arg_state='normal'
         continue
         ;;
+    user)
+        user="${arg}"
+        arg_state='normal'
+        continue
+        ;;
     parent_cgroup)
         parent_cgroup="${arg}"
         arg_state='normal'
@@ -133,6 +140,9 @@ while true; do
         ;;
     -e)
         arg_state='parent_cgroup'
+        ;;
+    -u)
+        arg_state='user'
         ;;
     --)
         arg_state='command'

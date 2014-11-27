@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 
 . /etc/rc.d/rc.functions
-PIDFILE="/var/run/${NAME}.pid"
+PIDFILE="/var/run/services/${NAME}.pid"
 
 _user_option=''
 _respawn_option=''
@@ -51,8 +51,8 @@ service_start() {
         return 1
     fi
 
-    daemon -p "${PIDFILE}" ${_user_option} ${_respawn_option} \
-           /usr/bin/launch-cgroup -n "${NAME}" -- ${_command}
+    daemon -p "${PIDFILE}" ${_respawn_option} \
+           /usr/bin/launch-cgroup -n "${NAME}" ${_user_option} -- ${_command}
 
     post_start
 

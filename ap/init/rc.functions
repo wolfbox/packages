@@ -25,7 +25,7 @@ emit_event() {
 dispatch_command() {
     command="${1}"
     shift 1
-    
+
     "service_${command}" 2> /dev/null
     result="$?"
     if [ "${result}" -eq 127 ]; then
