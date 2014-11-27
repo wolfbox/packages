@@ -1,0 +1,7 @@
+#!/usr/bin/sh
+. /etc/rc.d/rc.pidfile
+
+respawn
+run /usr/bin/nginx
+
+dispatch_command "${1}"

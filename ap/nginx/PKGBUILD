@@ -10,11 +10,11 @@ install=nginx.install
 depends=('glibc' 'zlib' 'pcre' 'openssl')
 
 source=(http://nginx.org/download/nginx-${pkgver}.tar.gz
-        nginx.upstart
-        nginx.install)
-sha256sums=(b5608c2959d3e7ad09b20fc8f9e5bd4bc87b3bc8ba5936a513c04ed8f1391a18
-            f3dc142c75622f59bd04aa9669b30ea24e2ee2ebba7cac2fabfed69d14be8e75
-            fffea3824ebef333bc416ce28a5da21fde7cfdce5f9a81d5f0eecf8b781c9a4a)
+        nginx
+        nginx.networking)
+sha256sums=('b5608c2959d3e7ad09b20fc8f9e5bd4bc87b3bc8ba5936a513c04ed8f1391a18'
+            '14563806d392ad5438a0f1c5846164d4f40f49290a9dcfadc872011fd3848dbf'
+            '03cef496256c67379e285e2a857a98456432eae66a9d40a9cf0b5512614cfb0f')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -44,7 +44,7 @@ build() {
 	            --with-http_spdy_module \
 	            --with-http_gzip_static_module \
 	            --with-http_gunzip_module \
-	            --user=http \
+	            --user=nginx \
 	            --group=http \
 	            --with-ld-opt="${LDFLAGS}"
 	make
@@ -55,8 +55,9 @@ package() {
 
 	make install DESTDIR="${pkgdir}"
 
-	mkdir -p "${pkgdir}"/etc/init
-	install -m644 "${srcdir}"/nginx.upstart "${pkgdir}"/etc/init/nginx.conf
+	mkdir -p "${pkgdir}"/etc/rc.d/events
+	install -m755 "${srcdir}"/nginx "${pkgdir}"/etc/rc.d
+	install -m755 "${srcdir}"/nginx.networking "${pkgdir}"/etc/rc.d/events
 
 	mkdir -p "${pkgdir}"/usr/man/man8
 	install -m644 man/nginx.8 "${pkgdir}"/usr/man/man8/
