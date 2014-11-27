@@ -1,0 +1,152 @@
+#!/usr/bin/sh
+set -e
+
+CGROUP_ROOT=/sys/fs/cgroup
+name=""
+command=""
+tasks_path=""
+parent_cgroup=""
+
+usage() {
+    echo "Usage: ${0} -n <NAME> [--] COMMAND [ARGS...]"
+    echo "Create a cgroup for a command, and exit only when all subprocesses exit."
+    echo "    -h, --help:    Show this help"
+    echo "    -n <NAME>:     Set the cgroup name to use"
+    echo "    -e <NAME>:     Create as a child of an existing cgroup"
+    exit "${1}"
+}
+
+get_oldest_pid() {
+    for pid in "$(cat "${tasks_path}")"; do
+        echo "${pid}"
+    done
+}
+
+# Send a signal to the first process in a cgroup
+sendsigs() {
+    signal="${1}"
+    pid="$(get_oldest_pid)"
+    echo "Sending signal ${signal} to ${pid}"
+    kill -s ${signal} ${pid} || true
+}
+
+setup() {
+    if [ -z "${name}" ]; then
+        echo "Need cgroups name argument"
+        usage 1
+    fi
+
+    if [ -z "${command}" ]; then
+        echo "Need a command"
+        usage 1
+    fi
+
+    if [ ! -d "${CGROUP_ROOT}/cpuset/${parent_cgroup}" ]; then
+        echo "No such parent cgroup exists: ${parent_cgroup}"
+        exit 1
+    fi
+
+    if ! real_name="${name}-$(dd if=/dev/urandom bs=8 count=1 2>/dev/null | od -A n -t x | sed 's: ::g')"; then
+        echo "Error adding random suffix to name"
+        exit 1
+    fi
+
+    self="${CGROUP_ROOT}"/cpuset/"${parent_cgroup}"/"${real_name}"
+    if ! mkdir -p "${self}"; then
+        echo "Failed to create cgroup at ${self}"
+        exit 1
+    fi
+    tasks_path="${self}/tasks"
+
+    trap "rmdir ${self}; exit 1" EXIT
+    trap 'sendsigs INT' INT
+    trap 'sendsigs TERM' TERM
+    trap 'sendsigs HUP' HUP
+    trap 'sendsigs QUIT' QUIT
+    trap 'sendsigs USR1' USR1
+    trap 'sendsigs USR2' USR2
+
+    cd "${self}"
+
+    echo 0 > cpuset.cpus
+    echo 0 > cpuset.mems
+    echo 1 > notify_on_release
+    echo "/usr/lib/init/agent.sh" > ../release_agent
+    echo 0 > tasks
+
+    echo "Starting ${command}: handler pid $$"
+    "${command}" "${@}" &
+
+    # Remove ourselves from this cgroup, now that our child process has been
+    # added.
+    echo 0 > ../tasks
+
+    # Wait for our child processes to end
+    while true; do
+        inotifywait -t 120 tasks &
+        wait || true
+
+        if ! tasks="$(cat tasks)"; then
+            echo "Unknown failure"
+            exit 1;
+        fi
+
+        if [ -z "${tasks}" ]; then
+            return 0
+        fi
+    done
+}
+
+arg_state='normal'
+while true; do
+    arg="${1}"
+
+    if [ "$#" -eq 0 ] || [ "${arg_state}" = "args" ]; then
+        break
+    fi
+    shift 1
+
+    case "${arg_state}" in
+    name)
+        name="${arg}"
+        arg_state='normal'
+        continue
+        ;;
+    parent_cgroup)
+        parent_cgroup="${arg}"
+        arg_state='normal'
+        ;;
+    command)
+        command="${arg}"
+        arg_state='args'
+        ;;
+    esac
+
+    if [ "${arg_state}" != 'normal' ]; then
+        continue
+    fi
+
+    case "${arg}" in
+    -h | --help) usage 0 ;;
+    -n)
+        arg_state='name'
+        ;;
+    -e)
+        arg_state='parent_cgroup'
+        ;;
+    --)
+        arg_state='command'
+        ;;
+    *)
+        command="${arg}"
+        arg_state='args'
+        ;;
+    esac
+done
+
+if [ ! -d "${CGROUP_ROOT}" ]; then
+    echo "cgroups unsupported on this system."
+    exit 1
+fi
+
+setup "$@"

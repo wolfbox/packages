@@ -52,7 +52,7 @@ service_start() {
     fi
 
     daemon -p "${PIDFILE}" ${_user_option} ${_respawn_option} \
-           ${_command}
+           /usr/bin/launch-cgroup -n "${NAME}" -- ${_command}
 
     post_start
 

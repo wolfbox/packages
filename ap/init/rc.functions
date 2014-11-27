@@ -18,6 +18,8 @@ emit_event() {
             "${script}"
         fi
     done
+
+    logger -p daemon.info -t "initevent" "Emitted event ${event_name}"
 }
 
 dispatch_command() {

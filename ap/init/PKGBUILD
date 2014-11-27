@@ -15,14 +15,18 @@ source=(https://github.com/arachsys/init/archive/init-${pkgver}.tar.gz
         rc.functions
         rc.pidfile
         initemit
-        initstatus)
+        initstatus
+        launch-cgroup
+        agent.sh)
 sha256sums=('87b80e77935ace9e18e8e70255f046281550686526e5607912221ab6a1344e10'
             '9ae20df9bc2c137b1b3467fe952f71961b8d30663444d5276ef76d115c94ac57'
             '246c24765a0fedecfe7f284a11ab63be391fcb8aa8fb7917f7d6164aebd620e9'
-            'c590a6310d8b1bfeb9a57b4b56e53eb0c316a839abf3a26cf856b4a03584538a'
-            'a6f03e219fedfe8fefe4da16bd09523bb35f9f4f2271ca2b9e332058d40a513c'
+            '246e068fcd956f01c7fd0fedb2322b47e840bd95e01b0cf04e856e2b4a52ae83'
+            '4e9bdd363e353f5401921fd105051d0ad197b46714601fd563b7bb4934b38267'
             '4f6c6a12e4999c9db1a5f273c81eb5dd714706c8bedb61c57130e7de9c95cfe1'
-            '2e08357efb4aaeae511f8359c76c9b818e7ade12cf5450b7c737ca649e6b69f9')
+            '2e08357efb4aaeae511f8359c76c9b818e7ade12cf5450b7c737ca649e6b69f9'
+            'fce54b9b53ec1cc7fdb897eadff7ea1e2d03f1acc12dfd4597f6f799d5ee71a7'
+            '32b51cf76459b6ac773ded20893b30ab57a67ca4c9406d2c7d4995a664861ac3')
 
 build() {
 	cd "${srcdir}"/init-${pkgname}-${pkgver}
@@ -46,4 +50,8 @@ package() {
 
 	install -m755 initemit "${pkgdir}"/usr/bin
 	install -m755 initstatus "${pkgdir}"/usr/bin
+	install -m755 launch-cgroup "${pkgdir}"/usr/bin
+
+	mkdir -p "${pkgdir}"/usr/lib/init
+	install -m755 agent.sh "${pkgdir}"/usr/lib/init/
 }
