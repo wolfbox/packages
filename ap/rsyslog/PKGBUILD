@@ -11,11 +11,13 @@ backup=('etc/rsyslog.conf')
 depends=('glibc' 'zlib' 'libestr' 'liblogging' 'json-c' 'util-linux')
 
 source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz"
-        rsyslog.upstart
-        rsyslog.conf)
-sha256sums=(71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a
-            0f0f9b1d2d9c92b6175aede5e50fbf1f2ad95bc9c6ccd08fb554374518da58d9
-            5a0507d45ce53e0f8d16e639b729c067b977bf02718288664aff2b2bfba3fdff)
+        rsyslog.conf
+        rsyslog
+        rsyslog.filesystem)
+sha256sums=('71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a'
+            '5a0507d45ce53e0f8d16e639b729c067b977bf02718288664aff2b2bfba3fdff'
+            'cc97caeecf776764422d892da8d9961815755d1ec58d9b940d98f6a1c2852cef'
+            '42421a551cfb9087471bb92675122c891618e20ce599d70b7b34768644bc959d')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -35,10 +37,9 @@ package() {
 
 	make install DESTDIR="${pkgdir}"
 	
-	mkdir -p "${pkgdir}/etc/init"
-	install -m 644 "${srcdir}"/rsyslog.upstart "${pkgdir}"/etc/init/rsyslog.conf
-	
-	mkdir -p "${pkgdir}"/etc/
+	mkdir -p "${pkgdir}"/etc/rc.d/events
+	install -m 755 "${srcdir}"/rsyslog "${pkgdir}"/etc/rc.d/
+	install -m 755 "${srcdir}"/rsyslog.filesystem "${pkgdir}"/etc/rc.d/events/
 	install -m 644 "${srcdir}"/rsyslog.conf "${pkgdir}"/etc/
 
 	mkdir -p "${pkgdir}"/var/run/rsyslog
