@@ -1,5 +1,5 @@
 pkgname=groff
-pkgver=1.22.2
+pkgver=1.22.3
 pkgrel=1
 pkgdesc="The GNU implementation of the troff document formatting system."
 arch=("x86_64")
@@ -10,8 +10,8 @@ depends=('gcc-libs' 'glibc' 'perl')
 
 source=(http://ftp.gnu.org/gnu/groff/groff-${pkgver}.tar.gz
         site.tmac)
-sha256sums=(380864dac4772e0c0d7b1282d25d0c5fd7f63baf45c87c4657afed22a13d2076
-            af59ecde597ce9f8189368a7739279a5f8a391139fe048ef6b4e493ed46e5f5f)
+sha256sums=('3a48a9d6c97750bfbd535feeb5be0111db6406ddb7bb79fc680809cda6d828a5'
+            'af59ecde597ce9f8189368a7739279a5f8a391139fe048ef6b4e493ed46e5f5f')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
