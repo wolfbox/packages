@@ -1,6 +1,6 @@
 _realname=LVM
 pkgname=lvm2
-pkgver=2.2.02.111
+pkgver=2.2.02.114
 pkgrel=1
 pkgdesc=""
 arch=("x86_64")
@@ -11,7 +11,7 @@ backup=('etc/lvm/lvm.conf')
 depends=('glibc' 'readline' 'util-linux' 'ncurses' 'udev')
 
 source=(ftp://sources.redhat.com/pub/lvm2/LVM${pkgver}.tgz{,.asc})
-sha256sums=('6d8f3e72fe07f614315d8e0c2d9f93c5fc7a4360d14e4f9b805750e21593dd24'
+sha256sums=('de9cb0acfb9c5a6afa6184160c9e066f19043677f91a72c741d153efcd2874a5'
             'SKIP')
 
 build() {
