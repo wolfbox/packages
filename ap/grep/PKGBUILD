@@ -1,5 +1,5 @@
 pkgname=grep
-pkgver=2.20
+pkgver=2.21
 pkgrel=1
 pkgdesc="A tool for finding lines in an input matching a pattern."
 arch=("x86_64")
@@ -9,7 +9,7 @@ license=('GPLv3')
 depends=('glibc' 'pcre')
 
 source=(http://ftpmirror.gnu.org/grep/grep-${pkgver}.tar.xz)
-sha256sums=(f0af452bc0d09464b6d089b6d56a0a3c16672e9ed9118fbe37b0b6aeaf069a65)
+sha256sums=('5244a11c00dee8e7e5e714b9aaa053ac6cbfa27e104abee20d3c778e4bb0e5de')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
