@@ -1,5 +1,5 @@
 pkgname=util-linux
-pkgver=2.25.1
+pkgver=2.25.2
 pkgrel=1
 pkgdesc="A broad collection of Linux system utilities."
 arch=("x86_64")
@@ -13,7 +13,7 @@ depends=('glibc' 'ncurses')
 
 source=(https://www.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-${pkgver}.tar.xz
         sysctl.conf)
-sha256sums=('4701305ae22790c3a92ce48e50794fa05b7ee01f4227f419a171c100d08986e8'
+sha256sums=('e0457f715b73f4a349e1acb08cb410bf0edc9a74a3f75c357070f31f70e33cd6'
             '2c557a432be353b099ac241e9f62d8be80a4b354e3f31635365e4eed1a576632')
 
 build() {
