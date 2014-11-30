@@ -1,5 +1,5 @@
 pkgname=man-db
-pkgver=2.7.0.2
+pkgver=2.7.1
 pkgrel=1
 pkgdesc="Manual page viewer."
 arch=("x86_64")
@@ -9,10 +9,8 @@ license=('GPLv2')
 depends=('glibc' 'groff' 'gdbm>=1.9.0' 'libpipeline')
 makedepends=('pkg-config')
 
-source=(http://download.savannah.gnu.org/releases/man-db/man-db-${pkgver}.tar.xz
-        man-db.upstart)
-sha256sums=(90b7387eaa7c38e0d188d64cffea5d959bae5a0189327b507835330f48ae990d
-            72c0c53580817ec7feadf4847b74d36c39b8499a20304211ac7154746d3cf9de)
+source=(http://download.savannah.gnu.org/releases/man-db/man-db-${pkgver}.tar.xz)
+sha256sums=('c4876204a3fafb4d8ccc1d172c0431ee581d95558cbd6c4e79caca7717049e0e')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -30,6 +28,4 @@ package() {
 	rm "${pkgdir}"/usr/doc/man-db-${pkgver}/*.ps
 
 	mkdir -p "${pkgdir}"/var/cache/man
-	mkdir -p "${pkgdir}"/etc/init
-	install -m644 "${srcdir}"/man-db.upstart "${pkgdir}"/etc/init/man-db.conf
 }
