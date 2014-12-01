@@ -5,23 +5,27 @@ pkgdesc="The Linux kernel."
 arch=("x86_64")
 url="http://www.kernel.org"
 license=('GPLv2')
+options=(!strip)
 
 install=linux.install
-makedepends=('gcc' 'lz4' 'xz')
+makedepends=('gcc' 'lz4')
 
-_grsecver=3.0-${pkgver}-201411231452
+_grsecver=3.0-${pkgver}-201412040017
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.xz
         https://grsecurity.net/test/grsecurity-${_grsecver}.patch
-        config.xz)
+        config
+        x509.genkey)
 sha256sums=('4a55419c946a45c62a96b0313eff574c38650a3a270b2acd8168ec888a4fd02b'
-            '4db8d062a6acdbbcf23067f945608836acc0ab47e8ab3ac5dc1e2f1a428d48db'
-            '362419ede85a9286eb760c8c60f738ba7523e5841222e2a80a27ac1018b3df98')
+            'b7b61211583540b525e9254b2a0c39f3af47e83f7eef3d8a97eb938518d6f8d7'
+            '8fe8f92a2c3c06c479539d19f5fbf5acfec1e60a376d4c759ce8d7909bb25574'
+            'ca581821060e883b03f660d69ed0e9a7cbbf284dd757995bd31ffefa551ef316')
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
 	cat ../grsecurity-${_grsecver}.patch | patch -p1
-	xzcat "${srcdir}/config.xz" > .config
+	cp "${srcdir}/config" .config
+	cp "${srcdir}"/x509.genkey ./
 }
 
 build() {
