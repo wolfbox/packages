@@ -1,0 +1,29 @@
+pkgname=serf
+pkgver=1.3.7
+pkgrel=1
+pkgdesc="High-performance asynchronous HTTP client library"
+arch=('x86_64')
+url="http://code.google.com/p/serf/"
+license=('Apache')
+depends=('glibc' 'zlib' 'openssl' 'expat' 'apr-util' 'util-linux' 'openldap')
+makedepends=('scons')
+options=('!staticlibs')
+
+source=(http://serf.googlecode.com/svn/src_releases/${pkgname}-${pkgver}.zip)
+sha256sums=('1f15f212660ec1c8f00096650979c14deef3a4a4d4290f6da173ec6c767cbd01')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    scons PREFIX=/usr LIBDIR=/usr/lib/${MULTIARCH}
+}
+
+check() {
+    cd ${pkgname}-${pkgver}
+    scons check
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    install -d "${pkgdir}/usr"
+    scons PREFIX="${pkgdir}/usr" LIBDIR="${pkgdir}/usr/lib/${MULTIARCH}" install
+}
