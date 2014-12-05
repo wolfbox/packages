@@ -1,0 +1,48 @@
+pkgname=icu
+pkgver=54.1
+pkgrel=1
+pkgdesc="International Components for Unicode library"
+arch=(x86_64)
+url="http://www.icu-project.org/"
+license=('custom:icu')
+
+depends=('gcc-libs' 'sh')
+
+source=(#http://download.icu-project.org/files/${pkgname}4c/${pkgver}/${pkgname}4c-${pkgver/./_}-src.tgz
+	    http://download.icu-project.org/files/${pkgname}4c/${pkgver}/${pkgname}4c-${pkgver//./_}-src.tgz
+	    icu.8198.revert.icu5431.patch)
+sha256sums=('d42bc9a8ca6a91c55eb0925c279f49e5b508d51ef26ac9850d9be55de5bb8ab3'
+            '41c7d6adeee217f01cffb48da9101c790a21b432776b7eb596768781bc174820')
+
+prepare() {
+  cd icu/source
+
+  # fix Malayalam encoding https://bugzilla.redhat.com/show_bug.cgi?id=654200
+  patch -Rp3 -i ${srcdir}/icu.8198.revert.icu5431.patch
+}
+
+build() {
+  cd icu/source
+
+  export CC=gcc
+  export CXX=g++
+  ./configure --prefix=/usr \
+    --libdir=/usr/lib/${MULTIARCH} \
+	--sysconfdir=/etc \
+	--mandir=/usr/man \
+	--sbindir=/usr/bin
+  make
+}
+
+check() {
+  cd icu/source
+  make -k check # passes all
+}
+
+package() {
+  cd icu/source
+  make -j1 DESTDIR=${pkgdir} install
+
+  # Install license
+  install -Dm644 ${srcdir}/icu/license.html ${pkgdir}/usr/share/licenses/icu/license.html
+}
