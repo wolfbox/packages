@@ -6,7 +6,7 @@ arch=(x86_64)
 url="http://www.freedesktop.org/wiki/Software/HarfBuzz"
 license=(MIT)
 
-depends=(glib2 freetype2 icu)
+depends=('glibc' 'zlib' 'bzip2' 'glib2' 'freetype2' 'icu' 'graphite')
 makedepends=(gobject-introspection python2)
 source=(http://www.freedesktop.org/software/harfbuzz/release/${pkgname}-${pkgver}.tar.bz2)
 sha256sums=('3bfbf7b016167ee6b2a2f83948fef75cc1253081873d6a91022161815956b9be')
@@ -14,7 +14,7 @@ sha256sums=('3bfbf7b016167ee6b2a2f83948fef75cc1253081873d6a91022161815956b9be')
 build() {
   cd $pkgname-$pkgver
   ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
-    --with-glib --with-freetype --without-cairo --with-icu --without-graphite2 \
+    --with-glib --with-freetype --without-cairo --with-icu --with-graphite2 \
     --with-gobject
   make
 }
