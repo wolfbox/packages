@@ -1,4 +1,4 @@
-pkgname=freetype
+pkgname=freetype2
 pkgver=2.5.3
 pkgrel=1
 pkgdesc="A high-quality free typography library"
@@ -6,20 +6,21 @@ arch=("x86_64")
 url="http://www.freetype.org"
 license=('GPLv2' 'custom')
 
-depends=('glibc' 'zlib' 'libpng>=1.6')
+depends=('glibc' 'zlib' 'bzip2' 'libpng>=1.6' 'harfbuzz')
 
 source=(http://download.savannah.gnu.org/releases/freetype/freetype-${pkgver}.tar.bz2{,.sig})
 sha256sums=('c0848b29d52ef3ca27ad92e08351f023c5e24ce8cea7d8fe69fc96358e65f75e'
             'SKIP')
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man
+	cd "${srcdir}/freetype-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
+	            --with-harfbuzz=yes
 	make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd "${srcdir}/freetype-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 	
 	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
