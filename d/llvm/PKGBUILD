@@ -49,7 +49,8 @@ build() {
 	      -DCMAKE_INSTALL_PREFIX=/usr \
 	      -DLLVM_DEFAULT_TARGET_TRIPLE=${CHOST} \
 	      -DLLVM_LIBDIR_SUFFIX=/${MULTIARCH}/ \
-	      -DLLVM_ENABLE_FFI=yes \
+	      -DLLVM_ENABLE_RTTI=ON \
+	      -DLLVM_ENABLE_FFI=ON \
 	      -DCLANG_RESOURCE_DIR=../lib/${MULTIARCH}/clang/${pkgver}/ \
 	      -DBUILD_SHARED_LIBS=ON
 
