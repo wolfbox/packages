@@ -1,0 +1,19 @@
+pkgname=piles
+pkgver=0.000001
+pkgrel=1
+pkgdesc="A command-line tool for analyzing disk usage"
+arch=('any')
+url="https://github.com/seanyeh/piles"
+license=('WTFPL')
+
+depends=('sh' 'coreutils')
+
+source=(https://github.com/wolfbox/piles/archive/${pkgver}.tar.gz)
+sha256sums=('25a8a0e19d81cf5441bee2f17b99e8041dd969053561434a1eef425e6e16271c')
+
+package() {
+	cd "${srcdir}"/${pkgname}-${pkgver}
+	
+    mkdir -p "${pkgdir}"/usr/bin
+    install -m755 piles "${pkgdir}"/usr/bin/
+}
