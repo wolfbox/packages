@@ -1,0 +1,28 @@
+pkgname=ttfautohint
+pkgver=1.2
+pkgrel=1
+pkgdesc="A font autohinting framework"
+arch=("x86_64")
+url="http://www.freetype.org/ttfautohint"
+license=('GPLv2' 'custom')
+
+makedepends=('bash')
+depends=('gcc-libs' 'glibc' 'freetype2' 'harfbuzz')
+
+source=(http://download.savannah.gnu.org/releases/freetype/ttfautohint-${pkgver}.tar.gz{,.sig})
+sha256sums=('96c1accd94af73001a522f5d88ead3ce151b47f1236a4bb83dee41e0ded0304e'
+            'SKIP')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	bash ./configure --prefix=/usr --with-qt=no
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	
+	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	install -m644 {FTL.TXT,COPYING,GPLv2.TXT} "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+}
