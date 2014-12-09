@@ -1,21 +1,23 @@
-pkgname=llvm
+pkgname=('llvm' 'llvm-libs')
 pkgver=3.5.0
 pkgrel=1
-pkgdesc="Low Level Virtual Machine compiler toolkit."
+pkgdesc="Low Level Virtual Machine compiler toolkit"
 arch=("x86_64")
 url="http://llvm.org"
 license=('BSD')
 
 provides=('clang')
 makedepends=('cmake' 'ninja')
-depends=('glibc' 'gcc' 'perl' 'python' 'libffi' 'zlib')
+depends=('gcc' 'perl' 'python')
 
 source=(http://llvm.org/releases/${pkgver}/llvm-${pkgver}.src.tar.xz
         http://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz
-        http://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz)
+        http://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz
+        add-so-versioning.diff)
 sha256sums=('28e199f368ef0a4666708f31c7991ad3bcc3a578342b0306526dd35f07595c03'
             'fc80992e004b06f6c7afb612de1cdaa9ac9d25811c55f94fcf7331d9b81cdb8b'
-            'a4b3e655832bf8d9a357ea2c771db347237460e131988cbb96cda40ff39a8136')
+            'a4b3e655832bf8d9a357ea2c771db347237460e131988cbb96cda40ff39a8136'
+            '28790dc459da6fad347faa80b51099001119c75c17ce385efb3ab96c01160b0b')
 
 prepare() {
 	cd "${srcdir}"/${pkgname}-${pkgver}.src
@@ -37,6 +39,10 @@ prepare() {
 	# Our libdir is one directory deeper than clang's toolchain detection expects
 	sed -i 's|\.\./include|../../include|' \
 		tools/clang/lib/Driver/ToolChains.cpp
+
+	# Version output .so files. From reviews.llvm.org/D6157, as a solution to
+	# llvm.org/bugs/show_bug.cgi?id=15493
+	patch -p0 -i "${srcdir}/add-so-versioning.diff"
 }
 
 build() {
@@ -57,7 +63,8 @@ build() {
 	ninja
 }
 
-package() {
+package_llvm() {
+    depends+=('llvm-libs')
 	cd "${srcdir}"/build
 
     mkdir -p "${pkgdir}"/usr/man/man1
@@ -81,4 +88,16 @@ package() {
 		install -m755 scan-build/{ccc,c++}-analyzer "${pkgdir}"/usr/bin
 		install -m644 scan-build/scan-build.1 "${pkgdir}"/usr/man/man1/
 	)
+
+	# Move runtime libraries into llvm-libs
+	mv -f "${pkgdir}"/usr/lib/${MULTIARCH}/libLLVM*.so* "${srcdir}"/
+}
+
+package_llvm-libs() {
+    pkgdesc="${pkgdesc} - runtime libraries"
+    depends=('gcc-libs' 'glibc' 'libffi' 'zlib')
+
+    cd "${srcdir}"
+    install -d "${pkgdir}/usr/lib/${MULTIARCH}"
+    mv libLLVM*.so* "${pkgdir}/usr/lib/${MULTIARCH}/"
 }
