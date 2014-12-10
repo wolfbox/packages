@@ -1,0 +1,29 @@
+pkgname=perl-http-date
+pkgver=6.02
+pkgrel=1
+pkgdesc="Perl library for date conversion"
+arch=('any')
+url="http://search.cpan.org/dist/HTTP-Date"
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+
+depends=('perl')
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Date-$pkgver.tar.gz)
+sha256sums=('e8b9941da0f9f0c9c01068401a5e81341f0e3707d1c754f8e11f42a7e629e333')
+
+build() {
+  cd HTTP-Date-$pkgver
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd HTTP-Date-$pkgver
+  make test
+}
+
+package() {
+  cd HTTP-Date-$pkgver
+  make DESTDIR="$pkgdir" install
+}
