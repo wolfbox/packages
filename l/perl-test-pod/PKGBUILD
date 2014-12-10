@@ -1,0 +1,29 @@
+pkgname=perl-test-pod
+pkgver=1.48
+pkgrel=1
+pkgdesc="Check for POD errors in files"
+arch=('any')
+url="http://search.cpan.org/dist/Test-Pod/"
+license=('GPL' 'PerlArtistic')
+options=('!emptydirs')
+
+depends=('perl')
+
+source=(http://search.cpan.org/CPAN/authors/id/D/DW/DWHEELER/Test-Pod-${pkgver}.tar.gz)
+sha256sums=('2478cea781d3740ff4ce1432770707248fb3145946244a6d96e459bf14e4bcc2')
+
+build() {
+  cd Test-Pod-${pkgver}
+  perl Build.PL installdirs=vendor
+  ./Build
+}
+
+check() {
+  cd Test-Pod-${pkgver}
+  ./Build test
+}
+
+package() {
+  cd Test-Pod-${pkgver}
+  ./Build install destdir="${pkgdir}"
+}
