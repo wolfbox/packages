@@ -1,0 +1,37 @@
+pkgname=perl-net-http
+pkgver=6.07
+pkgrel=1
+pkgdesc="Low-level HTTP client library for Perl"
+arch=('any')
+url=http://search.cpan.org/dist/Net-HTTP
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+
+depends=('perl')
+checkdepends=('perl-uri')
+
+source=("http://cpan.metacpan.org/authors/id/M/MS/MSCHILLI/Net-HTTP-$pkgver.tar.gz")
+sha256sums=('9f31e0325a5a0930ad309fa019da9d208e57e236fb0598675ed883c820240364')
+
+build() {
+    export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor"     \
+      PERL_MB_OPT="--installdirs vendor" \
+      MODULEBUILDRC=/dev/null
+
+    cd Net-HTTP-${pkgver}
+    /usr/bin/perl Makefile.PL
+    make
+}
+
+check() {
+    export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    cd Net-HTTP-${pkgver}
+    make test
+}
+
+package() {
+    cd Net-HTTP-${pkgver}
+    make DESTDIR="$pkgdir" install
+}
