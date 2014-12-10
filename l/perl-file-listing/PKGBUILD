@@ -1,0 +1,29 @@
+pkgname=perl-file-listing
+pkgver=6.04
+pkgrel=1
+pkgdesc="Perl library to parse a directory listing"
+arch=('any')
+url="http://search.cpan.org/dist/File-Listing"
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+
+depends=('perl' 'perl-http-date')
+
+source=("http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/File-Listing-${pkgver}.tar.gz")
+sha256sums=('1e0050fcd6789a2179ec0db282bf1e90fb92be35d1171588bd9c47d52d959cf5')
+
+build() {
+  cd File-Listing-${pkgver}
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd File-Listing-${pkgver}
+  make test
+}
+
+package() {
+  cd File-Listing-${pkgver}
+  make DESTDIR="$pkgdir" install
+}
