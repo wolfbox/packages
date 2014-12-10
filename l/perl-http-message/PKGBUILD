@@ -1,0 +1,40 @@
+pkgname=perl-http-message
+pkgver=6.06
+pkgrel=1
+pkgdesc="HTTP style messages"
+arch=(any)
+url=http://search.cpan.org/dist/HTTP-Message
+license=(PerlArtistic GPL)
+options=('!emptydirs')
+
+depends=('perl' 'perl-encode-locale' 'perl-html-parser'
+         'perl-http-date' 'perl-lwp-mediatypes' 'perl-uri')
+checkdepends=('perl-io-html')
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Message-$pkgver.tar.gz)
+sha256sums=('087e97009c5239dca4631cf433d836771b3fc5ba5685eef1965f9d3415cbad63')
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor"     \
+      PERL_MB_OPT="--installdirs vendor" \
+      MODULEBUILDRC=/dev/null
+
+    cd HTTP-Message-$pkgver
+    /usr/bin/perl Makefile.PL
+    make
+  )
+}
+
+check() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    cd HTTP-Message-$pkgver
+    make test
+  )
+}
+
+package() {
+    cd HTTP-Message-$pkgver
+    make DESTDIR="$pkgdir" install
+}
