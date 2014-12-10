@@ -1,0 +1,29 @@
+pkgname=perl-http-daemon
+pkgver=6.01
+pkgrel=1
+pkgdesc="A simple http server class"
+arch=('any')
+url="http://search.cpan.org/dist/HTTP-Daemon"
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+
+depends=('perl' 'perl-http-date' 'perl-http-message' 'perl-lwp-mediatypes')
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Daemon-${pkgver}.tar.gz)
+sha256sums=('43fd867742701a3f9fcc7bd59838ab72c6490c0ebaf66901068ec6997514adc2')
+
+build() {
+  cd "${srcdir}/HTTP-Daemon-${pkgver}"
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd "${srcdir}/HTTP-Daemon-${pkgver}"
+  make test
+}
+
+package() {
+    cd "${srcdir}/HTTP-Daemon-${pkgver}"
+    make DESTDIR="${pkgdir}" install
+}
