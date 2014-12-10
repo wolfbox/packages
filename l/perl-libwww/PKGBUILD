@@ -1,0 +1,33 @@
+pkgname=perl-libwww
+pkgver=6.08
+pkgrel=1
+pkgdesc="The World-Wide Web library for Perl"
+arch=('any')
+url="https://metacpan.org/release/libwww-perl"
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+
+depends=('perl' 'perl-encode-locale' 'perl-file-listing'
+         'perl-html-parser' 'perl-http-cookies' 'perl-http-daemon'
+         'perl-http-date' 'perl-http-negotiate' 'perl-lwp-mediatypes'
+         'perl-net-http' 'perl-uri' 'perl-www-robotrules'
+         'perl-http-message')
+
+source=(http://search.cpan.org/CPAN/authors/id/M/MS/MSCHILLI/libwww-perl-${pkgver}.tar.gz)
+sha256sums=('314d239bdcee4bce849d5c9fe5986a39b2ce12199833ffa32d73a0950531fe94')
+
+build() {
+  cd libwww-perl-${pkgver}
+  perl Makefile.PL --aliases INSTALLDIRS=vendor
+  make
+}
+
+check()  {
+  cd libwww-perl-${pkgver}
+  make test
+}
+
+package() {
+  cd libwww-perl-${pkgver}
+  make DESTDIR="$pkgdir" install
+}
