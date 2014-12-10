@@ -1,0 +1,29 @@
+pkgname=perl-json
+pkgver=2.90
+pkgrel=1
+pkgdesc="Perl JSON library"
+arch=('any')
+url="http://search.cpan.org/dist/JSON"
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+
+depends=('perl')
+
+source=("http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-${pkgver}.tar.gz")
+sha256sums=('4ddbb3cb985a79f69a34e7c26cde1c81120d03487e87366f9a119f90f7bdfe88')
+
+build() {
+  cd JSON-${pkgver}
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd JSON-${pkgver}
+  make test
+}
+
+package() {
+  cd JSON-${pkgver}
+  make DESTDIR="$pkgdir" install
+}
