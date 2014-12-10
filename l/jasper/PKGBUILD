@@ -1,0 +1,39 @@
+pkgname=jasper
+pkgver=1.900.1
+pkgrel=1
+pkgdesc="A software-based implementation of the codec specified in the emerging JPEG-2000 Part-1 standard"
+arch=('x86_64')
+url="http://www.ece.uvic.ca/~mdadams/jasper/"
+license=('custom:JasPer2.0')
+
+depends=('glibc' 'libjpeg')
+
+source=(http://www.ece.uvic.ca/~mdadams/${pkgname}/software/${pkgname}-${pkgver}.zip
+        patch-libjasper-stepsizes-overflow.diff jasper-1.900.1-CVE-2008-3520.patch
+        jpc_dec.c.patch jasper-1.900.1-CVE-2008-3522.patch)
+sha256sums=('6b905a9c2aca2e275544212666eefc4eb44d95d0a57e4305457b407fe63f9494'
+            'e454f0fb1b994535ca02fa2468aa39ff153a78f3688db3808b6e953c44890e41'
+            '02236060cae28be5ac46d90ca17ce2de17e975574dd761d9117994e69bdc38d6'
+            'fca9c4bddc284d6c59845e5b80adfd670e79c945f166d9624b117c6db0c10492'
+            'b0272ce179ead3692942246523462db33c0f2a92bd9f9a117ff40e8ec963fbac')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i "${srcdir}/jpc_dec.c.patch"
+  patch -p1 -i "${srcdir}/patch-libjasper-stepsizes-overflow.diff"
+  patch -p1 -i "${srcdir}/jasper-1.900.1-CVE-2008-3520.patch"
+  patch -p1 -i "${srcdir}/jasper-1.900.1-CVE-2008-3522.patch"
+}
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr --mandir=/usr/man \
+              --libdir=/usr/lib/${MULTIARCH} --enable-shared
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 LICENSE "${pkgdir}/usr/doc/${pkgname}/LICENSE"
+}
