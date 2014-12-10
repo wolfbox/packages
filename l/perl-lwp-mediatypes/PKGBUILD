@@ -1,0 +1,29 @@
+pkgname=perl-lwp-mediatypes
+pkgver=6.02
+pkgrel=1
+pkgdesc="Guess the media type of a file or a URL"
+arch=('any')
+url="https://metacpan.org/release/LWP-MediaTypes"
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+
+depends=('perl')
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/LWP-MediaTypes-${pkgver}.tar.gz)
+sha256sums=('18790b0cc5f0a51468495c3847b16738f785a2d460403595001e0b932e5db676')
+
+build() {
+  cd "${srcdir}/LWP-MediaTypes-${pkgver}"
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd "${srcdir}/LWP-MediaTypes-${pkgver}"
+  make test
+}
+
+package() {
+  cd "${srcdir}/LWP-MediaTypes-${pkgver}"
+  make DESTDIR="$pkgdir" install
+}
