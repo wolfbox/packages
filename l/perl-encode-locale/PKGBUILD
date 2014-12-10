@@ -1,0 +1,29 @@
+pkgname=perl-encode-locale
+pkgver=1.03
+pkgrel=1
+pkgdesc="Determine the locale encoding"
+arch=('any')
+url="http://search.cpan.org/dist/Encode-Locale"
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+
+depends=('perl')
+
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/Encode-Locale-$pkgver.tar.gz)
+sha256sums=('f76337e0933225914111fcc3319ff4db359b1abfd1aa56dff2df5378db0e2d55')
+
+build() {
+  cd Encode-Locale-$pkgver
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd Encode-Locale-$pkgver
+  make test
+}
+
+package() {
+  cd Encode-Locale-$pkgver
+  make DESTDIR="$pkgdir" install
+}
