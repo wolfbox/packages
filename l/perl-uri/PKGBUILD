@@ -1,0 +1,32 @@
+pkgname=perl-uri
+_realname=URI
+pkgver=1.65
+pkgrel=1
+pkgdesc="Uniform Resource Identifiers (absolute and relative)"
+arch=('any')
+url="http://search.cpan.org/dist/${_realname}/"
+license=('PerlArtistic')
+options=('!emptydirs')
+
+depends=('perl')
+provides=('perl-uri-escape=3.30')
+
+source=("http://cpan.metacpan.org/authors/id/E/ET/ETHER/${_realname}-${pkgver}.tar.gz")
+sha256sums=('93dec3e8dc2fe6ababb0cdd53f8b529e89595fe56cd691d2c57b1c04d6df2b91')
+
+build() {
+  cd "${srcdir}/${_realname}-$pkgver"
+  # install module in vendor directories.
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd "${srcdir}/${_realname}-${pkgver}"
+  make test
+}
+
+package() {
+  cd "${srcdir}/${_realname}-$pkgver"
+  make install DESTDIR="${pkgdir}"
+}
