@@ -1,0 +1,24 @@
+pkgname=libyaml
+pkgver=0.1.6
+pkgrel=1
+pkgdesc="YAML 1.1 library"
+arch=('x86_64')
+url="http://pyyaml.org/wiki/LibYAML"
+license=('MIT')
+
+depends=('glibc')
+
+source=(http://pyyaml.org/download/libyaml/yaml-$pkgver.tar.gz)
+sha256sums=('7da6971b4bd08a986dd2a61353bc422362bd0edcc67d7ebaac68c95f74182749')
+
+build() {
+  cd "$srcdir/yaml-$pkgver"
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "$srcdir/yaml-$pkgver"
+  make DESTDIR="$pkgdir" install
+  install -m644 -D LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+}
