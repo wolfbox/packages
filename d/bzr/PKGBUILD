@@ -1,0 +1,33 @@
+pkgname=bzr
+pkgver=2.6.0
+pkgrel=1
+pkgdesc="A decentralized revision control system (bazaar)"
+arch=('x86_64')
+url="http://bazaar.canonical.com/en/"
+license=('GPL')
+depends=('python2')
+
+source=("http://launchpad.net/${pkgname}/${pkgver%.*}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz"{,.sig})
+sha256sums=('0994797182eb828867eee81cccc79480bd2946c99304266bc427b902cf91dab0'
+            'SKIP')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  sed -i 's|man/man1|share/man/man1|' setup.py
+  sed -i 's|/usr/bin/env python|/usr/bin/env python2|' \
+    bzrlib/{plugins/bash_completion/bashcomp.py,tests/ssl_certs/create_ssls.py,patiencediff.py,_patiencediff_py.py}
+}
+
+build() {
+  cd ${pkgname}-${pkgver}
+  python2 setup.py build
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  python2 setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1
+
+  # bash-completion
+  install -D -m644 contrib/bash/bzr \
+    "${pkgdir}/usr/share/bash-completion/completions/bzr"
+}
