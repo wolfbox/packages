@@ -1,0 +1,25 @@
+pkgname=libutempter
+pkgver=1.1.6
+pkgrel=1
+pkgdesc="Interface for terminal emulators such as screen and xterm to record user sessions to utmp and wtmp files"
+arch=('x86_64')
+url="ftp://ftp.altlinux.org/pub/people/ldv/utempter"
+license=('LGPL')
+
+depends=('glibc')
+
+source=(ftp://ftp.altlinux.org/pub/people/ldv/utempter/$pkgname-$pkgver.tar.bz2)
+sha256sums=('b898565f31ced7e5c1fa0a2eaa0f6ff0ed862b5fe375d26375b64bfbdfeac397')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  RPM_OPT_FLAGS="$CFLAGS" make libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" libdir=/usr/lib/${MULTIARCH} install
+  chown root:utmp "$pkgdir/usr/lib/utempter/utempter"
+  chmod 2755 "$pkgdir/usr/lib/utempter/utempter"
+}
