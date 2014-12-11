@@ -1,0 +1,48 @@
+pkgname=gamin
+pkgver=0.1.10
+pkgrel=1
+pkgdesc='File and directory monitoring system defined to be a subset of the FAM (File Alteration Monitor)'
+url='http://www.gnome.org/~veillard/gamin'
+license=('GPL')
+arch=('x86_64')
+
+makedepends=('python2')
+depends=('glibc' 'glib2')
+optdepends=('python2')
+provides=('fam')
+conflicts=('fam')
+
+source=("$url/sources/${pkgname}-${pkgver}.tar.gz"
+        'fix-deprecated-const.patch'
+        '18_gam_server_deadlocks.patch'
+        '0001-Poll-files-on-nfs4.patch')
+sha256sums=('28085f0ae8be10eab582ff186af4fb0be92cc6c62b5cc19cd09b295c7c2899a1'
+            '33af6c9a94b459506fc48892c169d89cb4ad7c68e160f0c4bc74475f19ce5a2f'
+            'c67d26e26b1d9e0734758565fed6d09c725ab7fdec8325ab03bd5bbef95da8f8'
+            '731603093d4831ddcdebb27171a294c8b03a000b44f3c5bca7472074f2f799a1')
+
+prepare() {
+  cd $pkgname-$pkgver
+
+  # https://bugs.archlinux.org/task/33642
+  patch -Np1 -i ../18_gam_server_deadlocks.patch
+
+  patch -Np1 -i ../fix-deprecated-const.patch
+  patch -Np1 -i ../0001-Poll-files-on-nfs4.patch
+
+  # python 2
+  sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' python/gamin.py
+}
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --disable-static \
+    --with-threads --disable-debug-api --disable-debug --libexecdir=/usr/lib/gamin \
+    --with-python=/usr/bin/python2
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}
