@@ -1,5 +1,5 @@
 pkgname=linux
-pkgver=3.17.6
+pkgver=3.17.7
 pkgrel=1
 pkgdesc="The Linux kernel."
 arch=("x86_64")
@@ -10,20 +10,20 @@ options=(!strip)
 install=linux.install
 makedepends=('gcc' 'lz4')
 
-_grsecver=3.0-${pkgver}-201412071639
+_grsecver=3.0-3.17.7-201412170700
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.xz
         https://grsecurity.net/test/grsecurity-${_grsecver}.patch
         config
         x509.genkey)
-sha256sums=('412909c1a08f77243bf965209aaef1e80c6f056f48e93e2b69df685445549d7c'
-            'fc985e8f5549b4f35b586c8c3df36ac8f4bd6b65bc257bd75ac2e40af9c957a0'
+sha256sums=('a3c8e6aee912bfd2e69abf9df5a06058434a8771bcaa1784b5980bf1b5298e1c'
+            '66f121d069be989d179ba79866d381483f1f2fa65d515f03ab928ec082fd5c52'
             '8fe8f92a2c3c06c479539d19f5fbf5acfec1e60a376d4c759ce8d7909bb25574'
             'ca581821060e883b03f660d69ed0e9a7cbbf284dd757995bd31ffefa551ef316')
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
-	cat ../grsecurity-${_grsecver}.patch | patch -p1
+	patch -p1 -i ../grsecurity-${_grsecver}.patch
 	cp "${srcdir}/config" .config
 	cp "${srcdir}"/x509.genkey ./
 }
