@@ -1,16 +1,16 @@
 pkgname=mercurial
-pkgver=3.1.2
+pkgver=3.2.3
 pkgrel=1
 pkgdesc="A free and fast distributed version control system."
 arch=('x86_64')
 url="http://mercurial.selenic.com"
 license=('GPLv2')
-
 backup=('etc/mercurial/hgrc')
-depends=('python>=2.4')
+
+depends=('python>=2.4' 'ca-certificates')
 
 source=(http://mercurial.selenic.com/release/mercurial-${pkgver}.tar.gz)
-sha256sums=(5dbe5ceb3707e378528dc9346af280919760aa1a8bcc27be12c1fe2bafa78d3a)
+sha256sums=('c4369320e276d78aada1b5936e96c7bbbbb8154cfba725ef4e8757dcedeaf1ef')
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -18,5 +18,5 @@ package() {
 	python2 setup.py build install --root="${pkgdir}" --optimize=1
 
 	mkdir -p "${pkgdir}"/etc/mercurial/
-	install -m644 contrib/sample.hgrc "${pkgdir}"/etc/mercurial/hgrc
+	echo -e "\n[web]\ncacerts = /etc/ssl/certs/ca-certificates.crt\n" >> "${pkgdir}"/etc/mercurial/hgrc
 }
