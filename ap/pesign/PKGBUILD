@@ -1,0 +1,23 @@
+pkgname=pesign
+pkgver=0.110
+pkgrel=1
+pkgdesc="PE-COFF executable signing tools"
+arch=("x86_64")
+url="https://github.com/vathpela/pesign"
+license=('GPLv2')
+
+depends=('glibc' 'popt' 'util-linux' 'efivar' 'nss' 'nspr')
+
+source=(https://github.com/vathpela/pesign/releases/download/${pkgver}/pesign-${pkgver}.tar.bz2)
+sha256sums=('a03499ffa181fea6086e1966476eccc05e3e014761ac300de1da27a44dba2281')
+
+build() {
+	cd ${pkgname}-${pkgver}
+	make
+}
+
+package() {
+	cd ${pkgname}-${pkgver}
+	make install DESTDIR="${pkgdir}" LIBDIR=/usr/lib/${MULTIARCH}
+	rm -rf "${pkgdir}/etc/rpm"
+}
