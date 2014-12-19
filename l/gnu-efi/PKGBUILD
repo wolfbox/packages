@@ -1,6 +1,6 @@
 pkgname=gnu-efi
 _pkgver="3.0"
-pkgver=${_pkgver}s
+pkgver=${_pkgver}w
 pkgrel=1
 pkgdesc="UEFI application library"
 arch=("x86_64")
@@ -8,17 +8,26 @@ url="http://sourceforge.net/projects/gnu-efi/"
 license=('GPL')
 options=(!makeflags !strip staticlibs)
 
-source=("http://downloads.sourceforge.net/project/gnu-efi/gnu-efi_${pkgver}.orig.tar.gz")
-sha256sums=('10d69f24086aa35583c0b4fff7c8a0c07c065ed2c29e1570532d20393fd777a1')
+source=("http://downloads.sourceforge.net/project/gnu-efi/gnu-efi_${pkgver}.orig.tar.gz"
+        build-fix.patch)
+sha256sums=('d5c5ca168d25bb54ea936a25175d7626778001f788bddc60dbed103874583621'
+            'ec26d738a4f0f875c4955d7ead302cff9c7ff0cf423e051ecb7bf34383c58763')
+
+unset CPPFLAGS
+unset CFLAGS
+unset CXXFLAGS
+unset LDFLAGS
+unset MAKEFLAGS
+
+prepare() {
+	cd "${pkgname}-${_pkgver}"
+
+	# Apply patch from Arch to fix installation
+	patch -p1 -i "${srcdir}/build-fix.patch"
+}
 
 build() {
 	cd "${srcdir}/${pkgname}-${_pkgver}"
-
-	unset CPPFLAGS
-	unset CFLAGS
-	unset CXXFLAGS
-	unset LDFLAGS
-	unset MAKEFLAGS
 
 	make -j1
 	make -j1 -C apps all
@@ -30,6 +39,4 @@ package() {
 
 	install -d "${pkgdir}"/usr/share/gnu-efi/apps/${CARCH}/
 	install -D -m0644 apps/*.efi "${pkgdir}"/usr/share/gnu-efi/apps/${CARCH}
-	
-	mv "${pkgdir}"/include "${pkgdir}"/usr/include
 }
