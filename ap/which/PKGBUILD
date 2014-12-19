@@ -1,0 +1,24 @@
+pkgname=which
+pkgver=2.20
+pkgrel=1
+pkgdesc='A utility to show the full path of commands'
+arch=('x86_64')
+url='http://savannah.gnu.org/projects/which'
+license=('GPL3')
+groups=('base' 'base-devel')
+depends=('glibc' 'bash')
+
+source=("http://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.gz"{,.sig})
+sha256sums=('d417b65c650d88ad26a208293c1c6e3eb60d4b6d847f01ff8f66aca63e2857f8'
+            'SKIP')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}
