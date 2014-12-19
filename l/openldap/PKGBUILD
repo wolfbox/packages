@@ -1,15 +1,15 @@
-pkgname=(openldap)
-pkgver=2.4.31
+pkgname=openldap
+pkgver=2.4.40
 pkgrel=1
 pkgdesc="OpenLDAP Lightweight Directory Access Protocol implementation."
 arch=("x86_64")
 url="http://www.openldap.org"
 license=(custom)
 
-backup=()
+depends=('glibc' 'openssl' 'cyrus-sasl' 'zlib')
 
 source=(ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-${pkgver}.tgz)
-sha256sums=(bde845840df4794b869a6efd6a6b1086f80989038e4844b2e4d7d6b57b39c5b6)
+sha256sums=('d12611a5c25b6499293c2bb7b435dc2b174db73e83f5a8cb7e34f2ce5fa6dadb')
 
 build() {
 	cd "${srcdir}/openldap-${pkgver}"
@@ -22,10 +22,7 @@ build() {
 	make
 }
 
-package_openldap() {
-	#depends=('libldap>=${pkgver}')
-	backup=('etc/openldap/ldap.conf')
-
+package() {
 	cd "${srcdir}"/openldap-${pkgver}
 	make install DESTDIR="${pkgdir}"
 

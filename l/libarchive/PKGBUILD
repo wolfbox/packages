@@ -6,7 +6,7 @@ arch=("x86_64")
 url="http://www.libarchive.org"
 license=("BSD")
 
-depends=('glibc' 'acl' 'attr' 'bzip2' 'expat' 'lzo' 'openssl' 'xz' 'zlib')
+depends=('glibc' 'acl' 'attr' 'bzip2' 'expat' 'lzo' 'openssl' 'xz' 'zlib' 'nettle')
 makedepends=('autoconf' 'automake' 'bash')
 
 source=(git+https://github.com/wolfbox/libarchive.git#commit=658b4bf)

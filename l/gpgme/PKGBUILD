@@ -1,15 +1,16 @@
 pkgname=gpgme
-pkgver=1.4.4
+pkgver=1.5.3
 pkgrel=1
-pkgdesc=""
+pkgdesc="Library interface to GPG cryptography"
 arch=("x86_64")
 url="http://www.gnupg.org/(it)/related_software/gpgme/index.html"
 license=("GPLv2")
 
-depend=('glibc' 'libassuan')
+depends=('glibc' 'libassuan')
 
-source=("ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-${pkgver}.tar.bz2")
-sha256sums=(3d594ed4040e11f66be2f48e8bbfc0a831f68321b5d8940d9fdafb1b30542948)
+source=(ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-${pkgver}.tar.bz2{,.sig})
+sha256sums=('0db040c5b07e69cfe9a0b4566c8e90151ebacfe122c97c452f11386654aefcc9'
+            'SKIP')
 
 build() {
 	cd "${srcdir}/gpgme-${pkgver}"
