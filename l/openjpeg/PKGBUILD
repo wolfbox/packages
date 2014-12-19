@@ -1,0 +1,31 @@
+pkgname=openjpeg
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="An open source JPEG 2000 codec"
+arch=('x86_64')
+license=('BSD')
+url="http://www.openjpeg.org"
+
+makedepends=('libtiff' 'cmake')
+depends=('zlib' 'lcms2' 'libpng')
+
+source=(http://downloads.sourceforge.net/openjpeg.mirror/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('1232bb814fd88d8ed314c94f0bfebb03de8559583a33abbe8c64ef3fc0a8ff03')
+
+build() {
+  mkdir -p build && cd build
+
+  cmake ../${pkgname}-${pkgver} \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DOPENJPEG_INSTALL_LIB_DIR=lib/${MULTIARCH}
+  make
+}
+
+package() {
+  ( cd build
+    make DESTDIR="${pkgdir}" install )
+
+  ( cd ${pkgname}-${pkgver}
+    install -m755 -d "${pkgdir}/usr/share/licenses/openjpeg"
+    install -m644 LICENSE "${pkgdir}/usr/share/licenses/openjpeg/LICENSE" )
+}
