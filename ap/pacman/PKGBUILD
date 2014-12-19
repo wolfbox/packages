@@ -1,5 +1,5 @@
 pkgname=pacman
-pkgver=4.1.2
+pkgver=4.2.0
 pkgrel=1
 pkgdesc="A simple and fast package manager."
 arch=("x86_64")
@@ -9,10 +9,12 @@ license=(GPLv2)
 backup=('etc/makepkg.conf' 'etc/pacman.conf')
 depends=('glibc' 'bash' 'libarchive' 'curl' 'gpgme' 'libxml2' 'fakeroot')
 
-source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz
+source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz{,.sig}
         makepkg.conf)
-sha256sums=(7c059b444735ee254cfbd8dc2fac8c5d61453601f8adaf001c7038cdc673334c
-            f834a404fb47862563141bcc1bfecd2fb3540ef1b0e44476a03e12734949a01a)
+sha256sums=('941aca897db3218f0cb4036de13422d74212afbcdbf4a7cd7074a7128e196a22'
+            'SKIP'
+            'f834a404fb47862563141bcc1bfecd2fb3540ef1b0e44476a03e12734949a01a')
+validpgpkeys=(6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD) # Allan McRae
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
