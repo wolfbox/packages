@@ -1,0 +1,32 @@
+pkgname='poppler'
+pkgver=0.29.0
+pkgrel=1
+pkgdesc="PDF rendering library"
+arch=('x86_64')
+license=('GPL')
+options=('!emptydirs')
+url="http://poppler.freedesktop.org/"
+
+makedepends=('gtk2' 'pkg-config' 'gobject-introspection' 'icu' 'python2')
+depends=('libjpeg' 'gcc-libs' 'cairo' 'fontconfig' 'openjpeg' 'lcms2' 'glib2' 'qt5')
+optdepends=('poppler-data: encoding data to display PDF documents containing CJK characters')
+
+sha256sums=('3c1e16dc8d5d846d085baf65844ed3e05cbde5d44f6682f9f1e2b120d66c62c4')
+source=(http://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.xz)
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib/${MULTIARCH} \
+      --localstatedir=/var --disable-static \
+      --enable-cairo-output \
+      --enable-xpdf-headers \
+      --enable-libjpeg --enable-zlib \
+      --enable-poppler-qt5 \
+      --enable-poppler-glib
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
