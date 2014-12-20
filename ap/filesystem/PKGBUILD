@@ -17,7 +17,7 @@ source=('profile'
         'hosts'
         'hostname')
 sha256sums=('5c56e94f10e8a87a82954801459eb4cd588bcb234af354ea08dbf2761ea62f1e'
-            'afcb1e99cc96919e4f36ff2c5827eb239a526ec84d47b77662d36e43d12ce842'
+            'd176841d0f92e962d4d48f1a51f2445a6bb21af5750dc4696d5d4968fbc36ddc'
             'dec78757d3be768a9e47c1eb49073cd23827b6cb35b970217e07598e36d9e280'
             '08fad18e4a2289c039f9c0eef4999aa54d84992e51e617ce683ecd9b5c2e02a0'
             'c0b705a8a21a431d0c4b11e63e0977947e24ea0545c22e69e2b8f1e0c2750cb1'
@@ -37,8 +37,9 @@ package() {
 	mkdir -p {boot,dev,home,mnt,media,opt,run,lib}
 	mkdir -p etc/{ld.so.conf.d,profile.d,skel}
 	mkdir -p usr/{bin,include,lib,lib/modprobe.d,man,info,share}
-	mkdir -p usr/man/man{1,2,3,4,5,6,7,8}
+	mkdir -p usr/share/man/man{1,2,3,4,5,6,7,8}
 	mkdir -p usr/local/{bin,lib,etc,share,man,info,include}
+	mkdir -p usr/local/share/man/man{1,2,3,4,5,6,7,8}
 	mkdir -p var/{lib,log}
 
 	ln -s /usr/bin bin
