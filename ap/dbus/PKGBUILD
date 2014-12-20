@@ -7,14 +7,15 @@ url="http://www.freedesktop.org/wiki/Software/dbus/"
 license=("GPLv2")
 
 install=dbus.install
-depends=('glibc' 'expat')
+depends=('glibc' 'expat' 'libx11')
 
-source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz"
+source=(http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz{,.asc}
         dbus-1.6.x-allow_root_globally.diff.gz
         dbus.set.home.diff.gz
         dbus
         dbus.filesystem)
 sha256sums=('f1dc56238b132923c34db0e6714a003773afbe724b738f0f0ab18b0ff745b1fe'
+            'SKIP'
             'cd35621e4cc56403e9bb6ca6b431c8ae04f8cb8c626df40953e6f0f1bb488f64'
             '30bdcc5407a0bc08d98d21b949cf5535d1e08c64df28928ec8ce71c026ed8f39'
             '8cb42906477863e6f818806d699f0ccf75a97f19e273770a5cef2f5c2b08bc86'
@@ -39,12 +40,12 @@ build() {
 	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-	            --localstatedir=/var --mandir=/usr/man --infodir=/usr/info \
+	            --localstatedir=/var --infodir=/usr/info \
 	            --libexecdir=/usr/lib/${MULTIARCH} --docdir=/usr/doc/dbus-${pkgver} \
 	            --disable-doxygen-docs --enable-shared=yes --enable-static=no \
 	            --enable-inotify --with-system-pid-file=/var/run/dbus/dbus.pid \
 	            --with-system-socket=/var/run/dbus/system_bus_socket \
-	            --disable-tests
+	            --disable-tests --enable-x11-autolaunch
 	make
 }
 
