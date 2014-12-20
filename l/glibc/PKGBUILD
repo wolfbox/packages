@@ -5,48 +5,49 @@ pkgdesc="The GNU libc."
 arch=("x86_64")
 url="http://www.gnu.org/s/libc/"
 license=(GPLv2, LGPLv2.1)
+options=(staticlibs !strip)
 
 depends=('linux' 'tzdata')
-conflicts=('musl')
 
-options=(!strip)
 
 source=("ftp://ftp.gnu.org/gnu/libc/glibc-${pkgver}.tar.gz"
 		slackware-mods.tar.xz
-		glibc.hardening.diff.xz)
-sha256sums=(37e1de410d572a19b707b99786db9822bb4775e9d70517d88937ab12e6d6debc
-			5bbfae1b7b3ae7f6ba256cdf9d16a48fa330f1a0ce9c6a093f7ebd40913ad0bf
-			20327ed1d30dbe7e2006f1a524de734dfe412456536fa3ca8e3dc5ea1080499f)
+		glibc.hardening.diff.xz
+		glibc-2.20-roundup.patch)
+sha256sums=('37e1de410d572a19b707b99786db9822bb4775e9d70517d88937ab12e6d6debc'
+            '5bbfae1b7b3ae7f6ba256cdf9d16a48fa330f1a0ce9c6a093f7ebd40913ad0bf'
+            '20327ed1d30dbe7e2006f1a524de734dfe412456536fa3ca8e3dc5ea1080499f'
+            '2835db5d624fa79236f97a8450e9ff0e452f6bb689b4a11e6a63d52e4efb997b')
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-  # Use old-style locale directories rather than a single (and strangely
-  # formatted) /usr/lib/locale/locale-archive file:
-  zcat "${srcdir}"/glibc.locale.no-archive.diff.gz | patch -p1 --verbose || exit 1
-  # The is_IS locale is causing a strange error about the "echn" command
-  # not existing.  This patch reverts is_IS to the version shipped in
-  # glibc-2.5:
-  zcat "${srcdir}"/is_IS.diff.gz | patch -p1 --verbose || exit 1
-  # Fix NIS netgroups:
-  zcat "${srcdir}"/glibc.nis-netgroups.diff.gz | patch -p1 --verbose || exit 1
-  # Support ru_RU.CP1251 locale:
-  zcat "${srcdir}"/glibc.ru_RU.CP1251.diff.gz | patch -p1 --verbose || exit 1
-  # Fix resolver problem with glibc-2.9:
-  zcat "${srcdir}"/glibc-2.10-dns-no-gethostbyname4.diff.gz | patch -p0 --verbose || exit 1
-  # This partial security patch still applies and might be needed:
-  zcat "${srcdir}"/glibc.git-96611391ad8823ba58405325d78cefeae5cdf699-CVE-2010-3847b.patch.gz | patch -p1 --verbose || exit 1
-  # Make it harder for people to trick ldd into running code:
-  zcat "${srcdir}"/glibc.ldd.trace.through.dynamic.linker.diff.gz | patch -p1 --verbose || exit 1
+	# Use old-style locale directories rather than a single (and strangely
+	# formatted) /usr/lib/locale/locale-archive file:
+	zcat "${srcdir}"/glibc.locale.no-archive.diff.gz | patch -p1 --verbose || exit 1
+	# The is_IS locale is causing a strange error about the "echn" command
+	# not existing.  This patch reverts is_IS to the version shipped in
+	# glibc-2.5:
+	zcat "${srcdir}"/is_IS.diff.gz | patch -p1 --verbose || exit 1
+	# Fix NIS netgroups:
+	zcat "${srcdir}"/glibc.nis-netgroups.diff.gz | patch -p1 --verbose || exit 1
+	# Support ru_RU.CP1251 locale:
+	zcat "${srcdir}"/glibc.ru_RU.CP1251.diff.gz | patch -p1 --verbose || exit 1
+	# Fix resolver problem with glibc-2.9:
+	zcat "${srcdir}"/glibc-2.10-dns-no-gethostbyname4.diff.gz | patch -p0 --verbose || exit 1
+	# This partial security patch still applies and might be needed:
+	zcat "${srcdir}"/glibc.git-96611391ad8823ba58405325d78cefeae5cdf699-CVE-2010-3847b.patch.gz | patch -p1 --verbose || exit 1
+	# Make it harder for people to trick ldd into running code:
+	zcat "${srcdir}"/glibc.ldd.trace.through.dynamic.linker.diff.gz | patch -p1 --verbose || exit 1
 
-  # unlink() hardening patch from Florian Weimer via Slackware
-  cat "${srcdir}"/glibc.hardening.diff | patch -p1
+	# unlink() hardening patch from Florian Weimer via Slackware
+	cat "${srcdir}"/glibc.hardening.diff | patch -p1
   
-  # Set some paths properly
-  echo slibdir=/lib/${MULTIARCH} > configparms
-  echo rtlddir=/lib/${MULTIARCH} >> configparms
-  echo sbindir=/usr/bin >> configparms
-  echo rootsbindir=/usr/bin >> configparms  
+	# Set some paths properly
+	echo slibdir=/lib/${MULTIARCH} > configparms
+	echo rtlddir=/lib/${MULTIARCH} >> configparms
+	echo sbindir=/usr/bin >> configparms
+	echo rootsbindir=/usr/bin >> configparms  
 }
 
 build() {
@@ -85,9 +86,23 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"/build
 
 	make install install_root="${pkgdir}"
-	make localedata/install-locales install_root="${pkgdir}"
 	
 	# Install a link of ld-linux into /lib64 for compatibility
 	mkdir -p "${pkgdir}"/lib64
 	ln -s /lib/${MULTIARCH}/ld-linux-${CARCH/_/-}.so.2 "${pkgdir}"/lib64
+	
+	# Remove static libraries that aren't required
+	rm "${pkgdir}"/usr/lib/${MULTIARCH}/lib{anl,BrokenLocale,nsl,resolv,rt,util}.a
+	
+	# Limit what we strip to pretty much whatever Arch strips, to avoid breaking
+	# debugging
+	( cd "${pkgdir}"
+	  strip ${STRIP_BINARIES} usr/bin/* || true # Some of these are scripts; ignore
+	  ( cd usr/lib/${MULTIARCH}
+	    strip ${STRIP_BINARIES} getconf/*
+	    strip ${STRIP_STATIC} *.a
+	    strip ${STRIP_SHARED} lib{anl,BrokenLocale,cidn,crypt}*.so \
+	                          libnss_*.so \
+	                          lib{dl,m,nsl,resolv,rt,util}*.so \
+	                          ./{audit,gconv}/*.so ) )
 }
