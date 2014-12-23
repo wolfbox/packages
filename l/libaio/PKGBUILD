@@ -19,5 +19,6 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	mkdir -p "${pkgdir}"/usr/bin
-	make prefix="${pkgdir}" libdir="${pkgdir}"/usr/lib/${MULTIARCH} install
+	make prefix="${pkgdir}" libdir="${pkgdir}"/usr/lib/${MULTIARCH} \
+	     includedir="${pkgdir}"/usr/include install
 }
