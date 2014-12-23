@@ -1,5 +1,5 @@
 pkgname=mariadb
-pkgver=10.0.14
+pkgver=10.0.15
 pkgrel=1
 pkgdesc="A community fork of the MySQL database engine."
 arch=('x86_64')
@@ -11,7 +11,7 @@ makedepends=('cmake')
 depends=('glibc' 'gcc-libs' 'zlib' 'ncurses' 'openssl' 'pcre' 'libaio' 'jemalloc')
 
 source=(https://downloads.mariadb.org/interstitial/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz)
-sha256sums=(ac0eca4ebb278aa304236bf6dbd5e8c9cf285431333f1379051c231c08e2e31d)
+sha256sums=('9154cb68504d469b1bac636b85e30b2b2da2586092476d6ad2f9d6bc462909d8')
 
 build() {
 	cd "${srcdir}"
