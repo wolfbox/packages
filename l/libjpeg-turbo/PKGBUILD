@@ -6,15 +6,19 @@ arch=("x86_64")
 url="http://www.libjpeg-turbo.org"
 license=('BSD')
 
-conflicts=('libjpeg')
 depends=('glibc')
+replaces=('libjpeg')
+provides=('libjpeg')
 
-source=(http://downloads.sourceforge.net/project/libjpeg-turbo/${pkgver}/libjpeg-turbo-${pkgver}.tar.gz)
-sha256sums=('c132907417ddc40ed552fe53d6b91d5fecbb14a356a60ddc7ea50d6be9666fb9')
+source=(http://downloads.sourceforge.net/project/libjpeg-turbo/${pkgver}/libjpeg-turbo-${pkgver}.tar.gz
+        overrun.patch)
+sha256sums=('c132907417ddc40ed552fe53d6b91d5fecbb14a356a60ddc7ea50d6be9666fb9'
+            '7521a75d9cd9b054b2a9e69098e5a1a903fdee56a43964275c4c5f5598246d85')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
+	            --mandir=/usr/share/man \
 	            --libdir=/usr/lib/${MULTIARCH}
 	make
 }
@@ -23,7 +27,7 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make install DESTDIR="${pkgdir}"
 	
-	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
-	install -m644 README* "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
-	rm -rf "${pkgdir}"/usr/share
+	rm -rf "${pkgdir}"/usr/share/doc/*
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
+	install -m644 README* "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}/
 }
