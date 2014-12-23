@@ -1,0 +1,31 @@
+pkgname=qpdf
+pkgver=5.1.2
+pkgrel=1
+pkgdesc="A Content-Preserving PDF Transformation System"
+arch=('x86_64')
+url="http://qpdf.sourceforge.net/"
+license=('custom:Artistic-2.0')
+
+depends=('gcc-libs' 'zlib' 'pcre' 'perl')
+
+source=(http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('e9dd8d5d0a322078ffd573f057f03d24a734cc5b7dd925b089ebcb0f6e867bfd')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --disable-static
+  make
+}
+
+check() {
+  cd $pkgname-$pkgver
+  make check # passes all
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}/" install
+
+  mkdir -m755 -p ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 Artistic-2.0 ${pkgdir}/usr/share/licenses/${pkgname}/
+}
