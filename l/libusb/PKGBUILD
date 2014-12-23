@@ -1,5 +1,5 @@
 pkgname=libusb
-pkgver=1.0.9
+pkgver=1.0.19
 pkgrel=1
 pkgdesc="USB library."
 arch=("x86_64")
@@ -9,11 +9,11 @@ license=('LGPLv2.1')
 depends=('glibc')
 
 source=(http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-${pkgver}/libusb-${pkgver}.tar.bz2)
-sha256sums=(e920eedc2d06b09606611c99ec7304413c6784cba6e33928e78243d323195f9b)
+sha256sums=('6c502c816002f90d4f76050a6429c3a7e0d84204222cbff2dce95dd773ba6840')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man \
 	            --docdir=/usr/doc/libusb-${pkgver} --disable-static
 	make
 }
