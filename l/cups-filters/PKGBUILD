@@ -1,0 +1,39 @@
+pkgname=cups-filters
+pkgver=1.0.61
+pkgrel=1
+pkgdesc="OpenPrinting CUPS Filters"
+arch=('x86_64')
+url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
+license=('GPL')
+backup=(etc/fonts/conf.d/99pdftoopvp.conf
+        etc/cups/cups-browsed.conf)
+
+depends=('lcms2' 'poppler' 'qpdf' 'ghostscript' 'cups')
+optdepends=('foomatic-db: drivers use Ghostscript to convert PostScript to a printable form directly'
+	        'foomatic-db-engine: drivers use Ghostscript to convert PostScript to a printable form directly'
+	        'foomatic-db-nonfree: drivers use Ghostscript to convert PostScript to a printable form directly')
+
+source=(http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.xz)
+sha256sums=('f5285e3ee436ea42f2986cddfb8020d240ca8b0d7f8dc4b0718b6695ad4504af')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr  \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib/${MULTIARCH} \
+    --libexecdir=/usr/lib/${MULTIARCH}/cups \
+    --sbindir=/usr/bin \
+    --localstatedir=/var \
+    --with-rcdir=no \
+    --enable-avahi \
+    --with-browseremoteprotocols=DNSSD,CUPS
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir/" install
+  
+  # use lp group from cups pkg FS#36769
+  chgrp -R lp ${pkgdir}/etc/cups
+}
