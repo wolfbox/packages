@@ -13,7 +13,7 @@ source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz{,.sig}
         makepkg.conf)
 sha256sums=('941aca897db3218f0cb4036de13422d74212afbcdbf4a7cd7074a7128e196a22'
             'SKIP'
-            '57279e9bd4fb6f0ffdbcf56b68ccd15cb608681577535b3406b13c8600e297b9')
+            'b222f593333296abdfcf5c2d8847df90a8ac73e8e60a016c9adc843d2ab5b5c1')
 validpgpkeys=(6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD) # Allan McRae
 
 build() {
