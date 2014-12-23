@@ -1,0 +1,73 @@
+pkgname=avahi
+pkgver=0.6.31
+pkgrel=1
+pkgdesc='Multicast/unicast DNS-SD framework'
+url='http://www.avahi.org/'
+license=('LGPL')
+arch=('x86_64')
+options=('!emptydirs')
+
+depends=('expat' 'libdaemon' 'glib2' 'libcap' 'gdbm' 'dbus')
+makedepends=('intltool' 'gobject-introspection')
+
+backup=('etc/avahi/hosts'
+        'etc/avahi/avahi-daemon.conf'
+        'etc/avahi/services/ssh.service'
+        'etc/avahi/services/sftp-ssh.service'
+        "usr/lib/${MULTIARCH}/avahi/service-types.db"
+        'usr/share/avahi/service-types')
+
+source=(http://www.avahi.org/download/avahi-${pkgver}.tar.gz
+        avahi-daemon)
+sha256sums=('8372719b24e2dd75de6f59bb1315e600db4fd092805bd1201ed0cb651a2dab48'
+            'SKIP')
+
+prepare() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	sed '/^Libs:/s:$: -ldbus-1:' -i avahi-client.pc.in
+	sed 's:netdev:network:g' -i avahi-daemon/avahi-dbus.conf
+	sed 's:/sbin/resolvconf:/usr/sbin/resolvconf:g' -i */*.action
+	sed 's:-DG[^ ]*_DISABLE_DEPRECATED=1::g' -i avahi-ui/Makefile.*
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	export MOC_QT4=/usr/bin/moc-qt4
+	export PYTHON=/usr/bin/python2
+
+	./configure \
+		--prefix=/usr \
+		--libdir=/usr/lib/${MULTIARCH} \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--sbindir=/usr/bin \
+		--enable-compat-libdns_sd \
+		--enable-compat-howl \
+		--disable-xmltoman \
+		--with-distro=none \
+		--with-avahi-priv-access-group=network \
+		--with-autoipd-user=avahi \
+		--with-autoipd-group=avahi \
+		--disable-qt3 \
+		--disable-qt4 \
+		--disable-gtk3 \
+		--disable-pygtk \
+		--disable-python-dbus \
+		--disable-monodoc \
+		--disable-mono
+
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	rm -fr "${pkgdir}"/etc/rc.d
+
+	# howl and mdnsresponder compatability
+	cd "${pkgdir}"/usr/include; ln -s avahi-compat-libdns_sd/dns_sd.h dns_sd.h; ln -s avahi-compat-howl howl
+	cd "${pkgdir}"/usr/lib/${MULTIARCH}/pkgconfig; ln -s avahi-compat-howl.pc howl.pc
+
+	mkdir -p "${pkgdir}"/etc/rc.d
+	install -m755 "${srcdir}"/avahi-daemon "${pkgdir}"/etc/rc.d/
+}
