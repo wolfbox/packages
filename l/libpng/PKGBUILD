@@ -1,5 +1,5 @@
 pkgname=libpng
-pkgver=1.6.15
+pkgver=1.6.16
 pkgrel=1
 pkgdesc="A library for working with the PNG image format"
 arch=("x86_64")
@@ -9,13 +9,14 @@ license=('custom')
 depends=('glibc' 'zlib')
 
 source=(http://downloads.sourceforge.net/project/libpng/libpng16/${pkgver}/libpng-${pkgver}.tar.xz{,.asc})
-sha256sums=('ad7046f1548b01b736c347d3125598ba507cbd1c9a0f0a1ffcc8df5aaafa53b7'
+sha256sums=('42f754df633e4e700544e5913cbe2fd4928bbfccdc07708a5cf84e59827fbe60'
             'SKIP')
+validpgpkeys=(8048643BA2C840F4F92A195FF54984BFA16C640F) # Glenn Randers-Pehrson (libpng) <glennrp@users.sourceforge.net>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man
 	make
 }
 
