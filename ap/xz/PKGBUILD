@@ -1,5 +1,5 @@
 pkgname=xz
-pkgver=5.0.7
+pkgver=5.2.0
 pkgrel=1
 pkgdesc="A LZMA-based file compression utility"
 arch=("x86_64")
@@ -9,13 +9,14 @@ license=("GPLv2", "LGPLv2", "custom")
 depends=('glibc')
 
 source=(http://tukaani.org/xz/xz-${pkgver}.tar.xz{,.sig})
-sha256sums=('55146936f33a432282e399ef702b2c3ab06644d9f091a811b39ff483fd190e24'
+sha256sums=('5962fe32e0b42c7065b4410b7d8ffbf2895e197e97d410c4fc374ea0d7610a14'
             'SKIP')
+validpgpkeys=(3690C240CE51B4670D30AD1C38EE757D69184620) # Lasse Collin <lasse.collin@tukaani.org>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
-				--docdir=/usr/doc/xz-${pkgver} --enable-shared --enable-static \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man \
+				--docdir=/usr/share/doc/xz-${pkgver} --enable-shared \
 				--disable-rpath
 	make
 }
