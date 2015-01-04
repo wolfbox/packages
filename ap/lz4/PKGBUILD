@@ -1,5 +1,5 @@
 pkgname=lz4
-pkgver=r124
+pkgver=r127
 pkgrel=1
 pkgdesc="An extremely fast compression tool."
 arch=("x86_64")
@@ -9,7 +9,7 @@ license=(BSD)
 depends=('glibc')
 
 source=("https://github.com/Cyan4973/lz4/archive/${pkgver}.tar.gz")
-sha256sums=('0b1aa010314f34a5a18724edbc1557692dd9b5759c561cb9a474625d90972e02')
+sha256sums=('5209bf7a2231b41222b0cea4229700bae459b523bc13db488f0e1279405e6b43')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -25,5 +25,5 @@ package() {
 
 	DOCSDIR="${pkgdir}/usr/share/doc/lz4-${pkgver}"
 	mkdir -p "${DOCSDIR}"
-	install -m 644 LICENSE "${DOCSDIR}"
+	install -m 644 lib/LICENSE "${DOCSDIR}"
 }
