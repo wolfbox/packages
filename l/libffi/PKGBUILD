@@ -1,5 +1,5 @@
 pkgname=libffi
-pkgver=3.0.13
+pkgver=3.2.1
 pkgrel=1
 pkgdesc="A portable Foreign Function Interface library."
 arch=("x86_64")
@@ -9,21 +9,22 @@ license=('custom')
 depends=('glibc')
 
 source=(ftp://sourceware.org/pub/libffi/libffi-${pkgver}.tar.gz
-        libffi.includedir.diff.gz)
-sha256sums=(1dddde1400c3bcb7749d398071af88c3e4754058d2d4c0b3696c2f82dc5cf11c
-            d466ffa1baf400d00ab8f3736753aae5bdee02c56e9425c070e00f99ad224d3c)
+        0001-Fix-paths-in-libffi.pc.in.patch)
+sha256sums=('d06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37'
+            '9abb0944ee86d49838743e14985b9da391a2ee94d3f4dfd49358ec817469d5f8')
 
 prepare() {
 	cd "${srcdir}/libffi-${pkgver}"
-	zcat "${srcdir}"/libffi.includedir.diff.gz | patch -p1
+	patch -p1 -R -i "${srcdir}"/0001-Fix-paths-in-libffi.pc.in.patch
 }
 
 build() {
 	cd "${srcdir}/libffi-${pkgver}"
 
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-	            --localstatedir=/var --mandir=/usr/man --infodir=/usr/man \
-	            --docdir=/usr/doc/libffi-${pkgver} --disable-static
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+	            --enable-pax_emutramp \
+	            --disable-static
 	make
 }
 
