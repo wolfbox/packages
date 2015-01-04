@@ -1,5 +1,5 @@
 pkgname=file
-pkgver=5.14
+pkgver=5.22
 pkgrel=1
 pkgdesc="A file identification toolkit."
 arch=("x86_64")
@@ -9,13 +9,12 @@ license=(custom)
 depends=('glibc' 'zlib')
 
 source=(ftp://ftp.astron.com/pub/file/file-${pkgver}.tar.gz)
-sha256sums=(461ba01dd0900a3b7c2dcd901b04903192c07887a9c1928af0be507572c77fe4)
+sha256sums=('c4e3a8e44cb888c5e4b476e738503e37fb9de3b25a38c143e214bfc12109fc0b')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-				--datadir=/etc --mandir=/usr/man --infodir=/usr/info \
-				--docdir=/usr/doc/file-${pkgver} --enable-fsect-man5 \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+				--enable-fsect-man5 \
 				--disable-static
 	
 	# Generated libtool is buggy, apparently
@@ -27,8 +26,6 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 
-	mkdir -p "${pkgdir}"/usr/doc/file-${pkgver}
-	cp -a COPYING "${pkgdir}"/usr/doc/file-${pkgver}/
-	
-	rm -f "${pkgdir}"/usr/lib/${MULTIARCH}/libmagic.a
+	mkdir -p "${pkgdir}"/usr/share/doc/file-${pkgver}
+	cp -a COPYING "${pkgdir}"/usr/share/doc/file-${pkgver}/
 }
