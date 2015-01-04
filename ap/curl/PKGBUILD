@@ -11,11 +11,12 @@ depends=('glibc' 'zlib' 'openssl' 'libidn' 'ca-certificates' 'openldap')
 source=(http://curl.haxx.se/download/curl-${pkgver}.tar.bz2{,.asc})
 sha256sums=('b222566e7087cd9701b301dd6634b360ae118cc1cbc7697e534dc451102ea4e0'
             'SKIP')
+validpgpkeys=(914C533DF9B2ADA2204F586D78E11C6B279D5C91) # Daniel Stenberg (Haxx) <daniel@haxx.se>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man \
 	            --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
 	make
 }
