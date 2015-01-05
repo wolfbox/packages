@@ -1,5 +1,5 @@
-pkgname='poppler'
-pkgver=0.29.0
+pkgname=poppler
+pkgver=0.30.0
 pkgrel=1
 pkgdesc="PDF rendering library"
 arch=('x86_64')
@@ -11,8 +11,8 @@ makedepends=('gtk2' 'pkg-config' 'gobject-introspection' 'icu' 'python2')
 depends=('libjpeg' 'gcc-libs' 'cairo' 'fontconfig' 'openjpeg' 'lcms2' 'glib2' 'qt5')
 optdepends=('poppler-data: encoding data to display PDF documents containing CJK characters')
 
-sha256sums=('3c1e16dc8d5d846d085baf65844ed3e05cbde5d44f6682f9f1e2b120d66c62c4')
 source=(http://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('b616ee869d0b1f8a7a2c71cf346f55c1bff624cce4badebe17f506ec8ce7ddf5')
 
 build() {
   cd ${pkgname}-${pkgver}
