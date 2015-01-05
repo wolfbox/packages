@@ -1,5 +1,5 @@
 pkgname=cmake
-pkgver=3.0.2
+pkgver=3.1.0
 pkgrel=1
 pkgdesc="The CMake build system generator."
 arch=("x86_64")
@@ -11,17 +11,17 @@ depends=('glibc' 'zlib' 'curl' 'openssl' 'expat' 'attr' 'acl' 'lzo'
          'libidn')
 optdepends=('make' 'ninja')
 
-source=(http://www.cmake.org/files/v3.0/cmake-${pkgver}.tar.gz)
-sha256sums=(6b4ea61eadbbd9bec0ccb383c29d1f4496eacc121ef7acf37c7a24777805693e)
+source=(http://www.cmake.org/files/v3.1/cmake-${pkgver}.tar.gz)
+sha256sums=('8bdc3fa3f2da81bc10c772a6b64cc9052acc2901d42e1e1b2588b40df224aad9')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
 	mkdir cmake-build
 	cd cmake-build
-	../bootstrap --prefix=/usr --docdir=/doc/${pkgname}-${pkgver} \
+	../bootstrap --prefix=/usr --docdir=/share/doc/${pkgname}-${pkgver} \
 	             --system-libs
-	../configure --prefix=/usr --docdir=/doc/${pkgname}-${pkgver} \
+	../configure --prefix=/usr --docdir=/share/doc/${pkgname}-${pkgver} \
 	             --system-libs
 	make
 }
@@ -30,5 +30,5 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"/cmake-build
 
 	make install DESTDIR="${pkgdir}"
-	rm -rf "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/*.docbook
+	rm -rf "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}/*.docbook
 }
