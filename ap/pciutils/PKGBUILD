@@ -1,5 +1,5 @@
 pkgname=pciutils
-pkgver=3.2.1
+pkgver=3.3.0
 pkgrel=1
 pkgdesc="PCI information utilities"
 arch=("x86_64")
@@ -8,10 +8,12 @@ license=(GPLv2)
 
 depends=('glibc' 'zlib' 'xz' 'kmod')
 
-source=(ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-${pkgver}.tar.gz)
-sha256sums=(b31131b721fa26378b4af61b1c49986ff40fe590bc210545b210b6b774337858)
+source=(ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-${pkgver}.tar.gz{,.sign})
+sha256sums=('4b576a1c2570046fda83fa2c5488661de698874ab04fd8e06eef4b6ab806d58a'
+            'SKIP')
+validpgpkeys=('5558F9399CD7836850553C6EC28E7847ED70F82D') # Martin Mares <mj@ucw.cz>
 
-_makeargs="PREFIX=/usr SBINDIR=/usr/bin LIBDIR=/usr/lib/${MULTIARCH} MANDIR=/usr/man SHARED=yes ZLIB=yes IDSDIR=/usr/share/hwdata"
+_makeargs="PREFIX=/usr SBINDIR=/usr/bin LIBDIR=/usr/lib/${MULTIARCH} SHARED=yes ZLIB=yes IDSDIR=/usr/share/hwdata"
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
