@@ -1,5 +1,5 @@
 pkgname=binutils
-pkgver=2.24.51.0.3
+pkgver=2.25
 pkgrel=1
 pkgdesc="GNU binary development tools."
 arch=("x86_64")
@@ -8,12 +8,14 @@ license=(GPLv2)
 
 depends=(glibc)
 
-source=("https://www.kernel.org/pub/linux/devel/binutils/binutils-${pkgver}.tar.xz"
+source=(http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2{,.sig}
 		binutils.export.demangle.h.diff.gz
 		binutils.no-config-h-check.diff.gz)
-sha256sums=(a9c76fc79e6729243d1105c9f10a9781bdc27da3e3a167b0a2f52783c1910400
-			5860f065cf44a212699169eb4954da57eacfef17aef4b2237619d2403e38797c
-			51d543c617bf335b546d084624ae7109b789d17cb70805591de3fc2671e89f5f)
+sha256sums=('22defc65cfa3ef2a3395faaea75d6331c6e62ea5dfacfed3e2ec17b08c882923'
+            'SKIP'
+            '5860f065cf44a212699169eb4954da57eacfef17aef4b2237619d2403e38797c'
+            '51d543c617bf335b546d084624ae7109b789d17cb70805591de3fc2671e89f5f')
+validpgpkeys=('EAF1C276A747E9ED86210CBAC3126D3B4AE55E93') # Tristan Gingold <gingold@adacore.com>
 
 DEFAULT_LD=ld.bfd
 
@@ -58,6 +60,6 @@ package() {
 	( cd "${pkgdir}"/usr/bin ; rm -f ld ; ln -s /usr/bin/$DEFAULT_LD ld )
 
 	# Remove unneeded documentation
-	rm -f "${pkgdir}"/usr/man/man1/{dlltool,windres}.1
-	rm -f "${pkgdir}"/usr/info/standards*
+	rm -f "${pkgdir}"/usr/share/man/man1/{dlltool,windres}.1
+	rm -f "${pkgdir}"/usr/share/info/standards*
 }
