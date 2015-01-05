@@ -1,5 +1,5 @@
 pkgname=erlang
-pkgver=17.3
+pkgver=17.4
 pkgrel=1
 pkgdesc="A highly concurrent functional programming language."
 arch=("x86_64")
@@ -9,7 +9,7 @@ license=('custom')
 depends=('glibc')
 
 source=(http://www.erlang.org/download/otp_src_${pkgver}.tar.gz)
-sha256sums=('d4be03eb346016f4ca95d53eb9437ffaa6106762f153620dd98cd7f7733b76e4')
+sha256sums=('0d82eda6ae7ac6f0f860093324e540fa514497068ec3b4177800284e8c761f56')
 
 _srcname=otp_src_${pkgver}
 build() {
@@ -22,6 +22,6 @@ package() {
 	cd "${srcdir}/${_srcname}"
 	make DESTDIR="${pkgdir}" install
 	
-	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
-	install -m644 EPLICENCE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
+	install -m644 EPLICENCE "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
 }
