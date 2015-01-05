@@ -1,5 +1,5 @@
 pkgname=libsoup
-pkgver=2.48.0
+pkgver=2.49.1
 pkgrel=1
 pkgdesc="The GNOME HTTP toolkit."
 arch=("x86_64")
@@ -9,8 +9,8 @@ license=('LGPLv2')
 depends=('glibc' 'dbus' 'glib2' 'glib-networking' 'libffi' 'libxml2' 'zlib'
          'xz' 'sqlite3')
 
-source=(http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.48/libsoup-${pkgver}.tar.xz)
-sha256sums=('ea34dd64fe44343445daf6dd690d0691e9d973468de44878da97371c16d89784')
+source=(http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.49/libsoup-${pkgver}.tar.xz)
+sha256sums=('795c1468ea4548f4a7b13d83d11962cd2287b43a3b3b3f370b1fba3a9b605a3c')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
