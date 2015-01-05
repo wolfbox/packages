@@ -1,0 +1,28 @@
+pkgname=gobject-introspection
+_basever=1.42
+pkgver=${_basever}.0
+pkgrel=1
+pkgdesc="GObject interface introspection library."
+arch=("x86_64")
+url="http://live.gnome.org/GObjectIntrospection"
+license=('GPLv2+' 'LGPLv2+')
+
+depends=('glibc' 'glib2' 'zlib' 'libffi')
+
+source=(http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/${_basever}/gobject-introspection-${pkgver}.tar.xz)
+sha256sums=('3ba2edfad4f71d4f0de16960b5d5f2511335fa646b2c49bbb93ce5942b3f95f7')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	export PYTHON=/usr/bin/python2
+	./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib/${MULTIARCH} \
+	            --disable-static --build=${CHOST}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
