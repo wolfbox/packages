@@ -5,20 +5,37 @@ pkgdesc="A boot beautification service."
 arch=("x86_64")
 url="http://www.freedesktop.org/wiki/Software/Plymouth/"
 license=(GPLv2)
+backup=('etc/plymouth/plymouthd.conf')
 
-depends=('glibc' 'pango')
+depends=('glibc' 'udev' 'pango' 'libpng')
 
 source=(http://www.freedesktop.org/software/plymouth/releases/plymouth-${pkgver}.tar.bz2)
 sha256sums=(d3e22e750a8a83de7377e9fa88975f146f875bbd030055411a2faf74c2e6cd4d)
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
-	make
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    ./configure --prefix=/usr \
+                --sysconfdir=/etc \
+                --localstatedir=/var \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --libexecdir=/usr/lib/${MULTIARCH}/plymouth \
+                --bindir=/usr/bin \
+                --sbindir=/usr/bin \
+                --enable-drm-renderer \
+                --disable-gtk \
+                --disable-systemd-integration
+    make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+    cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make install DESTDIR="${pkgdir}"
+    make install DESTDIR="${pkgdir}"
+
+    # Fix up paths
+    ( cd "${pkgdir}"
+      mv sbin/* usr/bin/
+      mv bin/* usr/bin/
+      mv lib/${MULTIARCH}/* usr/lib/${MULTIARCH}/
+      rm -r {sbin,bin,lib} )
 }
