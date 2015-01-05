@@ -1,5 +1,5 @@
 pkgname=neon
-pkgver=0.29.6
+pkgver=0.30.1
 pkgrel=1
 pkgdesc="HTTP and WebDAV client library."
 arch=("x86_64")
@@ -8,12 +8,14 @@ license=('GPL')
 
 depends=('glibc' 'openssl' 'zlib' 'expat')
 
-source=(http://www.webdav.org/neon/neon-${pkgver}.tar.gz)
-sha256sums=(9c640b728d6dc80ef1e48f83181166ab6bc95309cece5537e01ffdd01b96eb43)
+source=(http://www.webdav.org/neon/neon-${pkgver}.tar.gz{,.asc})
+sha256sums=('00c626c0dc18d094ab374dbd9a354915bfe4776433289386ed489c2ec0845cdd'
+            'SKIP')
+validpgpkeys=('6D0C74985535060B23300BFE47F6969D0E44CF0C') # Joe Orton <jorton@redhat.com>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
 	            --enable-shared --disable-static --with-ssl=openssl --with-expat \
 	            --build=${CHOST}
 	make
@@ -22,6 +24,4 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
-	
-	mv "${pkgdir}"/usr/share/doc "${pkgdir}"/usr
 }
