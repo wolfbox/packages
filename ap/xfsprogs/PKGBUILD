@@ -1,5 +1,5 @@
 pkgname=xfsprogs
-pkgver=3.2.1
+pkgver=3.2.2
 pkgrel=1
 pkgdesc="Tools for the SGI XFS filesystems."
 arch=('x86_64')
@@ -9,14 +9,13 @@ license=('GPLv2' 'LGPLv2.1')
 depends=('glibc' 'util-linux')
 
 source=(ftp://oss.sgi.com/projects/xfs/cmd_tars/xfsprogs-${pkgver}.tar.gz)
-sha256sums=(83f8ea4c38fe9f42b9f12cd523519287a9695f2cf4f3064e9e9a839f71185767)
+sha256sums=('1a525ce21dc39d4ad3d775fa3c12c2dd4fb7a85e1e05ddd4530dcf773ed65fab')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	./configure --prefix=/usr \
-	            --sbindir=/usr/bin \
-	            --mandir=/usr/man
+	            --sbindir=/usr/bin
 	make
 }
 
@@ -26,8 +25,10 @@ package() {
 	make install DESTDIR="${pkgdir}" PKG_ROOT_SBIN_DIR='/usr/bin'
 	mkdir -p "${pkgdir}"/usr/lib/
 	mv "${pkgdir}"/lib "${pkgdir}"/usr/lib/${MULTIARCH}
-	
-	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
-	mv "${pkgdir}"/usr/share/doc/${pkgname}/* "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
-	rm "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/CHANGES.gz
+
+	( cd "${pkgdir}"/usr/share/doc
+	  mv ${pkgname} ${pkgname}-${pkgver}
+	  rm ${pkgname}-${pkgver}/CHANGES.gz )
+	  
+	  chown -R root:root "${pkgdir}"
 }
