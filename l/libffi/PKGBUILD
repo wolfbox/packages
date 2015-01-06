@@ -32,6 +32,6 @@ package() {
 	cd "${srcdir}/libffi-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 
-	mkdir -p "${pkgdir}"/usr/doc/libffi-${pkgver}
-	cp -a LICENSE "${pkgdir}"/usr/doc/libffi-${pkgver}/
+	mkdir -p "${pkgdir}"/usr/share/doc/libffi-${pkgver}
+	cp -a LICENSE "${pkgdir}"/usr/share/doc/libffi-${pkgver}/
 }
