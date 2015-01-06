@@ -1,31 +1,30 @@
 pkgname=acl
-pkgver=2.2.51
+pkgver=2.2.52
 pkgrel=1
 pkgdesc="Tools for using POSIX Access Control Lists."
 arch=("x86_64")
-url=""
+url="http://savannah.nongnu.org/projects/acl"
 license=("LGPLv2.1" "GPLv2")
 
 depends=('glibc')
 
-source=("http://download.savannah.gnu.org/releases/acl/acl-${pkgver}.src.tar.gz" "acl.destdir.diff.gz")
-sha256sums=("06854521cf5d396801af7e54b9636680edf8064355e51c07657ec7442a185225"
-			"211776d77fb17445801a00c2ce891d8ca57c041e22c556abdaf602223351502c")
+source=(http://download.savannah.gnu.org/releases/acl/acl-${pkgver}.src.tar.gz{,.sig})
+sha256sums=('179074bb0580c06c4b4137be4c5a92a701583277967acdb5546043c7874e0d23'
+            'SKIP')
+validpgpkeys=('600CD204FBCEA418BD2CA74F154343260542DF34') # Brandon Philips <brandon@ifup.co>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	zcat "${srcdir}/acl.destdir.diff.gz" | patch -p1
-	autoconf
+
+	export INSTALL_USER=root INSTALL_GROUP=root
 	./configure --prefix=/usr --sbindir=/usr/bin --bindir=/usr/bin \
 				--libdir=/usr/lib/${MULTIARCH} --libexecdir=/usr/lib/${MULTIARCH} \
-				--mandir=/usr/man --datadir=/usr/share
+				--datadir=/usr/share
 	make
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make install DESTDIR="${pkgdir}"
-	make install-dev DESTDIR="${pkgdir}"
-	make install-lib DESTDIR="${pkgdir}"
+	make DIST_ROOT="${pkgdir}" install install-lib install-dev
 }
