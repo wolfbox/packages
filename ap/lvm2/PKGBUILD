@@ -13,6 +13,7 @@ depends=('glibc' 'readline' 'util-linux' 'ncurses' 'udev')
 source=(ftp://sources.redhat.com/pub/lvm2/LVM${pkgver}.tgz{,.asc})
 sha256sums=('de9cb0acfb9c5a6afa6184160c9e066f19043677f91a72c741d153efcd2874a5'
             'SKIP')
+validpgpkeys=('88437EF5C077BD113D3B7224228191C1567E2C17') # Alasdair G Kergon <agk@redhat.com>
 
 build() {
 	cd "${srcdir}/${_realname}${pkgver}"
@@ -32,7 +33,7 @@ build() {
 	            --with-lvm1=internal \
 	            --enable-pkgconfig \
 	            --enable-udev_sync \
-	            --enable-udev_ryles \
+	            --enable-udev_rules \
 	            --with-udev-prefix="" \
 	            --with-device-uid=0 \
 	            --with-device-gid=6 \
