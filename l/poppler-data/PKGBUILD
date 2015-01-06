@@ -1,0 +1,18 @@
+pkgname=poppler-data
+pkgver=0.4.7
+pkgrel=1
+pkgdesc="Encoding data for the poppler PDF rendering library"
+arch=('any')
+license=('custom' 'GPL2')
+url="http://poppler.freedesktop.org/"
+
+source=(http://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('e752b0d88a7aba54574152143e7bf76436a7ef51977c55d6bd9a48dccde3a7de')
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make prefix=/usr DESTDIR="${pkgdir}" install
+    
+    mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
+    install -m644 COPYING* "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
+}
