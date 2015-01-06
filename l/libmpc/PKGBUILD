@@ -1,5 +1,5 @@
 pkgname=libmpc
-pkgver=0.9
+pkgver=1.0.2
 pkgrel=1
 pkgdesc="GNU complex floating-point library."
 arch=("x86_64")
@@ -8,8 +8,10 @@ license=('LGPLv3')
 
 depends=('glibc' 'gmp' 'mpfr')
 
-source=(http://www.multiprecision.org/mpc/download/mpc-${pkgver}.tar.gz)
-sha256sums=(fd3efe422f0d454592059e80f2c00d1a2e381bf2beda424c5094abd4deb049ac)
+source=(http://www.multiprecision.org/mpc/download/mpc-${pkgver}.tar.gz{,.sig})
+sha256sums=('b561f54d8a479cee3bc891ee52735f18ff86712ba30f036f8b8537bae380c488'
+            'SKIP')
+validpgpkeys=('AD17A21EF8AED8F1CC02DBD9F7D5C9BF765C61E3') # Andreas Enge <andreas@enge.fr>
 
 build() {
 	cd "${srcdir}/mpc-${pkgver}"
@@ -17,17 +19,17 @@ build() {
 	# Derp derp autotools
 	export EGREP='grep -e'
 
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --infodir=/usr/info \
-                --enable-static=yes --enable-shared=yes --with-pic
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+                --enable-shared=yes --with-pic
 	make
-}
-
-package() {
-	cd "${srcdir}/mpc-${pkgver}"
-	make install DESTDIR="${pkgdir}"
 }
 
 check() {
 	cd "${srcdir}"/mpc-${pkgver}
 	make check
+}
+
+package() {
+	cd "${srcdir}/mpc-${pkgver}"
+	make install DESTDIR="${pkgdir}"
 }
