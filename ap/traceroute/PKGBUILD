@@ -1,5 +1,5 @@
 pkgname=traceroute
-pkgver=2.0.20
+pkgver=2.0.21
 pkgrel=1
 pkgdesc="Tool for tracing the route that packets take over a network connection."
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('GPLv2')
 depends=('glibc')
 
 source=(http://downloads.sourceforge.net/project/traceroute/traceroute/traceroute-${pkgver}/traceroute-${pkgver}.tar.gz)
-sha256sums=(2facba9525c95428d7bff3a313fc6ecfd8c529c678ae666c73015558a0edc271)
+sha256sums=('f7ac93ef30b13a587292b8d6a7e2538a65bc978a3a576eab238c392b884e96e0')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -18,5 +18,5 @@ build() {
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	make prefix=/usr mandir=/usr/man DESTDIR="${pkgdir}" install
+	make prefix=/usr mandir=/usr/share/man DESTDIR="${pkgdir}" install
 }
