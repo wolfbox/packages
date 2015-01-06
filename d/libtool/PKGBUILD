@@ -1,5 +1,5 @@
 pkgname=libtool
-pkgver=2.4.3
+pkgver=2.4.4
 pkgrel=1
 pkgdesc="A generic shared library support library."
 arch=("x86_64")
@@ -8,16 +8,16 @@ license=('GPLv2')
 
 depends=('glibc' 'm4')
 
-source=(http://ftpmirror.gnu.org/libtool/libtool-${pkgver}.tar.xz)
-sha256sums=(65f940fbcb5f0727b10d759898afa35307b24c0945fb12f3f8387f5adb862ceb)
+source=(http://ftpmirror.gnu.org/libtool/libtool-${pkgver}.tar.xz{,.sig})
+sha256sums=('a8295b5853bf82a46635c944031e84970f2aa79c19df7a0c28f3ec8e11c07f6c'
+            'SKIP')
+validpgpkeys=('CFE2BE707B538E8B26757D84151308092983D606') # Gary V. Vaughan <gary@gnu.org>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
 	            --libdir=/usr/lib/${MULTIARCH} \
-	            --infodir=/usr/info \
-	            --mandir=/usr/man \
-	            --docdir=/usr/doc/libtool-${pkgver} \
+	            --docdir=/usr/share/doc/libtool-${pkgver} \
 	            --build=${CHOST}
 	make
 }
