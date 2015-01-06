@@ -1,0 +1,24 @@
+pkgname=isl
+pkgver=0.14
+pkgrel=1
+pkgdesc="Library for manipulating sets and relations of integer points"
+arch=('x86_64')
+url="http://isl.gforge.inria.fr"
+license=('MIT')
+
+depends=('gmp')
+
+source=(http://isl.gforge.inria.fr/isl-${pkgver}.tar.xz)
+sha256sums=('b1044f02819da0708fc7071fa2a558ce5d3c29d6676c8cb113caaedd5903ff03')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    rm "${pkgdir}"/usr/lib/${MULTIARCH}/*.py
+}
