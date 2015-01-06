@@ -9,7 +9,6 @@ license=(GPLv3)
 
 options=('strip')
 makedepends=('zlib')
-checkdepends=('autotext')
 
 source=(http://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2
 		gcc-no_fixincludes.diff.gz)
@@ -135,9 +134,4 @@ package_gcc-go() {
 
 	mkdir -p "${pkgdir}"/usr/info
 	mv "${srcdir}"/out/usr/info/gccgo* "${pkgdir}"/usr/info/
-}
-
-check() {
-	cd "${srcdir}/gcc-${pkgver}"
-	make -k check || true
 }
