@@ -1,5 +1,5 @@
 pkgname=rsyslog
-pkgver=8.4.2
+pkgver=8.6.0
 pkgrel=1
 pkgdesc="The rocket-fast syslog daemon."
 arch=("x86_64")
@@ -9,12 +9,13 @@ license=(GPLv3)
 install=rsyslog.install
 backup=('etc/rsyslog.conf')
 depends=('glibc' 'zlib' 'libestr' 'liblogging' 'json-c' 'util-linux')
+optdepends=('gpg-error' 'libgcrypt')
 
 source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz"
         rsyslog.conf
         rsyslog
         rsyslog.filesystem)
-sha256sums=('71c3c6dac74fba2692f9fefb092cd3d22e2bd71eb702e0da06648de51b8b7b9a'
+sha256sums=('759f836be460c794a7649f2b5b5ef8d423388ec599bf3b49f51fded3f8c02431'
             '5a0507d45ce53e0f8d16e639b729c067b977bf02718288664aff2b2bfba3fdff'
             'cc97caeecf776764422d892da8d9961815755d1ec58d9b940d98f6a1c2852cef'
             '42421a551cfb9087471bb92675122c891618e20ce599d70b7b34768644bc959d')
@@ -26,9 +27,14 @@ build() {
 	export CFLAGS="${CFLAGS} -fPIE"
 	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
-				--sbindir=/usr/bin --sysconfdir=/etc \
-				--disable-generate-man-pages
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH} \
+				--sbindir=/usr/bin \
+				--sysconfdir=/etc \
+				--disable-generate-man-pages \
+				--enable-gnutls \
+				--enable-imfile \
+				--enable-libgcrypt
 	make
 }
 
