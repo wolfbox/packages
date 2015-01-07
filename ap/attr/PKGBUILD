@@ -1,31 +1,31 @@
 pkgname=attr
-pkgver=2.4.46
+pkgver=2.4.47
 pkgrel=1
 pkgdesc="Tools for using extended file attributes."
 arch=("x86_64")
-url=""
+url="http://savannah.nongnu.org/projects/attr"
 license=("LGPLv2.1" "GPLv2")
 
 depends=('glibc')
 
-source=("http://download.savannah.gnu.org/releases/attr/attr-${pkgver}.src.tar.gz" "attr.destdir.diff.gz")
-sha256sums=("dcd69bdca7ff166bc45141eddbcf21967999a6b66b0544be12a1cc2fd6340e1f"
-			"e6c752612af3bcff3df86aed9354adde21d570517927561d034c2d2670c52a39")
+source=(http://download.savannah.gnu.org/releases/attr/attr-${pkgver}.src.tar.gz{,.sig})
+sha256sums=('25772f653ac5b2e3ceeb89df50e4688891e21f723c460636548971652af0a859'
+            'SKIP')
+validpgpkeys=('600CD204FBCEA418BD2CA74F154343260542DF34') # Brandon Philips <brandon@ifup.co>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	zcat "${srcdir}/attr.destdir.diff.gz" | patch -p1
-	autoconf
+
+    export INSTALL_USER=root
+    export INSTALL_GROUP=root
 	./configure --prefix=/usr --exec-prefix=/usr --sbindir=/usr/bin --bindir=/usr/bin \
 				--libdir=/usr/lib/${MULTIARCH} --libexecdir=/usr/lib/${MULTIARCH} \
-				--mandir=/usr/man --datadir=/usr/share
+				--datadir=/usr/share
 	make
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make install DESTDIR="${pkgdir}"
-	make install-dev DESTDIR="${pkgdir}"
-	make install-lib DESTDIR="${pkgdir}"
+	make DESTDIR="${pkgdir}" install install-dev install-lib
 }
