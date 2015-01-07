@@ -1,5 +1,5 @@
 pkgname=gnutls
-pkgver=3.2.19
+pkgver=3.3.11
 pkgrel=1
 pkgdesc="The GNU TLS library"
 arch=("x86_64")
@@ -8,8 +8,10 @@ license=('GPLv3' 'LGPLv2.1')
 
 depends=('glibc' 'guile' 'zlib' 'nettle' 'libtasn1')
 
-source=(ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-${pkgver}.tar.xz)
-sha256sums=('a20d95a434a670afe5ce66430ae56151bbbe14456a0517ce775c46b1d4183dcf')
+source=(ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-${pkgver}.tar.xz{,.sig})
+sha256sums=('aef28d629b6ba824bd435f9b23506525e657e3746d4aa021296b13cbaaa6ae71'
+            'SKIP')
+validpgpkeys=('1F42418905D8206AA754CCDC29EE58B996865171') # Nikos Mavrogiannopoulos <nmav@gnutls.org>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
