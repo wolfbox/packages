@@ -1,43 +1,31 @@
 pkgname=musl
 pkgver=1.1.5
 pkgrel=1
-pkgdesc="A lightweight, fast, simple, free, and correct libc."
+pkgdesc="A lightweight, fast, simple, free, and correct libc"
 arch=("x86_64")
 url="http://www.musl-libc.org"
 license=("BSD")
+options=('staticlibs')
 
-LD_SEARCH_CONFIG=etc/ld-musl-x86_64.path
-
-conflicts=('glibc')
-backup=("${LD_SEARCH_CONFIG}")
-
-source=("http://www.musl-libc.org/releases/musl-${pkgver}.tar.gz")
+source=(http://www.musl-libc.org/releases/musl-${pkgver}.tar.gz)
 sha256sums=(352362b1724cc9740f4c3ce0fe02aae45e4de9809ea4ac961f31aedc11b87393)
-
-LD_SEARCH_PATHS='/lib
-/usr/lib/${MULTIARCH}
-/usr/local/lib/${MULTIARCH}'
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --syslibdir=/lib/${MULTIARCH} \
-			    --enable-shared --enable-static --disable-gcc-wrapper
+
+	export CFLAGS="-O2"
+	export CPPFLAGS=""
+
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH}/musl \
+	            --syslibdir=/lib/${MULTIARCH} \
+	            --includedir=/usr/include/musl \
+			    --enable-shared \
+			    --enable-static
 	make
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
-	
-	# Make links to emulate glibc
-	( cd "${pkgdir}"
-	  ( cd lib/${MULTIARCH} ; ln ld-musl-x86_64.so.1 ld-linux-x86-64.so.2 )
-	  ( cd usr/lib/${MULTIARCH}
-	    ln libc.so libc.so.6
-	    ln libc.so libdl.so )
-	)
-	
-	# Set up search paths
-	mkdir "${pkgdir}"/etc
-	echo "${LD_SEARCH_PATHS}" > "${pkgdir}/${LD_SEARCH_CONFIG}"
 }
