@@ -1,5 +1,5 @@
 pkgname=automake
-pkgver=1.14.1
+pkgver=1.15
 pkgrel=1
 pkgdesc="The GNU Makefile generator."
 arch=("x86_64")
@@ -8,18 +8,18 @@ license=('GPLv2')
 
 depends=('perl')
 
-source=(http://ftp.gnu.org/gnu/automake/automake-${pkgver}.tar.xz)
-sha256sums=(a9b4f04b8b69cac2e832a38a718943aa976dbdad0097211f8b3448afdacf0669)
+source=(http://ftp.gnu.org/gnu/automake/automake-${pkgver}.tar.xz{,.sig})
+sha256sums=('9908c75aabd49d13661d6dcb1bc382252d22cc77bf733a2d55e87f2aa2db8636'
+            'SKIP')
+validpgpkeys=('E1622F96D2BB4E58018EEF9860F906016E407573') # Stefano Lattarini <stefano.lattarini@gmail.com>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --mandir=/usr/man --docdir=/usr/doc/${pkgname}-${pkgver}
+	./configure --prefix=/usr
 	make
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make install DESTDIR="${pkgdir}"
-
-	mkdir -p "${pkgdir}"/usr/share/aclocal
 }

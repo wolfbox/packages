@@ -24,6 +24,6 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 	
-	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
-	install -m644 LICENSE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
+	install -m644 LICENSE "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
 }

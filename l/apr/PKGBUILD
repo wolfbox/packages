@@ -27,8 +27,8 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 
-	mkdir -p "${pkgdir}"/usr/doc/apr-${pkgver}
-	install -m644 LICENSE "${pkgdir}"/usr/doc/apr-${pkgver}/
+	mkdir -p "${pkgdir}"/usr/share/doc/apr-${pkgver}
+	install -m644 LICENSE "${pkgdir}"/usr/share/doc/apr-${pkgver}/
 
 	# These aren't useful in a package, and creep me out
 	sed -i 's:APR_SOURCE_DIR=.*::' "${pkgdir}"/usr/bin/apr-1-config

@@ -5,19 +5,20 @@ pkgdesc="The GNU libc."
 arch=("x86_64")
 url="http://www.gnu.org/s/libc/"
 license=(GPLv2, LGPLv2.1)
-options=(staticlibs !strip)
+options=(!staticlibs strip)
 
 depends=('linux' 'tzdata')
 
-
-source=("ftp://ftp.gnu.org/gnu/libc/glibc-${pkgver}.tar.gz"
-		slackware-mods.tar.xz
-		glibc.hardening.diff.xz
-		glibc-2.20-roundup.patch)
+source=(ftp://ftp.gnu.org/gnu/libc/glibc-${pkgver}.tar.gz{,.sig}
+        slackware-mods.tar.xz
+        glibc.hardening.diff.xz
+        glibc-2.20-roundup.patch)
 sha256sums=('37e1de410d572a19b707b99786db9822bb4775e9d70517d88937ab12e6d6debc'
+            'SKIP'
             '5bbfae1b7b3ae7f6ba256cdf9d16a48fa330f1a0ce9c6a093f7ebd40913ad0bf'
             '20327ed1d30dbe7e2006f1a524de734dfe412456536fa3ca8e3dc5ea1080499f'
             '2835db5d624fa79236f97a8450e9ff0e452f6bb689b4a11e6a63d52e4efb997b')
+validpgpkeys=(F37CDAB708E65EA183FD1AF625EF0A436C2A4AFF) # Carlos O'Donell <carlos@systemhalted.org>
 
 prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -86,23 +87,9 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"/build
 
 	make install install_root="${pkgdir}"
+	make localedata/install-locales install_root="${pkgdir}"
 	
 	# Install a link of ld-linux into /lib64 for compatibility
 	mkdir -p "${pkgdir}"/lib64
 	ln -s /lib/${MULTIARCH}/ld-linux-${CARCH/_/-}.so.2 "${pkgdir}"/lib64
-	
-	# Remove static libraries that aren't required
-	rm "${pkgdir}"/usr/lib/${MULTIARCH}/lib{anl,BrokenLocale,nsl,resolv,rt,util}.a
-	
-	# Limit what we strip to pretty much whatever Arch strips, to avoid breaking
-	# debugging
-	( cd "${pkgdir}"
-	  strip ${STRIP_BINARIES} usr/bin/* || true # Some of these are scripts; ignore
-	  ( cd usr/lib/${MULTIARCH}
-	    strip ${STRIP_BINARIES} getconf/*
-	    strip ${STRIP_STATIC} *.a
-	    strip ${STRIP_SHARED} lib{anl,BrokenLocale,cidn,crypt}*.so \
-	                          libnss_*.so \
-	                          lib{dl,m,nsl,resolv,rt,util}*.so \
-	                          ./{audit,gconv}/*.so ) )
 }

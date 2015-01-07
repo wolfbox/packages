@@ -36,7 +36,8 @@ build() {
 	            --with-dhcpcd=/usr/bin/dhcpcd \
 	            --with-dhclient=/usr/bin/dhclient \
 	            --with-crypto=nss \
-	            --without-modem-manager-1
+	            --without-modem-manager-1 \
+	            --enable-polkit=yes
 	make
 }
 

@@ -8,9 +8,8 @@ url="http://www.gnu.org/software/findutils"
 
 depends=('glibc' 'sh')
 
-source=(ftp://ftp.gnu.org/pub/gnu/findutils/${pkgname}-${pkgver}.tar.gz{,.sig})
-sha256sums=('434f32d171cbc0a5e72cfc5372c6fc4cb0e681f8dce566a0de5b6fccd702b62a'
-            'SKIP')
+source=(ftp://ftp.gnu.org/pub/gnu/findutils/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('434f32d171cbc0a5e72cfc5372c6fc4cb0e681f8dce566a0de5b6fccd702b62a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
