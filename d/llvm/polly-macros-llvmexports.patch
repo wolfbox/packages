@@ -1,0 +1,13 @@
+--- polly/trunk/cmake/polly_macros.cmake	2014/03/13 20:24:48	203841
++++ polly/trunk/cmake/polly_macros.cmake	2014/11/30 12:45:44	222977
+@@ -45,8 +45,10 @@
+     set_target_properties(${name} PROPERTIES COMPILE_FLAGS ${cflag})
+   endif(MSVC)
+   install(TARGETS ${name}
++    EXPORT LLVMExports
+     LIBRARY DESTINATION lib
+     ARCHIVE DESTINATION lib${LLVM_LIBDIR_SUFFIX})
++  set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${name})
+ endmacro(add_polly_library)
+ 
+ macro(add_polly_loadable_module name)

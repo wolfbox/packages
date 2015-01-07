@@ -7,23 +7,34 @@ url="http://llvm.org"
 license=('BSD')
 
 provides=('clang')
-makedepends=('cmake' 'ninja')
-depends=('gcc' 'perl' 'python')
+makedepends=('cmake' 'ninja' 'pkg-config')
+depends=('gcc' 'perl' 'python' 'isl')
 
-source=(http://llvm.org/releases/${pkgver}/llvm-${pkgver}.src.tar.xz
-        http://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz
-        http://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz
-        add-so-versioning.diff)
+source=(http://llvm.org/releases/${pkgver}/llvm-${pkgver}.src.tar.xz{,.sig}
+        http://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz{,.sig}
+        http://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz{,.sig}
+        http://llvm.org/releases/${pkgver}/polly-${pkgver}.src.tar.xz{,.sig}
+        add-so-versioning.diff
+        polly-macros-llvmexports.patch)
 sha256sums=('28e199f368ef0a4666708f31c7991ad3bcc3a578342b0306526dd35f07595c03'
+            'SKIP'
             'fc80992e004b06f6c7afb612de1cdaa9ac9d25811c55f94fcf7331d9b81cdb8b'
+            'SKIP'
             'a4b3e655832bf8d9a357ea2c771db347237460e131988cbb96cda40ff39a8136'
-            '28790dc459da6fad347faa80b51099001119c75c17ce385efb3ab96c01160b0b')
+            'SKIP'
+            'f1f6aaaa375d522cc92cd922f3562bfdabf87269a520398479089374dad75a65'
+            'SKIP'
+            '28790dc459da6fad347faa80b51099001119c75c17ce385efb3ab96c01160b0b'
+            '0f98cca6741881d9b1145e1f077303c3565c40552ea5d18eff15cc20fbba6754')
+validpgpkeys=('54E3BDE33185D9F69664D22455F5CD70BB5A0569') # Bill Wendling <void@llvm.org>
 
 prepare() {
 	cd "${srcdir}"/${pkgname}-${pkgver}.src
 	rm -r tools/clang || true
+	rm -r tools/polly || true
 	rm -r projects/compiler-rt || true
 	cp -lR ../cfe-"${pkgver}".src ./tools/clang
+	cp -lR ../polly-"${pkgver}".src ./tools/polly
 	cp -lR ../compiler-rt-${pkgver}.src ./projects/compiler-rt
 
 	# Fix hardcoded libdir
@@ -43,6 +54,10 @@ prepare() {
 	# Version output .so files. From reviews.llvm.org/D6157, as a solution to
 	# llvm.org/bugs/show_bug.cgi?id=15493
 	patch -p0 -i "${srcdir}/add-so-versioning.diff"
+
+	# Fix LINK_POLLY_INTO_TOOLS build, from r222977
+	( cd tools/polly
+	  patch -p2 -i "${srcdir}"/polly-macros-llvmexports.patch )
 }
 
 build() {
@@ -57,7 +72,9 @@ build() {
 	      -DLLVM_LIBDIR_SUFFIX=/${MULTIARCH}/ \
 	      -DLLVM_ENABLE_RTTI=ON \
 	      -DLLVM_ENABLE_FFI=ON \
+	      -DFFI_INCLUDE_DIR="/usr/lib/${MULTIARCH}/libffi-$(pkg-config --modversion libffi)/include" \
 	      -DCLANG_RESOURCE_DIR=../lib/${MULTIARCH}/clang/${pkgver}/ \
+	      -DLINK_POLLY_INTO_TOOLS=ON \
 	      -DBUILD_SHARED_LIBS=ON
 
 	ninja
