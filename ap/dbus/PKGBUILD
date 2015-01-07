@@ -11,15 +11,14 @@ depends=('glibc' 'expat' 'libx11')
 
 source=(http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz{,.asc}
         dbus-1.6.x-allow_root_globally.diff.gz
-        dbus.set.home.diff.gz
         dbus
         dbus.filesystem)
 sha256sums=('f1dc56238b132923c34db0e6714a003773afbe724b738f0f0ab18b0ff745b1fe'
             'SKIP'
             'cd35621e4cc56403e9bb6ca6b431c8ae04f8cb8c626df40953e6f0f1bb488f64'
-            '30bdcc5407a0bc08d98d21b949cf5535d1e08c64df28928ec8ce71c026ed8f39'
             '8cb42906477863e6f818806d699f0ccf75a97f19e273770a5cef2f5c2b08bc86'
             '8dc424c7e30f19bb1b4e1ee569629c6f515e858e958a66080fb8fc16b6aca213')
+validpgpkeys=('DA98F25C0871C49A59EAFF2C4DE8FF2A63C7CC90') # Simon McVittie <smcv@debian.org>
 
 prepare() {
 	cd "${srcdir}"/dbus-${pkgver}
@@ -27,9 +26,6 @@ prepare() {
 	# Slackware patches
 	# Root shouldn't be banned from doing anything ever
 	zcat "${srcdir}"/dbus-1.6.x-allow_root_globally.diff.gz | patch -p1
-	# Hack to set user profile's $HOME. Upstream has rejected this; I'm
-	# thinking we should drop it.
-	zcat "${srcdir}"/dbus.set.home.diff.gz | patch -p1
 }
 
 build() {
