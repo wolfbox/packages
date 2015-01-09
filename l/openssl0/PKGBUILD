@@ -1,5 +1,5 @@
 pkgname=openssl0
-pkgver=0.9.8zc
+pkgver=0.9.8zd
 pkgrel=1
 pkgdesc="A legacy cryptography toolkit - compatibility libraries"
 arch=("x86_64")
@@ -10,10 +10,12 @@ options=(!makeflags)
 depends=('glibc')
 provides=("openssl=${pkgver}")
 
-source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz"
+source=(http://www.openssl.org/source/openssl-${pkgver}.tar.gz{,.asc}
 		openssl.soname.diff.gz)
-sha256sums=(461cc694f29e72f59c22e7ea61bf44671a5fc2f8b3fc2eeac89714b7be915881
-			922d68e43c06ccd56bd430a81d7ad752f620b5fb1b37e857d9a3662273c11d46)
+sha256sums=('59266dcfb0be0fbe6181edead044ac3edaf83bc58991f264dcf532b01d531ee3'
+            'SKIP'
+            '922d68e43c06ccd56bd430a81d7ad752f620b5fb1b37e857d9a3662273c11d46')
+validpgpkeys=('8657ABB260F056B1E5190839D9C4D26D0E604491') # Matt Caswell <matt@openssl.org>
 
 prepare() {
 	cd "${srcdir}/openssl-${pkgver}"
@@ -50,6 +52,6 @@ package() {
 	( cd "${pkgdir}"/usr/lib/${MULTIARCH} ; ldconfig -l lib*.so.* )	
 
 	# Install copyright notice
-	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
-	cp -a LICENSE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}/
+	cp -a LICENSE "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}/
 }
