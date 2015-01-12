@@ -1,5 +1,5 @@
 pkgname=linux
-pkgver=3.18.1
+pkgver=3.18.2
 pkgrel=1
 pkgdesc="The Linux kernel."
 arch=("x86_64")
@@ -10,14 +10,14 @@ options=(!strip)
 install=linux.install
 makedepends=('gcc' 'lz4')
 
-_grsecver=3.0-3.18.1-201501042021
+_grsecver=3.0-3.18.2-201501120821
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.{sign,xz}
         https://grsecurity.net/test/grsecurity-${_grsecver}.patch{,.sig}
         config
         x509.genkey)
 sha256sums=('SKIP'
-            '5833cd780fd96614b722040041d8242c102ad7eb956d6f102760bc0faad0a08e'
-            '03338895fcf3b03e2667f41df4dcea8300e466adfdbe62539c78df4a5d5f3a75'
+            '1090fa94ddddc38e514f07872315af84032ba7cdb9715c21d5a562a1072b1abf'
+            '2f7245b0cda85e646298973efeda073d9caff53d6c0eb8b6b5546e2e86f1db90'
             'SKIP'
             'b14aaf6d92907e153774d56e00144d79f722bf493c4e50e8ae3c7d511496d53f'
             'ca581821060e883b03f660d69ed0e9a7cbbf284dd757995bd31ffefa551ef316')
