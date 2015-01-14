@@ -1,5 +1,5 @@
 pkgname=mongodb26
-pkgver=2.6.6
+pkgver=2.6.7
 pkgrel=1
 pkgdesc="A document database."
 arch=("x86_64")
@@ -14,7 +14,7 @@ source=("http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${pkgver}.tgz"
         mongodb.conf
         mongodb
         mongodb.system_ready)
-sha256sums=('a0279bf47bb922a679c3ecb70b29b402bb20054289dba56c7d86bfc137dd2345'
+sha256sums=('60400360652ebaf3c9c553a35dde58075187522bceec1264ab91c23575777925'
             '57b5da6779a5d08764b4353bab403572a446030954a1b0ed8c5a59ccd783d685'
             '99279fae2cd5533f21745744e1cfbefc257cedb836b8400f6c070d45280f0107'
             '21f3883ea1dfdf0b76a91f99094d1b0e8e64ee4b1b1d161a35531d8120a799e2')
