@@ -1,5 +1,5 @@
 pkgname=hwids
-pkgver=20150103
+pkgver=20150113
 pkgrel=1
 pkgdesc="Combined database of PCI and USB device ids."
 arch=("x86_64")
@@ -7,7 +7,7 @@ url="https://github.com/gentoo/hwids"
 license=("GPLv2")
 
 source=(https://github.com/gentoo/hwids/archive/hwids-${pkgver}.tar.gz)
-sha256sums=('4d14deca85c89fbca64584545b6c102d97133ae46270cff8d50d86533cadeb74')
+sha256sums=('58a486baea8688785fbe0492d146e2d422ae41f9ca3e293b364f927b721dffcd')
 
 build() {
 	cd "${srcdir}/hwids-hwids-${pkgver}"
