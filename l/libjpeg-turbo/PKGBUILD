@@ -1,5 +1,5 @@
 pkgname=libjpeg-turbo
-pkgver=1.3.1
+pkgver=1.4.0
 pkgrel=1
 pkgdesc="A highly-optimized implementation of the JPEG image format"
 arch=("x86_64")
@@ -10,10 +10,8 @@ depends=('glibc')
 replaces=('libjpeg')
 provides=('libjpeg')
 
-source=(http://downloads.sourceforge.net/project/libjpeg-turbo/${pkgver}/libjpeg-turbo-${pkgver}.tar.gz
-        overrun.patch)
-sha256sums=('c132907417ddc40ed552fe53d6b91d5fecbb14a356a60ddc7ea50d6be9666fb9'
-            '7521a75d9cd9b054b2a9e69098e5a1a903fdee56a43964275c4c5f5598246d85')
+source=(http://downloads.sourceforge.net/project/libjpeg-turbo/${pkgver}/libjpeg-turbo-${pkgver}.tar.gz)
+sha256sums=('d93ad8546b510244f863b39b4c0da0fa4c0d53a77b61a8a3880f258c232bbbee')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
