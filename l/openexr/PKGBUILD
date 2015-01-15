@@ -1,0 +1,29 @@
+pkgname=openexr
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="An high dynamic-range image file format library"
+url="http://www.openexr.com/"
+arch=('x86_64')
+license=('BSD')
+
+depends=('zlib' 'ilmbase')
+
+source=("http://download.savannah.nongnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('54486b454073c1dcb5ae9892cf0f730ffefe62f38176325281505093fd218a14')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+  make check
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -D -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
+}
