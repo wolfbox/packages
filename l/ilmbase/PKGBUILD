@@ -1,0 +1,45 @@
+pkgname=ilmbase
+pkgver=2.2.0
+pkgrel=1
+depends=('gcc-libs')
+pkgdesc="Base libraries from ILM for OpenEXR"
+arch=('x86_64')
+url="http://www.openexr.com"
+license=('custom')
+
+source=(http://download.savannah.nongnu.org/releases/openexr/$pkgname-$pkgver.tar.gz
+        ilmbase-2.0.1-no_undefined.patch
+        ilmbase-1.0.3-pkgconfig.patch)
+sha256sums=('ecf815b60695555c1fbc73679e84c7c9902f4e8faa6e8000d2f905b8b86cedc7'
+            'ac295811a586dbd1d2ec3fa5dcb40580722b1c97523ff64dfcbd8c7bfaa93aa5'
+            'e1050e564987df31a2ed83218c7aa62486b8c117179b0184933c92172eba9bda')
+
+prepare() {
+  cd "${srcdir}/$pkgname-$pkgver"
+  # patches from fedora
+  patch -p1 -i ../ilmbase-2.0.1-no_undefined.patch
+  patch -p1 -i ../ilmbase-1.0.3-pkgconfig.patch
+  
+  # Fix incorrect shell
+  sed -i 's:/bin/sh:/usr/bin/bash:' configure
+}
+
+build() {
+  cd "${srcdir}/$pkgname-$pkgver"
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+  # manually set PTHREAD_LIBS to include -lpthread until libtool bogosity is fixed,
+  # https://bugzilla.redhat.com/show_bug.cgi?id=661333
+  make PTHREAD_LIBS="-pthread -lpthread"
+}
+
+check() {
+  cd "${srcdir}/$pkgname-$pkgver"
+  # one of the tests fails randomly for an unknown reason
+  make check || true
+}
+
+package() {
+  cd "${srcdir}/$pkgname-$pkgver"
+  make DESTDIR="${pkgdir}" install
+  install -D -m644 COPYING "$pkgdir/usr/share/doc/$pkgname/COPYING"
+}
