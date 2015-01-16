@@ -1,0 +1,50 @@
+# Derived from Arch Linux
+# Arch Maintainer: Gaetan Bisson <bisson@archlinux.org>
+# Arch Contributor: Douglas Soares de Andrade <douglas@archlinux.org>
+# Arch Contributor: Robson Peixoto
+
+pkgname=unzip
+pkgver=6.0
+_pkgver=${pkgver/./}
+pkgrel=1
+pkgdesc='For extracting and viewing files in .zip archives'
+url='http://www.info-zip.org/UnZip.html'
+arch=('x86_64')
+license=('custom')
+depends=('bzip2' 'bash')
+source=("http://downloads.sourceforge.net/infozip/${pkgname}${_pkgver}.tar.gz"
+        'test_compr_eb.patch'
+        'getZip64Data.patch'
+        'crc32.patch')
+sha256sums=('036d96991646d0449ed0aa952e4fbe21b476ce994abc276e49d30e686708bd37'
+            '1a1390390402e674ef7b143705ade0e9aa082131bb9686e95fb7985310def885'
+            'f598f2c1c840c845f9e9d08fc14d358b87c002cfaff021c4b4a7086ecbe337c8'
+            '5598c4124ec5865745bad5bf80c48f92cafd55363d5e140e5abca801815b0ce6')
+
+prepare() {
+	cd "${srcdir}/${pkgname}${_pkgver}"
+	sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
+	patch -i ../test_compr_eb.patch # FS#43391
+	patch -i ../getZip64Data.patch # FS#43300
+	patch -i ../crc32.patch # FS#43300
+}
+
+build() {
+	cd "${srcdir}/${pkgname}${_pkgver}"
+
+	# DEFINES, make, and install args from Debian
+	DEFINES='-DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR -DLARGE_FILE_SUPPORT \
+		-DUNICODE_SUPPORT -DUNICODE_WCHAR -DUTF8_MAYBE_NATIVE -DNO_LCHMOD \
+		-DDATE_FORMAT=DF_YMD -DUSE_BZIP2 -DNOMEMCPY -DNO_WORKING_ISPRINT'
+
+	make -f unix/Makefile prefix=/usr \
+		D_USE_BZ2=-DUSE_BZIP2 L_BZ2=-lbz2 \
+		LF2="$LDFLAGS" CF="$CFLAGS $CPPFLAGS -I. $DEFINES" \
+		unzips
+}
+
+package() {
+	cd "${srcdir}/${pkgname}${_pkgver}"
+	make -f unix/Makefile prefix="${pkgdir}"/usr install
+	install -Dm644 LICENSE "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
+}

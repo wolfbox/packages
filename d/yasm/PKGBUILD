@@ -1,0 +1,30 @@
+pkgname=yasm
+pkgver=1.3.0
+pkgrel=1
+pkgdesc="A powerful multi-syntax assembler"
+arch=('x86_64')
+url="http://www.tortall.net/projects/yasm/"
+license=('BSD' 'GPL2' 'LGPL2.1' 'PerlArtistic')
+depends=('glibc')
+options=('staticlibs')
+
+source=(http://www.tortall.net/projects/yasm/releases/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+  make check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
+  install -Dm644 BSD.txt "${pkgdir}/usr/share/doc/${pkgname}/BSD.txt"
+}

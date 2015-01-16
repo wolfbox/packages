@@ -1,0 +1,26 @@
+pkgname=libevent
+pkgver=2.0.22
+pkgrel=1
+pkgdesc="An event notification library"
+arch=('x86_64')
+url="http://www.monkey.org/~provos/libevent/"
+license=('BSD')
+depends=('openssl')
+optdepends=('python2: to use event_rpcgen.py')
+
+source=(http://sourceforge.net/projects/levent/files/libevent/libevent-${pkgver%.*}/${pkgname}-$pkgver-stable.tar.gz{,.asc})
+sha256sums=('71c2c49f0adadacfdbe6332a372c38cf9c8b7895bb73dabeaa53cdcc1d4e1fa3'
+            'SKIP')
+validpgpkeys=('B35BF85BF19489D04E28C33C21194EBB165733EA')
+
+build() {
+  cd ${pkgname}-${pkgver}-stable
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}-stable
+  make DESTDIR="${pkgdir}" install
+  install -Dm 644 LICENSE "${pkgdir}"/usr/share/doc/libevent/LICENSE
+}

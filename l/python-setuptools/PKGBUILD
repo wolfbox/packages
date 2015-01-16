@@ -1,0 +1,51 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgbase=python-setuptools
+pkgname=('python-setuptools' 'python2-setuptools')
+pkgver=11.3.1
+pkgrel=1
+pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
+arch=('any')
+license=('PSF')
+url="http://pypi.python.org/pypi/setuptools"
+
+makedepends=('python' 'python2')
+
+source=("http://pypi.python.org/packages/source/s/setuptools/setuptools-${pkgver}.tar.gz")
+sha256sums=('bd25f17de4ecf00116a9f7368b614a54ca1612d7945d2eafe5d97bc08c138bc5')
+
+prepare() {
+  cp -a setuptools-${pkgver}{,-python2}
+
+  cd "${srcdir}"/setuptools-${pkgver}
+  sed -i -e "s|^#\!.*/usr/bin/env python|#!/usr/bin/env python3|" setuptools/command/easy_install.py
+
+  cd "${srcdir}"/setuptools-${pkgver}-python2
+  sed -i -e "s|^#\!.*/usr/bin/env python|#!/usr/bin/env python2|" setuptools/command/easy_install.py
+}
+
+build() {
+  # Build python 3 module
+  cd "${srcdir}"/setuptools-${pkgver}
+  python3 setup.py build
+
+  # Build python 2 module
+  cd "${srcdir}"/setuptools-${pkgver}-python2
+  python2 setup.py build
+}
+
+package_python-setuptools() {
+  depends=('python')
+
+  cd "${srcdir}/setuptools-${pkgver}"
+  python3 setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1 --skip-build
+}
+ 
+package_python2-setuptools() {
+  depends=('python2')
+
+  cd "${srcdir}/setuptools-${pkgver}-python2"
+  python2 setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1 --skip-build
+  rm "${pkgdir}/usr/bin/easy_install"
+}

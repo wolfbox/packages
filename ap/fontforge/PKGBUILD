@@ -1,0 +1,48 @@
+pkgname=fontforge
+pkgver=20141230
+pkgrel=1
+pkgdesc='Outline and bitmap font editor'
+url='http://www.fontforge.org/'
+arch=('x86_64')
+license=('BSD')
+options=('!makeflags')
+install=fontforge.install
+
+makedepends=('git')
+depends=('libxi'
+         'pango' 'giflib' 'libtiff' 'libxml2' 'zeromq'
+         'python2' 'gtk-update-icon-cache' 'hicolor-icon-theme')
+
+source=("http://github.com/fontforge/fontforge/archive/${pkgver}.tar.gz"
+        'http://fontforge.org/cidmaps.tgz')
+sha256sums=('2b2328fe3943ba5a6e78b920bdec2fca61f33148c0e47d4f83a7076be708d1f5'
+            '1bf9c7eb8835e6ed94e62cb49f1141bc046c562849e52e6c3c7f1d7cfc95c7b3')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	export LIBZMQ_LIBS=-lzmq
+	export PYTHON=python2
+	./bootstrap
+	./configure \
+		--prefix=/usr \
+		--libdir=/usr/lib/${MULTIARCH} \
+		--mandir=/usr/share/man \
+		--enable-python-extension \
+
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+
+	install -d "${pkgdir}/usr/share/fontforge"
+	install -m644 ../Adobe-* "${pkgdir}/usr/share/fontforge"
+
+	install -d "${pkgdir}/usr/share/icons"
+	cp -a desktop/icons "${pkgdir}/usr/share/icons/hicolor"
+	rm -fr "${pkgdir}/usr/share/icons/hicolor/src"
+
+	install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+	install -Dm644 desktop/fontforge.desktop "${pkgdir}/usr/share/applications/fontforge.desktop"
+}

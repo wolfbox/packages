@@ -1,0 +1,27 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=exiv2
+pkgver=0.24
+pkgrel=1
+pkgdesc="Exif and Iptc metadata manipulation library and tools"
+arch=('x86_64')
+url="http://exiv2.org"
+license=('GPL2')
+
+depends=('gcc-libs' 'zlib' 'expat')
+
+source=(http://www.exiv2.org/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('f4a443e6c7fb9d9f5e787732f76969a64c72c4c04af69b10ed57f949c2dfef8e')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr \
+              --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+}

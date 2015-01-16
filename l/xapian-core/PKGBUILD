@@ -1,0 +1,25 @@
+pkgname=xapian-core
+pkgver=1.2.19
+pkgrel=1
+pkgdesc='Open source search engine library.'
+arch=('x86_64')
+url='http://www.xapian.org/'
+license=('GPL')
+options=('libtool')
+
+depends=('glibc' 'util-linux')
+
+source=("http://oligarchy.co.uk/xapian/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('4a78260388ff1b042f0ab5d18afdd524a530ae609690d0339990ddc147a54785')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure \
+    --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+}
