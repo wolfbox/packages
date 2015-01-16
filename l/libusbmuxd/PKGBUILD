@@ -1,0 +1,23 @@
+pkgname=libusbmuxd
+pkgver=1.0.9
+pkgrel=1
+pkgdesc="USB Multiplex Daemon"
+url="http://marcansoft.com/blog/iphonelinux/usbmuxd/"
+arch=('x86_64')
+license=('LGPL2.1' 'GPL2')
+
+depends=('libusb' 'libplist')
+
+source=(http://www.libimobiledevice.org/downloads/libusbmuxd-$pkgver.tar.bz2)
+sha256sums=('2e3f708a3df30ad7832d2d2389eeb29f68f4e4488a42a20149cc99f4f9223dfc')
+
+build() {
+  cd libusbmuxd-${pkgver}
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd libusbmuxd-${pkgver}
+  make DESTDIR="${pkgdir}" install
+}
