@@ -1,0 +1,31 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxext
+pkgver=1.3.3
+pkgrel=1
+pkgdesc="X11 miscellaneous extensions library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros')
+depends=('libx11' 'xextproto')
+
+source=("${url}/releases/individual/lib/libXext-${pkgver}.tar.bz2")
+sha256sums=('b518d4d332231f313371fdefac59e3776f4f0823bcb23cf7c7305bfb57b16e35')
+
+build() {
+  cd libXext-${pkgver}
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+              --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd libXext-${pkgver}
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

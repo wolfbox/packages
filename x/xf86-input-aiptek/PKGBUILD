@@ -1,0 +1,32 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xf86-input-aiptek
+pkgver=1.4.1
+pkgrel=1
+pkgdesc="X.Org Aiptek USB Digital Tablet input driver"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-server-devel' 'X-ABI-XINPUT_VERSION=21' 'resourceproto' 'scrnsaverproto')
+depends=('glibc')
+conflicts=('xorg-server<1.16' 'X-ABI-XINPUT_VERSION<21' 'X-ABI-XINPUT_VERSION>=22')
+
+source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('ba2223cd4a537275e11c54974094252d053b490a2b663af3a2b7e3038b3cf65f')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  make DESTDIR="${pkgdir}" install
+  
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

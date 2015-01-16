@@ -1,0 +1,32 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+# Arch Maintainer: Andreas Radke <andyrtr@archlinux.org>
+# Arch Maintainer: Jan de Groot <jgc@archlinux.org>
+
+pkgname=libxv
+pkgver=1.0.10
+pkgrel=1
+pkgdesc="X11 Video extension library"
+arch=('x86_64')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+
+makedepends=('pkg-config')
+depends=('libxext' 'videoproto')
+
+source=("${url}/releases/individual/lib/libXv-${pkgver}.tar.bz2")
+sha256sums=('55fe92f8686ce8612e2c1bfaf58c057715534419da700bda8d517b1d97914525')
+
+build() {
+  cd "${srcdir}/libXv-${pkgver}"
+  ./configure --prefix=/usr --disable-static --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "${srcdir}/libXv-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

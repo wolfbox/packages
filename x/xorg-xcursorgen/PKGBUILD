@@ -1,0 +1,29 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-xcursorgen
+pkgver=1.0.6
+pkgrel=1
+pkgdesc="Create an X cursor file from PNG images"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libx11' 'libxcursor' 'libpng')
+makedepends=('xorg-util-macros')
+groups=('xorg-apps' 'xorg')
+
+source=(http://xorg.freedesktop.org/archive/individual/app/xcursorgen-${pkgver}.tar.bz2)
+sha256sums=('31c8910f54eb175a8a74a60e7662697467e21a8bf948220a6048a93924b3f66c')
+
+build() {
+  cd xcursorgen-${pkgver}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xcursorgen-${pkgver}
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

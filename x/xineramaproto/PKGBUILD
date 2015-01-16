@@ -1,0 +1,26 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xineramaproto
+pkgver=1.2.1
+pkgrel=1
+pkgdesc="X11 Xinerama extension wire protocol"
+arch=('any')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+makedepends=('xorg-util-macros')
+
+source=(${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('977574bb3dc192ecd9c55f59f991ec1dff340be3e31392c95deff423da52485b')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

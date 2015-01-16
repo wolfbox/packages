@@ -1,0 +1,39 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xf86-video-v4l
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="X.org v4l video driver"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('glibc')
+makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=18')
+conflicts=('xorg-server<1.16' 'X-ABI-VIDEODRV_VERSION<18' 'X-ABI-VIDEODRV_VERSION>=19')
+
+source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2
+        git-fixes.patch
+        LICENSE)
+sha256sums=('cbff9120fbad900cbdc7ac535d04984e7b491d69a8eb0b371e30ae07cb61925d'
+            '60ad7a1202f982620b25a7ecca4913647e7a84d51a4d668616904c4b362ea3c1'
+            'af50c682a2f6b5ce322e70b9904c40ae01b1537704886585938b9c876cb4e6c4')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  patch -Np1 -i "${srcdir}/git-fixes.patch"
+  autoreconf -fi
+}
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/doc/${pkgname}/"
+}

@@ -1,0 +1,31 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxdmcp
+pkgver=1.1.1
+pkgrel=1
+pkgdesc="X11 Display Manager Control Protocol library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros')
+depends=('xproto' 'glibc')
+
+source=("${url}/releases/individual/lib/libXdmcp-${pkgver}.tar.bz2")
+sha256sums=('9ace6d4230f9dce4ed090692f82f613253ada8f887b23b3d8ff3dd4e3a7c118e')
+
+build() {
+  cd "${srcdir}/libXdmcp-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+              --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "${srcdir}/libXdmcp-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

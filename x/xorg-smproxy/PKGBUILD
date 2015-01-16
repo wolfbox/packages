@@ -1,0 +1,29 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-smproxy
+pkgver=1.0.5
+pkgrel=1
+pkgdesc="Allows X applications that do not support X11R6 session management to participate in an X11R6 session"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros')
+depends=('libsm' 'libxt' 'libxmu')
+
+source=(http://xorg.freedesktop.org/archive/individual/app/smproxy-${pkgver}.tar.bz2)
+sha256sums=('c72ccb094e4971ec2339ee06439114e86ffdcdf449a6accd5552e817142fd609')
+
+build() {
+  cd "${srcdir}/smproxy-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/smproxy-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

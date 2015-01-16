@@ -1,0 +1,28 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-xwud
+pkgver=1.0.4
+pkgrel=1
+pkgdesc="X Window System image undumping utility"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libx11')
+makedepends=('xorg-util-macros')
+groups=('xorg-apps' 'xorg')
+
+source=(http://xorg.freedesktop.org/archive/individual/app/xwud-${pkgver}.tar.bz2)
+sha256sums=('d6b3a09ccfe750868e26bd2384900ab5ff0d434f7f40cd272a50eda8aaa1f8bd')
+
+build() {
+  cd "${srcdir}/xwud-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/xwud-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

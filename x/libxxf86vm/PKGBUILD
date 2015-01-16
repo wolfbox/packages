@@ -1,0 +1,30 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=libxxf86vm
+pkgver=1.1.3
+pkgrel=1
+pkgdesc="X11 XFree86 video mode extension library"
+arch=('i686')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+
+makedepends=('xorg-util-macros')
+depends=('libxext' 'xf86vidmodeproto')
+
+source=(${url}/releases/individual/lib/libXxf86vm-${pkgver}.tar.bz2)
+sha256sums=('da5e86c32ee2069b9e6d820e4c2e4242d4877cb155a2b2fbf2675a1480ec37b8')
+
+build() {
+  cd "${srcdir}/libXxf86vm-${pkgver}"
+  ./configure --prefix=/usr --disable-static --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package()
+{
+  cd "${srcdir}/libXxf86vm-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

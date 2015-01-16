@@ -1,0 +1,30 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxevie
+pkgver=1.0.3
+pkgrel=1
+pkgdesc="X11 EvIE extension library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros' 'evieext')
+depends=('libxext')
+
+source=("${url}/releases/individual/lib/libXevie-${pkgver}.tar.bz2")
+sha256sums=('c00b382123e58f595b3cecaa50471ebec534660e5f92ae46d94266345844fd73')
+
+build() {
+  cd "${srcdir}/libXevie-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+              --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "${srcdir}/libXevie-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

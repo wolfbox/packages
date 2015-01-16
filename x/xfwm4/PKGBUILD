@@ -1,0 +1,40 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xfwm4
+pkgver=4.11.2
+pkgrel=1
+pkgdesc="Xfce window manager"
+arch=('x86_64')
+url="http://www.xfce.org/"
+license=('GPL2')
+groups=('xfce4')
+depends=('libxfce4ui' 'libwnck' 'hicolor-icon-theme')
+makedepends=('intltool')
+install=$pkgname.install
+
+source=(http://archive.xfce.org/src/xfce/$pkgname/4.11/$pkgname-$pkgver.tar.bz2)
+sha256sums=('aae1ed7ef1ae77800343e7c43811ab8ef786a9498efc5c10e8ed28b2eba04779')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib/${MULTIARCH} \
+    --libexecdir=/usr/lib/${MULTIARCH} \
+    --localstatedir=/var \
+    --disable-static \
+    --enable-startup-notification \
+    --enable-randr \
+    --enable-compositor \
+    --enable-xsync \
+    --disable-debug
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

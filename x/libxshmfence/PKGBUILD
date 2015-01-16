@@ -1,0 +1,35 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxshmfence
+pkgver=1.1
+pkgrel=1
+pkgdesc="A library that exposes a event API on top of Linux futexes"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('GPL')
+
+makedepends=('xorg-util-macros' 'xproto')
+depends=('glibc')
+
+source=(${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('dbc2db2925ca9f216fd1e9c63d0974db9f4d49aaf5877ffb606d2d8d7e58cebe')
+
+build() {
+	cd $pkgname-$pkgver
+	
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+check() {
+	cd $pkgname-$pkgver
+	make -k check
+}
+
+package() {
+	cd $pkgname-$pkgver
+	make DESTDIR="$pkgdir/" install
+	install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+	install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

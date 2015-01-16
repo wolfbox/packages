@@ -1,0 +1,27 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-xlogo
+pkgver=1.0.4
+pkgrel=1
+pkgdesc="Draw [old] X logo"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libsm' 'libxaw' 'libxmu' 'libxt' 'libxext' 'libx11' 'libxrender' 'libxft')
+makedepends=('xorg-util-macros')
+
+source=(http://xorg.freedesktop.org/archive/individual/app/xlogo-${pkgver}.tar.bz2)
+
+build() {
+  cd "${srcdir}/xlogo-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/xlogo-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}
+sha256sums=('17af6f4fb73e7310e087fbfe5d773bab2b0d6f37a894ae5ee32de4693af6ba92')

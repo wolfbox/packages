@@ -1,0 +1,29 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-x11perf
+pkgver=1.5.4
+pkgrel=1
+pkgdesc="Simple X server performance benchmarker"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros')
+depends=('libx11' 'libxmu' 'libxrender' 'libxft' 'libxext')
+
+source=(http://xorg.freedesktop.org/archive/individual/app/x11perf-${pkgver}.tar.bz2)
+sha256sums=('24ee8857a2bf414b360addabf1c27ef797f7f504ee9bc409c151760bfbe53184')
+
+build() {
+  cd "${srcdir}/x11perf-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/x11perf-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

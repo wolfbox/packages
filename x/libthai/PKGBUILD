@@ -1,0 +1,28 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libthai
+pkgver=0.1.19
+pkgrel=1
+pkgdesc="Thai language support routines"
+url="http://linux.thai.net/projects/libthai"
+arch=('x86_64')
+license=('LGPL')
+options=('!emptydirs')
+
+makedepends=('pkg-config')
+depends=('libdatrie')
+
+source=(http://linux.thai.net/pub/thailinux/software/${pkgname}/${pkgname}-${pkgver}.tar.xz)
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --disable-static
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
+sha256sums=('901429d0b040d23a06f2fe418cbdfbcb5ba4da48cb05e982f83c6f84b00e14b1')

@@ -1,0 +1,25 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=glproto
+pkgver=1.4.17
+pkgrel=1
+pkgdesc="The GLX wire protocol"
+arch=('any')
+url="http://xorg.freedesktop.org"
+license=('x11')
+options=(!staticlibs)
+
+source=(http://xorg.freedesktop.org/releases/individual/proto/glproto-${pkgver}.tar.bz2)
+sha256sums=('adaa94bded310a2bfcbb9deb4d751d965fcfe6fb3a2f6d242e2df2d6589dbe40')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}

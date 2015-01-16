@@ -1,0 +1,39 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxfce4ui
+pkgver=4.11.1
+pkgrel=1
+pkgdesc="Commonly used Xfce widgets among Xfce applications"
+arch=('x86_64')
+url="http://www.xfce.org/"
+license=('GPL2')
+install=$pkgname.install
+
+depends=('libxfce4util' 'gtk2' 'xfconf' 'libsm' 'startup-notification'
+         'hicolor-icon-theme')
+makedepends=('intltool')
+
+source=(http://archive.xfce.org/src/xfce/$pkgname/4.11/$pkgname-$pkgver.tar.bz2)
+sha256sums=('bf0a847d7f60c55b6e906e4dffbc2444e290c958edc96484a701edba7e58245d')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/${MULTIARCH} \
+    --libdir=/usr/lib/${MULTIARCH} \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-gtk-doc \
+    --disable-debug \
+    --with-vendor-info='Wolf Box Linux'
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

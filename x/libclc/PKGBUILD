@@ -1,0 +1,32 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libclc
+pkgver=0.0.1.217247
+pkgrel=1
+pkgdesc="Library requirements of the OpenCL C programming language"
+arch=('any')
+url="http://libclc.llvm.org/"
+license=('MIT')
+options=('staticlibs')
+
+makedepends=('llvm' 'subversion' 'python2')
+
+source=('libclc::svn+http://llvm.org/svn/llvm-project/libclc/trunk#revision=217247')
+sha256sums=(SKIP)
+
+build() {
+  cd libclc
+  
+  sed -i 's/"python < $in >/sys.executable + " < $in >/g' configure.py
+  
+  python2 ./configure.py --prefix=/usr
+  make
+}
+
+package() {
+  cd libclc
+  
+  make install DESTDIR="$pkgdir"
+  install -Dm644 LICENSE.TXT "$pkgdir/usr/share/doc/$pkgname/LICENSE"
+}

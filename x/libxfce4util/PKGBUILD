@@ -1,0 +1,37 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxfce4util
+pkgver=4.11.0
+pkgrel=1
+pkgdesc="Basic utility non-GUI functions for Xfce"
+arch=('x86_64')
+url="http://www.xfce.org/"
+license=('GPL2')
+
+depends=('glib2')
+makedepends=('pkg-config' 'intltool')
+
+source=(http://archive.xfce.org/src/xfce/$pkgname/4.11/$pkgname-$pkgver.tar.bz2)
+sha256sums=('d75a7f80c4b107d927926e9d61a31605d54e62bec2939f39dc59d8eaabc0005a')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --sbindir=/usr/bin \
+    --libdir=/usr/lib/${MULTIARCH} \
+    --libexecdir=/usr/lib/${MULTIARCH} \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-gtk-doc \
+    --disable-debug
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

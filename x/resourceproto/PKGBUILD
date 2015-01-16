@@ -1,0 +1,29 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=resourceproto
+pkgver=1.2.0
+pkgrel=1
+pkgdesc="X11 Resource extension wire protocol"
+arch=('any')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros')
+
+source=("${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('3c66003a6bdeb0f70932a9ed3cf57cc554234154378d301e0c5cfa189d8f6818')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

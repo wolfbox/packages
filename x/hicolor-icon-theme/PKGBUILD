@@ -1,0 +1,24 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=hicolor-icon-theme
+pkgver=0.14
+pkgrel=1
+pkgdesc="Freedesktop.org Hicolor icon theme"
+arch=('any')
+url="http://icon-theme.freedesktop.org/wiki/HicolorTheme"
+license=('GPL2')
+
+source=(http://icon-theme.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('7bed06e6ef316318274bda0fdaf39fce960e4222a0165c968d84acb428902ecd')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="${pkgdir}" install
+}

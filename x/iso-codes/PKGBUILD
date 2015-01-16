@@ -1,0 +1,26 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=iso-codes
+pkgver=3.57
+pkgrel=1
+pkgdesc="Lists of the country, language, and currency names"
+arch=('any')
+url="http://pkg-isocodes.alioth.debian.org/"
+license=('LGPL')
+
+source=(http://pkg-isocodes.alioth.debian.org/downloads/$pkgname-$pkgver.tar.xz{,.sig})
+sha256sums=('dd6acd92843b69530fce535d3d6fd947ddb3802f0d5fc1bd214d1cb7d2bf5c47'
+            'SKIP')
+validpgpkeys=('60A031EEAB8EFA24001DF0A283FD1C4682D138E0') # Tobias Quathamer <toddy@debian.org>
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" pkgconfigdir=/usr/lib/pkgconfig install
+}

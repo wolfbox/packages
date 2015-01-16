@@ -1,0 +1,27 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libdatrie
+pkgver=0.2.6
+pkgrel=1
+pkgdesc="Implementation of double-array structure for representing trie, as proposed by Junichi Aoe."
+url="http://linux.thai.net/projects/datrie"
+license=('LGPL')
+arch=('x86_64')
+options=('!emptydirs')
+
+depends=('glibc')
+
+source=(http://linux.thai.net/pub/thailinux/software/libthai/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('8cbefcad704a293d950aeb2fa87b67ee82d2d53f9c57cd1eb0bb9ab8cf3e99ab')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --disable-static
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

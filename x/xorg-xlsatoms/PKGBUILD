@@ -1,0 +1,28 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-xlsatoms
+pkgver=1.1.1
+pkgrel=1
+pkgdesc="List interned atoms defined on server"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libxcb')
+makedepends=('xorg-util-macros')
+groups=('xorg-apps' 'xorg')
+
+source=(http://xorg.freedesktop.org/archive/individual/app/xlsatoms-${pkgver}.tar.bz2)
+sha256sums=('3b8bd98c1ca9789178db80bca75556b0c76e5092403014995d5ddaa3117536f9')
+
+build() {
+  cd "${srcdir}/xlsatoms-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/xlsatoms-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

@@ -1,0 +1,29 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libice
+pkgver=1.0.9
+pkgrel=1
+pkgdesc="X11 Inter-Client Exchange library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+depends=('glibc' 'xproto>=7.0.18')
+makedepends=('xtrans>=1.2.5' 'xorg-util-macros')
+
+source=(${url}/releases/individual/lib/libICE-${pkgver}.tar.bz2)
+sha256sums=('8f7032f2c1c64352b5423f6b48a8ebdc339cc63064af34d66a6c9aa79759e202')
+
+build() {
+  cd libICE-${pkgver}
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd libICE-${pkgver}
+  make DESTDIR="${pkgdir}" install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

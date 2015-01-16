@@ -1,0 +1,31 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxfixes
+pkgver=5.0.1
+pkgrel=1
+pkgdesc="X11 miscellaneous 'fixes' extension library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros')
+depends=('libx11' 'fixesproto>=5.0')
+
+source=("${url}/releases/individual/lib/libXfixes-${pkgver}.tar.bz2")
+sha256sums=('63bec085084fa3caaee5180490dd871f1eb2020ba9e9b39a30f93693ffc34767')
+
+build() {
+  cd "${srcdir}/libXfixes-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+              --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "${srcdir}/libXfixes-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

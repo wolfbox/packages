@@ -1,0 +1,26 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xf86dgaproto
+pkgver=2.1
+pkgrel=1
+pkgdesc="X11 Direct Graphics Access extension wire protocol"
+arch=('any')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+source=("${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('ac5ef65108e1f2146286e53080975683dae49fc94680042e04bd1e2010e99050')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

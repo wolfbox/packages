@@ -1,0 +1,32 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com
+# Derived from Arch Linux
+
+pkgname=xf86-input-void
+pkgver=1.4.0
+pkgrel=1
+pkgdesc="X.org void input driver"
+arch=('x86_64')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+depends=('glibc')
+makedepends=('xorg-server-devel' 'X-ABI-XINPUT_VERSION=21' 'resourceproto' 'scrnsaverproto')
+conflicts=('xorg-server<1.16' 'X-ABI-XINPUT_VERSION<21' 'X-ABI-XINPUT_VERSION>=22')
+groups=('xorg-drivers' 'xorg')
+
+source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('2ab95865252c64cc88050fa0089a74e063c357b71907bf9be7886047c4987505')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  make DESTDIR="${pkgdir}" install
+  
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

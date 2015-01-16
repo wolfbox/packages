@@ -1,0 +1,30 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libfontenc
+pkgver=1.1.2
+pkgrel=1
+pkgdesc="X11 font encoding library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('pkg-config' 'xproto>=7.0.18')
+depends=('zlib')
+
+source=(${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('a9a4efed3359b2e80161bb66b65038fac145137fa134e71335264cbc23b02f62')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc \
+      --libdir=/usr/lib/${MULTIARCH} --localstatedir=/var --disable-static \
+      --with-encodingsdir=/usr/share/fonts/encodings      
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

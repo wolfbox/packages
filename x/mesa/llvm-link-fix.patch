@@ -1,0 +1,13 @@
+diff --git a/configure.ac b/configure.ac
+index 5961bc6..a9f11fe 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1978,7 +1978,7 @@ dnl in LLVM_LIBS.
+ 
+ if test "x$MESA_LLVM" != x0; then
+ 
+-    LLVM_LIBS="`$LLVM_CONFIG --libs ${LLVM_COMPONENTS}`"
++    LLVM_LIBS="`$LLVM_CONFIG --libs`"
+ 
+     if test "x$enable_llvm_shared_libs" = xyes; then
+         dnl We can't use $LLVM_VERSION because it has 'svn' stripped out,

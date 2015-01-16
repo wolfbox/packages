@@ -1,0 +1,79 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=mesa
+pkgver=10.4.2
+pkgrel=1
+arch=('x86_64')
+url="http://mesa3d.sourceforge.net"
+license=('custom')
+
+makedepends=('python2' 'libxml2' 'glproto' 'dri2proto' 'dri3proto'
+             'presentproto' 'libvdpau' 'llvm' 'libclc')
+depends=('gcc-libs' 'glibc' 'expat' 'libdrm' 'libxcb' 'libx11' 'libxdamage'
+         'libxshmfence' 'libxxf86vm' 'libxext' 'libxau' 'libxdmcp' 'llvm-libs'
+         'libpciaccess' 'elfutils')
+provides=('libgl')
+replaces=('libgl')
+
+source=(ftp://ftp.freedesktop.org/pub/mesa/${pkgver}/MesaLib-${pkgver}.tar.bz2{,.sig}
+        llvm-link-fix.patch
+        LICENSE)
+sha256sums=('08a119937d9f2aa2f66dd5de97baffc2a6e675f549e40e699a31f5485d15327f'
+            'SKIP'
+            'SKIP'
+            '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
+validpgpkeys=('8703B6700E7EE06D7A39B8D6EDAE37B02CEB490D') # Emil Velikov <emil.l.velikov@gmail.com>
+
+prepare() {
+  cd Mesa-${pkgver}
+  patch -p1 -i "${srcdir}"/llvm-link-fix.patch
+}
+
+build() {
+  cd ${srcdir}/Mesa-${pkgver}
+
+  autoreconf -vfi
+
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib/${MULTIARCH} \
+    --with-dri-driverdir=/usr/lib/xorg/modules/dri \
+    --with-gallium-drivers=r300,r600,radeonsi,nouveau,svga,swrast \
+    --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
+    --with-egl-platforms=x11,drm \
+    --enable-llvm-shared-libs \
+    --enable-egl \
+    --disable-gallium-egl \
+    --disable-gallium-gbm \
+    --enable-gbm \
+    --enable-gallium-llvm \
+    --enable-llvm-shared-libs \
+    --enable-shared-glapi \
+    --enable-glx \
+    --enable-glx-tls \
+    --enable-dri \
+    --enable-osmesa \
+    --enable-gles1 \
+    --enable-gles2 \
+    --enable-texture-float \
+    --enable-xa \
+    --enable-vdpau \
+    --enable-omx \
+    --enable-opencl --enable-opencl-icd \
+    --with-clang-libdir=/usr/lib/${MULTIARCH}
+
+  make
+}
+
+package() {
+  cd "${srcdir}/Mesa-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+  
+  mkdir -p "${pkgdir}/usr/share/doc/${pkgname}-${pkgver}"
+  install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/doc/${pkgname}-${pkgver}/"
+  
+  # If mesa is installed, use the GLX that comes with X.org
+  mkdir -p "${pkgdir}"/usr/lib/xorg/modules/extensions
+  ln -s libglx.xorg "${pkgdir}"/usr/lib/xorg/modules/extensions/libglx.so
+}

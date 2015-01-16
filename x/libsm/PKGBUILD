@@ -1,0 +1,29 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libsm
+pkgver=1.2.2
+pkgrel=1
+pkgdesc="X11 Session Management library"
+arch=('x86_64')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+
+makedepends=('xorg-util-macros' 'xtrans')
+depends=('libice' 'util-linux')
+
+source=(${url}/releases/individual/lib/libSM-${pkgver}.tar.bz2)
+sha256sums=('0baca8c9f5d934450a70896c4ad38d06475521255ca63b717a6510fdb6e287bd')
+
+build() {
+  cd libSM-${pkgver}
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd libSM-${pkgver}
+  make DESTDIR="${pkgdir}" install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

@@ -1,0 +1,27 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=scrnsaverproto
+pkgver=1.2.2
+pkgrel=1
+pkgdesc="X11 Screen Saver extension wire protocol"
+arch=('any')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+
+makedepends=('xorg-util-macros')
+
+source=(${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('8bb70a8da164930cceaeb4c74180291660533ad3cc45377b30a795d1b85bcd65')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

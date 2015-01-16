@@ -1,0 +1,31 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+# Arch Maintainer: Jan de Groot <jgc@archlinux.org>
+# Arch Contributor: Alexander Baldeck <alexander@archlinux.org>
+
+pkgname=printproto
+pkgver=1.0.5
+pkgrel=1
+pkgdesc="X11 print extension wire protocol"
+arch=('any')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+
+makedepends=('xorg-util-macros')
+
+source=("${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('1298316cf43b987365ab7764d61b022a3d7f180b67b423eed3456862d155911a')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

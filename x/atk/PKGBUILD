@@ -1,0 +1,27 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=atk
+pkgver=2.14.0
+pkgrel=1
+pkgdesc="A library providing a set of interfaces for accessibility"
+arch=('x86_64')
+license=('LGPL')
+url='http://www.gtk.org/'
+
+depends=('glib2')
+makedepends=('gobject-introspection' 'python2')
+
+source=(http://ftp.gnome.org/pub/gnome/sources/$pkgname/${pkgver:0:4}/$pkgname-$pkgver.tar.xz)
+sha256sums=('2875cc0b32bfb173c066c22a337f79793e0c99d2cc5e81c4dac0d5a523b8fbad')
+
+build() {
+  cd "$pkgname-$pkgver"
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

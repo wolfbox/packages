@@ -1,0 +1,44 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libx11
+pkgver=1.6.2
+pkgrel=1
+pkgdesc="X11 client-side library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros' 'xextproto' 'xtrans' 'inputproto')
+depends=('libxcb' 'xproto' 'kbproto')
+
+source=(${url}/releases/individual/lib/libX11-${pkgver}.tar.bz2
+        fix_typo.diff)
+sha256sums=('2aa027e837231d2eeea90f3a4afe19948a6eb4c8b2bec0241eba7dbc8106bd16'
+            '384a10e57e0d6125ebb7e6eaca046e02f59e8101eaa7ba470e52b5bcc18bedf3')
+
+prepare() {
+  cd "${srcdir}/libX11-${pkgver}"
+  # upstream patch for https://bugs.archlinux.org/task/40537
+  patch -Np1 -i ${srcdir}/fix_typo.diff
+}
+
+build() {
+  cd "${srcdir}/libX11-${pkgver}"
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
+              --disable-static --disable-xf86bigfont
+  make
+}
+
+check() {
+  cd "${srcdir}/libX11-${pkgver}"
+  make check
+}
+
+package() {
+  cd "${srcdir}/libX11-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -d -m755 "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

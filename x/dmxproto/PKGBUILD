@@ -1,0 +1,28 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=dmxproto
+pkgver=2.3.1
+pkgrel=3
+pkgdesc="X11 Distributed Multihead X extension wire protocol"
+arch=('any')
+makedepends=('xorg-util-macros')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+source=("${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('e72051e6a3e06b236d19eed56368117b745ca1e1a27bdc50fd51aa375bea6509')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

@@ -1,0 +1,31 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxmu
+pkgver=1.1.2
+pkgrel=1
+pkgdesc="X11 miscellaneous micro-utility library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros')
+depends=('libxext' 'libxt')
+
+source=("${url}/releases/individual/lib/libXmu-${pkgver}.tar.bz2")
+sha256sums=('756edc7c383254eef8b4e1b733c3bf1dc061b523c9f9833ac7058378b8349d0b')
+
+build() {
+  cd "${srcdir}/libXmu-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+              --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "${srcdir}/libXmu-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

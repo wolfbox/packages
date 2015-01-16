@@ -1,0 +1,36 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xfce4-terminal
+pkgver=0.6.3
+pkgrel=1
+pkgdesc="A modern terminal emulator primarly for the Xfce desktop environment"
+arch=('x86_64')
+url="http://www.xfce.org/"
+license=('GPL2')
+groups=('xfce4')
+install=$pkgname.install
+
+depends=('libxfce4ui' 'vte' 'hicolor-icon-theme')
+makedepends=('intltool')
+
+source=(http://archive.xfce.org/src/apps/$pkgname/0.6/$pkgname-$pkgver.tar.bz2)
+sha256sums=('912f4716c2395a14a80620ef982b4af1e2a67a8df9a1ef0b802ecae826057e08')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/${MULTIARCH}/xfce4 \
+    --localstatedir=/var \
+    --disable-static \
+    --disable-debug
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}

@@ -1,0 +1,30 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxaw
+pkgver=1.0.12
+pkgrel=1
+pkgdesc="X11 Athena Widget library"
+arch=('x86_64')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+
+makedepends=('xorg-util-macros')
+depends=('libxmu' 'libxpm')
+
+source=(${url}/releases/individual/lib/libXaw-${pkgver}.tar.bz2)
+sha256sums=('96fc314874fce9979556321d1d6ee00b5baf32fb333b7278853b4983bc3cdbf6')
+
+build() {
+  cd "${srcdir}/libXaw-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+              --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "${srcdir}/libXaw-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

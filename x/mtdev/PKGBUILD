@@ -1,0 +1,35 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=mtdev
+pkgver=1.1.5
+pkgrel=1
+pkgdesc="A stand-alone library which transforms all variants of kernel MT events to the slotted type B protocol"
+arch=('x86_64')
+url="http://bitmath.org/code/mtdev/"
+license=('custom:MIT')
+
+depends=('glibc')
+
+source=("$url$pkgname-$pkgver.tar.bz2")
+sha256sums=('6677d5708a7948840de734d8b4675d5980d4561171c5a8e89e54adf7a13eba7f')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --disable-static
+  make
+}
+
+check() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make -k check
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir/" install
+
+  # license
+  install -Dm644 COPYING \
+    "$pkgdir/usr/share/doc/$pkgname/LICENSE"
+}

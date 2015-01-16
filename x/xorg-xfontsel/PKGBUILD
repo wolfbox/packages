@@ -1,0 +1,27 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-xfontsel
+pkgver=1.0.5
+pkgrel=1
+pkgdesc='Point and click selection of X11 font names'
+url='http://xorg.freedesktop.org/'
+arch=('x86_64')
+license=('custom')
+makedepends=('xorg-util-macros')
+depends=('libxaw' 'libxmu' 'libxt' 'libx11')
+
+source=("http://xorg.freedesktop.org/archive/individual/app/xfontsel-${pkgver}.tar.bz2")
+sha256sums=('170d8550b96fb47b04db6181b947e6f6b8b97f4df5d691c351a278480cc931bf')
+
+build() {
+	cd "${srcdir}/xfontsel-${pkgver}"
+	./configure --prefix=/usr
+	make
+}
+
+package() {
+	cd "${srcdir}/xfontsel-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

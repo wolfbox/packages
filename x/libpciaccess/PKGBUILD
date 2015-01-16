@@ -1,0 +1,29 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libpciaccess
+pkgver=0.13.2
+pkgrel=1
+pkgdesc="The X11 PCI access library"
+arch=("x86_64")
+url="http://xorg.freedesktop.org"
+license=('custom')
+
+depends=('glibc')
+
+source=(http://xorg.freedesktop.org/releases/individual/lib/libpciaccess-${pkgver}.tar.bz2)
+sha256sums=('abab8c2b050afb89bc29280e9c6b50ec5867174960d88bfb81a01036ec20de19')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+	
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
+	install -m644 COPYING "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}/
+}

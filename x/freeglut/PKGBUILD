@@ -1,0 +1,33 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=freeglut
+pkgver=2.8.1
+pkgrel=1
+pkgdesc="Provides functionality for small OpenGL programs"
+arch=('x86_64')
+url="http://freeglut.sourceforge.net/"
+license=('MIT')
+
+depends=('libxi' 'libxrandr' 'libgl')
+makedepends=('mesa' 'glu' 'libxxf86vm')
+
+source=(http://downloads.sourceforge.net/freeglut/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('dde46626a62a1cd9cf48a11951cdd592e7067c345cffe193a149dfd47aef999a')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  # smooth_opengl3 demo doesn't build with recent mesa, Gentoo bug #428382
+  sed -i "s/smooth_opengl3 //" progs/demos/Makefile.*
+
+  autoreconf -vfi  
+  ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --disable-static
+  make all
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
+}

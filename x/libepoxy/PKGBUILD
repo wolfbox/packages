@@ -1,0 +1,36 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libepoxy
+pkgver=1.2
+pkgrel=1
+pkgdesc="A library for handling OpenGL function pointer management for you"
+url="https://github.com/anholt/libepoxy"
+arch=('i686' 'x86_64')
+license=(MIT)
+options=('!libtool')
+
+depends=('glibc')
+makedepends=('xorg-util-macros' 'python' 'mesa')
+
+source=("https://github.com/anholt/${pkgname}/archive/v${pkgver}.tar.gz")
+sha256sums=('42c328440f60a5795835c5ec4bdfc1329e75bba16b6e22b3a87ed17e9679e8f6')
+
+build() {
+  cd "${pkgname}-${pkgver}"
+
+  ./autogen.sh --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+}
+
+check() {
+  cd "${pkgname}-${pkgver}"
+
+  make -k check
+}
+
+package() {
+  cd "${pkgname}-${pkgver}"
+
+  make DESTDIR="$pkgdir" install
+  install -Dm644 COPYING ${pkgdir}/usr/share/doc/${pkgname}/COPYING
+}

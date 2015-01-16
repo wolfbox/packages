@@ -1,0 +1,48 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=cairo
+pkgver=1.14.0
+pkgrel=1
+pkgdesc="Cairo vector graphics library"
+arch=('x86_64')
+license=('LGPL' 'MPL')
+url="http://cairographics.org/"
+
+depends=('libpng' 'libxrender' 'libxext' 'fontconfig' 'pixman>=0.28.0' 'glib2' 'mesa' 'libgl' 'lzo')
+
+source=(http://cairographics.org/releases/cairo-$pkgver.tar.xz
+        git_fixes.diff)
+sha256sums=('2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7'
+            'a6cec99a3437d396081373a3497e7106766ee0a99f13685c9b2c8e1b5651b77b')
+
+prepare() {
+  cd $pkgname-$pkgver
+  # fix some segfaults: https://bugs.freedesktop.org/show_bug.cgi?id=85151
+  # https://bugs.archlinux.org/task/42596
+  patch -Np1 -i ${srcdir}/git_fixes.diff
+}
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr \
+	--sysconfdir=/etc \
+	--libdir=/usr/lib/${MULTIARCH} \
+	--localstatedir=/var \
+	--disable-static \
+	--enable-tee \
+	--enable-gl \
+	--enable-egl \
+	--enable-svg \
+	--enable-ps \
+	--enable-pdf \
+	--enable-gobject \
+    --disable-gtk-doc
+	
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}

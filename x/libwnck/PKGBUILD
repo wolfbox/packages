@@ -1,0 +1,32 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libwnck
+pkgver=2.30.7
+pkgrel=1
+pkgdesc="Window Navigator Construction Kit"
+url="http://www.gnome.org/"
+arch=('x86_64')
+license=('LGPL')
+
+makedepends=('libxt' 'intltool' 'gobject-introspection')
+depends=('gtk2' 'startup-notification' 'libxres')
+
+source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.30/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('8be84d5333f0ade0e61af9f4cbf7685cb7cce2aa0ee32f53bac32107a81fe194')
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    ./configure --prefix=/usr --sysconfdir=/etc \
+        --libdir=/usr/lib/${MULTIARCH} --localstatedir=/var --disable-static
+    make
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make DESTDIR="${pkgdir}" install
+
+    # The binaries are shipped in libwnck3
+    rm -f ${pkgdir}/usr/bin/wnckprop
+    rm -f ${pkgdir}/usr/bin/wnck-urgency-monitor
+}

@@ -1,0 +1,28 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-xpr
+pkgver=1.0.4
+pkgrel=1
+pkgdesc="Print an X window dump from xwd"
+arch=(x86_64)
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libx11' 'libxmu' 'sh')
+makedepends=('xorg-util-macros')
+groups=('xorg-apps' 'xorg')
+
+source=(http://xorg.freedesktop.org/archive/individual/app/xpr-${pkgver}.tar.bz2)
+sha256sums=('fed98df31eb93d3dca4688cb535aabad06be572e70ace3b1685679c18dd86cb5')
+
+build() {
+  cd "${srcdir}/xpr-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/xpr-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

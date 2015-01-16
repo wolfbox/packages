@@ -1,0 +1,27 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com
+# Derived from Arch Linux
+
+pkgname=xf86-input-wacom
+pkgver=0.27.0
+pkgrel=1
+pkgdesc="X.Org Wacom tablet driver"
+arch=('x86_64')
+url="http://linuxwacom.sourceforge.net/"
+license=(GPL)
+depends=(libxi libxinerama libxrandr)
+makedepends=('xorg-server-devel' 'X-ABI-XINPUT_VERSION=21' 'resourceproto' 'scrnsaverproto')
+conflicts=('xorg-server<1.16' 'X-ABI-XINPUT_VERSION<21' 'X-ABI-XINPUT_VERSION>=22')
+
+source=(http://downloads.sourceforge.net/project/linuxwacom/$pkgname/$pkgname-$pkgver.tar.bz2)
+sha256sums=('d1280361595f28c273d237cb234c28ca77617f875207ee0424a385a41407ec42')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}

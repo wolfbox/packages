@@ -1,0 +1,33 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=pixman
+pkgver=0.32.6
+pkgrel=1
+pkgdesc="The pixel-manipulation library for X and cairo"
+arch=('x86_64')
+url="http://xorg.freedesktop.org"
+license=('custom')
+
+depends=('glibc')
+
+source=(http://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('201fc0d7d6bc0017496f2bd27b3ca14224aea0df6b624c5ee2dc0307a4ff14a4')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr --disable-static --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+check() {
+  cd $pkgname-$pkgver
+  make check
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

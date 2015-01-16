@@ -1,0 +1,29 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-xdriinfo
+pkgver=1.0.4
+pkgrel=1
+pkgdesc="Query configuration information of DRI drivers"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libx11' 'libgl')
+makedepends=('xorg-util-macros' 'glproto')
+groups=('xorg-apps' 'xorg')
+
+source=("http://xorg.freedesktop.org/archive/individual/app/xdriinfo-${pkgver}.tar.bz2")
+sha256sums=('35c6e43d3b68ef5d93d013b4517014fb890bad96b2c801abf4f607927a94cb1c')
+
+build() {
+  cd xdriinfo-${pkgver}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd xdriinfo-${pkgver}
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/"
+}

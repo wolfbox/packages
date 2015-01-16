@@ -1,0 +1,65 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-fonts-misc
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="X.org misc fonts"
+arch=('any')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+install=xfonts.install
+
+depends=(xorg-fonts-encodings xorg-fonts-alias xorg-font-utils fontconfig)
+
+source=(${url}/releases/individual/font/font-arabic-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-cursor-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-daewoo-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-dec-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-isas-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-jis-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-micro-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-misc-misc-1.1.0.tar.bz2
+        ${url}/releases/individual/font/font-mutt-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-schumacher-misc-1.1.0.tar.bz2
+        ${url}/releases/individual/font/font-sony-misc-${pkgver}.tar.bz2
+        ${url}/releases/individual/font/font-sun-misc-${pkgver}.tar.bz2)
+sha256sums=('f4b0305afd47844d337a87d03aab4359b576dc36464317f86541324ee6ea6f60'
+            'deee02861beaa335448e9aba4320c88c30a174bc3dcfb05a434b4ddb137dc1b3'
+            'e2283e4280c66fec7c986f0b4a476811f3419b9517280cd8b59a01563de6e491'
+            'fb20da4afddc07e236e830939de0fdfc9a93c5c1c7048fafe669fac19b496552'
+            '52fe0469eb91e94dc7a0e8164e947fee439f398b0eb63c210f682524f12cea7b'
+            'a63b98c204395b61949214db199c38094489336731d4a4179eb053a5bb54e8cf'
+            'a5b987ea38bf53f63968a6cad1c052ca6d0fc678d9409c1953701f0159e4972b'
+            '50f7528ab94f319a11efcd555dd5a7120191a42cf892c87cd6bdea8b908d497b'
+            '77bf33cbf5d1849bef4e516698eb45b7d16263a84dcc2299fd61383501906e25'
+            '3003915fb53930fee5e6086ee7546ea0857ef0fc2311aaf84ed937b1b4de1b4d'
+            'da9526844c74ce395d3912d3d8f538cd57102d6bcd9f73fd0a5dccf53bfc56ca'
+            '411522f5ea8f951a7432ab946a92f524493e3a1a6e1ca3c48f09c46cb5ae9d09')
+
+build() {
+  cd "${srcdir}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      ./configure --prefix=/usr \
+          --with-fontdir=/usr/share/fonts/misc
+      make
+      popd
+    fi
+  done
+}
+
+package() {
+  cd "${srcdir}"
+  install -m755 -d "${pkgdir}/usr/share/doc/${pkgname}"
+  for dir in *; do
+    if [ -d "${dir}" ]; then
+      pushd "${dir}"
+      make DESTDIR="${pkgdir}" install
+      install -m644 COPYING ${pkgdir}/usr/share/doc/${pkgname}/LICENSE.${dir%-*}
+      popd
+    fi
+  done
+  rm -f ${pkgdir}/usr/share/fonts/*/fonts.*
+}

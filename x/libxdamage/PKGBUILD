@@ -1,0 +1,29 @@
+# Derived from Arch Linux
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+
+pkgname=libxdamage
+pkgver=1.1.4
+pkgrel=1
+pkgdesc="X11 damaged region extension library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('pkg-config')
+depends=('libxfixes>=4.0.4' 'damageproto>=1.2.0')
+
+source=(${url}/releases/individual/lib/libXdamage-${pkgver}.tar.bz2)
+sha256sums=('7c3fe7c657e83547f4822bfde30a90d84524efb56365448768409b77f05355ad')
+
+build() {
+  cd "${srcdir}/libXdamage-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+              --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "${srcdir}/libXdamage-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

@@ -1,0 +1,31 @@
+# Derived from Arch Linux
+# Arch Maintainer: AndyRTR <andyrtr@archlinux.org>
+# Arch Maintainer: Jan de Groot <jgc@archlinux.org>
+# Arch Contributor: Alexander Baldeck <alexander@archlinux.org>
+
+pkgname=libxxf86dga
+pkgver=1.1.4
+pkgrel=1
+pkgdesc="X11 Direct Graphics Access extension library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+makedepends=('xorg-util-macros')
+depends=('libxext' 'xf86dgaproto')
+
+source=(${url}/releases/individual/lib/libXxf86dga-${pkgver}.tar.bz2)
+sha256sums=('8eecd4b6c1df9a3704c04733c2f4fa93ef469b55028af5510b25818e2456c77e')
+
+build() {
+  cd "${srcdir}/libXxf86dga-${pkgver}"
+  ./configure --prefix=/usr --disable-static --libdir=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd "${srcdir}/libXxf86dga-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}

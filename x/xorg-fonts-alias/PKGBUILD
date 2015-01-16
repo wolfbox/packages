@@ -1,0 +1,27 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-fonts-alias
+pkgver=1.0.3
+pkgrel=1
+pkgdesc="X.org font alias files"
+arch=('any')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+
+source=("${url}/releases/individual/font/font-alias-${pkgver}.tar.bz2"
+        'LICENSE')
+sha256sums=('8b453b2aae1cfa8090009ca037037b8c5e333550651d5a158b7264ce1d472c9a'
+            '95b6410246e011be36aad0710a36a25fbfd508269cf50d17c820b29f045f08cb')
+
+build() {
+  cd "${srcdir}/font-alias-${pkgver}"
+  ./configure --prefix=/usr --with-fontrootdir=/usr/share/fonts
+  make
+}
+
+package() {
+  cd "${srcdir}/font-alias-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
+}

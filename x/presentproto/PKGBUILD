@@ -1,0 +1,24 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=presentproto
+pkgver=1.0
+pkgrel=1
+pkgdesc="The X11 Present wire protocol"
+arch=('any')
+url="http://xorg.freedesktop.org"
+license=('x11')
+
+source=(http://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('812c7d48721f909a0f7a2cb1e91f6eead76159a36c4712f4579ca587552839ce')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --docdir=/usr/share/doc/${pkgdir}-${pkgver}
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make DESTDIR="${pkgdir}" install
+}

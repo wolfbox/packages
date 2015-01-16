@@ -1,0 +1,28 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=xorg-xhost
+pkgver=1.0.6
+pkgrel=1
+pkgdesc="Server access control program for X"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libx11' 'libxmu')
+makedepends=('xorg-util-macros')
+groups=('xorg-apps' 'xorg')
+
+source=(http://xorg.freedesktop.org/archive/individual/app/xhost-${pkgver}.tar.bz2)
+sha256sums=('a6f5b922df0a7be5d3ba43f525fa8e69c539c738418f013a0b7adaa423a89dc2')
+
+build() {
+  cd "${srcdir}/xhost-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/xhost-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/COPYING"
+}
