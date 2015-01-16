@@ -1,0 +1,31 @@
+pkgname=frameworkintegration
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='A set of KDE plugins for desktop integration'
+arch=('x86_64')
+url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'kconfig' 'kconfigwidgets' 'kiconthemes' 'kio'
+         'libxcb' 'kconfigwidgets' 'oxygen-fonts')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('106b19dead862eb5e16da194f19ab30828dd6147bd97c583afe8dfae053c054e')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

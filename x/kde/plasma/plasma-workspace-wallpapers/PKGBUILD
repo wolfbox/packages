@@ -1,0 +1,27 @@
+pkgname=plasma-workspace-wallpapers
+pkgver=5.1.2
+pkgrel=1
+pkgdesc=''
+arch=('x86_64')
+url='https://kde.org'
+license=('LGPLv2.1' 'GPLv2')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5')
+
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('dd559d1654590e15f21a68c0d04dae5c3db690f1d7ce424ae5809975423ebea2')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

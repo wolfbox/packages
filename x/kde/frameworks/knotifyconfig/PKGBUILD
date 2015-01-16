@@ -1,0 +1,30 @@
+pkgname=knotifyconfig
+pkgver=5.6.0
+pkgrel=1
+pkgdesc=''
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/knotifyconfig'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5' 'ki18n' 'kio' 'phonon-qt5' 'kservice'
+         'kcompletion')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('d141b388fbe15aee7d464dfac745eebe43e29dc59d8c9545e3cf9dfa92b4da45')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_HTML_DOCS=OFF \
+    -DWITH_DOC=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,31 @@
+pkgname=kauth
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE component for executing privileged actions'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kauth'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('kcoreaddons' 'qt5' 'polkit-qt5')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('567d80f86b97022903de0cdeaa278cc1e4db28f381e607509ada0e6b5982dc66')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

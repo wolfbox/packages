@@ -1,0 +1,36 @@
+pkgname=kwin
+pkgver=5.1.1
+pkgrel=1
+pkgdesc=''
+arch=('x86_64')
+url='https://kde.org'
+license=('LGPLv2.1' 'GPLv2')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'libepoxy' 'mesa' 'qt5' 'kinit' 'kcrash'
+         'knotifications' 'plasma-framework' 'kglobalaccel' 'kconfigwidgets'
+         'kcodecs' 'kauth' 'kwidgetsaddons' 'kconfig' 'kactivities' 'libx11'
+         'libxext' 'libxcursor' 'libice' 'libsm' 'libxxf86vm' 'libxcb')
+
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('9faf2cf9a8885e69884e8e96bec1569ed9e1a6c4c1c23da3eff22e0f0c2035b6')
+
+build() {
+  mkdir -p build && cd build
+  
+  # --as-needed breaks this build
+  export LDFLAGS="-Wl,-O1,--no-as-needed,--sort-common,-z,relro -ldl"
+
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=on \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

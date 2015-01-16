@@ -1,0 +1,29 @@
+pkgname=kjsembed
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE plugin framework for handling desktop services'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kservice'
+license=('GPLv2' 'LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('gcc-libs' 'glibc' 'qt5' 'kjs')
+
+source=(http://download.kde.org/stable/frameworks/5.6/portingAids/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ef6caa6d86279a3aeb2d60f64e346067c3aa9f047f9a0140007113260053e321')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_HTML_DOCS=OFF \
+    -DWITH_DOC=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

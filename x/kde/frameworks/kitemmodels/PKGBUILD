@@ -1,0 +1,28 @@
+pkgname=kitemmodels
+pkgver=5.6.0
+pkgrel=1
+pkgdesc=''
+arch=('x86_64')
+url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
+license=('LGPLv2.1')
+
+makedepends=('cmake')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('b5c538bdf8fe5946e021ff7502fc60ddf89f84c0d85a91a9a8afe574bf87802c')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_HTML_DOCS=OFF \
+    -DWITH_DOC=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

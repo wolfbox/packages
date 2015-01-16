@@ -1,0 +1,33 @@
+pkgname=kwallet
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE framework for storing passwords'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kwallet'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('gcc-libs' 'glibc' 'qt5' 'ki18n' 'kcoreaddons' 'kconfig'
+         'kiconthemes' 'kservice' 'kdbusaddons' 'kwidgetsaddons'
+         'kwindowsystem' 'knotifications' 'libgcrypt')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('33d8ed772fe2ba0d41d220e0579863d0d0ac5364d7384cf76a2f3627ca885e0c')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,28 @@
+pkgname=oxygen
+pkgver=5.1.2
+pkgrel=1
+pkgdesc=''
+arch=('x86_64')
+url='https://kde.org'
+license=('LGPLv2.1' 'GPLv2')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5')
+
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('9e0a81bf5b18143995f628e68948ba4eaa879b9553d959d74ae0727c0ac39437')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=on \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

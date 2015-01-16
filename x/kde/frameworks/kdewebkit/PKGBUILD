@@ -1,0 +1,29 @@
+pkgname=kdewebkit
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='The KDE daemon'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kded'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('87b7005bb70ebacab5bce57f8594934a3888b1a25c0b42ed1ef6b5e129fa07a3')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_HTML_DOCS=OFF \
+    -DWITH_DOC=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

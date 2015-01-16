@@ -1,0 +1,32 @@
+pkgname=solid
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE hardware abstraction layer'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/solid'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('gcc-libs' 'glibc' 'qt5' 'udev' 'upower' 'udisks2')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('847bee0fbef502050e8d4c4c5f9dea2e8c6d49d6dd331c3c7bea0b4d4630d6d2')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_HTML_DOCS=OFF \
+    -DWITH_DOC=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

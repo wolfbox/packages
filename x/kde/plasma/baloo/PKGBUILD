@@ -1,0 +1,28 @@
+pkgname=baloo
+pkgver=5.1.2
+pkgrel=1
+pkgdesc=''
+arch=('x86_64')
+url='https://kde.org'
+license=('LGPLv2.1' 'GPLv2')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5' 'kfilemetadata' 'xapian-core')
+
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('fb3eb0e7644894934f5ef7852af47ec0422df7b5b32c2a359a920f9fab1acdfa')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=on \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

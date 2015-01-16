@@ -1,0 +1,27 @@
+pkgname=kdeplasma-addons
+pkgver=5.1.1
+pkgrel=1
+pkgdesc=''
+arch=('x86_64')
+url='https://kde.org'
+license=('LGPLv2.1' 'GPLv2')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5')
+
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('2ef81e86cd2f1362ec81de8ff793911383b8fc35ac3bf14b2bd5a0f1ba68d2ea')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

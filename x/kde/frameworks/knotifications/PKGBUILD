@@ -1,0 +1,32 @@
+pkgname=knotifications
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE desktop notifications component'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/knotifications'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5' 'phonon-qt5' 'libx11' 'libxtst' 'kiconthemes'
+         'kservice' 'kconfig' 'kwindowsystem' 'kcodecs')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('20bbfd7920a7f6d6ec93dfeac90e384bb79bf53fe09ebc767b83f1af109ee0bb')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

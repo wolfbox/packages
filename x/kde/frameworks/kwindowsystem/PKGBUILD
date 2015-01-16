@@ -1,0 +1,29 @@
+pkgname=kwindowsystem
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE component for accessing members of the windowing system'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kwindowsystem/'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('gcc-libs' 'glibc' 'qt5' 'libx11' 'libxcb' 'libxfixes' 'xcb-util-keysyms')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('bf52735dd6302e5a2ab2d322eb8cb644d599bf8ea2fe5b7517558a1549540f13')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_HTML_DOCS=OFF \
+    -DWITH_DOC=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

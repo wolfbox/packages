@@ -1,0 +1,28 @@
+pkgname=kapidox
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE tools for generating API documentation'
+arch=('any')
+url='https://projects.kde.org/projects/frameworks/kapidox'
+license=('BSD')
+
+makedepends=('cmake')
+depends=('python')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('4d9cafd633fa8949ec49160770a91123c6c5e16b872db218dd79894d944d51c9')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_HTML_DOCS=OFF \
+    -DWITH_DOC=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

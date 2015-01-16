@@ -1,0 +1,32 @@
+pkgname=kactivities
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE infrastructure for managing user "activities"'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kactivities'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules' 'kcmutils' 'kdeclarative' 'boost')
+depends=('glibc' 'gcc-libs' 'qt5' 'kdbusaddons' 'kconfig' 'ki18n'
+         'kservice' 'kwindowsystem')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('31ece0c8f0282c0fd99ccb94ed67cc9ec6334ce65c6f9730db11f981783923d7')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

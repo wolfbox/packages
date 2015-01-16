@@ -1,0 +1,31 @@
+pkgname=kjobwidgets
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE component for displaying progress of asynchronous jobs'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kjobwidgets'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5' 'kcoreaddons' 'kwidgetsaddons')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('865bd86f1af2b87cd36d69d6bdcc6e520fa5f51dbf490793937fab8d29ec829a')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

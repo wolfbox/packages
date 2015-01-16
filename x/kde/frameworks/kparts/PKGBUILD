@@ -1,0 +1,33 @@
+pkgname=kparts
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE framework for embedding user interfaces'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kparts'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('glibc' 'gcc-libs' 'qt5' 'kio' 'kxmlgui' 'knotifications' 'ki18n'
+         'kiconthemes' 'kjobwidgets' 'kwidgetsaddons' 'kservice' 'kconfig'
+         'kcoreaddons')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('a14ab08de0f0162fd87d54ba9e84a7b572024847267557348ad16ff35c9da8b9')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

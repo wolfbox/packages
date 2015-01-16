@@ -1,0 +1,31 @@
+pkgname=kglobalaccel
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE component for keyboard hotkey handling'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kglobalaccel'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('gcc-libs' 'glibc' 'qt5')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('db90b90e4fe761a904c4ad8c51ab5bf26fe7a14915d713e02685890cedd88f8b')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,37 @@
+# Derived from Arch Linux
+
+pkgbase=polkit-qt
+pkgname=polkit-qt5
+pkgver=0.112
+pkgrel=1
+pkgdesc='A Qt library for accessing PolicyKit'
+arch=('x86_64')
+url='https://projects.kde.org/projects/kdesupport/polkit-qt-1'
+license=('LGPL2.1')
+
+makedepends=('cmake')
+depends=('gcc-libs' 'glibc' 'polkit' 'qt5' 'glib2')
+
+source=(${pkgbase}-${pkgver}.tar.bz2::"http://quickgit.kde.org/?p=${pkgbase}-1.git&a=snapshot&h=40afa675bfa4cacd95487ce8b05.6654c5f34e21&fmt=tbz2"
+        'systembus-usage.patch')
+sha256sums=('f09f383d54c4a71942cb6921da57f34dde446dd2a6208cbb80e8516f285a806a'
+            '5687f3a1a587b7f80a369f314326120de1a17d8a37328299c74fdb6e01aec9ca')
+
+prepare() {
+  cd ${pkgbase}-1
+  patch -p1 -i "${srcdir}"/systembus-usage.patch
+}
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgbase}-1 \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_DESTINATION=/usr/lib/${MULTIARCH}
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

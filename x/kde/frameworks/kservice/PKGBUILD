@@ -1,0 +1,32 @@
+pkgname=kservice
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE plugin framework for handling desktop services'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kservice'
+license=('GPLv2' 'LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('gcc-libs' 'glibc' 'qt5' 'kcrash' 'kdbusaddons' 'kconfig'
+         'kcoreaddons' 'ki18n')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ae5919de14b35e44ebfb91b17dc5dcd0daad619ea8097c86327991fcb7b9bcaa')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

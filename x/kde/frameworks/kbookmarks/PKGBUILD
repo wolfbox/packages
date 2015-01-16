@@ -1,0 +1,32 @@
+pkgname=kbookmarks
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE bookmark management library'
+arch=('x86_64')
+url='https://projects.kde.org/projects/frameworks/kbookmarks'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('gcc-libs' 'glibc' 'qt5' 'kglobalaccel' 'kxmlgui' 'kiconthemes'
+         'kcodecs' 'kcoreaddons' 'kconfig' 'kwidgetsaddons')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('742cd13e63b5367d6c70b1dafd75080693c5f889d37c20d702fffff09f341603')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

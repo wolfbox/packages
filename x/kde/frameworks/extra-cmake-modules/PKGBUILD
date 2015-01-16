@@ -1,0 +1,28 @@
+pkgname=extra-cmake-modules
+pkgver=1.6.0
+pkgrel=1
+pkgdesc=''
+arch=('x86_64')
+url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
+license=('BSD')
+
+makedepends=('cmake')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('4697ffc09a06ac3675b84951673f9c9538a3eadd589802a912b72fb12a68ca22')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_HTML_DOCS=OFF \
+    -DWITH_DOC=OFF
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

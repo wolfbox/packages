@@ -1,0 +1,31 @@
+pkgname=kcoreaddons
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='A collection of utilities building on top of Qt'
+arch=('x86_64')
+url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
+license=('LGPLv2.1')
+
+makedepends=('cmake')
+depends=('gcc-libs' 'glibc' 'qt5' 'gamin' 'shared-mime-info')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('1974420ae2ebbd6ac341087deea5de7a267e931c1f760eb57a95cbc8e34ee21f')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}

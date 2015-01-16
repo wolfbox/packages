@@ -1,0 +1,31 @@
+pkgname=kconfig
+pkgver=5.6.0
+pkgrel=1
+pkgdesc='KDE configuration framework'
+arch=('x86_64')
+url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
+license=('LGPLv2.1')
+
+makedepends=('cmake' 'extra-cmake-modules' 'qt5-tools')
+depends=('glibc' 'qt5')
+
+source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('0ab88a37eb6a293b6963f66ac587c7974cdeeaa1a97e7bd1035ec1c1381c3d1b')
+
+build() {
+  mkdir -p build && cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+    -DCMAKE_BUILD_TYPE=Release
+
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+}
