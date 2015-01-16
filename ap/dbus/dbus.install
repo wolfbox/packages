@@ -1,4 +1,0 @@
-post_install() {
-	useradd -r -g daemon -d /var/run/dbus -s /bin/false messagebus 2>/dev/null || true
-	chown -R messagebus:daemon /var/run/dbus
-}

@@ -7,7 +7,6 @@ pre_start() {
 }
 
 respawn
-user messagebus
 run /usr/bin/dbus-daemon --system --nofork --nopidfile
 
 dispatch_command "${1}"

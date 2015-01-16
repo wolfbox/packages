@@ -27,7 +27,7 @@ rpc:x:32:
 shadow:x:43:
 ftp:x:50:
 oprofile:x:51:
-haldaemon:x:82:
+messagebus:x:81:
 plugdev:x:83:
 power:x:84:
 netdev:x:86:
