@@ -1,5 +1,5 @@
 pkgname=gdb
-pkgver=7.8.1
+pkgver=7.8.2
 pkgrel=1
 pkgdesc="The GNU program debugger."
 arch=("x86_64")
@@ -8,8 +8,10 @@ license=('GPL')
 
 depends=('glibc' 'python' 'zlib' 'xz' 'expat' 'ncurses')
 
-source=(http://ftp.gnu.org/gnu/gdb/gdb-${pkgver}.tar.xz)
-sha256sums=(497722b58386f4428c3474281eb3ef1c872404998b6ace907edb3bba1fabdc35)
+source=(http://ftp.gnu.org/gnu/gdb/gdb-${pkgver}.tar.xz{,.sig})
+sha256sums=('605954d5747d5f08ea4b7f48e958d1ebbf39265e18f7f36738deeabb83744485'
+            'SKIP')
+validpgpkeys=('F40ADB902B24264AA42E50BF92EDB04BFF325CF3') # Joel Brobecker <brobecker@adacore.com>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -19,7 +21,6 @@ build() {
 	export CFLAGS=${CFLAGS/-D_FORTIFY_SOURCE=2/}
 	
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
-	            --mandir=/usr/man --infodir=/usr/info \
 	            --with-python --build=${CHOST}
 	make
 }
@@ -30,7 +31,7 @@ package() {
 	make install DESTDIR="${pkgdir}"
 
 	rm -f "${pkgdir}"/usr/lib/${MULTIARCH}/{libbfd*,libiberty*,libopcodes*}
-	rm -f "${pkgdir}"/usr/info/{annotate*,bfd*,configure*,standards*}
+	rm -f "${pkgdir}"/usr/share/info/{annotate*,bfd*,configure*,standards*}
 	rm -rf "${pkgdir}"/usr/include
 
 	# Remove duplicate locale files
