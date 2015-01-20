@@ -1,5 +1,5 @@
 pkgname=('llvm' 'llvm-libs')
-pkgver=3.5.0
+pkgver=3.5.1
 pkgrel=1
 pkgdesc="Low Level Virtual Machine compiler toolkit"
 arch=("x86_64")
@@ -16,17 +16,18 @@ source=(http://llvm.org/releases/${pkgver}/llvm-${pkgver}.src.tar.xz{,.sig}
         http://llvm.org/releases/${pkgver}/polly-${pkgver}.src.tar.xz{,.sig}
         add-so-versioning.diff
         polly-macros-llvmexports.patch)
-sha256sums=('28e199f368ef0a4666708f31c7991ad3bcc3a578342b0306526dd35f07595c03'
+sha256sums=('bf3275d2d7890015c8d8f5e6f4f882f8cf3bf51967297ebe74111d6d8b53be15'
             'SKIP'
-            'fc80992e004b06f6c7afb612de1cdaa9ac9d25811c55f94fcf7331d9b81cdb8b'
+            '6773f3f9cf815631cc7e779ec134ddd228dc8e9a250e1ea3a910610c59eb8f5c'
             'SKIP'
-            'a4b3e655832bf8d9a357ea2c771db347237460e131988cbb96cda40ff39a8136'
+            'adf4b526f33e681aff5961f0821f5b514d3fc375410008842640b56a2e6a837a'
             'SKIP'
-            'f1f6aaaa375d522cc92cd922f3562bfdabf87269a520398479089374dad75a65'
+            'ac12ec5ff2119ac1d2916c105920e1880321a7d97b6f5ec5957a588450704f04'
             'SKIP'
-            '28790dc459da6fad347faa80b51099001119c75c17ce385efb3ab96c01160b0b'
+            'bbd0375f6ff2a7bf827e1402d8cadcc57686470d9b26e8d5c615fd5a3e1c7a0b'
             '0f98cca6741881d9b1145e1f077303c3565c40552ea5d18eff15cc20fbba6754')
-validpgpkeys=('54E3BDE33185D9F69664D22455F5CD70BB5A0569') # Bill Wendling <void@llvm.org>
+validpgpkeys=('54E3BDE33185D9F69664D22455F5CD70BB5A0569'  # Bill Wendling <void@llvm.org>
+              '11E521D646982372EB577A1F8F0871F202119294') # Tom Stellard <tom@stellard.net>
 
 prepare() {
 	cd "${srcdir}"/${pkgname}-${pkgver}.src
