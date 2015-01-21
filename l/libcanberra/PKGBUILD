@@ -1,0 +1,43 @@
+pkgname=libcanberra
+pkgver=0.30
+pkgrel=1
+pkgdesc="A small and lightweight implementation of the XDG Sound Theme Specification"
+arch=('x86_64')
+license=('LGPL')
+options=(!emptydirs)
+url="http://0pointer.de/lennart/projects/libcanberra"
+
+makedepends=('gtk2')
+depends=('libvorbis' 'libtool' 'alsa-lib' 'sound-theme-freedesktop'
+         'pulseaudio')
+
+source=(http://0pointer.de/lennart/projects/${pkgname}/${pkgname}-${pkgver}.tar.xz
+        libcanberra.xinit)
+sha256sums=('SKIP'
+            '68a68d66b7491f99d5aa09fe7c6ef4eb38352a2a8ff7997d184d1cbc5e80c0d3')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --sysconfdir=/etc \
+      --prefix=/usr \
+      --libdir=/usr/lib/${MULTIARCH} \
+      --localstatedir=/var \
+      --disable-static \
+      --with-builtin=dso \
+      --enable-null \
+      --disable-oss \
+      --enable-alsa \
+      --disable-gstreamer \
+      --enable-pulse \
+      --disable-gtk-doc
+
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make -j1 DESTDIR="$pkgdir" install
+
+  install -D "$srcdir/libcanberra.xinit" \
+    "$pkgdir/etc/X11/xinit/xinitrc.d/40-libcanberra-gtk-module"
+}
