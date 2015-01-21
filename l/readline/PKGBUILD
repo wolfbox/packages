@@ -3,10 +3,10 @@ _patchlevel=8
 _basever=6.3
 pkgver=${_basever}.${_patchlevel}
 pkgrel=1
-pkgdesc="A line input library with editing features."
+pkgdesc="A line input library with editing features"
 arch=("x86_64")
 url="http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html"
-license=("GPLv3")
+license=('GPL3')
 
 depends=('glibc' 'ncurses')
 
@@ -50,13 +50,13 @@ build() {
 
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
 				--with-curses --enable-multibyte
-	make shared
+	make SHLIB_LIBS=-lncurses
 }
 
 package() {
 	cd "${srcdir}/${pkgname}-${_basever}"
 	make install DESTDIR="${pkgdir}"
 	
-	mkdir -p "${pkgdir}/usr/doc/readline-${pkgver}"
-	cp -a COPYING* "${pkgdir}/usr/doc/readline-${pkgver}"
+	mkdir -p "${pkgdir}/usr/share/doc/readline"
+	cp -a COPYING* "${pkgdir}/usr/share/doc/readline"
 }
