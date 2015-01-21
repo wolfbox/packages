@@ -1,5 +1,5 @@
 pkgname=kwin
-pkgver=5.1.1
+pkgver=5.1.2
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
@@ -13,7 +13,7 @@ depends=('glibc' 'gcc-libs' 'libepoxy' 'mesa' 'qt5' 'kinit' 'kcrash'
          'libxext' 'libxcursor' 'libice' 'libsm' 'libxxf86vm' 'libxcb')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('9faf2cf9a8885e69884e8e96bec1569ed9e1a6c4c1c23da3eff22e0f0c2035b6')
+sha256sums=('4e427141956c0ee87ac86be995ecab6e00a53e52c65a469bbc9e45e5114f4bea')
 
 build() {
   mkdir -p build && cd build

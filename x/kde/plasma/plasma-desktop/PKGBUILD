@@ -1,14 +1,15 @@
 pkgname=plasma-desktop
 pkgver=5.1.2
 pkgrel=1
-pkgdesc=''
+pkgdesc='The KDE Plasma desktop environment'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'knotifyconfig' 'knewstuff' 'krunner'
-         'kdelibs4support' 'kemoticons' 'kitemmodels' 'kwin' 'plasma-workspace')
+         'kdelibs4support' 'kemoticons' 'kitemmodels' 'kwin' 'plasma-workspace'
+         'systemsettings' 'fontconfig' 'pulseaudio' 'libcanberra')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
 sha256sums=('67d71d86895ed0899766111d6c8d050365c3ea6f272bf7b9819591851673c15a')
