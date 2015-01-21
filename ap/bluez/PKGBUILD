@@ -1,0 +1,66 @@
+# Maintainer: Andrew Aldridge <i80and@foxquill.com>
+# Derived from Arch Linux
+
+pkgname=bluez
+pkgver=5.27
+pkgrel=1
+pkgdesc="Daemons for the bluetooth protocol stack"
+url="http://www.bluez.org"
+arch=('x86_64')
+license=('GPL2')
+backup=('etc/dbus-1/system.d/bluetooth.conf'
+        'etc/bluetooth/main.conf')
+
+depends=('dbus' 'libical' 'glib2' 'udev')
+
+source=(http://www.kernel.org/pub/linux/bluetooth/${pkgname}-${pkgver}.tar.{xz,sign}
+        0001-Allow-using-obexd-without-systemd-in-the-user-session.patch
+        bluetooth.modprobe
+        bluez
+        bluez.system_ready)
+sha256sums=('fbf33cebc76f8c81f28f0d67c71a8a1ec4b04b087460ec7353f7e0c207a1f981'
+            'SKIP'
+            '896a1403d9b7258c4fb0d41f3a6f70fd51eaa1115ab3f4259f3dbbe02b55766b'
+            '46c021be659c9a1c4e55afd04df0c059af1f3d98a96338236412e449bf7477b4'
+            '62a759220e8f637ecf60a6f97d728f4c99ad72d7a96084554cf993db4422d456'
+            '0bdcd8d1513f807b67b216fed36f0d52b98a454ad871ff9780b376b42df09bfb')
+validpgpkeys=('E932D120BC2AEC444E558F0106CA9F5D1DCF2659') # Marcel Holtmann <marcel@holtmann.org>
+
+prepare() {
+  cd $pkgname-$pkgver
+  # patch not upstreamable for obex file transfer - FS#37773 taken from FC
+  # http://www.hadess.net/2013/11/bluetooth-file-sharing-obexpush-in.html
+  patch -Np1 -i ${srcdir}/0001-Allow-using-obexd-without-systemd-in-the-user-session.patch
+  autoreconf -vfi
+}
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure \
+          --prefix=/usr \
+          --mandir=/usr/share/man \
+          --sysconfdir=/etc \
+          --localstatedir=/var \
+          --libdir=/usr/lib/${MULTIARCH} \
+          --libexecdir=/usr/lib \
+          --enable-sixaxis \
+          --disable-systemd \
+          --enable-experimental
+  make
+}
+
+package() {
+  cd ${pkgbase}-${pkgver}
+  make DESTDIR=${pkgdir} install
+
+  # ship upstream main config file
+  install -dm755 ${pkgdir}/etc/bluetooth
+  install -Dm644 ${srcdir}/${pkgbase}-${pkgver}/src/main.conf ${pkgdir}/etc/bluetooth/main.conf
+
+  # fix module loading errors
+  install -dm755 ${pkgdir}/lib/modprobe.d
+  install -Dm644 ${srcdir}/bluetooth.modprobe ${pkgdir}/lib/modprobe.d/bluetooth-usb.conf
+
+  # Install service file
+  install -Dm755 "${srcdir}"/bluez "${pkgdir}"/etc/rc.d/bluez
+}

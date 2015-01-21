@@ -1,0 +1,8 @@
+#!/usr/bin/sh
+
+. /etc/rc.d/rc.pidfile
+
+respawn
+run /usr/lib/bluetooth/bluetoothd
+
+dispatch_command "${1}"
