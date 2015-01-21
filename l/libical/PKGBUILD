@@ -1,0 +1,37 @@
+pkgname=libical
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="A library for working with the iCalendar PIM format"
+arch=('x86_64')
+url='https://github.com/libical/libical'
+license=('LGPL' 'MPL')
+
+depends=('glibc')
+makedepends=('cmake' 'ninja')
+
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/${pkgname}/${pkgname}/archive/v${pkgver}.tar.gz")
+sha256sums=('7d5f613454ec6c7d1bcfb441c919215be53292aa15cd1cb14249d1413d6c610c')
+
+prepare() {
+    mkdir -p build
+
+    # Fix generating the .pc file
+    ( cd ${pkgname}-${pkgver}
+      sed -i "s:${exec_prefix}/lib\":${exec_prefix}/lib/${MULTIARCH}\":g" CMakeLists.txt )
+}
+
+build() {
+    cd build
+    cmake ../${pkgname}-${pkgver} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DLIB_SUFFIX=/${MULTIARCH} \
+        -DSHARED_ONLY=YES \
+        -G Ninja
+    ninja
+}
+
+package() {
+    cd build
+    DESTDIR="${pkgdir}" ninja install
+}
