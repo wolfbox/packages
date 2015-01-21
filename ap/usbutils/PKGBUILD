@@ -4,7 +4,7 @@ pkgrel=1
 pkgdesc="USB information utilities"
 arch=("x86_64")
 url="http://linux-usb.sourceforge.net"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('glibc' 'zlib' 'libusb' 'hwids')
 
@@ -14,7 +14,7 @@ sha256sums=(7593a01724bbc0fd9fe48e62bc721ceb61c76654f1d7b231b3c65f6dfbbaefa4)
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sbindir=/usr/bin \
-	            --mandir=/usr/man --disable-usbids
+	            --datadir=/usr/share/hwdata --disable-usbids
 	make
 }
 
