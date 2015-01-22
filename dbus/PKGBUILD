@@ -16,46 +16,54 @@ source=(http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz{,.asc}
 sha256sums=('f1dc56238b132923c34db0e6714a003773afbe724b738f0f0ab18b0ff745b1fe'
             'SKIP'
             'cd35621e4cc56403e9bb6ca6b431c8ae04f8cb8c626df40953e6f0f1bb488f64'
-            'f0acb65140b98bcd95236167768998c36baa16f528d5f62be65f41f2fdd6e8da'
+            '54f7304b8857f39a06ae5da6854d395520da544e64b6bb6c492de648a7888380'
             'f031661e325f70eee98c0893f975711fd1aeb5588bd0d792da033c1a71103b50'
             '8dc424c7e30f19bb1b4e1ee569629c6f515e858e958a66080fb8fc16b6aca213')
 validpgpkeys=('DA98F25C0871C49A59EAFF2C4DE8FF2A63C7CC90') # Simon McVittie <smcv@debian.org>
 
 prepare() {
-	cd "${srcdir}"/dbus-${pkgver}
+    cd "${srcdir}"/dbus-${pkgver}
 	
-	# Slackware patches
-	# Root shouldn't be banned from doing anything ever
-	zcat "${srcdir}"/dbus-1.6.x-allow_root_globally.diff.gz | patch -p1
+    # Slackware patches
+    # Root shouldn't be banned from doing anything ever
+    zcat "${srcdir}"/dbus-1.6.x-allow_root_globally.diff.gz | patch -p1
 }
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+    cd "${srcdir}/${pkgname}-${pkgver}"
 
-	# Harden
-	export CFLAGS="${CFLAGS} -fPIE"
-	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+    # Harden
+    export CFLAGS="${CFLAGS} -fPIE"
+    export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-	            --localstatedir=/var --infodir=/usr/info \
-	            --libexecdir=/usr/lib/${MULTIARCH} --docdir=/usr/doc/dbus-${pkgver} \
-	            --disable-doxygen-docs --enable-shared=yes --enable-static=no \
-	            --enable-inotify --with-system-pid-file=/var/run/dbus/dbus.pid \
-	            --with-system-socket=/var/run/dbus/system_bus_socket \
-	            --disable-tests --enable-x11-autolaunch
-	make
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --sysconfdir=/etc \
+                --localstatedir=/ \
+                --libexecdir=/usr/lib/${MULTIARCH} \
+                --docdir=/usr/share/doc/dbus-${pkgver} \
+                --disable-doxygen-docs \
+                --enable-shared=yes \
+                --enable-static=no \
+                --enable-inotify \
+                --with-system-pid-file=/run/dbus/dbus.pid \
+                --with-system-socket=/run/dbus/system_bus_socket \
+                --disable-tests \
+                --enable-x11-autolaunch
+    make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+    cd "${srcdir}/${pkgname}-${pkgver}"
 
-	make install DESTDIR="${pkgdir}"
+    make install DESTDIR="${pkgdir}"
 	
-	rm -r "${pkgdir}"/etc/rc.d
-	mkdir -p "${pkgdir}"/etc/rc.d/events
-	install -m755 "${srcdir}"/dbus "${pkgdir}"/etc/rc.d/
-	install -m755 "${srcdir}"/dbus.filesystem "${pkgdir}"/etc/rc.d/events/
-	install -Dm755 "${srcdir}"/30-dbus "${pkgdir}"/etc/X11/xinit/xinitrc.d/30-dbus
+    mkdir -p "${pkgdir}"/etc/rc.d/events
+    install -m755 "${srcdir}"/dbus "${pkgdir}"/etc/rc.d/
+    install -m755 "${srcdir}"/dbus.filesystem "${pkgdir}"/etc/rc.d/events/
+    install -Dm755 "${srcdir}"/30-dbus "${pkgdir}"/etc/X11/xinit/xinitrc.d/30-dbus
 
-    chown messagebus:messagebus "${pkgdir}"/var/run/dbus
+    # Fix up; we want to put everything in /run
+    rm -rf "${pkgdir}"/lib
+    chown messagebus:messagebus "${pkgdir}"/run/dbus
 }
