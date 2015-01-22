@@ -8,7 +8,7 @@ license=('MIT')
 options=('emptydirs')
 
 conflicts=('upstart')
-depends=('glibc' 'sh' 'util-linux' 'libcgroup')
+depends=('glibc' 'sh' 'util-linux' 'libcgroup' 'inotify-tools')
 
 source=(https://github.com/arachsys/init/archive/init-${pkgver}.tar.gz
         rc.startup

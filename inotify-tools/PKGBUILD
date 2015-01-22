@@ -1,0 +1,25 @@
+pkgname=inotify-tools
+pkgver=3.14
+pkgrel=1
+pkgdesc="Linux filesystem notification library and tools"
+arch=("x86_64")
+url="http://inotify-tools.sourceforge.net"
+license=('GPL2')
+
+depends=('glibc')
+
+source=(http://github.com/downloads/rvoicilas/${pkgname}/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('222bcca8893d7bf8a1ce207fb39ceead5233b5015623d099392e95197676c92f')
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+
+    make install DESTDIR="${pkgdir}"
+}
