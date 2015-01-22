@@ -1,0 +1,26 @@
+pkgname=libcgroup
+pkgver=0.41
+pkgrel=1
+pkgdesc="Linux process control group library and tools"
+arch=('x86_64')
+url='http://libcg.sourceforge.net'
+license=('LGPL2.1')
+
+depends=('glibc')
+
+source=(http://downloads.sourceforge.net/libcg/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('e4e38bdc7ef70645ce33740ddcca051248d56b53283c0dc6d404e17706f6fb51')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr \
+              --sbindir=/usr/bin \
+              --libdir=/usr/lib/${MULTIARCH} \
+              --disable-pam
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}

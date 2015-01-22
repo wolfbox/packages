@@ -8,7 +8,7 @@ license=('MIT')
 options=('emptydirs')
 
 conflicts=('upstart')
-depends=('glibc' 'sh' 'util-linux')
+depends=('glibc' 'sh' 'util-linux' 'libcgroup')
 
 source=(https://github.com/arachsys/init/archive/init-${pkgver}.tar.gz
         rc.startup
