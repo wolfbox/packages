@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 3.18.2 Kernel Configuration
+# Linux/x86 3.18.3 Kernel Configuration
 #
 CONFIG_64BIT=y
 CONFIG_X86_64=y
@@ -5857,7 +5857,7 @@ CONFIG_POWERCAP=y
 CONFIG_INTEL_RAPL=m
 # CONFIG_MCB is not set
 CONFIG_RAS=y
-# CONFIG_THUNDERBOLT is not set
+CONFIG_THUNDERBOLT=m
 
 #
 # Firmware Drivers

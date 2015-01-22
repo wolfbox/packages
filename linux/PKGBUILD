@@ -10,16 +10,16 @@ options=(!strip)
 install=linux.install
 makedepends=('gcc' 'lz4')
 
-_grsecver=3.0-3.18.3-201501182219
+_grsecver=3.0-3.18.3-201501211944
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.{sign,xz}
         https://grsecurity.net/test/grsecurity-${_grsecver}.patch{,.sig}
         config
         x509.genkey)
 sha256sums=('SKIP'
             '0e024cd0bba93f777e733381b1ee2d55a76e4b30e096b0668aba979390e94255'
-            'ba8d2a97211522e8fb1797e06f77e5a83c0f331d763e4bb5ce2931ddf714461b'
+            '3b32e99637e05ddf98100a8e290fcbb67e689eb5405515c837541062e848df8b'
             'SKIP'
-            'b74ec2d44feac53b3c8d8d878edf0db5bcc183ac6b8019c8193e92ef20e0c442'
+            '09befee4e8f71f55bece8389fd198c25da845b66fe209ae434941c457582636f'
             'ca581821060e883b03f660d69ed0e9a7cbbf284dd757995bd31ffefa551ef316')
 validpgpkeys=(647F28654894E3BD457199BE38DBBDC86092693E # Greg K-H
               DE9452CE46F42094907F108B44D1C0F82525FE49) # Bradley Spengler
