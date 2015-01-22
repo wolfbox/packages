@@ -1,0 +1,38 @@
+pkgname=libproxy
+pkgver=0.4.11
+pkgrel=1
+pkgdesc="Proxy configuration management library"
+arch=("x86_64")
+url="http://libproxy.googlecode.com"
+license=('LGPL2.1')
+
+makedepends=('cmake' 'networkmanager' 'python2' 'perl' 'glib2')
+depends=('glibc' 'gcc-libs')
+optdepends=('networkmanager: NetworkManager configuration')
+
+source=(http://libproxy.googlecode.com/files/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('dc3f33de54163718f82b3e7c496a7de97f8862578414b8ecaad3cbfe4821864b')
+
+prepare() {
+    mkdir -p build
+}
+
+build() {
+    cd build
+    cmake ../${pkgname}-${pkgver} \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DLIB_INSTALL_DIR=/usr/lib/${MULTIARCH} \
+        -DLIBEXEC_INSTALL_DIR=/usr/lib/${MULTIARCH}/libproxy \
+        -DCMAKE_SKIP_RPATH=ON \
+        -DPERL_VENDORINSTALL=yes \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DWITH_WEBKIT=OFF \
+        -DWITH_KDE4=OFF \
+        -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python2
+    make
+}
+
+package() {
+    cd build
+    make install DESTDIR="${pkgdir}"
+}
