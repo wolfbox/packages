@@ -1,0 +1,26 @@
+pkgname=wayland
+pkgver=1.6.0
+pkgrel=1
+pkgdesc="The Wayland display server protocol"
+arch=("x86_64")
+url="http://wayland.freedesktop.org"
+license=('MIT')
+
+depends=('glibc' 'expat' 'libffi')
+
+source=(http://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('a7d5102dcf53d08c059d24bc62de491d7cd482070abeb6737a20d0d86ba6fc7f')
+
+build() {
+	cd ${pkgname}-${pkgver}
+
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+package() {
+	cd ${pkgname}-${pkgver}
+
+	make install DESTDIR="${pkgdir}"
+}
