@@ -7,39 +7,38 @@ url="http://gnupg.org"
 license=('GPLv3' 'LGPLv3')
 
 depends=('glibc' 'libgpg-error' 'libgcrypt>=1.6' 'npth' 'zlib' 'readline'
-         'ncurses' 'libassuan' 'libksba')
+         'ncurses' 'libassuan' 'libksba' 'pinentry')
 
 source=(ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-${pkgver}.tar.bz2{,.sig})
 sha256sums=('70ecd01d2875db62624c911c2fd815742f50aef5492698eb3bfc09a08690ce49'
             'SKIP')
+validpgpkeys=('031EC2536E580D8EA286A9F22071B08A33BD3F06') # NIIBE Yutaka (GnuPG Release Key) <gniibe@fsij.org>
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+    cd "${srcdir}/${pkgname}-${pkgver}"
 
-	export CFLAGS="${CFLAGS} -fPIE"
-	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+    export CFLAGS="${CFLAGS} -fPIE"
+    export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 
-	./configure --prefix=/usr \
-	            --sbindir=/usr/bin \
-	            --sysconfdir=/etc \
-	            --infodir=/usr/info \
-	            --docdir=/usr/doc/${pkgname}-${pkgver} \
-	            --libdir=/usr/lib/${MULTIARCH} \
-	            --libexecdir=/usr/lib/${MULTIARCH}/gnupg \
-	            --mandir=/usr/man \
-	            --enable-large-secmem \
-	            --with-capabilities \
-	            --build=${CHOST}
-	make
+    ./configure --prefix=/usr \
+                --sbindir=/usr/bin \
+                --sysconfdir=/etc \
+                --docdir=/usr/share/doc/${pkgname} \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --libexecdir=/usr/lib/${MULTIARCH}/gnupg \
+                --enable-large-secmem \
+                --with-capabilities \
+                --build=${CHOST}
+    make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	make install DESTDIR="${pkgdir}"
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make install DESTDIR="${pkgdir}"
 	
-	# Link gpg to gpg2
-	( cd "${pkgdir}"/usr
-	  ln -s gpg2 bin/gpg
-	  ln -s gpgv2 bin/gpgv
-	  ln -s gpg2.1.gz man/man1/ )
+    # Link gpg to gpg2
+    ( cd "${pkgdir}"/usr
+      ln -s gpg2 bin/gpg
+      ln -s gpgv2 bin/gpgv
+      ln -s gpg2.1.gz man/man1/ )
 }
