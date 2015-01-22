@@ -1,0 +1,29 @@
+pkgname=bsdiff
+pkgver=4.3
+pkgrel=1
+pkgdesc="An advanced binary patching toolkit"
+arch=("x86_64")
+url="http://www.daemonology.net/bsdiff"
+license=('BSD')
+
+depends=('glibc')
+
+source=(http://www.daemonology.net/${pkgname}/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('18821588b2dc5bf159aa37d3bcb7b885d85ffd1e19f23a0c57a58723fea85f48')
+
+build() {
+    CFLAGS="${CFLAGS/-O2/-O3}"
+
+    cd ${pkgname}-${pkgver}
+    gcc ${CFLAGS} -o bsdiff bsdiff.c -lbz2
+    gcc ${CFLAGS} -o bspatch bspatch.c -lbz2
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    install -Dm755 bsdiff "${pkgdir}"/usr/bin/bsdiff
+    install -m755 bspatch "${pkgdir}"/usr/bin/bspatch
+
+    install -Dm755 bsdiff.1 "${pkgdir}"/usr/share/man/man1/bsdiff.1
+    install -m755 bspatch.1 "${pkgdir}"/usr/share/man/man1/bspatch.1
+}
