@@ -1,10 +1,10 @@
 pkgname=cmake
-pkgver=3.1.0
+pkgver=3.1.1
 pkgrel=1
-pkgdesc="The CMake build system generator."
+pkgdesc="The CMake build system generator"
 arch=("x86_64")
 url="http://www.cmake.org"
-license=(LGPLv2.1)
+license=('LGPL2.1')
 
 depends=('glibc' 'zlib' 'curl' 'openssl' 'expat' 'attr' 'acl' 'lzo'
          'libarchive' 'nettle' 'bzip2' 'xz' 'libxml2' 'openldap' 'cyrus-sasl'
@@ -12,16 +12,16 @@ depends=('glibc' 'zlib' 'curl' 'openssl' 'expat' 'attr' 'acl' 'lzo'
 optdepends=('make' 'ninja')
 
 source=(http://www.cmake.org/files/v3.1/cmake-${pkgver}.tar.gz)
-sha256sums=('8bdc3fa3f2da81bc10c772a6b64cc9052acc2901d42e1e1b2588b40df224aad9')
+sha256sums=('b58694e545d51cde5756a894f53107e3d9e469360e1d92e7f6892b55ebc0bebf')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
 	mkdir cmake-build
 	cd cmake-build
-	../bootstrap --prefix=/usr --docdir=/share/doc/${pkgname}-${pkgver} \
+	../bootstrap --prefix=/usr --docdir=/share/doc/${pkgname} \
 	             --system-libs
-	../configure --prefix=/usr --docdir=/share/doc/${pkgname}-${pkgver} \
+	../configure --prefix=/usr --docdir=/share/doc/${pkgname} \
 	             --system-libs
 	make
 }
@@ -30,5 +30,5 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"/cmake-build
 
 	make install DESTDIR="${pkgdir}"
-	rm -rf "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}/*.docbook
+	rm -rf "${pkgdir}"/usr/share/doc/${pkgname}/*.docbook
 }
