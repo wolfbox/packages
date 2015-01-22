@@ -1,0 +1,37 @@
+pkgname=libdbusmenu-qt5
+pkgver=0.9.3+14.10.20140619
+pkgrel=1
+pkgdesc="A library that provides a Qt implementation of the DBusMenu spec"
+arch=('x86_64')
+url="https://launchpad.net/libdbusmenu-qt"
+license=('LGPL2')
+
+makedepends=('cmake')
+depends=('qt5')
+
+source=("http://archive.ubuntu.com/ubuntu/pool/main/libd/libdbusmenu-qt/libdbusmenu-qt_${pkgver}.orig.tar.gz")
+sha256sums=('e531b29388317f48e22c652c7111e9c7750aa7d429a72742c49a1c8af1e61968')
+
+prepare() {
+  mkdir -p build
+
+  # Fix libdir
+  ( cd libdbusmenu-qt-${pkgver}
+    sed -i "s:/lib:/lib/${MULTIARCH}:" dbusmenu-qt.pc.in )
+}
+
+build() {
+  cd build
+  cmake ../libdbusmenu-qt-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib/${MULTIARCH} \
+    -DCMAKE_BUILD_TYPE=Release
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR="${pkgdir}" install
+  
+  rm -rf "${pkgdir}"/usr/share/doc
+}
