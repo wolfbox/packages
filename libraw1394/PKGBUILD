@@ -1,0 +1,25 @@
+pkgname=libraw1394
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="Library for working with IEEE1394 (Firewire)"
+arch=("x86_64")
+url="http://ieee1394.wiki.kernel.org"
+license=('LGPL2.1')
+
+depends=('glibc')
+
+source=(ftp://ftp.kernel.org/pub/linux/libs/ieee1394/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('0b3126d8158d156de9da2ff4d861c47857acc4318a7ac260258015a22071964f')
+
+build() {
+	cd ${pkgname}-${pkgver}
+
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd ${pkgname}-${pkgver}
+	make install DESTDIR="${pkgdir}"
+}
