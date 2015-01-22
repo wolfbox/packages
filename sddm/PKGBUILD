@@ -1,0 +1,46 @@
+pkgname=sddm
+pkgver=0.11.0
+pkgrel=1
+pkgdesc="The Simple Desktop Display Manager"
+arch=("x86_64")
+url="https://github.com/sddm/sddm"
+license=('GPL2')
+backup=('etc/sddm.conf')
+install=sddm.install
+
+makdepends=('cmake' 'ninja')
+depends=('glibc' 'gcc-libs' 'qt5' 'libxcb' 'upower')
+
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/${pkgname}/${pkgname}/archive/v${pkgver}.tar.gz
+        sddm.conf
+        sddm)
+sha256sums=('80d53f075c275f744bd547523d6d640baccfacb4e463a71ec0facb8231b832ce'
+            '1f9b5255981820969e302e32c960475c681e7757e4fed481154176f3fb8908e6'
+            '196b80a1f8033ab190912ec439b55487bb659e92eafc6cf923183361a31ee6e6')
+
+prepare() {
+    mkdir -p build
+}
+
+build() {
+	cd build
+
+	export CFLAGS="${CFLAGS} -fPIE"
+	export CXXFLAGS="${CXXFLAGS} -fPIE"
+	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+
+	cmake ../${pkgname}-${pkgver} \
+	    -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBEXECDIR=lib/${MULTIARCH} \
+	    -DENABLE_JOURNALD=OFF \
+	    -G Ninja
+    ninja
+}
+
+package() {
+    cd build
+    DESTDIR="${pkgdir}" ninja install
+    install -dm755 -o sddm -g sddm "${pkgdir}"/var/lib/sddm
+    install -Dm644 ../sddm.conf "${pkgdir}"/etc/sddm.conf
+    install -Dm755 ../sddm "${pkgdir}"/etc/rc.d/sddm
+}

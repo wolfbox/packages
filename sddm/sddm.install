@@ -1,0 +1,10 @@
+#!/usr/bin/sh
+post_install() {
+    if ! getent passwd sddm > /dev/null; then
+        useradd -r -U -u 114 -c "Simple Desktop Display Manager" -d /var/lib/sddm -s /usr/bin/nologin -G video sddm
+    fi
+}
+
+post_remove() {
+    userdel sddm > /dev/null || true
+}
