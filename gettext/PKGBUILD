@@ -4,7 +4,9 @@ pkgrel=1
 pkgdesc="The GNU translation system."
 arch=('x86_64')
 url="http://www.gnu.org/software/gettext/"
-license=('GPLv3')
+license=('GPL3')
+
+depends=('libcroco')
 
 source=(http://ftpmirror.gnu.org/gettext/gettext-${pkgver}.tar.gz{,.sig})
 sha256sums=('8ac9f1ed1a5f8c4e656a2f37f5ba6b9ee04c4df79a575e876b0b6946aa417f3f'
