@@ -1,5 +1,5 @@
 pkgname=git
-pkgver=2.2.1
+pkgver=2.2.2
 pkgrel=1
 pkgdesc="A free and fast distributed version control system."
 arch=("x86_64")
@@ -11,13 +11,12 @@ depends=('glibc' 'zlib' 'openssl' 'perl' 'perl-error' 'curl' 'expat')
 optdepends=('python2' 'subversion')
 
 source=(http://www.kernel.org/pub/software/scm/git/git-${pkgver}.tar.xz)
-sha256sums=('09422dc9a0bdddf6bdd5b8634c71e1ed3125256c47424e6a2687701e764ef450')
+sha256sums=('aa6d2efcc0c7bb9b9edc6d56d90921706b833972f1d2abe70f71be7838f22d05')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	./configure --prefix=/usr \
-	            --mandir=/usr/man \
 	            --libexecdir=/usr/lib/${MULTIARCH} \
 	            --with-python=/usr/bin/python2 \
 	            --without-tcltk
