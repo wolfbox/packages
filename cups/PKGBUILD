@@ -17,7 +17,7 @@ install=cups.install
 
 makedepends=('gzip' 'autoconf' 'perl')
 depends=('gnutls' 'libtiff>=4.0.0' 'libpng>=1.5.7' 'avahi' 'libusb'
-         'acl' 'dbus' 'libpaper' 'hicolor-icon-theme')
+         'acl' 'dbus' 'libpaper' 'hicolor-icon-theme' 'colord')
 
 source=(http://www.cups.org/software/${pkgver}/cups-${pkgver}-source.tar.bz2
         # improve build and linking
