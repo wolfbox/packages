@@ -1,8 +1,7 @@
 # Derived from Arch Linux
 # Maintainer: Andrew Aldridge <i80and@foxquill.com>
 
-pkgbase=libxkbcommon
-pkgname=(libxkbcommon libxkbcommon-x11)
+pkgname=libxkbcommon
 pkgver=0.5.0
 pkgrel=1
 pkgdesc="Keyboard handling library using XKB data"
@@ -11,44 +10,23 @@ url="http://xkbcommon.org/"
 license=(custom)
 
 makedepends=(libxcb xorg-util-macros)
-depends=(xkeyboard-config glibc)
-checkdepends=(xorg-server-xvfb libgl)
+depends=(xkeyboard-config glibc libxcb)
 
 source=("http://xkbcommon.org/download/$pkgname-$pkgver.tar.xz")
+sha256sums=('90bd7824742b9a6f52a6cf80e2cadd6f5349cf600a358d08260772615b89d19c')
 
 prepare() {
   mkdir -p x11/usr/{include/xkbcommon,lib/pkgconfig}
 }
 
 build() {
-  cd $pkgbase-$pkgver
+  cd $pkgname-$pkgver
   ./configure --prefix=/usr --disable-static --libdir=/usr/lib/${MULTIARCH}
   make
 }
 
-check() {
-  cd $pkgbase-$pkgver
-  xvfb-run -a make -k check
-}
-
-package_libxkbcommon() {
-  cd $pkgbase-$pkgver
+package() {
+  cd $pkgname-$pkgver
   make DESTDIR="$pkgdir" install
   install -Dm644 COPYING "$pkgdir/usr/share/doc/libxkbcommon/LICENSE"
-
-### Split libxkbcommon-x11
-
-  mv "$pkgdir"/usr/lib/*x11* "$srcdir/x11/usr/lib"
-  mv "$pkgdir"/usr/lib/pkgconfig/*x11* "$srcdir/x11/usr/lib/pkgconfig"
-  mv "$pkgdir"/usr/include/xkbcommon/*x11* "$srcdir/x11/usr/include/xkbcommon"
 }
-
-package_libxkbcommon-x11() {
-  pkgdesc="Keyboard handling library using XKB data for X11 XCB clients"
-  depends=(libxkbcommon libxcb)
-
-  mv x11/* "$pkgdir"
-
-  install -Dm644 $pkgbase-$pkgver/COPYING "$pkgdir/usr/share/doc/libxkbcommon-x11/LICENSE"
-}
-sha256sums=('90bd7824742b9a6f52a6cf80e2cadd6f5349cf600a358d08260772615b89d19c')
