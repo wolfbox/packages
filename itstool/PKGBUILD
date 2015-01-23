@@ -1,0 +1,31 @@
+pkgname=itstool
+pkgver=2.0.2
+pkgrel=1
+pkgdesc="Tool for converting between ITS and PO translation files"
+arch=("x86_64")
+url="http://itstool.org"
+license=('GPL3')
+
+makdepends=('autotools')
+depends=('python2' 'libxml2')
+
+source=(http://files.itstool.org/itstool/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('bf909fb59b11a646681a8534d5700fec99be83bb2c57badf8c1844512227033a')
+
+prepare() {
+    cd ${pkgname}-${pkgver}
+    sed -i 's:| python:&2:' configure.ac
+    autoreconf -fi
+}
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr PYTHON=/usr/bin/python2
+	
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,26 @@
+pkgname=gtk-doc
+pkgver=1.21
+pkgrel=1
+pkgdesc="The GTK+ documentation generator"
+arch=("x86_64")
+url="http://www.gtk.org"
+license=('GPL2' 'FDL')
+
+makedepends=('python2' 'itstool')
+depends=('perl' 'libxml2')
+
+source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('5d934d012ee08edd1585544792efa80da271652587ba5b843d2cea8e8b80ee3e')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    export PYTHON=python2
+    ./configure --prefix=/usr \
+                --with-highlight=no
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make install DESTDIR="${pkgdir}"
+}
