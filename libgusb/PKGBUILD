@@ -1,0 +1,27 @@
+pkgname=libgusb
+pkgver=0.2.4
+pkgrel=1
+pkgdesc="GObject binding of libusb"
+arch=("x86_64")
+url="https://github.com/hughsie/libgusb"
+license=('LGPL2.1')
+
+makedepends=('gobject-introspection')
+depends=('glibc' 'libusb' 'glib2')
+
+source=(http://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('437966fb45e30b8e757b2c200daf5d4e7dd22bf5aa80e151e3b1807270d38083')
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --enable-vala
+    make
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make install DESTDIR="${pkgdir}"
+}

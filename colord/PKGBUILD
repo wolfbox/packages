@@ -1,0 +1,38 @@
+pkgname=colord
+pkgver=1.2.8
+pkgrel=1
+pkgdesc="A daemon for color management"
+arch=("x86_64")
+url="http://www.freedesktop.or/software/colord"
+license=('GPL2')
+install=colord.install
+
+depends=('lcms2' 'libgusb' 'polkit' 'dbus' 'sqlite3' 'glib2')
+
+source=(http://www.freedesktop.org/software/colord/releases/colord-${pkgver}.tar.xz)
+sha256sums=('97c3cfdd91c256f2d7a69ead1ae0c1b13f013b14b1b1b41bf1e1243771db4afc')
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --libexecdir=/usr/lib/${MULTIARCH} \
+                --with-daemon-user=colord \
+                --enable-vala \
+                --disable-sane \
+                --disable-udev \
+                --disable-systemd-login \
+                --disable-argyllcms-sensor \
+                --disable-bash-completion \
+                --disable-static
+    make
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make install DESTDIR="${pkgdir}"
+
+    mkdir -p "${pkgdir}"/var/lib/colord
+    chown -R 124:124 "${pkgdir}"/var/lib/colord
+}

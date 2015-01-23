@@ -1,0 +1,13 @@
+post_install() {
+    if ! getent passwd colord > /dev/null; then
+        useradd -r -U -u 124 -c "Color management daemon" -d /var/lib/colord -s /usr/bin/nologin colord
+    fi
+}
+
+post_upgrade() {
+    post_install
+}
+
+post_remove() {
+    userdel colord > /dev/null || true
+}
