@@ -1,0 +1,25 @@
+pkgname=doxygen
+pkgver=1.8.9.1
+pkgrel=1
+pkgdesc="A documentation generator for C++, C, Java, IDL, and PHP sources"
+arch=("x86_64")
+url="http://doxygen.org"
+license=('GPL')
+
+makedepends=('flex' 'python2')
+depends=('glibc' 'gcc-libs')
+
+source=(http://ftp.stack.nl/pub/users/dimitri/${pkgname}-${pkgver}.src.tar.gz)
+sha256sums=('d4ab6e28d4d45d8956cad17470aade3fbe2356e8f64b92167e738c1887feccec')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+
+    make install DESTDIR="${pkgdir}" MAN1DIR=share/man/man1
+}

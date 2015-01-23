@@ -6,6 +6,7 @@ arch=("x86_64")
 url="http://wayland.freedesktop.org"
 license=('MIT')
 
+makedepends=('doxygen')
 depends=('glibc' 'expat' 'libffi')
 
 source=(http://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz)
