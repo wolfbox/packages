@@ -1,5 +1,5 @@
 pkgname=vala
-_basever=0.26
+_basever=0.27
 pkgver=${_basever}.1
 pkgrel=1
 pkgdesc="The GObject programming language compiler."
@@ -11,14 +11,12 @@ makedepends=('libxslt')
 depends=('glib2' 'libffi')
 
 source=(http://download.gnome.org/sources/vala/${_basever}/vala-${pkgver}.tar.xz)
-sha256sums=('8407abb19ab3a58bbfc0d288abb47666ef81f76d0540258c03965e7545f59e6b')
+sha256sums=('0bce939c011c34478da840f869b3c24d02e8f1c92691c587c1fe289a5533cd77')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
-	            --libdir=/usr/lib/${MULTIARCH} \
-	            --mandir=/usr/man \
-	            --infodir=/usr/info
+	            --libdir=/usr/lib/${MULTIARCH}
 	make
 }
 
