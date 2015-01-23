@@ -1,0 +1,38 @@
+pkgname=gtk3
+pkgver=3.14.7
+pkgrel=1
+pkgdesc="The modern GTK+ widget toolkit"
+arch=('x86_64')
+url="http://www.gtk.org/"
+license=('LGPL2')
+
+makedepends=('python2' 'gobject-introspection')
+depends=('atk' 'at-spi2-atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 
+         'shared-mime-info' 'cairo' 'cups' 'gtk-update-icon-cache' 'colord' 'wayland' 'libxkbcommon')
+
+source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-$pkgver.tar.xz)
+sha256sums=('fb9914b04f218c1afb4820ea492f3c6ab6d6993cc6634ecade8303678d05a46e')
+
+build() {
+    cd gtk+-$pkgver
+
+    CXX=/bin/false ./configure --prefix=/usr \
+        --libdir=/usr/lib/${MULTIARCH} \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --enable-gtk2-dependency \
+        --enable-x11-backend \
+        --enable-broadway-backend \
+        --enable-wayland-backend \
+        --enable-colord
+
+    # https://bugzilla.gnome.org/show_bug.cgi?id=655517
+    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+    make
+}
+
+package() {
+    cd gtk+-$pkgver
+    make DESTDIR="$pkgdir" install
+}
