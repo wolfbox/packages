@@ -2,7 +2,7 @@
 # Derived from Arch Linux
 
 pkgbase=xorg-server
-pkgname=('xorg-server' 'xorg-server-xephyr' 'xorg-server-xdmx' 'xorg-server-xvfb' 'xorg-server-xnest' 'xorg-server-common' 'xorg-server-devel')
+pkgname=('xorg-server' 'xorg-server-xephyr' 'xorg-server-xdmx' 'xorg-server-xvfb' 'xorg-server-xnest' 'xorg-server-xwayland' 'xorg-server-common' 'xorg-server-devel')
 pkgver=1.16.3
 pkgrel=1
 arch=('x86_64')
@@ -13,7 +13,7 @@ makedepends=('pixman' 'libx11' 'mesa' 'xf86driproto' 'xcmiscproto' 'xtrans' 'big
              'resourceproto' 'xineramaproto' 'libxkbfile' 'libxfont' 'renderproto' 'libpciaccess' 'libxv'
              'xf86dgaproto' 'libxmu' 'libxrender' 'libxi' 'dmxproto' 'libxaw' 'libdmx' 'libxtst' 'libxres'
              'xorg-xkbcomp' 'xorg-util-macros' 'xorg-font-util' 'glproto' 'dri2proto' 'libgcrypt' 'libepoxy'
-             'xcb-util' 'xcb-util-image' 'xcb-util-wm' 'xcb-util-keysyms' 'dri3proto' 'libxshmfence') 
+             'xcb-util' 'xcb-util-image' 'xcb-util-wm' 'xcb-util-keysyms' 'dri3proto' 'libxshmfence' 'wayland')
 source=(${url}/releases/individual/xserver/${pkgbase}-${pkgver}.tar.bz2{,.sig}
         autoconfig-sis.patch
         nvidia-drm-outputclass.conf
@@ -53,7 +53,7 @@ build() {
       --enable-xorg \
       --enable-xephyr \
       --enable-glamor \
-      --disable-xwayland \
+      --enable-xwayland \
       --enable-glx-tls \
       --enable-kdrive \
       --enable-kdrive-evdev \
@@ -63,6 +63,8 @@ build() {
       --disable-systemd-logind \
       --enable-suid-wrapper \
       --disable-install-setuid \
+      --without-systemd-daemon \
+      --disable-systemd-login \
       --enable-record \
       --disable-xfbdev \
       --disable-xfake \
@@ -81,6 +83,7 @@ build() {
       -e 's/^XVFB_SUBDIRS =.*/XVFB_SUBDIRS =/' \
       -e 's/^XNEST_SUBDIRS =.*/XNEST_SUBDIRS = /' \
       -e 's/^KDRIVE_SUBDIRS =.*/KDRIVE_SUBDIRS =/' \
+      -e 's/^XWAYLAND_SUBDIRS =.*/XWAYLAND_SUBDIRS =/' \
       -i hw/Makefile
 }
 
@@ -172,6 +175,17 @@ package_xorg-server-xnest() {
 
   install -m755 -d "${pkgdir}/usr/share/doc/xorg-server-xnest"
   ln -sf ../xorg-server-common/COPYING "${pkgdir}/usr/share/doc/xorg-server-xnest/COPYING"
+}
+
+package_xorg-server-xwayland() {
+  pkgdesc="A server for running X11 clients under Wayland"
+  depends=(glibc mesa nettle libdrm pixman libxfont libxau libxshmfence libxdmcp libepoxy wayland xorg-server-common)
+
+  cd "${pkgbase}-${pkgver}/hw/xwayland"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/doc/xorg-server-xwayland"
+  ln -sf ../xorg-server-common/COPYING "${pkgdir}/usr/share/doc/xorg-server-xwayland/COPYING"
 }
 
 package_xorg-server-xdmx() {
