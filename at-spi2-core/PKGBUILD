@@ -1,0 +1,29 @@
+pkgname=at-spi2-core
+pkgver=2.14.1
+pkgrel=1
+pkgdesc="Protocol definitions and daemon for D-Bus at-spi"
+arch=('x86_64')
+url="http://www.gnome.org"
+license=('GPL2')
+
+makedepends=('gobject-introspection' 'python2')
+depends=('dbus' 'glib2' 'libxtst')
+
+source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.14/${pkgname}-$pkgver.tar.xz)
+sha256sums=('eef9660b14fdf0fb1f30d1be7c72d591fa7cbb87b00ca3a444425712f46ce657')
+
+build() {
+    cd ${pkgname}-$pkgver
+
+    ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --libdir=/usr/lib/${MULTIARCH} \
+        --libexecdir=/usr/lib/${MULTIARCH} \
+        --disable-xevie
+    make
+}
+
+package() {
+    cd ${pkgname}-$pkgver
+    make DESTDIR="$pkgdir" install
+}
