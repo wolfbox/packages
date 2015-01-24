@@ -1,8 +1,8 @@
 pkgbase=gcc
-pkgname=(gcc-libs gcc-go gcc-gfortran gcc)
+pkgname=(gcc-libs gcc)
 pkgver=4.9.2
 pkgrel=1
-pkgdesc="The GNU Compiler Collection."
+pkgdesc="The GNU Compiler Collection"
 arch=("x86_64")
 url="http://gcc.gnu.org"
 license=(GPLv3)
@@ -35,25 +35,38 @@ build() {
 
 	# GCC doesn't work well with our hardening options.
 	export CPPFLAGS=""
-	export CCFLAGS=""
-	export CXXFLAGS=""
+	export CCFLAGS="-O2"
+	export CXXFLAGS="-O2"
 
-	../gcc-${pkgver}/configure --prefix=/usr --mandir=/usr/man \
-				--libexecdir=/usr/lib/${MULTIARCH} --libdir=/usr/lib/${MULTIARCH} \
-				--infodir=/usr/info --enable-shared --enable-bootstrap \
+	../gcc-${pkgver}/configure --prefix=/usr \
+				--libexecdir=/usr/lib/${MULTIARCH} \
+				--libdir=/usr/lib/${MULTIARCH} \
+				--enable-shared \
+				--enable-bootstrap \
 				--enable-languages=c,c++,objc,go,fortran,lto \
-				--enable-threads=posix --enable-checking=release \
-				--enable-objc-gc --with-system-zlib \
-				--disable-libunwind-exceptions --enable-__cxa_atexit \
-				--enable-libssp --enable-lto --with-gnu-ld --verbose \
-				--disable-gtktest --disable-multilib --enable-multiarch \
-				--target=${CHOST} --build=${CHOST} --host=${CHOST}
+				--enable-threads=posix \
+				--enable-checking=release \
+				--enable-objc-gc \
+				--with-system-zlib \
+				--disable-libunwind-exceptions \
+				--enable-__cxa_atexit \
+				--enable-libssp \
+				--enable-vtable-verify \
+				--enable-lto \
+				--with-gnu-ld \
+				--verbose \
+				--disable-gtktest \
+				--disable-multilib \
+				--enable-multiarch \
+				--target=${CHOST} \
+				--build=${CHOST} \
+				--host=${CHOST}
 	make
 }
 
 # Packaging functions
 package_gcc-libs() {
-	pkgdesc="${pkgdesc} - Runtime libraries."
+	pkgdesc="${pkgdesc} - Runtime libraries"
 	depends=('glibc')
 	
 	# Set up our initial install tree
@@ -71,8 +84,8 @@ package_gcc-libs() {
 	mv "${srcdir}"/out/usr/lib/${MULTIARCH}/lib{asan,atomic,gcc_s,gfortran,gomp,itm,objc,quadmath,stdc++,tsan}.so* "${pkgdir}"/usr/lib/${MULTIARCH}
 
 	# Info files
-	mkdir -p "${pkgdir}"/usr/info
-	mv "${srcdir}"/out/usr/info/lib{gomp,itm,quadmath}.info* "${pkgdir}"/usr/info/
+	mkdir -p "${pkgdir}"/usr/share/info
+	mv "${srcdir}"/out/usr/share/info/lib{gomp,itm,quadmath}.info* "${pkgdir}"/usr/share/info/
 
 	# Locale	
 	mkdir -p "${pkgdir}"/usr/share/locale/de/LC_MESSAGES/
@@ -81,12 +94,11 @@ package_gcc-libs() {
 	mv "${srcdir}"/out/usr/share/locale/fr/LC_MESSAGES/libstdc++.mo "${pkgdir}"/usr/share/locale/fr/LC_MESSAGES/
 
 	# License
-	mkdir -p "${pkgdir}"/usr/doc/gcc-libs-${pkgver}
-	install -m644 "${srcdir}"/gcc-${pkgver}/COPYING.RUNTIME "${pkgdir}"/usr/doc/gcc-libs-${pkgver}
+	mkdir -p "${pkgdir}"/usr/share/doc/gcc-libs
+	install -m644 "${srcdir}"/gcc-${pkgver}/COPYING.RUNTIME "${pkgdir}"/usr/share/doc/gcc-libs
 }
 
 package_gcc() {
-	pkgdesc="${pkgdesc} - C and C++ frontends."
 	depends=('glibc' 'gcc-libs' 'binutils' 'libmpc')
 
 	mv "${srcdir}"/out/* "${pkgdir}"/
@@ -94,44 +106,5 @@ package_gcc() {
 	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/c89
 	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/c99
 	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/cc
-}
-
-package_gcc-gfortran() {
-	pkgdesc="${pkgdesc} - Fortran support."
-	depends=('gcc')
-
-	mkdir -p "${pkgdir}"/usr/bin
-	mv "${srcdir}"/out/usr/bin/*gfortran "${pkgdir}"/usr/bin/
-	ln "${pkgdir}"/usr/bin/gfortran "${pkgdir}"/usr/bin/f95
-
-	mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH}
-	mv "${srcdir}"/out/usr/lib/${MULTIARCH}/libgfortran.spec "${pkgdir}"/usr/lib/${MULTIARCH}
-
-	mkdir -p "${pkgdir}"/${_target_dir}
-	mv "${srcdir}"/out/${_target_dir}/finclude "${pkgdir}"/${_target_dir}/
-	mv "${srcdir}"/out/${_target_dir}/{f951,libgfortranbegin.a} "${pkgdir}"/${_target_dir}/
-
-	mkdir -p "${pkgdir}"/usr/info
-	mv "${srcdir}"/out/usr/info/gfortran.info* "${pkgdir}"/usr/info
-
-	mkdir -p "${pkgdir}"/usr/man/man1
-	mv "${srcdir}"/out/usr/man/man1/gfortran* "${pkgdir}"/usr/man/man1
-}
-
-package_gcc-go() {
-	pkgdesc="${pkgdesc} - Go support."
-	depends=('gcc')
-	
-	mkdir -p "${pkgdir}"/usr/bin
-	mv "${srcdir}"/out/usr/bin/*gccgo "${pkgdir}"/usr/bin
-	
-	mkdir -p "${pkgdir}"/${_target_dir}
-	mv "${srcdir}"/out/usr/lib/${MULTIARCH}/{libgo.so*,libgobegin.a,go} "${pkgdir}"/usr/lib/${MULTIARCH}
-	mv "${srcdir}"/out/${_target_dir}/go1 "${pkgdir}"/${_target_dir}/
-
-	mkdir -p "${pkgdir}"/usr/man/man1
-	mv "${srcdir}"/out/usr/man/man1/gccgo* "${pkgdir}"/usr/man/man1/
-
-	mkdir -p "${pkgdir}"/usr/info
-	mv "${srcdir}"/out/usr/info/gccgo* "${pkgdir}"/usr/info/
+	ln -s /usr/bin/gfortran "${pkgdir}"/usr/bin/f95
 }
