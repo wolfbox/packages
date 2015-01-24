@@ -8,14 +8,15 @@ pkgdesc="X.Org initialisation program "
 arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
-depends=('libx11' 'xorg-xauth')
-makedepends=('xorg-util-macros')
-optdepends=('xorg-twm' 'xterm')
 backup=('etc/skel/.xinitrc'
         'etc/skel/.xsession'
         'etc/X11/xinit/xserverrc'
         'etc/X11/xinit/xinitrc')
 options=(!emptydirs)
+
+makedepends=('xorg-util-macros')
+depends=('libx11' 'xorg-xauth' 'inetutils')
+optdepends=('xorg-twm' 'xterm')
 
 source=(${url}/releases/individual/app/xinit-${pkgver}.tar.bz2
         06_move_serverauthfile_into_tmp.diff

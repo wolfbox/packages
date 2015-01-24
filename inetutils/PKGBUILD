@@ -1,0 +1,45 @@
+pkgname=inetutils
+pkgver=1.9.2
+pkgrel=1
+pkgdesc="Networking utilities"
+arch=("x86_64")
+url="http://www.gnu.org/software/inetutils"
+license=('GPL3')
+install=inetutils.install
+
+depends=('glibc' 'libcap')
+
+source=(http://ftp.gnu.org/gnu/inetutils/${pkgname}-${pkgver}.tar.xz{,.sig})
+sha256sums=('e3783372540772bbadd6aa2c90f8a75511db4e7d40bbfa37ffdb1bc7a9697f3e'
+            'SKIP')
+validpgpkeys=('4FBD67621082C4C502448E3B180551BAD95A3C35') # Alfred M. Szmidt <ams@gnu.org>
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    ./configure --prefix=/usr \
+                --enable-hostname \
+                --disable-traceroute \
+                --without-wrap \
+                --without-pam \
+                --disable-rexec \
+                --disable-rexecd \
+                --disable-tftp \
+                --disable-tftpd \
+                --disable-logger \
+                --disable-syslogd \
+                --disable-inetd \
+                --disable-uucpd \
+                --disable-ifconfig \
+                --disable-ping \
+                --disable-ping6
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+
+    # We don't like setuid-root
+    chmod -s "${pkgdir}"/usr/bin/{rcp,rlogin,rsh}
+}
