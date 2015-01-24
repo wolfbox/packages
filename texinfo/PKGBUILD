@@ -1,0 +1,23 @@
+pkgname=texinfo
+pkgver=5.2
+pkgrel=1
+pkgdesc="The GNU documentation system"
+arch=('x86_64')
+url="http://www.gnu.or/software/texinfo"
+license=('GPL3')
+
+depends=('glibc' 'ncurses' 'zip' 'perl' 'sh')
+
+source=(ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('5471ef683a64588a7cfef46ef2bdd3fbcbca89d847e10832612293f105e44eda')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+}
