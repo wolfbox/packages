@@ -40,7 +40,7 @@ build() {
 package() {
     cd build
     DESTDIR="${pkgdir}" ninja install
-    install -dm755 -o sddm -g sddm "${pkgdir}"/var/lib/sddm
+    install -dm755 -o 114 -g 114 "${pkgdir}"/var/lib/sddm
     install -Dm644 ../sddm.conf "${pkgdir}"/etc/sddm.conf
     install -Dm755 ../sddm "${pkgdir}"/etc/rc.d/sddm
 }
