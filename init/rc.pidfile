@@ -1,7 +1,12 @@
 #!/usr/bin/sh
 
 . /etc/rc.d/rc.functions
-PIDFILE="/var/run/services/${NAME}.pid"
+PIDDIR="/run/services"
+PIDFILE="${PIDDIR}/${NAME}.pid"
+
+if [ ! -d "${PIDDIR}" ]; then
+    mkdir "${PIDDIR}"
+fi
 
 _user_option=''
 _respawn_option=''
@@ -41,7 +46,7 @@ service_status() {
 }
 
 service_start() {
-    if [ ! pre_start ]; then
+    if ! pre_start; then
         msg_error "Not starting"
         return 1
     fi

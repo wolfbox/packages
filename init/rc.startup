@@ -12,6 +12,9 @@ setup_sysfs() {
     if ! grep -wq "tmpfs /run tmpfs" /proc/mounts ; then
         /usr/bin/mount -v -n -t tmpfs tmpfs /run -o mode=0755
     fi
+
+    mkdir /dev/shm
+    mount -t tmpfs none /dev/shm
 }
 
 setup_cgroups() {
@@ -75,9 +78,9 @@ setup_misc() {
     fi
 
     # Create a fresh utmp file:
-    touch /var/run/utmp
-    chown root:utmp /var/run/utmp
-    chmod 664 /var/run/utmp
+    touch /run/utmp
+    chown root:utmp /run/utmp
+    chmod 664 /run/utmp
 
     # Update all the shared library links:
     if [ -x /usr/bin/ldconfig ]; then

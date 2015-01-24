@@ -2,6 +2,7 @@
 set -e
 
 CGROUP_ROOT=/sys/fs/cgroup
+AGENT=/usr/lib/init/agent.sh
 name=""
 command=""
 tasks_path=""
@@ -73,7 +74,7 @@ setup() {
     echo 0 > cpuset.cpus
     echo 0 > cpuset.mems
     echo 1 > notify_on_release
-    echo "/usr/lib/init/agent.sh" > ../release_agent
+    echo "${AGENT}" > ../release_agent
     echo 0 > tasks
 
     echo "Starting ${command}: handler pid $$"
