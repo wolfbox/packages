@@ -8,7 +8,7 @@ license=('GPL2')
 options=(!strip)
 
 install=linux.install
-makedepends=('gcc' 'lz4')
+makedepends=('gcc' 'lz4' 'bc')
 
 _grsecver=3.0-3.18.3-201501211944
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.{sign,xz}
