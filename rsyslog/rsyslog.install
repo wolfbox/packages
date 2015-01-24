@@ -1,9 +1,7 @@
 post_install() {
-	groupadd -r syslog 2>/dev/null || true
-	useradd -r -d /var/lib/rsyslog -G syslog rsyslog 2>/dev/null || true
-	chown -R rsyslog:rsyslog /var/lib/rsyslog
-	chown -R rsyslog:rsyslog /var/run/rsyslog
-	chown -R rsyslog:syslog /var/log/syslog
+    if ! getent passwd rsyslog > /dev/null; then
+        useradd -r -U -u 115 -c "rsyslog" -d /var/lib/rsyslog -s /usr/bin/nologin -G syslog rsyslog
+    fi
 }
 
 post_upgrade() {

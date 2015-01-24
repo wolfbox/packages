@@ -48,8 +48,10 @@ package() {
 	install -m 755 "${srcdir}"/rsyslog.filesystem "${pkgdir}"/etc/rc.d/events/
 	install -m 644 "${srcdir}"/rsyslog.conf "${pkgdir}"/etc/
 
-	mkdir -p "${pkgdir}"/var/run/rsyslog
+	mkdir -p "${pkgdir}"/run/rsyslog
 	mkdir -p "${pkgdir}"/var/lib/rsyslog
 	mkdir -p "${pkgdir}"/var/log/syslog
 	chmod 770 "${pkgdir}"/var/log/syslog
+	chown 115:115 "${pkgdir}"/{,var/lib/rsyslog,run/rsyslog}
+	chown 115:syslog "${pkgdir}"/var/log/syslog
 }
