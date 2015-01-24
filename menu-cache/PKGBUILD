@@ -1,0 +1,28 @@
+pkgname=menu-cache
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="FreeDesktop file caching system"
+arch=("x86_64")
+url="https://lxde.org"
+license=('GPL2')
+
+makedepends=('gtk-doc')
+depends=('glibc' 'libfm')
+
+# Yes, libfm is a dependency loop.  To bootstrap it, first compile libfm with the
+# --extra-only flag, then build this.
+
+source=(${pkgname}-${pkgver}::https://github.com/lxde/menu-cache/archive/${pkgver}.tar.gz)
+sha256sums=('d916fec13d052efbb754fa5f930e81ff881fa439702a146d75220cef01049ec0')
+
+build() {
+	cd ${pkgname}-${pkgver}
+	./autogen.sh
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+	cd ${pkgname}-${pkgver}
+	make install DESTDIR="${pkgdir}"
+}

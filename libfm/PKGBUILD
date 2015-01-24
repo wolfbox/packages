@@ -1,0 +1,29 @@
+pkgname=libfm
+pkgver=1.2.3
+pkgrel=1
+pkgdesc="Utility libraries for file managers"
+arch=("x86_64")
+url="http://lxde.org"
+license=('GPL2')
+
+makedepends=('gtk-doc' 'vala')
+depends=('glibc' 'udisks2' 'libexif' 'menu-cache')
+
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/lxde/libfm/archive/${pkgver}.tar.gz)
+sha256sums=('2f0cb25dc5a7c27373c7b6bde82727280033c54ba60513aa5c72cccea89ee3a2')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./autogen.sh
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --without-gtk \
+                --enable-udisks \
+                --enable-exif
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+	make install DESTDIR="${pkgdir}"
+}
