@@ -84,10 +84,6 @@ package_qt5() {
     install -D -m644 LGPL_EXCEPTION.txt \
       "${pkgdir}"/usr/share/doc/${pkgname}/LGPL_EXCEPTION.txt
 
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
-
     # Fix wrong qmake path in pri file
     #sed -i "s|${srcdir}/${_pkgfqn}/qtbase|/usr|" \
     #  "${pkgdir}"/usr/lib/qt/mkspecs/modules/qt_lib_bootstrap_private.pri
@@ -97,20 +93,12 @@ package_qt5() {
     msg "Installing qtconnectivity..."
     cd ${_pkgfqn}/qtconnectivity
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
 
   (
     msg "Installing qtdeclarative..."
     cd ${_pkgfqn}/qtdeclarative
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
 
     # Useful symlinks
     #for b in "${pkgdir}"/usr/lib/qt/bin/*; do
@@ -126,10 +114,6 @@ package_qt5() {
     cd ${_pkgfqn}/qtxmlpatterns
     make INSTALL_ROOT="${pkgdir}" install
 
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
-
     # Useful symlinks
     #for b in "${pkgdir}"/usr/lib/qt/bin/*; do
     #  ln -s /usr/lib/qt/bin/$(basename $b) "${pkgdir}"/usr/bin/$(basename $b)-qt5
@@ -140,10 +124,6 @@ package_qt5() {
     msg "Installing qtenginio..."
     cd ${_pkgfqn}/qtenginio
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
 
   (
@@ -162,20 +142,12 @@ package_qt5() {
     msg "Installing qtlocation..."
     cd ${_pkgfqn}/qtlocation
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
 
   (
     msg "Installing qtquick1..."
     cd ${_pkgfqn}/qtquick1
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
 
     # Useful symlinks
     #for b in "${pkgdir}"/usr/lib/qt/bin/*; do
@@ -193,60 +165,36 @@ package_qt5() {
     msg "Installing qtscript..."
     cd ${_pkgfqn}/qtscript
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
 
   (
     msg "Installing qtsensors..."
     cd ${_pkgfqn}/qtsensors
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
 
   (
     msg "Installing qtserialport..."
     cd ${_pkgfqn}/qtserialport
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
 
   (
     msg "Installing qtsvg..."
     cd ${_pkgfqn}/qtsvg
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
 
   (
     msg "Installing qtwebsockets..."
     cd ${_pkgfqn}/qtwebsockets
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
 
   (
     msg "Installing qtx11extras..."
     cd ${_pkgfqn}/qtx11extras
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
   
   (
@@ -259,26 +207,28 @@ package_qt5() {
     msg "Installing qtwebkit..."
     cd ${_pkgfqn}/qtwebkit
     make INSTALL_ROOT="${pkgdir}" install
+  )
 
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
+  (
+    msg "Installing qtwebchannel..."
+    cd ${_pkgfqn}/qtwebchannel
+    make INSTALL_ROOT="${pkgdir}" install
   )
 
   (
     msg "Installing qtmultimedia..."
     cd ${_pkgfqn}/qtmultimedia
     make INSTALL_ROOT="${pkgdir}" install
-
-    # Fix wrong path in prl files
-    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
-      -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
   )
+
+  # Fix wrong path in prl files
+  find "${pkgdir}/usr/lib" -type f -name '*.prl' \
+    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
 
   # Useful symlinks
   install -d "${pkgdir}"/usr/bin
   for b in "${pkgdir}"/usr/lib/qt/bin/*; do
-    ln -s /usr/lib/qt/bin/$(basename $b) "${pkgdir}"/usr/bin/$(basename $b)-qt5
+    ln -s /usr/lib/qt/bin/$(basename $b) "${pkgdir}"/usr/bin/$(basename $b)
   done
   
   # Move runtime libraries into qt5-libs
@@ -311,6 +261,6 @@ package_qt5-tools() {
     # Useful symlinks
     install -d "${pkgdir}"/usr/bin
     for b in "${pkgdir}"/usr/lib/qt/bin/*; do
-      ln -s /usr/lib/qt/bin/$(basename $b) "${pkgdir}"/usr/bin/$(basename $b)-qt5
+      ln -s /usr/lib/qt/bin/$(basename $b) "${pkgdir}"/usr/bin/$(basename $b)
     done
 }
