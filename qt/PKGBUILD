@@ -8,7 +8,7 @@ pkgdesc='A cross-platform application and UI framework'
 arch=('x86_64')
 url='http://qt-project.org/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-options=('staticlibs' '!strip') #libQt5PlatformSupport builds static only
+options=('!makeflags' 'staticlibs' '!strip') #libQt5PlatformSupport builds static only
 
 makedepends=('python2' 'perl' 'ruby')
 
@@ -17,6 +17,9 @@ source=("http://download.qt-project.org/official_releases/qt/5.4/${pkgver}/singl
 sha256sums=('b2d9df47b9fd2fcfa5ebd162e1373b7eddf4759e6ba148c4589f3d8b6628c39c')
 
 prepare() {
+  mkdir -p path
+  ln -sf /usr/bin/python2 path/python
+
   cd ${_pkgfqn}
 
   sed -i "s|-O2|${CXXFLAGS}|" qtbase/mkspecs/common/{g++,gcc}-base.conf
@@ -35,11 +38,10 @@ build() {
   export LD_LIBRARY_PATH="${QTDIR}"/qtbase/lib:"${QTDIR}"/qttools/lib:"${LD_LIBRARY_PATH}"
   export QT_PLUGIN_PATH="${QTDIR}"/qtbase/plugins
 
-  # GCC segfaults
-  # export CC=clang
-  # export CXX=clang++
+  export PATH="${srcdir}/path:${PATH}"
+  export PYTHON=python2
 
-  PYTHON=/usr/bin/python2 ./configure -confirm-license -opensource -v \
+  ./configure -confirm-license -opensource \
     -prefix /usr \
     -bindir /usr/lib/qt/bin \
     -libdir /usr/lib/${MULTIARCH} \
@@ -48,15 +50,17 @@ build() {
     -archdatadir /usr/lib/${MULTIARCH}/qt \
     -datadir /usr/share/qt \
     -sysconfdir /etc/xdg \
-    -examplesdir /usr/doc/qt/examples \
+    -examplesdir /usr/share/doc/qt/examples \
     -system-sqlite \
     -openssl-linked \
     -nomake examples \
     -no-rpath \
+    -no-journald \
     -optimized-qmake \
     -dbus-linked \
     -system-harfbuzz \
-    -reduce-relocations
+    -reduce-relocations \
+    -no-pch
 
   make
 
@@ -78,7 +82,7 @@ package_qt5() {
     make INSTALL_ROOT="${pkgdir}" install
 
     install -D -m644 LGPL_EXCEPTION.txt \
-      "${pkgdir}"/usr/share/licenses/${pkgname}/LGPL_EXCEPTION.txt
+      "${pkgdir}"/usr/share/doc/${pkgname}/LGPL_EXCEPTION.txt
 
     # Fix wrong path in prl files
     find "${pkgdir}/usr/lib" -type f -name '*.prl' \
@@ -114,7 +118,7 @@ package_qt5() {
     #done
 
     install -D -m644 LGPL_EXCEPTION.txt \
-      "${pkgdir}"/usr/share/licenses/${pkgname}/LGPL_EXCEPTION.txt
+      "${pkgdir}"/usr/share/doc/${pkgname}/LGPL_EXCEPTION.txt
   )
 
   (
