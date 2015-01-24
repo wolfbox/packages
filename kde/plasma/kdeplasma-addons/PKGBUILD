@@ -1,16 +1,16 @@
 pkgname=kdeplasma-addons
-pkgver=5.1.1
+pkgver=5.1.95
 pkgrel=1
-pkgdesc=''
+pkgdesc='Miscellaneous KDE Plasma applets'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('2ef81e86cd2f1362ec81de8ff793911383b8fc35ac3bf14b2bd5a0f1ba68d2ea')
+source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('b546a744637d23a1efa57cd6e073be95e5ed76297ee1c9a082d30d02cc787144')
 
 build() {
   mkdir -p build && cd build

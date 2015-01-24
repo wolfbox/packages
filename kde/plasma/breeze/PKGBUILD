@@ -1,16 +1,16 @@
 pkgname=breeze
-pkgver=5.1.2
+pkgver=5.1.95
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('LGPL3' 'GPL2')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5')
+depends=('glibc' 'gcc-libs' 'qt5' 'kdecoration')
 
-source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('8441ac35dfb50267505ed438ada81e82a16777775ecf32e32208c2f64576ebb0')
+source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('c9309d8e4484430808be1374b54dd328494c8b04ff7427a70e094bfc84251262')
 
 build() {
   mkdir -p build && cd build

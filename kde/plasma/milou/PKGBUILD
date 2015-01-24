@@ -1,22 +1,24 @@
 pkgname=milou
-pkgver=5.1.1
+pkgver=5.1.95
 pkgrel=1
-pkgdesc=''
+pkgdesc='A search applet for KDE Plasma'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('LGPL2.1' 'GPL2')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('0222508cb694b696b397210059f9d44bb0d3eb3264ffe3dd5723ffddfece3c2d')
+source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('f1707a1a2e5da7c5072fc32069e51e47a9f59c1866a0b42bab3ba7204337dd2d')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=on \
     -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
     -DCMAKE_BUILD_TYPE=Release
   make
 }

@@ -1,22 +1,22 @@
-pkgname=kmenuedit
+pkgname=libbluedevil
 pkgver=5.1.95
 pkgrel=1
-pkgdesc=''
+pkgdesc='KDE bluetooth management library'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
 source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('ce41c32e6650ca55255a8753d97d1e33a20df2d41d5ce8054ca63ed24a7ff38f')
+sha256sums=('1a72e5ee3def3e1abc652624993b6455c7d9a396a480b43046cbd7c58010468e')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DCMAKE_INSTALL_LIBDIR=lib/${MULTIARCH} \
     -DCMAKE_BUILD_TYPE=Release
   make
 }

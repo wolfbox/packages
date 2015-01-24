@@ -1,5 +1,5 @@
 pkgname=khelpcenter
-pkgver=5.1.1
+pkgver=5.1.95
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('39886f1dd91fef841a2801ff4d6e8effcc3b7e10f171c722f39d14e8d5757873')
+source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('1ce766fcc0f6170c21eb9ea06cfd0fe1b06ebd4056f2db5cd01b5d63bd2c45cc')
 
 build() {
   mkdir -p build && cd build

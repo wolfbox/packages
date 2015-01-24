@@ -1,16 +1,16 @@
-pkgname=kmenuedit
+pkgname=polkit-kde-agent-1
 pkgver=5.1.95
 pkgrel=1
-pkgdesc=''
+pkgdesc='KDE polkit authentication agent'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5')
+depends=('glibc' 'gcc-libs' 'qt5' 'polkit')
 
 source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('ce41c32e6650ca55255a8753d97d1e33a20df2d41d5ce8054ca63ed24a7ff38f')
+sha256sums=('8c99d40e6738fc7af6baab4c1ad3cd84d1d0b88be5bfb3604758e578b469077f')
 
 build() {
   mkdir -p build && cd build

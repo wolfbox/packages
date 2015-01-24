@@ -1,5 +1,5 @@
 pkgname=ksysguard
-pkgver=5.1.1
+pkgver=5.1.95
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'libksysguard')
 
-source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('8cfc488de043be60f1290fafca12c85276968ff421a9380a152ae75c55cf7b68')
+source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('f7411a66dbe393d9d59dab61a4db8490359f06df161ce6be70b2dd99d8e1d579')
 
 build() {
   mkdir -p build && cd build

@@ -1,7 +1,7 @@
 pkgname=kwin
-pkgver=5.1.2
+pkgver=5.1.95
 pkgrel=1
-pkgdesc=''
+pkgdesc='The KDE window manager'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
@@ -12,8 +12,8 @@ depends=('glibc' 'gcc-libs' 'libepoxy' 'mesa' 'qt5' 'kinit' 'kcrash'
          'kcodecs' 'kauth' 'kwidgetsaddons' 'kconfig' 'kactivities' 'libx11'
          'libxext' 'libxcursor' 'libice' 'libsm' 'libxxf86vm' 'libxcb')
 
-source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('4e427141956c0ee87ac86be995ecab6e00a53e52c65a469bbc9e45e5114f4bea')
+source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ca1f61613448c2ac6d675061ddd53df5ca3b3277ee1079d4f2327eb8bb14d7a1')
 
 build() {
   mkdir -p build && cd build

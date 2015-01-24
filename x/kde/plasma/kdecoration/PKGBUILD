@@ -1,22 +1,24 @@
-pkgname=kmenuedit
+pkgname=kdecoration
 pkgver=5.1.95
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
 source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('ce41c32e6650ca55255a8753d97d1e33a20df2d41d5ce8054ca63ed24a7ff38f')
+sha256sums=('b1a4e362158ccf02c4f55314f2f81427daa00816f21790be0af13e0bde0c6baa')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_USE_QT_SYS_PATHS=on \
     -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
     -DCMAKE_BUILD_TYPE=Release
   make
 }
