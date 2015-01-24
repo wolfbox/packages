@@ -17,7 +17,7 @@ sha256sums=('f1dc56238b132923c34db0e6714a003773afbe724b738f0f0ab18b0ff745b1fe'
             'SKIP'
             'cd35621e4cc56403e9bb6ca6b431c8ae04f8cb8c626df40953e6f0f1bb488f64'
             '54f7304b8857f39a06ae5da6854d395520da544e64b6bb6c492de648a7888380'
-            'f031661e325f70eee98c0893f975711fd1aeb5588bd0d792da033c1a71103b50'
+            '375226316c9a4de9e4e5baa43af8420a56d86668f52bcd55c14fb843d0a227a9'
             '8dc424c7e30f19bb1b4e1ee569629c6f515e858e958a66080fb8fc16b6aca213')
 validpgpkeys=('DA98F25C0871C49A59EAFF2C4DE8FF2A63C7CC90') # Simon McVittie <smcv@debian.org>
 
@@ -39,7 +39,7 @@ build() {
     ./configure --prefix=/usr \
                 --libdir=/usr/lib/${MULTIARCH} \
                 --sysconfdir=/etc \
-                --localstatedir=/ \
+                --localstatedir=/var \
                 --libexecdir=/usr/lib/${MULTIARCH} \
                 --docdir=/usr/share/doc/dbus-${pkgver} \
                 --disable-doxygen-docs \
@@ -63,7 +63,6 @@ package() {
     install -m755 "${srcdir}"/dbus.filesystem "${pkgdir}"/etc/rc.d/events/
     install -Dm755 "${srcdir}"/30-dbus "${pkgdir}"/etc/X11/xinit/xinitrc.d/30-dbus
 
-    # Fix up; we want to put everything in /run
-    rm -rf "${pkgdir}"/lib
-    chown messagebus:messagebus "${pkgdir}"/run/dbus
+    # Remove the socket path; it has to be created at runtime since /run is a tmpfs
+    rm -r "${pkgdir}"/var/run
 }

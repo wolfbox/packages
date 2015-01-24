@@ -4,6 +4,8 @@
 
 pre_start() {
     /usr/bin/dbus-uuidgen --ensure
+    mkdir /run/dbus
+    chown messagebus:messagebus /run/dbus
 }
 
 respawn
