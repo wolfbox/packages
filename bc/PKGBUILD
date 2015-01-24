@@ -1,0 +1,25 @@
+pkgname=bc
+pkgver=1.06.95
+pkgrel=1
+pkgdesc="An arbitrary precision calculator language"
+arch=('x86_64')
+url="http://www.gnu.org/software/bc"
+license=('GPL2')
+
+makedepends=('texinfo')
+depends=('glibc' 'readline')
+
+source=(ftp://alpha.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('7ee4abbcfac03d8a6e1a8a3440558a3d239d6b858585063e745c760957725ecc')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr \
+              --with-readline
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+}
