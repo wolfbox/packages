@@ -22,7 +22,9 @@ games:x:20:
 slocate:x:21:
 utmp:x:22:
 smmsp:x:25:smmsp
+tape:x:26:
 admin:x:28:
+syslog:x:30:
 rpc:x:32:
 shadow:x:43:
 ftp:x:50:
@@ -37,4 +39,3 @@ nobody:x:98:nobody
 nogroup:x:99:
 users:x:100:
 console:x:101:
-syslog:x:102:
