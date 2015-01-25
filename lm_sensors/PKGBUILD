@@ -1,0 +1,25 @@
+pkgname=lm_sensors
+pkgver=3.3.5
+pkgrel=1
+pkgdesc="A toolkit for hardware sensor monitoring"
+arch=("x86_64")
+url="https://www.lm-sensors.org"
+license=('GPLv2')
+backup=('etc/sensors3.conf')
+
+depends=('glibc')
+
+source=(http://dl.lm-sensors.org/lm-sensors/releases/${pkgname}-${pkgver}.tar.bz2{,.sig})
+sha256sums=('5dae6a665e1150159a93743c4ff1943a7efe02cd9d3bb12c4805e7d7adcf4fcf'
+            'SKIP')
+validpgpkeys=('90DFD6523C57373D81F63D19865688D038F02FC8') # Jean Delvare <khali@linux-fr.org>
+
+build() {
+	cd ${pkgname}-${pkgver}
+	make PREFIX=/usr
+}
+
+package() {
+	cd ${pkgname}-${pkgver}
+	make DESTDIR="${pkgdir}" PREFIX=/usr MANDIR=/usr/share/man SBINDIR=/usr/bin LIBDIR=/usr/lib/${MULTIARCH} install
+}
