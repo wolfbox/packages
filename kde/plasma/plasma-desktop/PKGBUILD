@@ -9,7 +9,7 @@ license=('GPL2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'knotifyconfig' 'knewstuff' 'krunner'
          'kdelibs4support' 'kemoticons' 'kitemmodels' 'kwin' 'plasma-workspace'
-         'systemsettings' 'fontconfig' 'pulseaudio' 'libcanberra')
+         'systemsettings' 'fontconfig' 'pulseaudio' 'libcanberra' 'libusb-compat')
 
 source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
 sha256sums=('85b9164084fa289412e6295e527e4a4af8beae581e09ce188a687039c12b689e')

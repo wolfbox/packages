@@ -1,15 +1,15 @@
-pkgname=libusb
-pkgver=1.0.19
+pkgname=libusb-compat
+pkgver=0.1.5
 pkgrel=1
-pkgdesc="Library for working with USB devices"
+pkgdesc="Library for working with USB devices - Compatibility layer for libusb-0.1 programs"
 arch=("x86_64")
 url="http://libusb.info"
 license=('LGPLv2.1')
 
 depends=('glibc')
 
-source=(http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-${pkgver}/libusb-${pkgver}.tar.bz2)
-sha256sums=('6c502c816002f90d4f76050a6429c3a7e0d84204222cbff2dce95dd773ba6840')
+source=(http://downloads.sourceforge.net/project/libusb/${pkgname}-0.1/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('404ef4b6b324be79ac1bfb3d839eac860fbc929e6acb1ef88793a6ea328bc55a')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
