@@ -12,8 +12,15 @@ depends=('glibc' 'gcc-libs' 'libepoxy' 'mesa' 'qt5' 'kinit' 'kcrash'
          'kcodecs' 'kauth' 'kwidgetsaddons' 'kconfig' 'kactivities' 'libx11'
          'libxext' 'libxcursor' 'libice' 'libsm' 'libxxf86vm' 'libxcb')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('ca1f61613448c2ac6d675061ddd53df5ca3b3277ee1079d4f2327eb8bb14d7a1')
+source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz
+        libinput-version-check.patch)
+sha256sums=('ca1f61613448c2ac6d675061ddd53df5ca3b3277ee1079d4f2327eb8bb14d7a1'
+            'eb27f84daf0404ad1248977d0313810365afbabd1daaba8764d693711c7b99a4')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ../libinput-version-check.patch
+}
 
 build() {
   mkdir -p build && cd build
