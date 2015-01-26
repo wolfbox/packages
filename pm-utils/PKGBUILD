@@ -1,0 +1,40 @@
+pkgname=pm-utils
+pkgver=1.4.1
+pkgrel=1
+pkgdesc="Power management utilities"
+arch=('x86_64')
+license=('GPL2')
+url="http://pm-utils.freedesktop.org"
+
+depends=('procps-ng' 'sh')
+
+_pmquirksver=20100619
+source=(http://pm-utils.freedesktop.org/releases/{${pkgname}-${pkgver}.tar.gz,pm-quirks-${_pmquirksver}.tar.gz}
+        12-fix-intel-audio-powersave-hook.patch)
+sha256sums=('8ed899032866d88b2933a1d34cc75e8ae42dcde20e1cc21836baaae3d4370c0b'
+            '14a50518928c27417cdc8bcbabb32b3d986931de105149aa248d8883e56c61ec'
+            '16d5355d1c5cff6316fef11768673434394582c67039c79e8b86aafe2d2f7797')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --sysconfdir=/etc \
+                --sbindir=/usr/bin \
+                --localstatedir=/var
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make install DESTDIR="${pkgdir}"
+
+    # Redundant with modern NetworkManager
+    rm "${pkgdir}"/usr/lib/pm-utils/sleep.d/55NetworkManager
+
+    # Remove hooks that Arch says cause hardware failure
+    rm "${pkgdir}"/usr/lib/pm-utils/power.d/{harddrive,disable_wol}
+
+    # Install quirks
+    mkdir "${pkgdir}"/usr/lib/pm-utils/video-quirks
+    install -m644 "${srcdir}"/video-quirks/*.quirkdb "${pkgdir}"/usr/lib/pm-utils/video-quirks
+}
