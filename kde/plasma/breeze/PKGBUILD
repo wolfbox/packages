@@ -1,7 +1,7 @@
 pkgname=breeze
 pkgver=5.1.95
 pkgrel=1
-pkgdesc=''
+pkgdesc='The Breeze theme set for KDE'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPL3' 'GPL2')

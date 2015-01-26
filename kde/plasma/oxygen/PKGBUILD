@@ -1,7 +1,7 @@
 pkgname=oxygen
-pkgver=5.1.2
+pkgver=5.1.95
 pkgrel=1
-pkgdesc=''
+pkgdesc='The KDE Oxygen theme'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('9e0a81bf5b18143995f628e68948ba4eaa879b9553d959d74ae0727c0ac39437')
+source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('68bb07d720f323875c4f19d66bf761231ca1b4dde95e11fe1ff628b07320d0a2')
 
 build() {
   mkdir -p build && cd build

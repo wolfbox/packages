@@ -1,7 +1,7 @@
 pkgname=plasma-workspace
 pkgver=5.1.95
 pkgrel=1
-pkgdesc=''
+pkgdesc='The KDE Plasma workspace environment'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
@@ -9,13 +9,14 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'kdewebkit' 'kidletime' 'baloo' 'kjsembed'
          'libksysguard' 'libkscreen' 'ktexteditor' 'xorg-xmessage' 'xorg-xsetroot'
-         'breeze' 'libdbusmenu-qt5')
+         'breeze' 'libdbusmenu-qt5' 'kwayland')
 
 source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
 sha256sums=('bee09af92e19bddd7f008c54347952d01b3381ad0c40b678202c77b58fa10ed0')
 
 build() {
   mkdir -p build && cd build
+
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=on \
