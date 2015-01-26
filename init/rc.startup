@@ -120,22 +120,29 @@ setup_root_filesystem() {
         FORCEFSCK="-f"
     fi
 
-    RETVAL=0
-    echo "Checking root filesystem:"
-    /usr/bin/fsck $FORCEFSCK -C -a /
-    RETVAL=$?
+    # Get the device containing /
+    local root_device="$(mount | grep -F 'on / ' | cut -d' ' -f1)"
 
-    if [ $RETVAL -gt 3 ]; then
-    # XXX Critical error requiring manual fixes
-    echo "Filesystem errors not repairable automatically."
-        PS1="(Repair filesystem) \#"; export PS1
-        sulogin
-    elif [ $RETVAL -ge 1 ]; then
-        echo "Filesystems repaired; rebooting"
-        /usr/bin/umount -a -r
-        /usr/bin/mount -n -o remount,ro /
-        sleep 2
-        reboot -f
+    if [ ! -z "${root_device}" ]; then
+        RETVAL=0
+        echo "Checking root filesystem:"
+        /usr/bin/fsck $FORCEFSCK -C -a "${root_device}"
+        RETVAL=$?
+
+        if [ $RETVAL -gt 3 ]; then
+        # XXX Critical error requiring manual fixes
+        echo "Filesystem errors not repairable automatically."
+            PS1="(Repair filesystem) \#"; export PS1
+            sulogin
+        elif [ $RETVAL -ge 1 ]; then
+            echo "Filesystems repaired; rebooting"
+            /usr/bin/umount -a -r
+            /usr/bin/mount -n -o remount,ro /
+            sleep 2
+            reboot -f
+        fi
+    else
+        echo "Couldn't find root device to fsck"
     fi
 
     # Remount the root filesystem in read-write mode
