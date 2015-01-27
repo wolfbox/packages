@@ -12,8 +12,21 @@ install=fontconfig.install
 
 depends=('expat' 'freetype2')
 
-source=(http://www.fontconfig.org/release/$pkgname-$pkgver.tar.bz2)
-sha256sums=('dc62447533bca844463a3c3fd4083b57c90f18a70506e7a9f4936b5a1e516a99')
+source=(http://www.fontconfig.org/release/$pkgname-$pkgver.tar.bz2
+        53-monospace-lcd-filter.conf
+        10-hinting-slight.conf
+        05_lcdfilterlegacy.patch)
+sha256sums=('dc62447533bca844463a3c3fd4083b57c90f18a70506e7a9f4936b5a1e516a99'
+            'f9e974f6836e840a5422fa94abfd2c8161e81cc3622e16103ce6b55438e18203'
+            'eb7671405ce39f245a8a4da9b4a9f89bfb90df73f9cddfa1b13901573800f80e'
+            'c7ecaed76bb1083d83c51649bb2edf1eed12ea07ef974a9bcfddcc84f4a4f560')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  # Some old software refers to a constant that no longer exists in fontconfig
+  patch -p1 -i ../05_lcdfilterlegacy.patch
+}
 
 build() {
   cd $pkgname-$pkgver
@@ -38,4 +51,18 @@ package() {
   cd $pkgname-$pkgver
   make DESTDIR="$pkgdir" install
   install -Dm644 COPYING "$pkgdir/usr/share/doc/$pkgname/COPYING"
+
+  # Don't match bitmap fonts
+  ln -s /etc/fonts/conf.avail/70-no-bitmaps.conf "${pkgdir}"/etc/fonts/conf.d/
+  
+  # Use the LCD filter
+  ln -s /etc/fonts/conf.avail/11-lcdfilter-default.conf "${pkgdir}"/etc/fonts/conf.d/
+  
+  # Use a grayscale LCD filter on small Monospace fonts
+  install -m644 "${srcdir}"/53-monospace-lcd-filter.conf "${pkgdir}"/etc/fonts/conf.avail/
+  ln -s /etc/fonts/conf.avail/53-monospace-lcd-filter.conf "${pkgdir}"/etc/fonts/conf.d/
+  
+  # Use slight hinting, because a bit of fuzziness is fine
+  install -m744 "${srcdir}"/10-hinting-slight.conf "${pkgdir}"/etc/fonts/conf.avail/
+  ln -s /etc/fonts/conf.avail/10-hinting-slight.conf "${pkgdir}"/etc/fonts/conf.d/
 }
