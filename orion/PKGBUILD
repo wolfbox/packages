@@ -1,0 +1,20 @@
+pkgname=gtk-orion
+pkgver=1.5
+pkgrel=1
+pkgdesc=""
+arch=('x86_64')
+url="https://github.com/shimmerproject/Orion"
+license=('GPL3')
+
+depends=('gtk-engine-murrine')
+
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/shimmerproject/Orion/archive/v${pkgver}.tar.gz)
+sha256sums=('04376db7d6f68e028e3d45460e697bf2ceb8ec27a753047766b3c01240bb7a44')
+
+package() {
+  cd Orion-${pkgver}
+
+  mkdir -p "${pkgdir}"/usr/share/themes/Orion
+  cp -R gtk-2.0 "${pkgdir}"/usr/share/themes/Orion/
+  cp -R gtk-3.0 "${pkgdir}"/usr/share/themes/Orion/
+}
