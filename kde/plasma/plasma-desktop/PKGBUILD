@@ -1,5 +1,5 @@
 pkgname=plasma-desktop
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='The KDE Plasma desktop environment'
 arch=('x86_64')
@@ -11,8 +11,17 @@ depends=('glibc' 'gcc-libs' 'qt5' 'knotifyconfig' 'knewstuff' 'krunner'
          'kdelibs4support' 'kemoticons' 'kitemmodels' 'kwin' 'plasma-workspace'
          'systemsettings' 'fontconfig' 'pulseaudio' 'libcanberra' 'libusb-compat')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('85b9164084fa289412e6295e527e4a4af8beae581e09ce188a687039c12b689e')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz
+        panel-layout.js
+        kicker-main.xml)
+sha256sums=('e922c64a1d5e78d83006a45a74dd3656266301b3e5a8e00a9fe85ca4fa3c8d76'
+            'SKIP'
+            'SKIP')
+
+prepare() {
+  install -m644 panel-layout.js ${pkgname}-${pkgver}/layout-templates/org.kde.plasma.desktop.defaultPanel/contents/layout.js
+  install -m644 kicker-main.xml ${pkgname}-${pkgver}/applets/kicker/package/contents/config/main.xml
+}
 
 build() {
   mkdir -p build && cd build
