@@ -1,5 +1,5 @@
 pkgname=plasma-nm
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='KDE Plasma NetworkManager applet'
 arch=('x86_64')
@@ -7,10 +7,10 @@ url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'networkmanager' 'libnm-qt')
+depends=('glibc' 'gcc-libs' 'qt5' 'networkmanager' 'networkmanager-qt')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('b6f66cac2cb0587f581485f8cfb8ca2385cb4e8ad22927fad4b7cc9e2a388feb')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('acb8a67df123e13b1fab6da2333fb1adc5e6ccd39a47183493c098873aae222f')
 
 build() {
   mkdir -p build && cd build
