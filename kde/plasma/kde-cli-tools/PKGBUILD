@@ -1,5 +1,5 @@
 pkgname=kde-cli-tools
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='KDE command line utilities'
 arch=('x86_64')
@@ -7,10 +7,11 @@ url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5')
+depends=('glibc' 'gcc-libs' 'qt5' 'libx11'
+         'kdesu' 'kdelibs4support' 'kwindowsystem' 'kcmutils' 'kiconthemes' 'ki18n')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('09869262bdad7c0ce372ff2d536759455b1a2ecbd027eb0505be343287f893b9')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('b812932fdbb17c88326db33669a45fb8f719819e144205ac073d6037518e2353')
 
 build() {
   mkdir -p build && cd build

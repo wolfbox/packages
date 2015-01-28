@@ -1,7 +1,7 @@
 pkgname=kmenuedit
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='KDE menu editor'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('ce41c32e6650ca55255a8753d97d1e33a20df2d41d5ce8054ca63ed24a7ff38f')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('f91fac46c56f425397a41b2090f9680995096b3de0cb3e59aee67a2a086ce7e1')
 
 build() {
   mkdir -p build && cd build

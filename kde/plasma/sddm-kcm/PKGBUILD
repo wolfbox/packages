@@ -1,5 +1,5 @@
 pkgname=sddm-kcm
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='The SDDM configuration module for KDE'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('GPL2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('systemsettings' 'sddm')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('9b6201b216af4c2a20ee35496cd323c635d9ac4a6c3818d1bbdb27c7e76b661f')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('26cd4babb2128f5d9634fba463aa8b3258622e310ed23ab818eaaecf1fc54437')
 
 build() {
   mkdir -p build && cd build

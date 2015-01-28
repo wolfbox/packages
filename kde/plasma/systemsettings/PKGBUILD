@@ -1,5 +1,5 @@
 pkgname=systemsettings
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='The KDE system settings manager'
 arch=('x86_64')
@@ -7,10 +7,12 @@ url='https://kde.org'
 license=('GPLv2')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5')
+depends=('glibc' 'gcc-libs' 'qt5'
+         'kcmutils' 'ki18n' 'kio' 'kservice' 'kiconthemes' 'kwindowsystem'
+         'kxmlgui' 'kdbusaddons' 'khtml' 'kdoctools' 'kitemviews')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('495483b4792056e914a58aa2991bb2cf284d88ecf46aac6f7a0dd6ac2b5f54c5')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('c02375f6965b2c56c97aee58f70ca84e4ccb5e04c10a852bcb69c93981fd617a')
 
 build() {
   mkdir -p build && cd build

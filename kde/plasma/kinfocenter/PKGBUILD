@@ -1,5 +1,5 @@
 pkgname=kinfocenter
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='KDE system information center'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('GPL2')
 makedepends=('cmake' 'extra-cmake-modules' 'mesa')
 depends=('glibc' 'gcc-libs' 'qt5' 'libgl' 'wayland' 'pciutils' 'libraw1394')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('d76fb6a9a40d27001870b8a45137b09528eb3b01f2182604c48034b7b1e6ea86')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('89a976d2eb6aef02db02db82d645eacbf710f6e0c3ad9fdd932455c309a62e94')
 
 build() {
   mkdir -p build && cd build

@@ -1,7 +1,7 @@
 pkgname=kio-extras
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='Extra KIO slaves for KDE'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'khtml')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('626e8002a43a900ab464908f0ef752ee7239c9e04566c83a49e2beb332740597')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('85efb1b54765b345d94d8d30a337241654aa1498d8e0a4682d76fdaecc85b8b0')
 
 build() {
   mkdir -p build && cd build

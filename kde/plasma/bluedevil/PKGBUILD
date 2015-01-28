@@ -1,5 +1,5 @@
 pkgname=bluedevil
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='KDE bluetooth management service'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'libbluedevil')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('07a3fae8db63905c51bd4d66abeb4c171230b9dec0e19b460014852c2b895b4a')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('d0be19745ce181d746fad38e451dd396ec5b9f3c9793fd837609db7425804305')
 
 build() {
   mkdir -p build && cd build

@@ -1,5 +1,5 @@
 pkgname=milou
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='A search applet for KDE Plasma'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPL2.1' 'GPL2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('f1707a1a2e5da7c5072fc32069e51e47a9f59c1866a0b42bab3ba7204337dd2d')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('45890196e819f7488c1f146e685fcbf26ab298bb2a526e16ec2aae2f0238ed09')
 
 build() {
   mkdir -p build && cd build

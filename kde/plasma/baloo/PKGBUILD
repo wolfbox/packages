@@ -1,5 +1,5 @@
 pkgname=baloo
-pkgver=5.5.95
+pkgver=5.6.0
 pkgrel=1
 pkgdesc='The KDE file indexing and search framework'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' "kfilemetadata=${pkgver}" 'xapian-core')
 
-source=(http://download.kde.org/unstable/plasma/5.1.95/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('8a831876d1c0600133b3c5af6519e0ea99deecdf107a64bd36f91966622d1cfa')
+source=(http://download.kde.org/stable/plasma/5.2.0/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('2418194eabe140c432434fdad0224bcc9d735c22960df116ff8668e4e6b5c0df')
 
 build() {
   mkdir -p build && cd build

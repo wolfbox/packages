@@ -1,7 +1,7 @@
 pkgname=oxygen-fonts
-pkgver=5.1.2
+pkgver=5.2.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='The Oxygen font set'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
@@ -9,7 +9,7 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules' 'fontforge')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('5cbceb97a73c7b20dc7bb3ad16bd67638e620a668614fd55d9b29bfbb433c015')
+sha256sums=('71d2d5781921829c0489ff4b3e1c0902ab40aa0ebb1e247dd55e59322df35080')
 
 build() {
   mkdir -p build && cd build

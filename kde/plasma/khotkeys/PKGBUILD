@@ -1,5 +1,5 @@
 pkgname=khotkeys
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='KDE hotkey management daemon'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('05e03bff80a8e805a7546a6f944aec310dc875044ac2f6cf7731f8297003988d')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('90cd4a8bf65be65329d78a68246a597a0c615877c3d993d30e587270de29e7a0')
 
 build() {
   mkdir -p build && cd build

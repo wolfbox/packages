@@ -1,5 +1,5 @@
 pkgname=kdecoration
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='KDE Plasma library for window decorations'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('b1a4e362158ccf02c4f55314f2f81427daa00816f21790be0af13e0bde0c6baa')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('a2549e56f1b5becf07785c7e11731501cb5ea7c30d5011865209838b550db18c')
 
 build() {
   mkdir -p build && cd build

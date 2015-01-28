@@ -1,5 +1,5 @@
 pkgname=libkscreen
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='KDE screen management library'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('e9a358faa123afcc4873aa989738d41ec28c006f8af1f4e4618c7da9c171057d')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('a3cc64e6b94fdee14fb19a1185007953b6701fbf1e8d5564c30e55b04ec4e5ec')
 
 build() {
   mkdir -p build && cd build

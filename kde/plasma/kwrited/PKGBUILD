@@ -1,5 +1,5 @@
 pkgname=kwrited
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('52a132c6c41a455ca3342b8ac48306bb763b7a9e0733f8f30b04bb07dfb0bf28')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('eb4b36d0f82bc6668ccee349ff70cf2743635a43efa68809c55338530fade165')
 
 build() {
   mkdir -p build && cd build

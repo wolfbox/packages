@@ -1,26 +1,25 @@
-pkgname=libnm-qt
-pkgver=5.1.2
+pkgname=ksshaskpass
+pkgver=5.2.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='The KDE SSH password agent'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('GPLv2')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'networkmanager')
+depends=('glibc' 'gcc-libs' 'qt5' 'ki18n' 'kwallet' 'kwidgetsaddons' 'kcoreaddons')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('75a395b886c2913f6cce86ef8f6451cc181734040f735433a002c7b2a8f4a3be')
+sha256sums=('7b2597fa8b5fa0a0ec08e006646a11dcdaa84cce0beca6dcef8d75fec2a2b29f')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=on \
-    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
     -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
+    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
     -DCMAKE_BUILD_TYPE=Release
-
   make
 }
 

@@ -1,5 +1,5 @@
 pkgname=polkit-kde-agent-1
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
 pkgdesc='KDE polkit authentication agent'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'polkit')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('8c99d40e6738fc7af6baab4c1ad3cd84d1d0b88be5bfb3604758e578b469077f')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('f818e67cb745b96587e911474103fc90694cb269be3703978067672aa3f86591')
 
 build() {
   mkdir -p build && cd build

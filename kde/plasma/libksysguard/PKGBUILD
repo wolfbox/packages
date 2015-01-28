@@ -1,7 +1,7 @@
 pkgname=libksysguard
-pkgver=5.1.95
+pkgver=5.2.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='Library backing the KDE system monitor functionality'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPLv2.1' 'GPLv2')
@@ -9,8 +9,8 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/unstable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('d1ff7ccdf57beb9b78aa0a5d35b6c99a256051bf8ac981981a0b0cf3054f8fd1')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('977f9baea4bfdc993382476bde9669a74b9491258127ef8bef57aaf641f2de49')
 
 build() {
   mkdir -p build && cd build

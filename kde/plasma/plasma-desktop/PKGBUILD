@@ -9,7 +9,7 @@ license=('GPL2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'knotifyconfig' 'knewstuff' 'krunner'
          'kdelibs4support' 'kemoticons' 'kitemmodels' 'kwin' 'plasma-workspace'
-         'systemsettings' 'fontconfig' 'pulseaudio' 'libcanberra' 'libusb-compat')
+         'systemsettings' 'fontconfig' 'pulseaudio' 'libcanberra' 'libusb-compat' 'kmenuedit')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz
         panel-layout.js
