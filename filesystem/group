@@ -21,6 +21,7 @@ cdrom:x:19:
 games:x:20:
 slocate:x:21:
 utmp:x:22:
+proc:x:24:
 smmsp:x:25:smmsp
 tape:x:26:
 admin:x:28:
