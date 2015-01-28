@@ -9,7 +9,7 @@ license=('LGPLv2.1' 'GPLv2')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'kdewebkit' 'kidletime' 'baloo' 'kjsembed'
          'libksysguard' 'libkscreen' 'ktexteditor' 'xorg-xmessage' 'xorg-xsetroot'
-         'breeze' 'libdbusmenu-qt5' 'kwayland' 'oxygen-fonts')
+         'breeze' 'libdbusmenu-qt5' 'kwayland' 'ttf-oxygen')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
 sha256sums=('43eece34f9ca2a15dc01aa4163db7d97aea09daab6b337cf4062ec2a4e8891eb')
