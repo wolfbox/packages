@@ -1,0 +1,46 @@
+diff -ru kinfocenter-5.2.0.orig/Modules/pci/kpci.cpp kinfocenter-5.2.0/Modules/pci/kpci.cpp
+--- kinfocenter-5.2.0.orig/Modules/pci/kpci.cpp	2015-01-22 08:52:21.000000000 -0500
++++ kinfocenter-5.2.0/Modules/pci/kpci.cpp	2015-01-28 01:14:37.380620956 -0500
+@@ -16,6 +16,7 @@
+ #include <pci/pci.h>
+ }
+ #include <unistd.h>
++#include <setjmp.h>
+ #include <sys/types.h> //getuid
+ #include <ctype.h> //isxdigit
+ #include <string.h> //memcpy
+@@ -718,6 +719,14 @@
+ 	return after;
+ }//addCaps
+ 
++
++// Error-handling callback for libpci
++static jmp_buf pci_err_jmp;
++static void pci_error_callback(char* msg, ...) {
++	printf("pciutils error: %s\n", msg);
++	longjmp(pci_err_jmp, 1);
++}
++
+ bool GetInfo_PCIUtils(QTreeWidget* tree) {
+ 
+ 	QStringList headers;
+@@ -730,11 +739,18 @@
+ 
+ 	//init libpci
+ 	PCIAccess=pci_alloc();
++	PCIAccess->error = pci_error_callback;
+ 	if (PCIAccess==NULL) {
+ 		return false;
+ 	}//if
+ 
+-	pci_init(PCIAccess);
++	if (setjmp(pci_err_jmp)) {
++		pci_init(PCIAccess);
++	}//if
++	else {
++		pci_cleanup(PCIAccess);
++		return 0;
++	}//else
+ 	pci_scan_bus(PCIAccess);
+ 
+ 	QTreeWidgetItem *DeviceName=NULL, *after=NULL;

@@ -9,8 +9,15 @@ license=('GPL2')
 makedepends=('cmake' 'extra-cmake-modules' 'mesa')
 depends=('glibc' 'gcc-libs' 'qt5' 'libgl' 'wayland' 'pciutils' 'libraw1394')
 
-source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('89a976d2eb6aef02db02db82d645eacbf710f6e0c3ad9fdd932455c309a62e94')
+source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz
+        fix-libpci-segfault.patch)
+sha256sums=('89a976d2eb6aef02db02db82d645eacbf710f6e0c3ad9fdd932455c309a62e94'
+            'e6666a521db60502ae630220c6a72e8fe1edbd585a6ed90df4902bae6265d21f')
+
+prepare() {
+    cd ${pkgname}-${pkgver}
+    patch -p1 -i ../fix-libpci-segfault.patch
+}
 
 build() {
   mkdir -p build && cd build
