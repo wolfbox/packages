@@ -1,0 +1,33 @@
+pkgname=ibus
+pkgver=1.5.9
+pkgrel=1
+pkgdesc="Intelligent Input Bus for Linux"
+url="http://ibus.googlecode.com"
+arch=('x86_64')
+license=('LGPL2.1')
+
+makedepends=('python' 'python2' 'vala' 'gobject-introspection' 'gtk2' 'gtk3' 'wayland')
+depends=('glibc' 'dconf' 'libnotify' 'glib2')
+
+source=(https://github.com/${pkgname}/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('ad41014aa3cb961854ee0aa392a5abd7452fab2c6b77d8ff2d736b7405b48ac6')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --libexecdir=/usr/lib/${MULTIARCH}/ibus \
+                --disable-gconf \
+                --disable-gtk-doc \
+                --enable-dconf \
+                --enable-wayland \
+                --enable-ui \
+                --enable-python-library \
+                --with-python=/usr/bin/python3
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
