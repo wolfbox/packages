@@ -1,24 +1,23 @@
 pkgname=patch
-pkgver=2.7.1
+pkgver=2.7.2
 pkgrel=1
-pkgdesc="A tool for applying patches."
+pkgdesc="A tool for applying patches"
 arch=("x86_64")
 url="http://savannah.gnu.org/projects/patch/"
-license=('GPLv3')
+license=('GPL3')
 
 depends=('glibc' 'attr')
 
 source=(http://ftpmirror.gnu.org/patch/patch-${pkgver}.tar.xz)
-sha256sums=(9124ba46db0abd873d0995c2ca880e81252676bb6c03e0a37dfc5f608a9b0ceb)
+sha256sums=('9a55c7e7415fa789acc45dbe78fe4675b1fa12c1ccb19f1513f69fca3f798a9a')
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr \
-	            --mandir=/usr/man
+	cd ${pkgname}-${pkgver}
+	./configure --prefix=/usr
 	make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 	make DESTDIR="${pkgdir}" install
 }
