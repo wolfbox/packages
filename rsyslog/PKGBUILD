@@ -1,5 +1,5 @@
 pkgname=rsyslog
-pkgver=8.6.0
+pkgver=8.7.0
 pkgrel=1
 pkgdesc="The rocket-fast syslog daemon."
 arch=("x86_64")
@@ -15,9 +15,9 @@ source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-${pkgver}.tar.gz"
         rsyslog.conf
         rsyslog
         rsyslog.filesystem)
-sha256sums=('759f836be460c794a7649f2b5b5ef8d423388ec599bf3b49f51fded3f8c02431'
+sha256sums=('c77125b67a623569c9bdca8136b9aac013f1c6fd82fb8595e3ea267e61800f9c'
             '5a0507d45ce53e0f8d16e639b729c067b977bf02718288664aff2b2bfba3fdff'
-            'cc97caeecf776764422d892da8d9961815755d1ec58d9b940d98f6a1c2852cef'
+            '9a415438e8ac719a489309d8cbb34f31171137cd02d3a843ed33959ee0c16868'
             '42421a551cfb9087471bb92675122c891618e20ce599d70b7b34768644bc959d')
 
 build() {
@@ -48,10 +48,9 @@ package() {
 	install -m 755 "${srcdir}"/rsyslog.filesystem "${pkgdir}"/etc/rc.d/events/
 	install -m 644 "${srcdir}"/rsyslog.conf "${pkgdir}"/etc/
 
-	mkdir -p "${pkgdir}"/run/rsyslog
 	mkdir -p "${pkgdir}"/var/lib/rsyslog
 	mkdir -p "${pkgdir}"/var/log/syslog
 	chmod 770 "${pkgdir}"/var/log/syslog
-	chown 115:115 "${pkgdir}"/{,var/lib/rsyslog,run/rsyslog}
+	chown 115:115 "${pkgdir}"/var/lib/rsyslog
 	chown 115:syslog "${pkgdir}"/var/log/syslog
 }

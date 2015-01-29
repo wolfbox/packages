@@ -2,6 +2,6 @@
 . /etc/rc.d/rc.pidfile
 
 respawn
-run /usr/bin/rsyslogd -n -i /var/run/rsyslog/rsyslog.pid
+run /usr/bin/rsyslogd -n -i /run/rsyslog.pid
 
 dispatch_command "${1}"
