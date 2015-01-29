@@ -72,12 +72,23 @@ service_start() {
 
 service_stop() {
     pre_stop
+
     kill_pidfile "${PIDFILE}"
+    local result=$?
+    if [ "${result}" -ne 0 ]; then
+        msg_error "Service failed to stop"
+        return 1
+    fi
 
     post_stop
     emit_event "stop_${NAME}"
 }
 
+service_restart() {
+    service_stop
+    service_start
+}
+
 service_help() {
-    echo "${NAME}: [ start | stop | status | help ]"
+    echo "${NAME}: [ start | restart | stop | status | help ]"
 }

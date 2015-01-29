@@ -40,13 +40,27 @@ dispatch_command() {
     return "${result}"
 }
 
+# Returns 0 if the service successfully ends
+# Returns 1 if the service did not shut down
+# Returns 2 if there was an error
 kill_pidfile() {
-    sig="${2}"
+    local sig="${2}"
     if [ -z "${sig}" ]; then
         sig=TERM
     fi
 
     kill -s "${sig}" $(cat "${1}")
+    inotifywait -qq -t 5 "${1}"
+    local result=$?
+    if [ "${result}" -eq 1 ]; then
+        if [ ! -f "${1}" ]; then
+            return 0
+        else
+            return 2
+        fi
+    elif [ "${result}" -eq 2 ]; then
+        return 1
+    fi
 }
 
 status_pidfile() {
