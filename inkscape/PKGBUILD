@@ -1,0 +1,27 @@
+pkgname=inkscape
+pkgver=0.91
+pkgrel=1
+pkgdesc="A professional vector graphics editor"
+arch=("x86_64")
+url="https://inkscape.org"
+license=('GPL2' 'LGPL2.1')
+
+makedepends=('boost')
+depends=('glibc' 'gc' 'cairo' 'glibmm' 'cairomm' 'gtkmm' 'lcms2' 'gsl' 'poppler')
+
+source=(${pkgname}-${pkgver}.tar.gz::https://inkscape.org/en/gallery/item/3854/download/)
+sha256sums=('2ca3cfbc8db53e4a4f20650bf50c7ce692a88dcbf41ebc0c92cd24e46500db20')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --enable-lcms
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make install DESTDIR="${pkgdir}"
+}
