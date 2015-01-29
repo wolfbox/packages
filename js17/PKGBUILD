@@ -1,0 +1,35 @@
+pkgname=js17
+pkgver=17.0.0
+pkgrel=1
+pkgdesc="JavaScript interpreter and libraries"
+arch=('x86_64')
+url="https://developer.mozilla.org/En/SpiderMonkey/17"
+license=('MPL')
+
+makedepends=('python2' 'zip' 'libffi')
+depends=('nspr' 'gcc-libs' 'readline')
+
+source=(http://ftp.mozilla.org/pub/mozilla.org/js/mozjs$pkgver.tar.gz)
+sha256sums=('321e964fe9386785d3bf80870640f2fa1c683e32fe988eeb201b04471c172fba')
+
+build() {
+    unset CPPFLAGS
+    cd mozjs$pkgver/js/src
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --with-system-nspr \
+                --with-system-ffi \
+                --enable-readline \
+                --enable-threadsafe
+    make
+}
+
+check() {
+    cd mozjs$pkgver/js/src
+    make check
+}
+
+package() {
+    cd mozjs$pkgver/js/src
+    make DESTDIR="$pkgdir" install
+}
