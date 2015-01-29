@@ -1,17 +1,19 @@
 pkgname=clamav
-pkgver=0.98.5
+pkgver=0.98.6
 pkgrel=1
 pkgdesc="A malware detection tool"
 arch=("x86_64")
 url="http://www.clamav.net"
-license=('GPLv2' 'LGPLv2.1')
+license=('GPL2' 'LGPL2.1')
 install=clamav.install
 backup=('etc/freshclam.conf')
 
 depends=('gcc-libs' 'glibc' 'zlib' 'bzip2' 'openssl' 'curl' 'xz' 'libxml2')
 
-source=("http://downloads.sourceforge.net/project/clamav/clamav/${pkgver}/clamav-${pkgver}.tar.gz")
-sha256sums=('9c2f37d5fa9033936468237f6f4b29289f30791caa84765ef510acb56c8daa4d')
+source=(http://downloads.sourceforge.net/project/clamav/clamav/${pkgver}/clamav-${pkgver}.tar.gz{,.sig})
+sha256sums=('6591245d55445a2ddcc1700964c33b8bf62fe20c75bd9c7746f4fe0735502951'
+            'SKIP')
+validpgpkeys=('B964E6D7BC7D7C82CCB8D45840B8EA2364221D53') # Sourcefire VRT (Sourcefire VRT GPG Key) <research@sourcefire.com>
 
 build() {
 	cd "${srcdir}"/${pkgname}-${pkgver}
@@ -25,7 +27,6 @@ build() {
 	            --sysconfdir=/etc \
 	            --libdir=/usr/lib/${MULTIARCH} \
 	            --sysconfdir=/etc \
-	            --mandir=/usr/man \
 	            --enable-llvm \
 	            --with-dbdir=/var/lib/clamav \
 	            --build=${CHOST}
@@ -36,7 +37,7 @@ package() {
 	cd "${srcdir}"/${pkgname}-${pkgver}
 	make install DESTDIR="${pkgdir}"
 	
-	mkdir -p "${pkgdir}"/var/lib/clamav
+	install -dm770 -o64 -g64 "${pkgdir}"/var/lib/clamav
 	( cd "${pkgdir}"/etc
 	  mv freshclam.conf.sample freshclam.conf )
 }

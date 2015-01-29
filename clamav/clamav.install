@@ -1,9 +1,11 @@
 post_install() {
-	useradd -Ur clamav -s /usr/bin/false -c "Clam AntiVirus" -d /dev/null 2>/dev/null || true	
-	chown -R clamav:clamav /var/lib/clamav
+    if ! getent passwd clamav > /dev/null; then
+        groupadd --system -g 64 clamav
+        useradd -r -u 64 -g clamav -c "ClamAV Anti-Virus" -d /var/lib/clamav -s /usr/bin/nologin clamav
+    fi
 }
 
 post_remove() {
-	userdel clamav
-	rm -rf /var/lib/clamav
+    userdel clamav > /dev/null || true
+    rm -rf /var/lib/clamav
 }
