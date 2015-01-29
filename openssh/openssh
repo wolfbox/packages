@@ -3,15 +3,13 @@
 . /etc/rc.d/rc.functions
 
 service_start() {
-	/usr/bin/dbus-uuidgen --ensure
-	daemon -u messagebus \
-	       -p /var/run/openssh.pid \
+	daemon -p /var/run/openssh.pid \
 	       -r \
 	       /usr/bin/sshd -D
 }
 
 service_stop() {
-    kill_pidfile /var/run/openssh.pid
+    stop_pidfile /var/run/openssh.pid
 }
 
 service_status() {

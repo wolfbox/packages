@@ -17,7 +17,7 @@ source=(https://download.gnome.org/sources/NetworkManager/1.0/NetworkManager-${p
         networkmanager.start_dbus)
 sha256sums=('3a66afec670c975edd9832e620b725a5f16ed267a1b9e1b2d51ef27250d85947'
             'ac30cf5d6f795a4a85f33aefc351f74b1d21d7a9856878e73f9c69930f326fe8'
-            '721da6306c687a95d5ae697ce65cea8057d74c1854834e1c1af76d7cd42d0984'
+            '73bbaeeede33a5b62a11a4e55ac978f86e0b0209295df5b97e9d472d40e81d1e'
             'b6a0d94d494e86cd51dc6ba136911d7c1b01e54c9e0e24bc816f54ef644d3114')
 
 build() {
@@ -37,6 +37,8 @@ build() {
 	            --with-dhclient=/usr/bin/dhclient \
 	            --with-crypto=nss \
 	            --without-modem-manager-1 \
+	            --disable-ppp \
+	            --with-session-tracking=consolekit \
 	            --enable-polkit=yes
 	make
 }

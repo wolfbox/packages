@@ -14,7 +14,7 @@ service_start() {
 }
 
 service_stop() {
-    kill_pidfile "${PIDFILE}"
+    stop_pidfile "${PIDFILE}"
 }
 
 service_status() {

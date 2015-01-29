@@ -10,7 +10,7 @@ service_start() {
 }
 
 service_stop() {
-    kill_pidfile /var/run/mongodb.pid
+    stop_pidfile /var/run/mongodb.pid
 }
 
 service_status() {

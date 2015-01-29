@@ -46,6 +46,11 @@ service_status() {
 }
 
 service_start() {
+    if [ -f "${PIDFILE}" ]; then
+        msg_error "Already running"
+        return 0
+    fi
+
     if ! pre_start; then
         msg_error "Not starting"
         return 1
@@ -73,7 +78,7 @@ service_start() {
 service_stop() {
     pre_stop
 
-    kill_pidfile "${PIDFILE}"
+    stop_pidfile "${PIDFILE}"
     local result=$?
     if [ "${result}" -ne 0 ]; then
         msg_error "Service failed to stop"

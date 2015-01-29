@@ -43,7 +43,7 @@ dispatch_command() {
 # Returns 0 if the service successfully ends
 # Returns 1 if the service did not shut down
 # Returns 2 if there was an error
-kill_pidfile() {
+stop_pidfile() {
     local sig="${2}"
     if [ -z "${sig}" ]; then
         sig=TERM

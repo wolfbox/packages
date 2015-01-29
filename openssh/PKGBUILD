@@ -14,7 +14,7 @@ source=(ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar
         openssh)
 sha256sums=('b2f8394eae858dabbdef7dac10b99aec00c95462753e80342e530bbb6f725507'
             'SKIP'
-            '552433794faf34a817b1f25f3a6360fba30a72ebdb6555ea1b47dd19a45021eb')
+            'SKIP')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"

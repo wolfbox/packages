@@ -1,4 +1,8 @@
 post_install() {
-    groupadd -r opensshd
-    useradd -r opensshd -g opensshd -s /bin/false
+    groupadd -r sshd
+    useradd -r -g sshd -s /bin/nologin sshd
+}
+
+post_remove() {
+    userdel sshd
 }
