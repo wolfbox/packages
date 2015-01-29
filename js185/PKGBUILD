@@ -1,7 +1,7 @@
 pkgname=js185
 pkgver=1.0.0
 pkgrel=1
-pkgdesc="Legacy JavaScript interpreter."
+pkgdesc="Legacy JavaScript interpreter"
 arch=("x86_64")
 url="https://developer.mozilla.org/En/SpiderMonkey/1.8.5"
 license=('MPL')
@@ -28,5 +28,5 @@ package() {
 	# Fix symlinks
 	( cd "${pkgdir}"/usr/lib/${MULTIARCH}
 	  ln -sf libmozjs185.so.1.0.0 libmozjs185.so.1.0
-	  ln -sf libmozjs185.so.1.0 libmozjs1.8.5.so )
+	  ln -sf libmozjs185.so.1.0 libmozjs185.so )
 }
