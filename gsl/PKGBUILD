@@ -1,0 +1,31 @@
+pkgname=gsl
+pkgver=1.16
+pkgrel=1
+pkgdesc="The GNU Scientific Library (GSL) is a modern numerical library for C and C++ programmers"
+url="http://www.gnu.org/software/gsl/gsl.html"
+license=('GPL3')
+arch=('x86_64')
+
+depends=('glibc' 'bash')
+
+source=("http://ftp.gnu.org/gnu/gsl/$pkgname-$pkgver.tar.gz")
+sha256sums=('73bc2f51b90d2a780e6d266d43e487b3dbd78945dd0b04b14ca5980fe28d2f53')
+
+build() {
+    unset LDFLAGS
+
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+check() {
+    cd ${pkgname}-${pkgver}
+    make check
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}

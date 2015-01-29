@@ -1,0 +1,27 @@
+pkgname=libsigc++
+pkgver=2.4.0
+pkgrel=1
+pkgdesc="Libsigc++ implements a C++ callback system for use in widget libraries"
+arch=('x86_64')
+license=('LGPL2.1')
+url="http://libsigc.sourceforge.net/"
+options=('!emptydirs')
+
+makedepends=('gcc-libs')
+depends=('gcc-libs')
+
+source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/${pkgver:0:3}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('7593d5fa9187bbad7c6868dce375ce3079a805f3f1e74236143bceb15a37cd30')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
+    make DESTDIR="${pkgdir}" install
+}

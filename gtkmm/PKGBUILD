@@ -1,0 +1,28 @@
+pkgname=gtkmm
+pkgver=2.24.4
+pkgrel=1
+pkgdesc="C++ bindings for gtk2"
+arch=('x86_64')
+url="http://www.gtkmm.org/"
+license=('LGPL2.1')
+options=('!emptydirs')
+
+depends=('gtk2' 'pangomm' 'atkmm')
+
+source=(http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/2.24/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('443a2ff3fcb42a915609f1779000390c640a6d7fd19ad8816e6161053696f5ee')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+
+    sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
+
+    make DESTDIR="${pkgdir}" install
+}

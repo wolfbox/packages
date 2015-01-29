@@ -1,0 +1,26 @@
+pkgname=cairomm
+pkgver=1.10.0
+pkgrel=1
+pkgdesc="C++ bindings to Cairo vector graphics library"
+arch=('x86_64')
+url="http://www.cairographics.org"
+license=('LGPL' 'MPL')
+options=('!emptydirs')
+
+makedepends=('pkg-config')
+depends=('cairo' 'libsigc++')
+
+source=(http://www.cairographics.org/releases/${pkgname}-${pkgver}.tar.gz)
+sha256sums=('068d96c43eae7b0a3d98648cbfc6fbd16acc385858e9ba6d37b5a47e4dba398f')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
