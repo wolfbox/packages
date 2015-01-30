@@ -1,0 +1,51 @@
+diff -r 9aac1cc64794 js/src/jsgcchunk.cpp
+--- a/js/src/jsgcchunk.cpp	Mon Feb 28 11:32:05 2011 -0500
++++ b/js/src/jsgcchunk.cpp	Wed Mar 02 14:54:48 2011 +0000
+@@ -390,20 +390,47 @@ AllocGCChunk()
+              * correct size, within the over-sized mapping.
+              */
+             p = MapPages(NULL, GC_CHUNK_SIZE * 2);
+             if (!p)
+                 return 0;
+             UnmapPages(p, GC_CHUNK_SIZE * 2);
+             p = MapPages(FindChunkStart(p), GC_CHUNK_SIZE);
+ 
++#if !(defined(XP_WIN) || defined(XP_OS2) || defined(XP_MACOSX) || defined(DARWIN))
++            /*
++             * Failure here may indicate a race with another thread,
++             * or may indicate kernel security features that change the
++             * return value of mmap. Fall back to a slower allocation
++             * approach. (This violates the 1:1 mapping mentioned above so we
++             * don't try this on Windows or other non-mmap-based platforms.)
++             */
++            if (!p) {
++                p = MapPages(NULL, GC_CHUNK_SIZE * 2);
++                if (!p)
++                    return NULL;
++                void* start = FindChunkStart(p);
++                ptrdiff_t offset = (char*)start - (char*)p;
++
++                if (offset != 0)
++                {
++                    /* Remove leading space. */
++                    UnmapPages(p, offset);
++                    p = start;
++                }
++
++                /* Remove trailing space. */
++                UnmapPages((char*)start + GC_CHUNK_SIZE, GC_CHUNK_SIZE - offset);
++            }
++#else
+             /*
+              * Failure here indicates a race with another thread, so
+              * try again.
+              */
++#endif
+         }
+     }
+ #endif /* !JS_GC_HAS_MAP_ALIGN */
+ 
+     JS_ASSERT(!(reinterpret_cast<jsuword>(p) & GC_CHUNK_MASK));
+     return p;
+ }
+ 
