@@ -5,7 +5,7 @@
 pkgname=zip
 pkgver=3.0
 _pkgver=${pkgver/./}
-pkgrel=4
+pkgrel=1
 pkgdesc='Compressor/archiver for creating and modifying zipfiles'
 url='http://www.info-zip.org/Zip.html'
 arch=('x86_64')
@@ -16,7 +16,6 @@ depends=('bzip2')
 
 source=("http://downloads.sourceforge.net/infozip/${pkgname}${_pkgver}.tar.gz")
 sha256sums=('f0e8bb1f9b7eb0b01285495a2699df3a4b766784c1765a8f1aeedf63c0806369')
-
 
 build() {
 	cd "${srcdir}/${pkgname}${_pkgver}"
