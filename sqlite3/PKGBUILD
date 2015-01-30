@@ -1,29 +1,30 @@
 pkgname=sqlite3
-pkgver=3.8.7.4
-_amalver=3080704
+pkgver=3.8.8.2
+_amalver=3080802
 pkgrel=1
-pkgdesc="A lightweight embedded SQL database engine."
+pkgdesc="A lightweight embedded SQL database engine"
 arch=("x86_64")
 url="http://www.sqlite.org"
 license=('custom')
 
 depends=('glibc' 'ncurses' 'readline')
+provides=("sqlite=${pkgver}")
 
-source=(http://www.sqlite.org/2014/sqlite-autoconf-${_amalver}.tar.gz)
-sha256sums=('86370f139405fdfe03334fd618171a74e50f589f17ccbe5933361ed1f58359ec')
+source=(http://www.sqlite.org/2015/sqlite-autoconf-${_amalver}.tar.gz)
+sha256sums=('aaa31e961963ff6d34c253c0464e667446d7674f8e375b62a3d66aa5dea26c2d')
 
 build() {
-	cd "${srcdir}/sqlite-autoconf-${_amalver}"
+	cd sqlite-autoconf-${_amalver}
 	
 	export CFLAGS="${CFLAGS} -DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_SECURE_DELETE=1"
 	
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-	            --localstatedir=/var --mandir=/usr/man --enable-threadsafe \
+	            --localstatedir=/var --enable-threadsafe \
 	            --enable-static=no
 	make
 }
 
 package() {
-	cd "${srcdir}/sqlite-autoconf-${_amalver}"
+	cd sqlite-autoconf-${_amalver}
 	make install DESTDIR="${pkgdir}"
 }
