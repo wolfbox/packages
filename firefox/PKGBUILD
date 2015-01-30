@@ -1,7 +1,7 @@
 # Derived from Arch Linux
 
 pkgname=firefox
-pkgver=35.0
+pkgver=35.0.1
 pkgrel=1
 pkgdesc="The fast and secure web browser from Mozilla"
 arch=('x86_64')
@@ -22,7 +22,7 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
 source=(https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.bz2{,.asc}
         mozconfig.in firefox.desktop firefox-install-dir.patch vendor.js rhbz-966424.patch
         firefox-fixed-loading-icon.png)
-sha256sums=('bedeb5bbd8b49e5b286497ef7732542c6e7441088fd8cd577d7ca8af4c871e81'
+sha256sums=('c92b34e08e39e2d482a61194e79255478331a54bf86bf144dc38f3d4bfbc507a'
             'SKIP'
             '42e1f3718fafe32e0d9ae04fca360ce17bf046e2a9cd8748fb5b51bc69e03e02'
             'd1980760155fa1e2da773727fa5393f2f106d56dcfbe7131856722eef22fc008'
