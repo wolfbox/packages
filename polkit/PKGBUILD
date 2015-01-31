@@ -36,12 +36,7 @@ build() {
 	make
 }
 
-check() {
-	cd ${pkgname}-${pkgver}
-	make check
-}
-
 package() {
-	( cd ${pkgname}-${pkgver}
-	  make DESTDIR="${pkgdir}" install )
+	cd ${pkgname}-${pkgver}
+	make DESTDIR="${pkgdir}" install
 }

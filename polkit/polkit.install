@@ -1,9 +1,14 @@
 post_install() {
-	id polkitd &> /dev/null || \
-		useradd -r -U -c "Policy Kit Daemon" -d / -s /usr/bin/false polkitd
-    passwd -l polkitd &>/dev/null
+    if ! getent passwd polkitd > /dev/null; then
+        groupadd --system -g 102 polkitd
+        useradd -r -u 102 -g polkitd -c "Policy Kit Daemon" -d / -s /usr/bin/nologin polkitd
+    fi
 }
 
 post_upgrade() {
     post_install
+}
+
+post_remove()  {
+    userdel polkitd
 }
