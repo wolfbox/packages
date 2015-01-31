@@ -1,5 +1,5 @@
 pkgname=tzdata
-pkgver=2014j
+pkgver=2015a
 pkgrel=1
 pkgdesc="Timezone information database."
 arch=(x86_64)
@@ -10,8 +10,8 @@ options=('!emptydirs')
 
 source=(http://www.iana.org/time-zones/repository/releases/tzdata${pkgver}.tar.gz
 		http://www.iana.org/time-zones/repository/releases/tzcode${pkgver}.tar.gz)
-sha256sums=('a2d870320694d40535df822ac8074dc629a90e92abafa5d3373314f78ddc0e0d'
-            '7fd46125464856309fc81fe85a67a61de862b8ab884ce8ca82051f5fa308ede2')
+sha256sums=('c52490917d00a8e7fc9b5f0b1b65ef6ec76d612b5b20c81bf86a04147af18e4c'
+            '885bab11f286852f34030d7a86ede7d4126319ca74b8ee22be8ca7c17d72dd19')
 
 timezones=('africa' 'antarctica' 'asia' 'australasia' 'europe' 'northamerica' \
            'southamerica' 'pacificnew' 'etcetera' 'backward' 'systemv' \
