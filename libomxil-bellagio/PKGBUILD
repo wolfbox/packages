@@ -4,7 +4,7 @@ pkgrel=1
 pkgdesc="An implementation of the OpenMAX Integration Layer API"
 arch=('x86_64')
 url="http://omxil.sourceforge.net"
-license=('LGPL')
+license=('LGPL2.1')
 
 depends=('glibc')
 
@@ -27,8 +27,7 @@ build() {
   ./configure --prefix=/usr \
               --libdir=/usr/lib/${MULTIARCH} \
               --disable-static \
-              --docdir=/usr/doc/${pkgname}-${pkgver} \
-              --mandir=/usr/man/
+              --docdir=/usr/share/doc/${pkgname}
   make
 }
 
