@@ -1,28 +1,28 @@
 pkgname=iproute2
-pkgver=3.17.0
+pkgver=3.18.0
 pkgrel=1
-pkgdesc="IP routing utilities."
+pkgdesc="IP routing utilities"
 arch=("x86_64")
 url="http://www.linuxfoundation.org/collaborate/workgroups/networking/iproute2"
-license=('GPLv2')
+license=('GPL2')
 
 backup=('etc/iproute2/ematch_map' 'etc/iproute2/group' 'etc/iproute2/rt_dsfield'
         'etc/iproute2/rt_protos' 'etc/iproute2/rt_realms' 'etc/iproute2/rt_scopes'
         'etc/iproute2/rt_tables')
-depends=('glibc')
+depends=('glibc' 'db')
 
 source=(https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-${pkgver}.tar.xz)
-sha256sums=(09e406636e7598e46d5d4f7b928bf5db57049d65dbeb9a496005957ee16f6000)
+sha256sums=('d5a182154abd0749b1df7d1649115a32c65f559951477396203b1f514dbff1df')
 
-OPTIONS="LIBDIR=/usr/lib/${MULTIARCH} DOCDIR=/usr/doc/iproute2-${pkgver} MANDIR=/usr/man CONFDIR=/etc/iproute2 SBINDIR=/usr/bin"
+OPTIONS="LIBDIR=/usr/lib/${MULTIARCH} DOCDIR=/usr/share/doc/iproute2 MANDIR=/usr/share/man CONFDIR=/etc/iproute2 SBINDIR=/usr/bin"
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 	./configure
 	make ${OPTIONS}
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 	make DESTDIR="${pkgdir}" ${OPTIONS} install
 }
