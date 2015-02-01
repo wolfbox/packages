@@ -1,0 +1,33 @@
+pkgname=db
+pkgver=5.3.28
+pkgrel=1
+pkgdesc="The BerkelyDB embedded database engine"
+arch=("x86_64")
+url="http://www.oracle.com/technology/software/products/berkeley-db/index.html"
+license=('custom')
+
+depends=('glibc' 'gcc-libs')
+
+source=(http://download.oracle.com/berkeley-db/db-${pkgver}.tar.gz)
+sha256sums=('e0a992d740709892e81f9d93f06daf305cf73fb81b545afe72478043172c3628')
+
+build() {
+    cd ${pkgname}-${pkgver}/build_unix
+    ../dist/configure --prefix=/usr \
+                      --libdir=/usr/lib/${MULTIARCH} \
+                      --enable-compat185 \
+                      --enable-shared \
+                      --disable-static \
+                      --enable-cxx \
+                      --enable-dbm \
+                      --enable-st1
+    make LIBSO_LIBS=-lpthread
+}
+
+package() {
+	cd ${pkgname}-${pkgver}/build_unix
+	make DESTDIR="${pkgdir}" install
+
+	rm -r "${pkgdir}"/usr/docs
+	install -Dm644 ../LICENSE "${pkgdir}"/usr/share/doc/${pkgname}/LICENSE
+}
