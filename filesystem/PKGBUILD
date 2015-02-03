@@ -15,7 +15,8 @@ source=('profile'
         'shadow'
         'gshadow'
         'hosts'
-        'hostname')
+        'hostname'
+        'nsswitch.conf')
 sha256sums=('5c56e94f10e8a87a82954801459eb4cd588bcb234af354ea08dbf2761ea62f1e'
             'd176841d0f92e962d4d48f1a51f2445a6bb21af5750dc4696d5d4968fbc36ddc'
             'dec78757d3be768a9e47c1eb49073cd23827b6cb35b970217e07598e36d9e280'
@@ -24,7 +25,8 @@ sha256sums=('5c56e94f10e8a87a82954801459eb4cd588bcb234af354ea08dbf2761ea62f1e'
             '8bf8b6e07db4ff19eb73daffa71fca87f846a79a52b29d4f4b80981ff82a0ae5'
             'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
             '1f2b341cf1f7caf4c9c137f511691cc82b31c82106e7ab111b29a557b58e1d02'
-            'f86d965dfd9c291a8cc38b75f06be00157ecfc324b5301654f83a449a723ae2d')
+            'f86d965dfd9c291a8cc38b75f06be00157ecfc324b5301654f83a449a723ae2d'
+            'a750d4be838467410f2415999b5a79aa083f7779eedb439cd51b792c5a5f028e')
 
 package() {
 	cd "${pkgdir}"
@@ -56,5 +58,6 @@ package() {
 	install -m600 "${srcdir}"/gshadow etc/
 	install -m644 "${srcdir}"/hostname etc/
 	install -m644 "${srcdir}"/hosts etc/
+	install -m644 "${srcdir}"/nsswitch.conf etc/
 	sed "s:@MULTIARCH@:${MULTIARCH}:" "${srcdir}"/ld.so.conf.in > etc/ld.so.conf
 }
