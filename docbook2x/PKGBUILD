@@ -14,23 +14,21 @@ sha256sums=(4077757d367a9d1b1427e8d5dfc3c49d993e90deabc6df23d05cfe9cd2fcdc45
             ffb3fe7052ee0fb0422493e00f97b640f58fcade4ca9d5ac8c0c224e71666569)
 
 prepare() {
-	cd "${srcdir}/docbook2X-${pkgver}"
-	cat "${srcdir}"/datadir.diff | patch -p1
+	cd docbook2X-${pkgver}
+	patch -p1 -i "${srcdir}"/datadir.diff
 }
 
 build() {
-	cd "${srcdir}/docbook2X-${pkgver}"
+	cd docbook2X-${pkgver}
 	autoreconf -i -f
 	./configure --prefix=/usr \
-	            --mandir=/usr/man \
-	            --infodir=/usr/info \
 	            --with-xslt-processor=libxslt \
 	            --program-transform-name 's,2x-,2,'
 	make
 }
 
 package() {
-	cd "${srcdir}/docbook2X-${pkgver}"
+	cd docbook2X-${pkgver}
 	make DESTDIR="${pkgdir}" install
 	
 	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
@@ -39,4 +37,9 @@ package() {
 	# Fix doc2man trying an failing to go out to the network for things it
 	# already has installed.	
 	sed -i 's|http://docbook2x.sf.net/latest|/usr/share/docbook2X|g' "${pkgdir}"/usr/bin/db2x_xsltproc
+
+	# Docbook transforms links into technical angle brackets for groff, which
+	# The default Linux terminal font has no character for.
+	sed -i 's:\\(la:<:g' "${pkgdir}"/usr/share/docbook2X/charmaps/roff.charmap
+	sed -i 's:\\(ra:>:g' "${pkgdir}"/usr/share/docbook2X/charmaps/roff.charmap
 }
