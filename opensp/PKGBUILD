@@ -1,0 +1,30 @@
+pkgname=opensp
+pkgver=1.5.2
+pkgrel=1
+pkgdesc="A set of tools for working with SGML and XML documents"
+arch=('x86_64')
+url="http://openjade.sourceforge.net/"
+license=('BSD')
+depends=('gcc-libs')
+makedepends=('xmlto' 'docbook-xsl')
+
+source=("http://download.sourceforge.net/openjade/OpenSP-$pkgver.tar.gz")
+sha256sums=('57f4898498a368918b0d49c826aa434bb5b703d2c3b169beb348016ab25617ce')
+
+build() {
+    cd OpenSP-$pkgver
+    ./configure --prefix=/usr \
+        --mandir=/usr/share/man \
+        --disable-nls \
+        --enable-http \
+        --enable-default-catalog=/etc/sgml/catalog:/etc/xml/catalog \
+        --enable-default-search-path=/usr/share/sgml:/usr/share/xml \
+        --enable-xml-messages
+    make
+}
+
+package() {
+    cd OpenSP-$pkgver
+    make DESTDIR="${pkgdir}" install
+    install -D -m644 COPYING "${pkgdir}"/usr/share/doc/$pkgname/LICENSE
+}

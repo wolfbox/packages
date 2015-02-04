@@ -1,0 +1,53 @@
+pkgname=iputils
+pkgver=20140519
+pkgrel=1
+pkgdesc="Network monitoring utilities"
+arch=('x86_64')
+license=('GPL2' 'BSD')
+url="http://www.skbuff.net/iputils/"
+install='iputils.install'
+
+makedepends=('docbook2x' 'opensp')
+depends=('openssl' 'libcap')
+
+source=(https://github.com/iputils/iputils/archive/s${pkgver}.tar.gz)
+sha256sums=('439ad2a81f163d199744cc74e27977f94859e03a46f415358ad8650e45158869')
+
+prepare() {
+    cd ${pkgname}-s${pkgver}/doc
+
+    # A few fix-ups for the documentation
+    find ./ -name "*.sgml" -exec sed -i "s:&snapshot;:${pkgver}:g" {} \;
+}
+
+build() {
+    cd ${pkgname}-s${pkgver}
+
+    make USE_GNUTLS=no CCOPTOPT="$CFLAGS"
+
+    cd doc
+    for file in *.sgml; do
+        xf=${file/.sgml/.xml}
+        osx -xlower -xno-nl-in-tag $file > $xf || true
+        sed -i "s|<refname>\(.*\), \(.*\)</refname>|<refname>\1</refname>, <refname>\2</refname>|g" $xf
+        docbook2man $xf
+    done
+}
+
+package() {
+    cd ${pkgname}-s${pkgver}
+
+    install -dm755 "${pkgdir}"/usr/bin
+
+    install -m755 arping clockdiff rarpd rdisc tftpd tracepath tracepath6 "${pkgdir}"/usr/bin/
+
+    install -m755 ping{,6} "${pkgdir}"/usr/bin/
+
+    install -dm755 "${pkgdir}"/usr/share/man/man8
+    install -m644 doc/{arping,clockdiff,ping,rarpd,rdisc,tftpd,tracepath}.8 \
+        "${pkgdir}"/usr/share/man/man8/
+
+    cd "${pkgdir}"/usr/share/man/man8
+    ln -sf ping.8.gz  ping6.8.gz
+    ln -sf tracepath.8.gz tracepath6.8.gz
+}
