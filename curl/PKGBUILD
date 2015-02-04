@@ -1,7 +1,7 @@
 pkgname=curl
-pkgver=7.39.0
+pkgver=7.40.0
 pkgrel=1
-pkgdesc="A URL transfer tool and library."
+pkgdesc="A URL transfer tool and library"
 arch=("x86_64")
 url="http://curl.haxx.se"
 license=(custom)
@@ -9,23 +9,28 @@ license=(custom)
 depends=('glibc' 'zlib' 'openssl' 'libidn' 'ca-certificates' 'openldap')
 
 source=(http://curl.haxx.se/download/curl-${pkgver}.tar.bz2{,.asc})
-sha256sums=('b222566e7087cd9701b301dd6634b360ae118cc1cbc7697e534dc451102ea4e0'
+sha256sums=('899109eb3900fa6b8a2f995df7f449964292776a04763e94fae640700f883fba'
             'SKIP')
 validpgpkeys=(914C533DF9B2ADA2204F586D78E11C6B279D5C91) # Daniel Stenberg (Haxx) <daniel@haxx.se>
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
 	
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man \
-	            --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
-	make
+    ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man \
+                --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
+    make
+}
+
+check() {
+    cd ${pkgname}-${pkgver}
+    make check
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
 
-	make install DESTDIR="${pkgdir}"
+    make install DESTDIR="${pkgdir}"
 	
-	# Remove perl script
-	rm -f "${pkgdir}"/usr/man/man1/mk-ca-bundle.1
+    # Remove perl script
+    rm -f "${pkgdir}"/usr/man/man1/mk-ca-bundle.1
 }
