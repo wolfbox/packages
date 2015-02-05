@@ -2,35 +2,37 @@
 # Maintainer: Andrew Aldridge <i80and@foxquill.com>
 
 pkgname=libdrm
-pkgver=2.4.58
+pkgver=2.4.59
 pkgrel=1
 pkgdesc="Userspace access to DRM"
 arch=("x86_64")
 url="http://dri.freedesktop.org"
 license=('x11')
-options=(!staticlibs)
 
 depends=('glibc' 'libpciaccess')
 
-source=(http://dri.freedesktop.org/libdrm/libdrm-${pkgver}.tar.bz2)
-sha256sums=('b155fae6b9c9a3b02ef8b77f58c7c219194c996a4018dc55ba66c03996a365dd')
+source=(http://dri.freedesktop.org/libdrm/libdrm-${pkgver}.tar.bz2{,.sig})
+sha256sums=('68d26e1fd85582f4243d66864f9b43ca4ee93662825de32b5506fc8e181ea41b'
+            'SKIP')
+validpgpkeys=('B97BD6A80CAC4981091AE547FE558C72A67013C3') # Maarten Lankhorst <maarten.lankhorst@canonical.com>
 
 prepare() {
-	cd "${srcdir}"/${pkgname}-${pkgver}
+    cd "${srcdir}"/${pkgname}-${pkgver}
 
-	# Remove unneeded pthreads thing
-	sed -i "/pthread-stubs/d" configure.ac
-	autoreconf --force --install
+    # Remove unneeded pthreads thing
+    sed -i "/pthread-stubs/d" configure.ac
+    autoreconf --force --install
 }
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
-	            --enable-udev
-	make
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --enable-udev
+    make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	make DESTDIR="${pkgdir}" install
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
 }
