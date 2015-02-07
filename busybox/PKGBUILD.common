@@ -47,7 +47,7 @@ compile_manpages() {
 	_title="${1}"
 	_name="${2}" || "${pkgname}"
 
-	mkdir -p "${pkgdir}"/usr/man/man1
+	mkdir -p "${pkgdir}"/usr/share/man/man1
 
 	for file in "${pkgdir}"/usr/bin/*; do
 		echo "${file}"
@@ -58,7 +58,7 @@ compile_manpages() {
 		# Remove the opening BusyBox stanza from the usage
 		_usage="$(echo "${_usage}" | awk '!/BusyBox/')"
 
-		_podpath="${pkgdir}"/usr/man/man1/${_name}
+		_podpath="${pkgdir}"/usr/share/man/man1/${_name}
 		cp "${srcdir}"/busybox.pod.in "${_podpath}".pod.in
 		awk -v n="${_name}" -v u="${_usage}" '{gsub(/@USAGE@/,u) gsub(/@NAME@/,n)}1' "${_podpath}.pod.in" > "${_podpath}".pod
 		pod2man "${_podpath}".pod --center "${_title}" -r "${_name}" > "${_podpath}".1

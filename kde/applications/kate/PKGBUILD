@@ -1,16 +1,20 @@
 pkgname=kate
-pkgver=14.12.1
+pkgver=14.12.2
 pkgrel=1
 pkgdesc='The KDE text editor'
 arch=('x86_64')
 url='http://kate-editor.org/'
 license=('GPL2')
 
+# Someday we'll enable libgit support, but not now; stability issues TBD
+
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5')
+depends=('glibc' 'gcc-libs' 'qt5'
+         'kconfig' 'kdoctools' 'kguiaddons' 'ki18n' 'kinit' 'kjobwidgets' 'kio'
+         'kparts' 'ktexteditor' 'kwindowsystem' 'kxmlgui' 'kdbusaddons' 'knewstuff')
 
 source=(http://download.kde.org/stable/applications/${pkgver}/src/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('c55b35ab3e2408ef6b305645637ddc53d08baebef0c30da32d2e3743908f6d30')
+sha256sums=('ceb95148543b89b799a1dff9ee45b0a14c2883965853d7537f4890e5992ccb58')
 
 build() {
   mkdir -p build && cd build

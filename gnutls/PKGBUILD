@@ -4,7 +4,7 @@ pkgrel=1
 pkgdesc="The GNU TLS library"
 arch=("x86_64")
 url="http://www.gnu.org/software/gnutls/"
-license=('GPLv3' 'LGPLv2.1')
+license=('GPL3' 'LGPL2.1')
 
 depends=('glibc' 'guile' 'zlib' 'nettle' 'libtasn1')
 

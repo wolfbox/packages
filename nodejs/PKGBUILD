@@ -1,7 +1,7 @@
 pkgname=nodejs
 pkgver=0.10.33
 pkgrel=1
-pkgdesc="A server-side JavaScript environment."
+pkgdesc="A server-side JavaScript environment"
 arch=("x86_64")
 url="http://nodejs.org"
 license=('custom')
@@ -38,11 +38,8 @@ package() {
 
 	make install DESTDIR="${pkgdir}"
 	
-	mkdir -p "${pkgdir}"/usr/doc/nodejs-${pkgver}
-	install -m644 LICENSE "${pkgdir}"/usr/doc/nodejs-${pkgver}/
-	
-	mv "${pkgdir}"/usr/share/man "${pkgdir}"/usr/
-	rmdir "${pkgdir}"/usr/share
+	mkdir -p "${pkgdir}"/usr/share/doc/nodejs
+	install -m644 LICENSE "${pkgdir}"/usr/share/doc/nodejs
 	
 	find "${pkgdir}"/usr \( -name '.git*' -o -name '.travis.yml' \) -exec rm {} \;
 }

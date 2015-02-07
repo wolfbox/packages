@@ -2,10 +2,10 @@ _realname=LVM
 pkgname=lvm2
 pkgver=2.2.02.114
 pkgrel=1
-pkgdesc=""
+pkgdesc="Logical Volume Manager utilities"
 arch=("x86_64")
 url="https://www.sourceware.org/lvm2/"
-license=('GPLv2' 'LGPLv2.1')
+license=('GPL2' 'LGPL2.1')
 backup=('etc/lvm/lvm.conf')
 
 depends=('glibc' 'readline' 'util-linux' 'ncurses' 'udev')
@@ -24,7 +24,7 @@ build() {
 	            --sbindir=/usr/bin \
 	            --libdir=/usr/lib/${MULTIARCH} \
 	            --with-usrlibdir=/usr/lib/${MUTIARCH} \
-	            --mandir=/usr/man \
+	            --mandir=/usr/share/man \
 	            --enable-cmdlib \
 	            --enable-dmeventd \
 	            --enable-applib \

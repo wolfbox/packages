@@ -53,6 +53,6 @@ package() {
   make DESTDIR="$pkgdir/" install 
 
   # licenses
-  mkdir -p "${pkgdir}"/usr/doc/${pkgname}
-  install -m644 "${srcdir}"/graphite2-${pkgver}/COPYING "${pkgdir}"/usr/doc/${pkgname}/
+  mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}
+  install -m644 "${srcdir}"/graphite2-${pkgver}/COPYING "${pkgdir}"/usr/share/doc/${pkgname}/
 }

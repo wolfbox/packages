@@ -11,6 +11,7 @@ depends=('glibc')
 source=(ftp://ftp.gnupg.org/gcrypt/npth/npth-${pkgver}.tar.bz2{,.sig})
 sha256sums=('896c561eb2ec8da35f11828fb04a3fbff12d41ff657c799056d7dc4a66e5df7f'
             'SKIP')
+validpgpkeys=('D8692123C4065DEA5E0F3AB5249B39D24F25E3B6')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"

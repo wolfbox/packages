@@ -1,7 +1,7 @@
 pkgname=sudo
 pkgver=1.8.11p2
 pkgrel=1
-pkgdesc="A tool for giving and logging limited root privileges to select users."
+pkgdesc="A tool for giving and logging limited root privileges to select users"
 arch=('x86_64')
 url="http://www.courtesan.com/sudo/sudo.html"
 license=('ISC')
@@ -18,8 +18,8 @@ build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
 	export LDFLAGS="${LDFLAGS} -Wl,-z,now"
-	./configure --prefix=/usr --sbindir=/usr/bin --mandir=/usr/man \
-	            --libexecdir=/usr/lib/${MULTIARCH} --docdir=/usr/doc/sudo-${pkgver} \
+	./configure --prefix=/usr --sbindir=/usr/bin --mandir=/usr/share/man \
+	            --libexecdir=/usr/lib/${MULTIARCH} --docdir=/usr/share/doc/sudo \
 	            --with-env-editor --disable-pam-session --with-pam=no \
 	            --with-rundir=/var/lib/sudo --with-vardir=/var/lib/sudo --without-lecture \
 	            --with-logging=syslog --with-logfac=auth --with-secure-path \

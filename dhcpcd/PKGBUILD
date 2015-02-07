@@ -1,5 +1,5 @@
 pkgname=dhcpcd
-pkgver=6.6.0
+pkgver=6.7.1
 pkgrel=1
 pkgdesc="A DHCP network autoconfiguration implementation"
 arch=("x86_64")
@@ -11,7 +11,7 @@ backup=('etc/dhcpcd.conf')
 depends=('glibc')
 
 source=("http://roy.marples.name/downloads/dhcpcd/dhcpcd-${pkgver}.tar.bz2")
-sha256sums=('16b94272cbb9ca22cb74c4421ee745f56850121613f6256587adb4e988c17fd0')
+sha256sums=('cb65d3e783fa5484ed095bb940c3274a5a91d3ed4a9d9ae66a49d9637165bd98')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -24,7 +24,7 @@ build() {
 	            --sysconfdir=/etc \
 	            --libdir=/usr/lib/${MULTIARCH} \
 	            --libexecdir=/usr/lib/${MULTIARCH} \
-	            --mandir=/usr/man \
+	            --mandir=/usr/share/man \
 	            --dbdir=/var/lib/dhcpcd \
 	            --rundir=/run \
 	            --build=${CHOST}

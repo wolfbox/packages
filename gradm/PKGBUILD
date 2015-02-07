@@ -2,10 +2,10 @@ pkgname=gradm
 _ver=3.0-201408301734
 pkgver=${_ver/-/_}
 pkgrel=1
-pkgdesc=""
+pkgdesc="GRSecurity RBAC administration utilities"
 arch=("x86_64")
 url="https://grsecurity.net"
-license=('GPLv2')
+license=('GPL2')
 backup=('etc/grsec/learn_config' 'etc/grsec/policy')
 
 depends=('glibc')
@@ -31,6 +31,6 @@ build() {
 package() {
 	cd "${srcdir}"/${pkgname}
 
-	make install DESTDIR="${pkgdir}" MANDIR=/usr/man
+	make install DESTDIR="${pkgdir}" MANDIR=/usr/share/man
 	rm -r "${pkgdir}"/dev
 }

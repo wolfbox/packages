@@ -1,10 +1,10 @@
 pkgname=procps-ng
 pkgver=3.3.10
 pkgrel=1
-pkgdesc=""
+pkgdesc="Process management utilities"
 arch=("x86_64")
 url="http://sourceforge.net/projects/procps-ng/"
-license=('GPLv2' 'LGPLv2')
+license=('GPL2' 'LGPL2')
 
 depends=('glibc' 'ncurses')
 
@@ -25,9 +25,9 @@ build() {
 	            --exec-prefix=/ \
 	            --bindir=/usr/bin \
 	            --sbindir=/usr/bin \
-	            --docdir=/usr/doc/${pkgname}-${pkgver} \
+	            --docdir=/usr/share/doc/${pkgname} \
 	            --libdir=/usr/lib/${MULTIARCH} \
-	            --mandir=/usr/man \
+	            --mandir=/usr/share/man \
 	            --without-systemd \
 	            --disable-kill \
 	            --enable-watch8bit

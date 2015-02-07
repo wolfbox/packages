@@ -1,10 +1,10 @@
 pkgname=gdb
 pkgver=7.8.2
 pkgrel=1
-pkgdesc="The GNU program debugger."
+pkgdesc="The GNU program debugger"
 arch=("x86_64")
 url="http://www.gnu.org/software/gdb/"
-license=('GPL')
+license=('GPL2')
 
 depends=('glibc' 'python' 'zlib' 'xz' 'expat' 'ncurses')
 
@@ -14,7 +14,7 @@ sha256sums=('605954d5747d5f08ea4b7f48e958d1ebbf39265e18f7f36738deeabb83744485'
 validpgpkeys=('F40ADB902B24264AA42E50BF92EDB04BFF325CF3') # Joel Brobecker <brobecker@adacore.com>
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 	
 	# GDB doesn't like hardening
 	export CPPFLAGS=""
@@ -26,7 +26,7 @@ build() {
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 
 	make install DESTDIR="${pkgdir}"
 

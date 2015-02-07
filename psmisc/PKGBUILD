@@ -1,10 +1,10 @@
 pkgname=psmisc
 pkgver=22.21
 pkgrel=1
-pkgdesc="A suite of extra process utilities."
+pkgdesc="A suite of extra process utilities"
 arch=("x86_64")
 url="http://psmisc.sourceforge.net"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('glibc' 'ncurses')
 
@@ -14,7 +14,7 @@ sha256sums=(97323cad619210845b696d7d722c383852b2acb5c49b5b0852c4f29c77a8145a)
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
-	            --mandir=/usr/man
+	            --mandir=/usr/share/man
 	make
 }
 

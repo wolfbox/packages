@@ -85,7 +85,7 @@ package_llvm() {
     depends+=('llvm-libs')
 	cd "${srcdir}"/build
 
-    mkdir -p "${pkgdir}"/usr/man/man1
+    mkdir -p "${pkgdir}"/usr/share/man/man1
 	DESTDIR="${pkgdir}" ninja install
 	
 	# Add target symlinks
@@ -104,7 +104,7 @@ package_llvm() {
 			install -m755 ${tool}/${tool} "${pkgdir}"/usr/bin/
 		done
 		install -m755 scan-build/{ccc,c++}-analyzer "${pkgdir}"/usr/bin
-		install -m644 scan-build/scan-build.1 "${pkgdir}"/usr/man/man1/
+		install -m644 scan-build/scan-build.1 "${pkgdir}"/usr/share/man/man1/
 	)
 
 	# Move runtime libraries into llvm-libs

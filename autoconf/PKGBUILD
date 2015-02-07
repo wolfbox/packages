@@ -1,7 +1,7 @@
 pkgname=autoconf
 pkgver=2.69
 pkgrel=1
-pkgdesc="The GNU build system generator."
+pkgdesc="The GNU build system generator"
 arch=("x86_64")
 url="http://www.gnu.org/software/autoconf/"
 license=('GPL')
@@ -25,6 +25,6 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make install DESTDIR="${pkgdir}"
 	
-	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
-	install -m644 COPYING* "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}
+	install -m644 COPYING* "${pkgdir}"/usr/share/doc/${pkgname}
 }

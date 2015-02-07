@@ -1,10 +1,10 @@
 pkgname=cpio
 pkgver=2.11
 pkgrel=1
-pkgdesc="A backup and archiving utility."
+pkgdesc="A backup and archiving utility"
 arch=("x86_64")
 url="https://www.gnu.org/software/cpio"
-license=("GPLv3")
+license=("GPL3")
 
 depends=('glibc')
 makedepends=('xz')
@@ -22,8 +22,8 @@ build() {
 	xzcat "${srcdir}/cpio.32bit.crc.diff.xz" | patch -p1 -F3
 	xzcat "${srcdir}/cpio-2.11-fgets.patch.xz" | patch -p1 # Patch from OpenELEC.tv
 	
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
-				--docdir=/usr/doc/cpio-${pkgver} --infodir=/usr/info \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man \
+				--docdir=/usr/share/doc/cpio --infodir=/usr/share/info \
 				--enable-mt --with-rmt=/usr/bin/rmt
 	make
 }
@@ -35,5 +35,5 @@ package() {
 	rm -rf "${pkgdir}/usr/libexec"
 	
 	mv "${pkgdir}"/usr/bin/cpio "${pkgdir}"/usr/bin/gcpio
-	mv "${pkgdir}"/usr/man/man1/cpio.1 "${pkgdir}"/usr/man/man1/gcpio.1
+	mv "${pkgdir}"/usr/share/man/man1/cpio.1 "${pkgdir}"/usr/share/man/man1/gcpio.1
 }

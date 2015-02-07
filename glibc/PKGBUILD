@@ -1,11 +1,11 @@
 pkgname=glibc
 pkgver=2.20
 pkgrel=1
-pkgdesc="The GNU libc."
+pkgdesc="The GNU libc"
 arch=("x86_64")
 url="http://www.gnu.org/s/libc/"
-license=(GPLv2, LGPLv2.1)
-options=(!staticlibs strip)
+license=(GPL2 LGPL2.1)
+options=('!strip')
 
 depends=('linux' 'tzdata')
 
@@ -74,8 +74,8 @@ build() {
     	--enable-obsolete-rpc \
     	--enable-profile \
     	--enable-stackguard-randomization \
-    	--infodir=/usr/info \
-    	--mandir=/usr/man \
+    	--infodir=/usr/share/info \
+    	--mandir=/usr/share/man \
     	--with-tls \
     	--with-__thread \
     	--without-cvs
@@ -88,8 +88,14 @@ package() {
 
 	make install install_root="${pkgdir}"
 	make localedata/install-locales install_root="${pkgdir}"
-	
+
 	# Install a link of ld-linux into /lib64 for compatibility
 	mkdir -p "${pkgdir}"/lib64
 	ln -s /lib/${MULTIARCH}/ld-linux-${CARCH/_/-}.so.2 "${pkgdir}"/lib64
+
+    # Manually strip.  Removing debugging symbols is safe and doesn't break valgrind
+    ( cd "${pkgdir}"
+      strip -g "${pkgdir}"/lib/${MULTIARCH}/l*.so*
+      strip ${STRIP_STATIC} "${pkgdir}"/usr/lib/${MULTIARCH}/*.a
+      find usr/bin/ | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip ${STRIP_BINARIES} 2>/dev/null )
 }

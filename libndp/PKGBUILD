@@ -1,10 +1,10 @@
 pkgname=libndp
 pkgver=1.4
 pkgrel=1
-pkgdesc="IPv6 neighbor discovery protocol library."
+pkgdesc="IPv6 neighbor discovery protocol library"
 arch=("x86_64")
 url="http://libndp.org"
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
 depends=('glibc')
 
@@ -13,7 +13,7 @@ sha256sums=('3a0be247ec024bd72fe5b40ea9491519c4023c7faf078311196fab817b2fd55f')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man
 	make
 }
 

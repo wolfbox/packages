@@ -14,7 +14,7 @@ sha256sums=('90f60d95a15b8a54bf34d87b9be53da89ee3d6213ea739fb2305846f4585868a')
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
-	            --mandir=/usr/man
+	            --mandir=/usr/share/man
 	make
 }
 

@@ -14,8 +14,7 @@ options=('!emptydirs')
 # http://www.xfce.org/documentation/requirements
 # keep dbus, see also http://bugs.archlinux.org/task/14536
 depends=('libxfce4util' 'dbus-glib' 'dbus')
-makedepends=('perl-extutils-depends' 'perl-extutils-pkgconfig' 'glib-perl'
-             'intltool' 'chrpath')
+makedepends=('intltool' 'chrpath')
 
 source=(http://archive.xfce.org/src/xfce/$pkgname/4.10/$pkgname-$pkgver.tar.bz2)
 sha256sums=('175219a441cc7d0f210bbd1a3b0abba41598627cd9db27235811400c3e100576')

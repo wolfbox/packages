@@ -1,7 +1,7 @@
 pkgname=pcre
 pkgver=8.36
 pkgrel=1
-pkgdesc="A Perl-compatible Regular Expression library."
+pkgdesc="A Perl-compatible Regular Expression library"
 arch=("x86_64")
 url="http://www.pcre.org"
 license=('BSD')
@@ -15,7 +15,7 @@ build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
 	            --libdir=/usr/lib/${MULTIARCH} \
-	            --mandir=/usr/man \
+	            --mandir=/usr/share/man \
 	            --enable-utf8 \
 	            --enable-pcre16 \
 	            --enable-pcre32 \
@@ -28,8 +28,8 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 	
-	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}
 
-	install -m644 LICENCE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+	install -m644 LICENCE "${pkgdir}"/usr/share/doc/${pkgname}
 	rm -rf "${pkgdir}"/usr/share/doc
 }

@@ -40,5 +40,5 @@ package() {
     ( cd "${pkgdir}"/usr
       ln -s gpg2 bin/gpg
       ln -s gpgv2 bin/gpgv
-      ln -s gpg2.1.gz man/man1/ )
+      ln -s gpg2.1.gz share/man/man1/ )
 }

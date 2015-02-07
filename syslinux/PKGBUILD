@@ -1,11 +1,11 @@
 pkgname=syslinux
 pkgver=6.03
 pkgrel=1
-pkgdesc="A lightweight and versatile suite of bootloaders."
+pkgdesc="A lightweight and versatile suite of bootloaders"
 arch=("x86_64")
 url="http://www.syslinux.org"
-license=('GPLv2')
-options=(!makeflags !buildflags)
+license=('GPL2')
+options=(!makeflags !buildflags !strip)
 backup=('boot/syslinux/syslinux.cfg')
 
 depends=('glibc')
@@ -25,7 +25,7 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make install INSTALLROOT="${pkgdir}" \
 	             SBINDIR=/usr/bin \
-	             MANDIR=/usr/man \
+	             MANDIR=/usr/share/man \
 	             AUXDIR=/usr/lib/syslinux
 
 	# Install our template config

@@ -39,4 +39,7 @@ build() {
 package() {
 	cd ${pkgname}-${pkgver}
 	make DESTDIR="${pkgdir}" install
+
+	chown 102:102 "${pkgdir}"/etc/polkit-1/rules.d
+	chown 102:102 "${pkgdir}"/usr/share/polkit-1/rules.d
 }

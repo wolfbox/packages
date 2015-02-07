@@ -16,6 +16,7 @@ source=(ftp://ftp.freedesktop.org/pub/mesa/demos/${pkgver}/mesa-demos-${pkgver}.
 sha256sums=('e4bfecb5816ddd4b7b37c1bc876b63f1f7f06fda5879221a9774d0952f90ba92'
             'SKIP'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
+validpgpkeys=('E390B9700582FAEA959ACAD41EEF53D38A3A9C67')
 
 build() {
   cd mesa-demos-${pkgver}

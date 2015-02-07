@@ -20,6 +20,7 @@ sha256sums=('5a601b173733ce3ed31b654805c793aa907131cd70b06d03825f169aa48c8627'
             'SKIP'
             '7f0040ce435f6fdd3e04527033a5f73762612d6b81d82ef4119d271c3b7c95b0'
             'd494fe1e75249cbdc19091da6ddb966033193bcc789b44c05c9c1b64424283b9')
+validpgpkeys=('E0AF0A194D55C84E4A19A801CDB0C0F904F4EE9B') # Dave Cottlehuber <dch@apache.org>
 
 prepare() {
 	cd "${srcdir}"/${_fullname}-${pkgver}

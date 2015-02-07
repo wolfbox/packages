@@ -15,7 +15,7 @@ build() {
 	cd "${srcdir}/${pkgname}-${pkgver}/nspr"
 	./configure --prefix=/usr \
 	            --libdir=/usr/lib/${MULTIARCH} \
-	            --mandir=/usr/man \
+	            --mandir=/usr/share/man \
 	            --libexecdir=/usr/lib/${MULTIARCH} \
 	            --includedir=/usr/include/nspr \
 	            --enable-64bit \

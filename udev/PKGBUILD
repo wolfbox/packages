@@ -1,10 +1,10 @@
 pkgname=udev
 pkgver=182
 pkgrel=1
-pkgdesc="The dynamic device directory system."
+pkgdesc="The dynamic device directory system"
 arch=("x86_64")
 url=""
-license=("GPLv2")
+license=("GPL2")
 
 depends=('glibc' 'xz' 'zlib' 'kmod' 'util-linux')
 makedepends=('gcc' 'glib2' 'gobject-introspection' 'usbutils')
@@ -60,8 +60,8 @@ build() {
 	            --sbindir=/usr/bin \
 	            --libexecdir=/lib \
 	            --enable-introspection \
-	            --mandir=/usr/man \
-	            --docdir=/usr/doc/udev-${pkgver} \
+	            --mandir=/usr/share/man \
+	            --docdir=/usr/share/doc/udev \
 	            --enable-floppy \
 	            --enable-static \
 	            --enable-rule_generator
@@ -82,8 +82,8 @@ package() {
 	# Don't package API documentation
 	rm -rf "${pkgdir}/usr/share/gtk-doc"
 	
-	mkdir -p "${pkgdir}/usr/doc/udev-${pkgver}"
-	cp -a COPYING* README* "${pkgdir}/usr/doc/udev-${pkgver}"
+	mkdir -p "${pkgdir}/usr/share/doc/udev"
+	cp -a COPYING* README* "${pkgdir}/usr/share/doc/udev"
 	
 	# Install Slackware custom stuff
 	cp -a "${srcdir}/config/udev.conf" "${pkgdir}/etc/udev/udev.conf"

@@ -5,9 +5,9 @@ pkgdesc="High-performance asynchronous HTTP client library"
 arch=('x86_64')
 url="http://code.google.com/p/serf/"
 license=('Apache')
+
 depends=('glibc' 'zlib' 'openssl' 'expat' 'apr-util' 'util-linux' 'openldap')
 makedepends=('scons')
-options=('!staticlibs')
 
 source=(http://serf.googlecode.com/svn/src_releases/${pkgname}-${pkgver}.tar.bz2)
 sha256sums=('e0500be065dbbce490449837bb2ab624e46d64fc0b090474d9acaa87c82b2590')

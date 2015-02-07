@@ -11,6 +11,7 @@ depends=('glibc' 'efivar' 'pciutils')
 source=(https://github.com/vathpela/efibootmgr/releases/download/efibootmgr-${pkgver}/efibootmgr-${pkgver}.tar.bz2{,.sig})
 sha256sums=('f27ce3d7588512017bceb2d2a29aef110499a662a21550afa1158f9950f976d1'
             'SKIP')
+validpgpkeys=('B00B48BC731AA8840FED9FB0EED266B70F4FEF10')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -23,6 +24,6 @@ package() {
 	install -d "${pkgdir}"/usr/bin
 	install -m755 src/efibootmgr/efibootmgr "${pkgdir}"/usr/bin/
 	
-	install -d "${pkgdir}"/usr/man/man8
-	install -m644 src/man/man8/efibootmgr.8 "${pkgdir}"/usr/man/man8/
+	install -d "${pkgdir}"/usr/share/man/man8
+	install -m644 src/man/man8/efibootmgr.8 "${pkgdir}"/usr/share/man/man8/
 }

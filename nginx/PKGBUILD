@@ -1,7 +1,7 @@
 pkgname=nginx
 pkgver=1.6.2
 pkgrel=1
-pkgdesc="A fast and lightweight HTTP server."
+pkgdesc="A fast and lightweight HTTP server"
 arch=("x86_64")
 url="http://nginx.org"
 license=('custom')
@@ -59,8 +59,8 @@ package() {
 	install -m755 "${srcdir}"/nginx "${pkgdir}"/etc/rc.d
 	install -m755 "${srcdir}"/nginx.networking "${pkgdir}"/etc/rc.d/events
 
-	mkdir -p "${pkgdir}"/usr/man/man8
-	install -m644 man/nginx.8 "${pkgdir}"/usr/man/man8/
+	mkdir -p "${pkgdir}"/usr/share/man/man8
+	install -m644 man/nginx.8 "${pkgdir}"/usr/share/man/man8/
 
 	mkdir -p "${pkgdir}"/var/lib/nginx
 }

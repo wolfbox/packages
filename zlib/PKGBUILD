@@ -1,10 +1,10 @@
 pkgname=zlib
 pkgver=1.2.8
 pkgrel=1
-pkgdesc="A DEFLATE compression library."
+pkgdesc="A DEFLATE compression library"
 arch=("x86_64")
 url="http://www.zlib.net"
-license=(custon)
+license=(custom)
 
 depends=('glibc')
 
@@ -22,11 +22,6 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 	
-	mkdir -p "${pkgdir}"/usr/doc/zlib-${pkgver}
-	cp -a README "${pkgdir}"/usr/doc/zlib-${pkgver}
-
-	# Fix mandir
-	( cd "${pkgdir}"/usr
-	    mv share/man ./
-	    rmdir share )
+	mkdir -p "${pkgdir}"/usr/share/doc/zlib
+	cp -a README "${pkgdir}"/usr/share/doc/zlib
 }

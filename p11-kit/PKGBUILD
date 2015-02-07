@@ -1,7 +1,7 @@
 pkgname=p11-kit
 pkgver=0.22.1
 pkgrel=1
-pkgdesc="A PKCS#11 cryptography toolkit."
+pkgdesc="A PKCS#11 cryptography toolkit"
 arch=("x86_64")
 url="http://p11-glue.freedesktop.org/p11-kit.html"
 license=('BSD')
@@ -26,7 +26,7 @@ package() {
 
 	rm -r "${pkgdir}"/usr/share/gtk-doc
 
-	install -Dm644 COPYING "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/COPYING
+	install -Dm644 COPYING "${pkgdir}"/usr/share/doc/${pkgname}/COPYING
 
 	# Module directory
 	mkdir -p "${pkgdir}"/etc/pkcs11/modules

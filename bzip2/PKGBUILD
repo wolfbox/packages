@@ -1,9 +1,9 @@
 pkgname=bzip2
 pkgver=1.0.6
 pkgrel=1
-pkgdesc="A block-sorting file compressor."
+pkgdesc="A block-sorting file compressor"
 arch=("x86_64")
-url=""
+url="http://bzip.org"
 license=(custom)
 
 depends=('glibc')
@@ -33,12 +33,12 @@ package() {
 	install -m 755 bzip2-shared "${pkgdir}/usr/bin/bzip2"
 	install -m 755 bzip2recover "${pkgdir}/usr/bin/bzip2recover"
 	
-	mkdir -p "${pkgdir}/usr/man/man1"
-	install -m 644 bzip2.1 "${pkgdir}/usr/man/man1/bzip2.1"
-	echo '.so man1/bzip2.1' | gzip -9c > "${pkgdir}/usr/man/man1/bzip2recover.1.gz"
+	mkdir -p "${pkgdir}/usr/share/man/man1"
+	install -m 644 bzip2.1 "${pkgdir}/usr/share/man/man1/bzip2.1"
+	echo '.so man1/bzip2.1' | gzip -9c > "${pkgdir}/usr/share/man/man1/bzip2recover.1.gz"
 	
-	mkdir -p "${pkgdir}/usr/doc/bzip2-${pkgver}"
-	install -m 644 CHANGES LICENSE "${pkgdir}/usr/doc/bzip2-${pkgver}"
+	mkdir -p "${pkgdir}/usr/share/doc/bzip2"
+	install -m 644 CHANGES LICENSE "${pkgdir}/usr/share/doc/bzip2"
 
 	( cd "${pkgdir}/usr/lib/${MULTIARCH}/"
 	  rm -f libbz2.so.1.0 libbz2.so.1
@@ -49,6 +49,6 @@ package() {
 	
 	for file in bzdiff bzgrep bzmore ; do
 		install -m 755 "${file}" "${pkgdir}/usr/bin/${file}"
-		install -m 644 "${file}.1" "${pkgdir}/usr/man/man1/${file}.1" 
+		install -m 644 "${file}.1" "${pkgdir}/usr/share/man/man1/${file}.1" 
 	done
 }

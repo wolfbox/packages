@@ -1,10 +1,10 @@
 pkgname=libnih
 pkgver=1.0.3
 pkgrel=1
-pkgdesc="Small C systems development toolkit."
+pkgdesc="Small C systems development toolkit"
 arch=("x86_64")
 url="https://launchpad.net/libnih"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('glibc' 'expat' 'dbus')
 
@@ -13,7 +13,7 @@ sha256sums=(897572df7565c0a90a81532671e23c63f99b4efde2eecbbf11e7857fbc61f405)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man
 	make
 }
 

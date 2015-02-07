@@ -1,7 +1,7 @@
 pkgname=networkmanager
 pkgver=1.0.0
 pkgrel=1
-pkgdesc="A pain-free networking service for desktops and laptops."
+pkgdesc="A pain-free networking service for desktops and laptops"
 arch=("x86_64")
 url="https://wiki.gnome.org/Projects/NetworkManager"
 license=('GPL' 'LGPLv2')
@@ -32,7 +32,7 @@ build() {
 	            --libdir=/usr/lib/${MULTIARCH} \
 	            --libexecdir=/usr/lib/${MULTIARCH} \
 	            --sbindir=/usr/bin \
-	            --mandir=/usr/man \
+	            --mandir=/usr/share/man \
 	            --with-dhcpcd=/usr/bin/dhcpcd \
 	            --with-dhclient=/usr/bin/dhclient \
 	            --with-crypto=nss \

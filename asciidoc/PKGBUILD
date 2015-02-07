@@ -1,10 +1,10 @@
 pkgname=asciidoc
 pkgver=8.6.9
 pkgrel=1
-pkgdesc="An extremely fast compression tool."
+pkgdesc="A text documentation format toolchain"
 arch=('any')
-url="http://www.methods.co.nz/asciidoc/"
-license=('GPLv2')
+url="http://asciidoc.org"
+license=('GPL2')
 
 depends=('python2')
 
@@ -18,7 +18,7 @@ prepare() {
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --mandir=/usr/man
+	./configure --prefix=/usr --mandir=/usr/share/man
 }
 
 package() {

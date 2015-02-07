@@ -23,6 +23,6 @@ package() {
   cd "$pkgname-$pkgver"
   make DESTDIR="$pkgdir" install
 
-  install -d "$pkgdir/usr/doc/$pkgname"
-  install -m644 COPYING "$pkgdir/usr/doc/$pkgname"
+  install -d "$pkgdir/usr/share/doc/$pkgname"
+  install -m644 COPYING "$pkgdir/usr/share/doc/$pkgname"
 }

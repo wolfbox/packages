@@ -1,10 +1,10 @@
 pkgname=groff
 pkgver=1.22.3
 pkgrel=1
-pkgdesc="The GNU implementation of the troff document formatting system."
+pkgdesc="The GNU implementation of the troff document formatting system"
 arch=("x86_64")
 url="http://www.gnu.org/software/groff/"
-license=('GPLv3')
+license=('GPL3')
 
 depends=('gcc-libs' 'glibc' 'perl')
 
@@ -15,8 +15,8 @@ sha256sums=('3a48a9d6c97750bfbd535feeb5be0111db6406ddb7bb79fc680809cda6d828a5'
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --mandir=/usr/man \
-	            --infodir=/usr/info --docdir=/usr/doc/groff-${pkgver}
+	./configure --prefix=/usr --mandir=/usr/share/man \
+	            --infodir=/usr/share/info --docdir=/usr/share/doc/groff
 	make
 }
 
@@ -26,7 +26,7 @@ package() {
 
 	cd "${pkgdir}"
 
-	rm -rf usr/doc/groff-${pkgver}/{*.ps,examples,html,pdf}
+	rm -rf usr/share/doc/groff/{*.ps,examples,html,pdf}
 
 	cp "${srcdir}"/site.tmac usr/share/groff/site-tmac/man.local
 	cp "${srcdir}"/site.tmac usr/share/groff/site-tmac/mdoc.local

@@ -25,5 +25,5 @@ package() {
   make DESTDIR="$pkgdir" install
   rm -rf "${pkgdir}"/usr/share/gtk-doc
 
-  install -Dm644 COPYING "$pkgdir/usr/doc/harfbuzz/COPYING"
+  install -Dm644 COPYING "$pkgdir/usr/share/doc/harfbuzz/COPYING"
 }

@@ -21,6 +21,6 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	mkdir -p "${pkgdir}"/usr/bin
-	mkdir -p "${pkgdir}"/usr/man/man1
-	make install PREFIX="${pkgdir}"/usr MANDIR="${pkgdir}"/usr/man
+	mkdir -p "${pkgdir}"/usr/share/man/man1
+	make install PREFIX="${pkgdir}"/usr MANDIR="${pkgdir}"/usr/share/man
 }

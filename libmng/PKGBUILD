@@ -13,6 +13,7 @@ source=(http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkg
 sha256sums=('278c04c781e5a679c91df006fee7e71233e6f15557aef513a19fe49cd650bc50'
             'SKIP'
             'a536f0ff7aadeb4d619dea07c007058c371d1ed957cc13a4c393ee5c864ca5b4')
+validpgpkeys=('8048643BA2C840F4F92A195FF54984BFA16C640F') # Glenn Randers-Pehrson (mozilla) <glennrp+bmo@gmail.com>
 
 prepare() {
   cd ${pkgname}-${pkgver}
@@ -28,5 +29,5 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR="${pkgdir}" install
-  install -D -m644 LICENSE "${pkgdir}/usr/doc/${pkgname}/LICENSE"
+  install -D -m644 LICENSE "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
 }

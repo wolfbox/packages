@@ -1,7 +1,7 @@
 pkgname=mariadb
-pkgver=10.0.15
+pkgver=10.0.16
 pkgrel=1
-pkgdesc="A community fork of the MySQL database engine."
+pkgdesc="A community fork of the MySQL database engine"
 arch=('x86_64')
 url="https://mariadb.org"
 license=('GPLv2' 'LGPLv2.1')
@@ -11,7 +11,7 @@ makedepends=('cmake')
 depends=('glibc' 'gcc-libs' 'zlib' 'ncurses' 'openssl' 'pcre' 'libaio' 'jemalloc')
 
 source=(https://downloads.mariadb.org/interstitial/mariadb-${pkgver}/source/mariadb-${pkgver}.tar.gz)
-sha256sums=('9154cb68504d469b1bac636b85e30b2b2da2586092476d6ad2f9d6bc462909d8')
+sha256sums=('44134a5f3e174e3e8443c1d07916af57f3ffadd4c8846338d41850fedfefcde4')
 
 build() {
 	cd "${srcdir}"
@@ -24,9 +24,9 @@ build() {
 	cmake ../${pkgname}-${pkgver}/ -DCMAKE_INSTALL_PREFIX=/usr \
 	                               -DSYSCONFDIR=/etc/mysql \
 	                               -DMYSQL_DATADIR=/var/lib/mysql \
-	                               -DINSTALL_MANDIR=man \
+	                               -DINSTALL_MANDIR=share/man \
 	                               -DINSTALL_INFODIR=share/mysql/docs \
-	                               -DINSTALL_DOCREADMEDIR=doc/${pkgname}-${pkgver} \
+	                               -DINSTALL_DOCREADMEDIR=share/doc/${pkgname} \
 	                               -DINSTALL_LIBDIR=lib/${MULTIARCH} \
 	                               -DINSTALL_PLUGINDIR=lib/${MULTIARCH}/mysql/plugin \
 	                               -DINSTALL_SCRIPTDIR=bin \
@@ -58,5 +58,5 @@ package() {
 	make install DESTDIR="${pkgdir}"
 	
 	rm -r "${pkgdir}"/usr/{data,mysql-test,sql-bench}
-	rm "${pkgdir}"/usr/man/man1/mysql-test-run.*
+	rm "${pkgdir}"/usr/share/man/man1/mysql-test-run.*
 }

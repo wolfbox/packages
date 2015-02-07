@@ -1,10 +1,10 @@
 pkgname=cvs
 pkgver=1.11.23
 pkgrel=1
-pkgdesc="A legacy software version control package."
+pkgdesc="A legacy software version control package"
 arch=("x86_64")
 url="http://www.nongnu.org/cvs/"
-license=('GPLv1' 'GPLv2')
+license=('GPL1' 'GPL2')
 
 depends=('glibc')
 
@@ -19,17 +19,17 @@ prepare() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	# Support modern glibc crypt()
-	cat ../cvs.crypt-2.diff | patch -p1
+	patch -p1 -i ../cvs.crypt-2.diff
 
 	# Fix compilation error
-	cat ../cvs.getline64.diff | patch -p1
+	patch -p1 -i ../cvs.getline64.diff
 }
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
-	            --mandir=/usr/man \
-	            --infodir=/usr/info
+	            --mandir=/usr/share/man \
+	            --infodir=/usr/share/info
 	make
 }
 

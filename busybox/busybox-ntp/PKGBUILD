@@ -2,7 +2,7 @@
 
 pkgname=busybox-ntp
 pkgrel=1
-pkgdesc="A lightweight ntp client and daemon."
+pkgdesc="A lightweight ntp client and daemon"
 install=ntp.install
 backup=('etc/ntpd.conf')
 
@@ -31,6 +31,6 @@ package() {
 	install -m755 "${srcdir}"/ntpd.networking "${pkgdir}"/etc/rc.d/events
 	echo "pool.ntp.org" > "${pkgdir}"/etc/ntpd.conf
 
-	mkdir -p "${pkgdir}"/usr/man/man1
-	pod2man -c "Network Time Tools" -r "ntp" "${srcdir}"/ntpd.pod > "${pkgdir}"/usr/man/man1/ntpd.1
+	mkdir -p "${pkgdir}"/usr/share/man/man1
+	pod2man -c "Network Time Tools" -r "ntp" "${srcdir}"/ntpd.pod > "${pkgdir}"/usr/share/man/man1/ntpd.1
 }

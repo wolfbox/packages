@@ -4,18 +4,19 @@ pkgrel=1
 pkgdesc="Library interface to GPG cryptography"
 arch=("x86_64")
 url="http://www.gnupg.org/(it)/related_software/gpgme/index.html"
-license=("GPLv2")
+license=("GPL2")
 
 depends=('glibc' 'libassuan')
 
 source=(ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-${pkgver}.tar.bz2{,.sig})
 sha256sums=('0db040c5b07e69cfe9a0b4566c8e90151ebacfe122c97c452f11386654aefcc9'
             'SKIP')
+validpgpkeys=('D8692123C4065DEA5E0F3AB5249B39D24F25E3B6') # Werner Koch
 
 build() {
 	cd "${srcdir}/gpgme-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-				--infodir=/usr/info --docdir=/usr/doc/gpgme-${pkgver}
+				--docdir=/usr/share/doc/gpgme
 	make
 }
 

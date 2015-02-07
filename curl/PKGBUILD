@@ -6,6 +6,7 @@ arch=("x86_64")
 url="http://curl.haxx.se"
 license=(custom)
 
+checkdepends=('valgrind')
 depends=('glibc' 'zlib' 'openssl' 'libidn' 'ca-certificates' 'openldap')
 
 source=(http://curl.haxx.se/download/curl-${pkgver}.tar.bz2{,.asc})
@@ -32,5 +33,5 @@ package() {
     make install DESTDIR="${pkgdir}"
 	
     # Remove perl script
-    rm -f "${pkgdir}"/usr/man/man1/mk-ca-bundle.1
+    rm -f "${pkgdir}"/usr/share/man/man1/mk-ca-bundle.1
 }

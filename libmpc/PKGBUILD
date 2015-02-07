@@ -1,10 +1,10 @@
 pkgname=libmpc
 pkgver=1.0.2
 pkgrel=1
-pkgdesc="GNU complex floating-point library."
+pkgdesc="GNU complex floating-point library"
 arch=("x86_64")
 url="http://www.multiprecision.org/index.php?prog=mpc"
-license=('LGPLv3')
+license=('LGPL3')
 
 depends=('glibc' 'gmp' 'mpfr')
 

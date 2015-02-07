@@ -14,7 +14,7 @@ sha256sums=('d12611a5c25b6499293c2bb7b435dc2b174db73e83f5a8cb7e34f2ce5fa6dadb')
 build() {
 	cd "${srcdir}/openldap-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --localstatedir=/var/lib \
-				--sysconfdir=/etc --mandir=/usr/man --with-cyrus-sasl \
+				--sysconfdir=/etc --mandir=/usr/share/man --with-cyrus-sasl \
 				--with-tls --with-threads --enable-syslog \
 				--enable-dynamic --enable-local --enable-proctitle \
 				--disable-static --enable-shared --disable-slapd
@@ -30,11 +30,10 @@ package() {
 	chmod 755 "${pkgdir}"/usr/lib/${MULTIARCH}/*.so.*
 
 	# Install copyright and docs stuff
-	mkdir -p "${pkgdir}"/usr/doc/openldap-${pkgver}
-	cp -a COPYRIGHT LICENSE README "${pkgdir}"/usr/doc/openldap-${pkgver}/
+	mkdir -p "${pkgdir}"/usr/share/doc/openldap
+	cp -a COPYRIGHT LICENSE README "${pkgdir}"/usr/share/doc/openldap/
 
 	# We don't ship the servers right now, so remove manpages
-	find "${pkgdir}"/usr/man -name slap* -exec rm -f {} \;
-	find "${pkgdir}"/usr/man -name slurp* -exec rm -f {} \;
-	#find "${pkgdir}"/usr/man -type d -empty -exec rmdir {} \;
+	find "${pkgdir}"/usr/share/man -name slap* -exec rm -f {} \;
+	find "${pkgdir}"/usr/share/man -name slurp* -exec rm -f {} \;
 }

@@ -1,7 +1,7 @@
 pkgname=dcron
 pkgver=4.5
 pkgrel=1
-pkgdesc="A clean periodical command scheduler."
+pkgdesc="A clean periodical command scheduler"
 arch=("x86_64")
 url="http://www.jimpryor.net/linux/dcron.html"
 license=('GPL')
@@ -15,7 +15,7 @@ sha256sums=('9e50edb6f5bd8153b16bad05087d985e5153ce45cc01ae77e7f842213fb4a824'
             '461d88ec67e39a5b38bb43a081c0f426e2593b08370a83228406b96064443997'
             'c4b78cea7a6fff00edf9b9056d3274ec7786cd5b5ad4093f4e711bf827e6fde0')
 
-_MAKEOPTS="PREFIX=/usr SBINDIR=/usr/bin BINDIR=/usr/bin MANDIR=/usr/man CRONTABS=/var/lib/cron/crontabs CRONSTAMPS=/var/lib/cron/cronstamps SHELL=/usr/bin/sh"
+_MAKEOPTS="PREFIX=/usr SBINDIR=/usr/bin BINDIR=/usr/bin MANDIR=/usr/share/man CRONTABS=/var/lib/cron/crontabs CRONSTAMPS=/var/lib/cron/cronstamps SHELL=/usr/bin/sh"
 
 prepare() {
 	cd "${srcdir}"/${pkgname}-${pkgver}

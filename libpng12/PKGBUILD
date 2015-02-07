@@ -14,6 +14,7 @@ depends=('glibc' 'zlib')
 source=(http://downloads.sourceforge.net/project/libpng/libpng12/${pkgver}/libpng-${pkgver}.tar.xz{,.asc})
 sha256sums=('d4fb0fbf14057ad6d0319034188fc2aecddb493da8e3031b7b072ed28f510ec0'
             'SKIP')
+validpgpkeys=('8048643BA2C840F4F92A195FF54984BFA16C640F') # Glenn Randers-Pehrson (mozilla) <glennrp+bmo@gmail.com>
 
 build() {
 	cd "${srcdir}/${_basename}-${pkgver}"
@@ -26,8 +27,8 @@ package() {
 	cd "${srcdir}/${_basename}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 	
-	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
-	install -m644 LICENSE "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}
+	install -m644 LICENSE "${pkgdir}"/usr/share/doc/${pkgname}
 	
 	rm -r "${pkgdir}"/usr/include
 	rm -r "${pkgdir}"/usr/bin

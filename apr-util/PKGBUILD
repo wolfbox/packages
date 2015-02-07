@@ -1,7 +1,7 @@
 pkgname=apr-util
 pkgver=1.5.4
 pkgrel=1
-pkgdesc="The Apache Portable Runtime utilities."
+pkgdesc="The Apache Portable Runtime utilities"
 arch=("x86_64")
 url="https://apr.apache.org"
 license=('Apache')
@@ -28,8 +28,8 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
 
-	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}
-	install -m644 LICENSE "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}/
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}
+	install -m644 LICENSE "${pkgdir}"/usr/share/doc/${pkgname}/
 
 	# These aren't useful in a package, and creep me out
 	sed -i 's:APU_SOURCE_DIR=.*::' "${pkgdir}"/usr/bin/apu-1-config

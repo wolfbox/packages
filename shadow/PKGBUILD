@@ -1,7 +1,7 @@
 pkgname=shadow
 pkgver=4.2.1
 pkgrel=1
-pkgdesc="The shadow password suite."
+pkgdesc="The shadow password suite"
 arch=("x86_64")
 url="http://pkg-shadow.alioth.debian.org/releases/"
 license=(BSD)
@@ -20,9 +20,9 @@ sha256sums=(3b0893d1476766868cd88920f4f1231c4795652aa407569faff802bcda0f3d41
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	zcat "${srcdir}/shadow.CVE-2005-4890.relax.diff.gz" | patch -p1
-	./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/man \
+	./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man \
 				--bindir=/usr/bin --sbindir=/usr/bin \
-				--docdir=/usr/doc/shadow-${pkgver} --enable-subordinate-ids \
+				--docdir=/usr/share/doc/shadow --enable-subordinate-ids \
 				--disable-shared --without-libcrack
 	make
 }

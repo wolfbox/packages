@@ -19,7 +19,7 @@ sha256sums=('8f9faeaebad088e772f4ef5e38252d472be4d878c6b3a2718c10a4fcebe7a41c'
 validpgpkeys=('8657ABB260F056B1E5190839D9C4D26D0E604491') # Matt Caswell <matt@openssl.org>
 
 prepare() {
-	cd "${srcdir}/openssl-${pkgver}"
+	cd openssl-${pkgver}
 	
 	# Lower the internal OpenSSL version number to improve application
 	# compatibility. This is very naughty, but it's what Slackware does...
@@ -30,7 +30,7 @@ prepare() {
 }
 
 build() {
-	cd "${srcdir}/openssl-${pkgver}"
+	cd openssl-${pkgver}
 	
 	# Ensure ls field counts are right for parsing
 	export LC_ALL=C
@@ -44,13 +44,13 @@ build() {
 }
 
 package() {
-	cd "${srcdir}/openssl-${pkgver}"
-	make install INSTALL_PREFIX="${pkgdir}" MANDIR=/usr/man MANSUFFIX=ssl
+	cd openssl-${pkgver}
+	make install INSTALL_PREFIX="${pkgdir}" MANDIR=/usr/share/man MANSUFFIX=ssl
 
 	# Create symlinks
 	( cd "${pkgdir}"/usr/lib/${MULTIARCH} ; ldconfig -l lib*.so.* )	
 	
 	# Install copyright notice
-	mkdir -p "${pkgdir}"/usr/share/doc/openssl-${pkgver}/
-	cp -a LICENSE doc "${pkgdir}"/usr/share/doc/openssl-${pkgver}/
+	mkdir -p "${pkgdir}"/usr/share/doc/openssl/
+	cp -a LICENSE doc "${pkgdir}"/usr/share/doc/openssl/
 }

@@ -1,10 +1,10 @@
 pkgname=intltool
 pkgver=0.50.2
 pkgrel=1
-pkgdesc="Translation utilities for autotools."
+pkgdesc="Translation utilities for autotools"
 arch=("x86_64")
 url="http://freedesktop.org/wiki/Software/intltool/"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('perl' 'perl-xml-parser')
 
@@ -14,9 +14,9 @@ sha256sums=(67f25c5c6fb71d095793a7f895b245e65e829e8bde68c6c8b4c912144ff34406)
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
-	            --mandir=/usr/man \
-	            --infodir=/usr/info \
-	            --docdir=/usr/doc/${pkgname}-${pkgver} \
+	            --mandir=/usr/share/man \
+	            --infodir=/usr/share/info \
+	            --docdir=/usr/share/doc/${pkgname} \
 	            --build=${CHOST}
 	make
 }

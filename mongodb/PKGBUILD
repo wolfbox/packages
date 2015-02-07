@@ -1,10 +1,10 @@
 pkgname=mongodb26
 pkgver=2.6.7
 pkgrel=1
-pkgdesc="A document database."
+pkgdesc="A document database"
 arch=("x86_64")
 url="http://www.mongodb.org"
-license=("AGPLv3")
+license=("AGPL3")
 
 depends=('glibc')
 provides=("mongodb=${pkgver}")
@@ -22,10 +22,10 @@ sha256sums=('60400360652ebaf3c9c553a35dde58075187522bceec1264ab91c23575777925'
 package() {
 	cd "${srcdir}/mongodb-linux-x86_64-${pkgver}"
 	mkdir -p "${pkgdir}"/usr/bin
-	mkdir -p "${pkgdir}"/usr/doc/mongodb-${pkgver}
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}
 	
 	install -m 755 -t "${pkgdir}"/usr/bin bin/*
-	install -m 644 -t "${pkgdir}"/usr/share/doc/mongodb-${pkgver} README GNU-AGPL-3.0 THIRD-PARTY-NOTICES
+	install -m 644 -t "${pkgdir}"/usr/share/doc/${pkgname} README GNU-AGPL-3.0 THIRD-PARTY-NOTICES
 	
 	mkdir -p "${pkgdir}"/etc/rc.d/events
 	install -m 755 "${srcdir}"/mongodb "${pkgdir}"/etc/rc.d/

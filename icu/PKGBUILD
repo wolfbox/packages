@@ -29,7 +29,6 @@ build() {
   ./configure --prefix=/usr \
     --libdir=/usr/lib/${MULTIARCH} \
 	--sysconfdir=/etc \
-	--mandir=/usr/man \
 	--sbindir=/usr/bin
   make
 }
@@ -44,5 +43,5 @@ package() {
   make -j1 DESTDIR=${pkgdir} install
 
   # Install license
-  install -Dm644 ${srcdir}/icu/license.html ${pkgdir}/usr/share/licenses/icu/license.html
+  install -Dm644 ${srcdir}/icu/license.html ${pkgdir}/usr/share/doc/icu/license.html
 }

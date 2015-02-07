@@ -1,10 +1,10 @@
 pkgname=automake
 pkgver=1.15
 pkgrel=1
-pkgdesc="The GNU Makefile generator."
+pkgdesc="The GNU Makefile generator"
 arch=("x86_64")
 url="http://www.gnu.org/software/automake/"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('perl')
 

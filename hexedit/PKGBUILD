@@ -1,10 +1,10 @@
 pkgname=hexedit
 pkgver=1.2.12
 pkgrel=1
-pkgdesc="Hexadecimal and ASCII file editor."
+pkgdesc="Hexadecimal and ASCII file editor"
 arch=("x86_64")
 url="http://prigaux.chez.com/hexedit.html"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('glibc' 'ncurses')
 
@@ -23,6 +23,6 @@ package() {
 	mkdir -p "${pkgdir}"/usr/bin
 	install -m 755 hexedit "${pkgdir}"/usr/bin/
 
-	mkdir -p "${pkgdir}"/usr/man/man1
-	install -m 644 hexedit.1 "${pkgdir}"/usr/man/man1/
+	mkdir -p "${pkgdir}"/usr/share/man/man1
+	install -m 644 hexedit.1 "${pkgdir}"/usr/share/man/man1/
 }

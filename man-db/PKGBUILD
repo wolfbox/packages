@@ -1,10 +1,10 @@
 pkgname=man-db
 pkgver=2.7.1
 pkgrel=1
-pkgdesc="Manual page viewer."
+pkgdesc="Manual page viewer"
 arch=("x86_64")
 url="http://www.nongnu.org/man-db/"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('glibc' 'groff' 'gdbm>=1.9.0' 'libpipeline')
 makedepends=('pkg-config')
@@ -16,7 +16,7 @@ build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
 	            --libexecdir=/usr/lib/${MULTIARCH} --sbindir=/usr/bin \
-	            --mandir=/usr/man --docdir=/usr/doc/man-db-${pkgver} \
+	            --mandir=/usr/share/man --docdir=/usr/share/doc/${pkgname} \
 	            --disable-setuid --with-db=gdbm
 	make
 }
@@ -25,7 +25,7 @@ package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 
 	make install DESTDIR="${pkgdir}"
-	rm "${pkgdir}"/usr/doc/man-db-${pkgver}/*.ps
+	rm "${pkgdir}"/usr/share/doc/${pkgname}/*.ps
 
 	mkdir -p "${pkgdir}"/var/cache/man
 }

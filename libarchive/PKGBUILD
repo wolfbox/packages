@@ -1,7 +1,7 @@
 pkgname=libarchive
 pkgver=3.1.2
 pkgrel=1
-pkgdesc="An archive processing library."
+pkgdesc="An archive processing library"
 arch=("x86_64")
 url="http://www.libarchive.org"
 license=("BSD")
@@ -20,7 +20,7 @@ prepare() {
 build() {
 	cd "${srcdir}/${pkgname}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-			    --localstatedir=/var --mandir=/usr/man --disable-static
+			    --localstatedir=/var --mandir=/usr/share/man --disable-static
 	make
 }
 
@@ -30,9 +30,9 @@ package() {
 	
 	# Make bsdtar the default tar
 	ln "${pkgdir}"/usr/bin/bsdtar "${pkgdir}"/usr/bin/tar
-	ln -s /usr/man/man1/bsdtar.1.gz "${pkgdir}"/usr/man/man1/tar.1.gz
+	ln -s /usr/share/man/man1/bsdtar.1.gz "${pkgdir}"/usr/share/man/man1/tar.1.gz
 
 	# Make bsdcpio the default cpio
 	ln "${pkgdir}"/usr/bin/bsdcpio "${pkgdir}"/usr/bin/cpio
-	ln -s /usr/man/man1/bsdcpio.1.gz "${pkgdir}"/usr/man/man1/cpio.1.gz
+	ln -s /usr/share/man/man1/bsdcpio.1.gz "${pkgdir}"/usr/share/man/man1/cpio.1.gz
 }

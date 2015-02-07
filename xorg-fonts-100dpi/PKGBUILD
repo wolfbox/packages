@@ -8,7 +8,7 @@ pkgdesc="X.org 100dpi fonts"
 arch=('any')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
+depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-util' 'fontconfig')
 groups=('xorg')
 install=xfonts.install
 

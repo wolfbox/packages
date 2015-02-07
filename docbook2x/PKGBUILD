@@ -1,7 +1,7 @@
 pkgname=docbook2x
 pkgver=0.8.8
 pkgrel=1
-pkgdesc="A tool for converting from DocBook to Unix man pages and GNU Texinfo."
+pkgdesc="A tool for converting from DocBook to Unix man pages and GNU Texinfo"
 arch=('x86_64')
 url="http://docbook2x.sourceforge.net"
 license=('MIT')
@@ -31,8 +31,8 @@ package() {
 	cd docbook2X-${pkgver}
 	make DESTDIR="${pkgdir}" install
 	
-	mkdir -p "${pkgdir}"/usr/doc/${pkgname}-${pkgver}
-	install -m644 COPYING "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/
+	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}
+	install -m644 COPYING "${pkgdir}"/usr/share/doc/${pkgname}
 
 	# Fix doc2man trying an failing to go out to the network for things it
 	# already has installed.	

@@ -1,7 +1,7 @@
 pkgname=libpcap
 pkgver=1.4.0
 pkgrel=1
-pkgdesc="Packet capture library."
+pkgdesc="Packet capture library"
 arch=("x86_64")
 url="http://www.tcpdump.org"
 license=('BSD')
@@ -13,8 +13,8 @@ sha256sums=(7c6a2a4f71e8ab09804e6b4fb3aff998c5583108ac42c0e2967eee8e1dbc7406)
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
-	            --docdir=/usr/doc/libpcap-${pkgver} --enable-ipv6
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man \
+	            --docdir=/usr/share/doc/libpcap --enable-ipv6
 	make
 	make shared
 }

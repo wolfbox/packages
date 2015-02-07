@@ -10,7 +10,7 @@ url="http://xorg.freedesktop.org/"
 license=('custom')
 install=xfonts.install
 
-depends=(xorg-fonts-encodings xorg-fonts-alias xorg-font-utils fontconfig)
+depends=(xorg-fonts-encodings xorg-fonts-alias xorg-font-util fontconfig)
 
 source=(${url}/releases/individual/font/font-arabic-misc-${pkgver}.tar.bz2
         ${url}/releases/individual/font/font-cursor-misc-${pkgver}.tar.bz2

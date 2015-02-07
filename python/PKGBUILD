@@ -1,7 +1,7 @@
 pkgname=python
 pkgver=3.4.2
 pkgrel=1
-pkgdesc="The Python programming langauge."
+pkgdesc="The Python programming langauge"
 arch=("x86_64")
 url="https://www.python.org"
 license=(custom)
@@ -24,7 +24,7 @@ prepare() {
 
 build() {
 	cd "${srcdir}/Python-${pkgver}"
-	./configure --prefix=/usr --mandir=/usr/man --libdir=/usr/lib/${MULTIARCH} \
+	./configure --prefix=/usr --mandir=/usr/share/man --libdir=/usr/lib/${MULTIARCH} \
 	            --with-threads --enable-ipv6 --enable-shared
 	make
 }
@@ -36,6 +36,6 @@ package() {
 	ln -s /usr/bin/python3 "${pkgdir}"/usr/bin/python
 	ln -s /usr/bin/python3-config "${pkgdir}"/usr/bin/python-config
 	
-	mkdir -p "${pkgdir}"/usr/doc/python-${pkgver}
-	install -m644 LICENSE "${pkgdir}"/usr/doc/python-${pkgver}
+	mkdir -p "${pkgdir}"/usr/share/doc/python
+	install -m644 LICENSE "${pkgdir}"/usr/share/doc/python
 }

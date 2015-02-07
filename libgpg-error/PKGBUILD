@@ -4,17 +4,18 @@ pkgrel=1
 pkgdesc="A common library for working with gnupg errors"
 arch=("x86_64")
 url="https://www.gnupg.org/related_software/libgpg-error/index.html"
-license=("GPLv2")
+license=("GPL2")
 
 source=(ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-${pkgver}.tar.bz2{,.sig})
 
 sha256sums=('3ff4e5a71116eb862cd14185fcd282850927b8608e3b4186834fd940fbef57b5'
             'SKIP')
+validpgpkeys=('D8692123C4065DEA5E0F3AB5249B39D24F25E3B6') # Werner Koch
 
 build() {
 	cd "${srcdir}/libgpg-error-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
-				--infodir=/usr/info --docdir=/usr/doc/libgpg-error-${pkgver} \
+				--docdir=/usr/share/doc/libgpg-error \
 				--enable-shared=yes --enable-static=yes
 	make
 }

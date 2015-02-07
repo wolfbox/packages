@@ -1,10 +1,10 @@
 pkgname=valgrind
 pkgver=3.10.1
 pkgrel=1
-pkgdesc="Instrumentation framework and tools for program debugging and analysis."
+pkgdesc="Instrumentation framework and tools for program debugging and analysis"
 arch=("x86_64")
 url="http://www.valgrind.org"
-license=(GPLv2)
+license=(GPL2)
 options=(staticlibs)
 
 depends=('glibc')
@@ -16,7 +16,7 @@ build() {
 	cd "${srcdir}/valgrind-${pkgver}"
 
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-				--localstatedir=/var --mandir=/usr/man
+				--localstatedir=/var --mandir=/usr/share/man
 	make
 }
 

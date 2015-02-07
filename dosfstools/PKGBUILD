@@ -1,7 +1,7 @@
 pkgname=dosfstools
 pkgver=3.0.26
 pkgrel=1
-pkgdesc="MS-DOS filesystem utilities."
+pkgdesc="MS-DOS filesystem utilities"
 arch=("x86_64")
 url="http://daniel-baumann.ch/software/dosfstools"
 license=('GPLv3')
@@ -28,8 +28,4 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
-
-	# Fix docdir
-	cd "${pkgdir}"/usr/doc
-	mv dosfstools dosfstools-${pkgver}
 }

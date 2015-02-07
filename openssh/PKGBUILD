@@ -1,7 +1,7 @@
 pkgname=openssh
 pkgver=6.7p1
 pkgrel=1
-pkgdesc="Secure Shell daemon and clients."
+pkgdesc="Secure Shell daemon and clients"
 arch=("x86_64")
 url="https://www.openssh.com"
 license=('BSD')
@@ -15,6 +15,7 @@ source=(ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar
 sha256sums=('b2f8394eae858dabbdef7dac10b99aec00c95462753e80342e530bbb6f725507'
             'SKIP'
             'SKIP')
+validpgpkeys=('59C2118ED206D927E667EBE3D3E5F56B6D920D30')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
@@ -23,7 +24,7 @@ build() {
 	export CFLAGS="${CFLAGS} -fPIE"
 	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 	
-	./configure --prefix=/usr --mandir=/usr/man --sbindir=/usr/bin \
+	./configure --prefix=/usr --sbindir=/usr/bin \
 	            --libexecdir=/usr/lib/${MULTIARCH}/ssh \
 	            --sysconfdir=/etc/ssh \
 	            --without-pam \

@@ -8,7 +8,7 @@ pkgdesc="X.org Type1 fonts"
 arch=('any')
 license=('custom')
 url="http://xorg.freedesktop.org/"
-depends=(xorg-fonts-encodings xorg-fonts-alias xorg-font-utils fontconfig)
+depends=(xorg-fonts-encodings xorg-fonts-alias xorg-font-util fontconfig)
 install=xfonts.install
 
 source=(${url}/releases/individual/font/font-adobe-utopia-type1-1.0.2.tar.bz2

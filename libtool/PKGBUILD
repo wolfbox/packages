@@ -1,10 +1,10 @@
 pkgname=libtool
 pkgver=2.4.4
 pkgrel=1
-pkgdesc="A generic shared library support library."
+pkgdesc="A generic shared library support library"
 arch=("x86_64")
 url="https://www.gnu.org/software/libtool"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('glibc' 'm4')
 
@@ -17,7 +17,7 @@ build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
 	            --libdir=/usr/lib/${MULTIARCH} \
-	            --docdir=/usr/share/doc/libtool-${pkgver} \
+	            --docdir=/usr/share/doc/libtool \
 	            --build=${CHOST}
 	make
 }

@@ -1,7 +1,7 @@
 pkgname=pacman
 pkgver=4.2.0
 pkgrel=1
-pkgdesc="A simple and fast package manager."
+pkgdesc="A simple and fast package manager"
 arch=("x86_64")
 url="https://www.archlinux.org/pacman/"
 license=(GPLv2)
@@ -19,7 +19,7 @@ validpgpkeys=(6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD) # Allan McRae
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-				--localstatedir=/var --mandir=/usr/man \
+				--localstatedir=/var --mandir=/usr/share/man \
 				--with-ldconfig=/usr/bin/ldconfig \
 				--with-scriptlet-shell=/usr/bin/bash \
 				--build=${CHOST}

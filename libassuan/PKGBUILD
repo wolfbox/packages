@@ -1,10 +1,10 @@
 pkgname=libassuan
 pkgver=2.1.2
 pkgrel=1
-pkgdesc="Inter-process communication library for GPG."
+pkgdesc="Inter-process communication library for GPG"
 arch=("x86_64")
 url="https://www.gnupg.org/related_software/libassuan/index.html"
-license=("GPLv3")
+license=("GPL3")
 
 depends=('glibc' 'libgpg-error')
 
@@ -14,7 +14,7 @@ sha256sums=(39f8a7c9349aaaf7ccd937b90660153ec4d2d4df2465018754e5bcae5b1db77b)
 build() {
 	cd "${srcdir}/libassuan-${pkgver}"
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
-				--infodir=/usr/info --docdir=/usr/doc/libassuan-${pkgver}
+				--infodir=/usr/share/info --docdir=/usr/share/doc/libassuan
 	make
 }
 

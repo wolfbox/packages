@@ -1,15 +1,15 @@
 pkgname=hardening-check
 pkgver=2.6
 pkgrel=1
-pkgdesc="A tool for checking program security hardening."
+pkgdesc="A tool for checking program security hardening"
 arch=('any')
 url="http://wiki.debian.org/Hardening"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('bash' 'perl')
 
 source=(http://ftp.us.debian.org/debian/pool/main/h/hardening-wrapper/hardening-wrapper_${pkgver}.tar.xz)
-sha256sums=(c5fc46439646d0929a0605e4f3db67e57eefbbf5ceec5a2888440dbdf4450224)
+sha256sums=('c5fc46439646d0929a0605e4f3db67e57eefbbf5ceec5a2888440dbdf4450224')
 
 build() {
 	cd "${srcdir}/hardening-wrapper"
@@ -19,9 +19,9 @@ build() {
 package() {
 	cd "${srcdir}/hardening-wrapper"/build-tree
 	mkdir -p "${pkgdir}"/usr/bin
-	mkdir -p "${pkgdir}"/usr/man/man1
+	mkdir -p "${pkgdir}"/usr/share/man/man1
 	
 	install -m755 hardening-check "${pkgdir}"/usr/bin/
 	install -m755 ../hardening-check.sh "${pkgdir}"/usr/bin/
-	install -m755 hardening-check.1 "${pkgdir}"/usr/man/man1/
+	install -m755 hardening-check.1 "${pkgdir}"/usr/share/man/man1/
 }

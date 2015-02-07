@@ -1,10 +1,10 @@
 pkgname=less
 pkgver=458
 pkgrel=1
-pkgdesc="An advanced screen pager."
+pkgdesc="An advanced screen pager"
 arch=("x86_64")
 url="http://www.greenwoodsoftware.com/less/"
-license=('GPLv3')
+license=('GPL3')
 
 depends=('glibc' 'ncurses' 'pcre')
 
@@ -14,7 +14,7 @@ sha256sums=(e536c7819ede54b3d487f0ffc4c14b3620bed83734d92a81e89f62346db0fcac)
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
-	            --mandir=/usr/man \
+	            --mandir=/usr/share/man \
 	            --with-regex=pcre
 	make
 }

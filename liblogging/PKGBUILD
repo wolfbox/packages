@@ -1,17 +1,17 @@
 pkgname=liblogging
-pkgver=1.0.4
+pkgver=1.0.5
 pkgrel=1
-pkgdesc="An easy-to-use logging library."
+pkgdesc="An easy-to-use logging library"
 arch=("x86_64")
 url="http://www.liblogging.org"
-license=(custom)
+license=('BSD')
 
 source=(http://download.rsyslog.com/liblogging/liblogging-${pkgver}.tar.gz)
-sha256sums=(aceb5d2aa8bdc771ff66f407f9adf4176b654db63e34a8605795b68be537b81c)
+sha256sums=('310dc1691279b7a669d383581fe4b0babdc7bf75c9b54a24e51e60428624890b')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/man \
+	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man \
 				--disable-journal
 	make
 }

@@ -1,22 +1,22 @@
 pkgname=libksba
 pkgver=1.3.2
 pkgrel=1
-pkgdesc="A library for working with X.509 certificates and CMS data."
+pkgdesc="A library for working with X.509 certificates and CMS data"
 arch=("x86_64")
 url="https://www.gnupg.org/related_software/libksba/index.html"
-license=('GPLv2' 'GPLv3' 'LGPLv3')
+license=('GPL2' 'GPL3' 'LGPL3')
 
 depends=('glibc' 'libgpg-error')
 
 source=(ftp://ftp.gnupg.org/gcrypt/libksba/libksba-${pkgver}.tar.bz2{,.sig})
 sha256sums=('eb95537955dfc2845690a4cc3836074fa6d0a2c2ca2cbf1759364d3bd9868406'
             'SKIP')
+validpgpkeys=('D8692123C4065DEA5E0F3AB5249B39D24F25E3B6') # Werner Koch
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	./configure --prefix=/usr \
 	            --libdir=/usr/lib/${MULTIARCH} \
-	            --infodir=/usr/info \
 	            --enable-shared=yes \
 	            --enable-static=no
 	make

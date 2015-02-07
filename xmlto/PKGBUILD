@@ -1,10 +1,10 @@
 pkgname=xmlto
 pkgver=0.0.26
 pkgrel=1
-pkgdesc="A conversion utility for XML to various output formats."
+pkgdesc="A conversion utility for XML to various output formats"
 arch=('any')
 url="http://cyberelk.net/tim/software/xmlto/"
-license=('GPLv2')
+license=('GPL2')
 
 depends=('bash' 'libxslt')
 
@@ -14,7 +14,7 @@ sha256sums=(efb49b2fb3bc27c1a1e24fe34abf19b6bf6cbb40844e6fd58034cdf21c54b5ec)
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	
-	./configure --prefix=/usr --mandir=/usr/man BASH=/usr/bin/bash
+	./configure --prefix=/usr --mandir=/usr/share/man BASH=/usr/bin/bash
 	make
 }
 
