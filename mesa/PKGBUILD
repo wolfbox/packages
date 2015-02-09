@@ -2,14 +2,14 @@
 # Derived from Arch Linux
 
 pkgname=mesa
-pkgver=10.4.3
+pkgver=10.4.4
 pkgrel=1
 arch=('x86_64')
 url="http://mesa3d.sourceforge.net"
 license=('custom')
 
 makedepends=('python2' 'libxml2' 'glproto' 'dri2proto' 'dri3proto'
-             'presentproto' 'libvdpau' 'llvm' 'libclc')
+             'presentproto' 'libvdpau' 'llvm' 'libclc' 'wayland')
 depends=('gcc-libs' 'glibc' 'expat' 'libdrm' 'libxcb' 'libx11' 'libxdamage'
          'libxshmfence' 'libxxf86vm' 'libxext' 'libxau' 'libxdmcp' 'llvm-libs'
          'libpciaccess' 'elfutils')
@@ -19,7 +19,7 @@ replaces=('libgl')
 source=(ftp://ftp.freedesktop.org/pub/mesa/${pkgver}/MesaLib-${pkgver}.tar.bz2{,.sig}
         llvm-link-fix.patch
         LICENSE)
-sha256sums=('ef6ecc9c2f36c9f78d1662382a69ae961f38f03af3a0c3268e53f351aa1978ad'
+sha256sums=('f18a967e9c4d80e054b2fdff8c130ce6e6d1f8eecfc42c9f354f8628d8b4df1c'
             'SKIP'
             '0a0aebededec771ca11176b666aec129b1333b86037eb6d5db84219773ae371a'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
@@ -41,11 +41,9 @@ build() {
     --with-dri-driverdir=/usr/lib/xorg/modules/dri \
     --with-gallium-drivers=r300,r600,radeonsi,nouveau,svga,swrast \
     --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
-    --with-egl-platforms=x11,drm \
+    --with-egl-platforms=x11,drm,wayland \
     --enable-llvm-shared-libs \
     --enable-egl \
-    --disable-gallium-egl \
-    --disable-gallium-gbm \
     --enable-gbm \
     --enable-gallium-llvm \
     --enable-llvm-shared-libs \
@@ -53,6 +51,7 @@ build() {
     --enable-glx \
     --enable-glx-tls \
     --enable-dri \
+    --enable-dri3 \
     --enable-osmesa \
     --enable-gles1 \
     --enable-gles2 \
