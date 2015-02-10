@@ -1,0 +1,24 @@
+pkgname=expect
+pkgver=5.45
+pkgrel=1
+pkgdesc="A tool for automating interactive applications"
+arch=('x86_64')
+url="http://www.nist.gov/el/msid/expect.cfm"
+license=('custom')
+depends=('tcl')
+
+source=(http://downloads.sourceforge.net/project/expect/Expect/${pkgver}/expect${pkgver}.tar.gz)
+sha256sums=('b28dca90428a3b30e650525cdc16255d76bb6ccd65d448be53e620d95d5cc040')
+
+build() {
+  cd expect${pkgver}
+  ./configure --prefix=/usr --mandir=/usr/share/man 
+  make
+}
+
+package() {
+  cd expect${pkgver}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m644 README ${pkgdir}/usr/share/doc/${pkgname}/README
+}
