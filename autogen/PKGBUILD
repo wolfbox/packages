@@ -1,0 +1,29 @@
+pkgname=autogen
+pkgver=5.18.4
+pkgrel=1
+pkgdesc="A tool designed to simplify the creation and maintenance of programs that contain large amounts of repetitious text"
+arch=('x86_64')
+url="http://autogen.sourceforge.net/"
+license=('GPL3')
+
+depends=('glibc' 'libxml2' 'guile')
+
+source=(http://ftp.gnu.org/gnu/${pkgname}/rel${pkgver}/${pkgname}-${pkgver}.tar.xz{,.sig})
+sha256sums=('7fbaff0c25035aee5b96913de2c83d9a5cc973b8dc08d6b7489ecbcfd72eb84b'
+            'SKIP')
+validpgpkeys=('1F967B15DEB2349CACDF3D71D9204CB5BFBF0221') # Bruce Korb <bkorb@gnu.org>
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make install DESTDIR="${pkgdir}"
+
+    # Remove constants containing absolute paths to build directory
+    sed -i '/top-/d' "${pkgdir}"/usr/share/autogen/tpl-config.tlib 
+}
