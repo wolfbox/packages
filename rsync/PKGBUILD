@@ -1,0 +1,26 @@
+pkgname=rsync
+pkgver=3.1.1
+pkgrel=1
+pkgdesc="A file synchronization utility"
+arch=('x86_64')
+url="http://rsync.samba.org"
+license=('GPL3')
+
+source=(http://rsync.samba.org/ftp/rsync/${pkgname}-${pkgver}.tar.gz{,.asc})
+sha256sums=('7de4364fcf5fe42f3bdb514417f1c40d10bbca896abe7e7f2c581c6ea08a2621'
+            'SKIP')
+validpgpkeys=('0048C8B026D4C96F0E589C2F6C859FB14B96A8C5') # Wayne Davison <wayned@users.sourceforge.net>
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    ./configure --prefix=/usr \
+                --with-included-popt=no \
+                --disable-debug
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make install DESTDIR="${pkgdir}"
+}
