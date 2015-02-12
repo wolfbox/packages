@@ -1,19 +1,19 @@
 pkgname=gnupg
-pkgver=2.1.1
+pkgver=2.1.2
 pkgrel=1
 pkgdesc="The GNU Privacy Guard cryptography tool"
 arch=("x86_64")
 url="http://gnupg.org"
-license=('GPLv3' 'LGPLv3')
+license=('GPL3' 'LGPL3')
 
 depends=('glibc' 'libgpg-error' 'libgcrypt>=1.6' 'npth' 'zlib' 'readline'
          'ncurses' 'libassuan' 'libksba' 'pinentry')
 
 source=(ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-${pkgver}.tar.bz2{,.sig})
-sha256sums=('70ecd01d2875db62624c911c2fd815742f50aef5492698eb3bfc09a08690ce49'
+sha256sums=('404f5a43d591dfe41f0ffb204b49a1533b67d77bc1fd68febd7e447575616792'
             'SKIP')
-validpgpkeys=('031EC2536E580D8EA286A9F22071B08A33BD3F06') # NIIBE Yutaka (GnuPG Release Key) <gniibe@fsij.org>
-
+validpgpkeys=('031EC2536E580D8EA286A9F22071B08A33BD3F06'  # NIIBE Yutaka (GnuPG Release Key) <gniibe@fsij.org>
+              'D8692123C4065DEA5E0F3AB5249B39D24F25E3B6') # Werner Koch
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
 
