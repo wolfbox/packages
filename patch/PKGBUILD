@@ -1,5 +1,5 @@
 pkgname=patch
-pkgver=2.7.2
+pkgver=2.7.4
 pkgrel=1
 pkgdesc="A tool for applying patches"
 arch=("x86_64")
@@ -8,16 +8,18 @@ license=('GPL3')
 
 depends=('glibc' 'attr')
 
-source=(http://ftpmirror.gnu.org/patch/patch-${pkgver}.tar.xz)
-sha256sums=('9a55c7e7415fa789acc45dbe78fe4675b1fa12c1ccb19f1513f69fca3f798a9a')
+source=(http://ftpmirror.gnu.org/patch/patch-${pkgver}.tar.xz{,.sig})
+sha256sums=('0eacbb07ce106fe4dcbfbe6c052e55b50bf3df8e1bb16228c9da77b6659ff109'
+            'SKIP')
+validpgpkeys=('7768CE4B75E5236F1A374CEEC4C927CD5D1B36D7') # Andreas Gruenbacher <agruen@gnu.org>
 
 build() {
-	cd ${pkgname}-${pkgver}
-	./configure --prefix=/usr
-	make
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr
+    make
 }
 
 package() {
-	cd ${pkgname}-${pkgver}
-	make DESTDIR="${pkgdir}" install
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
 }
