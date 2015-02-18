@@ -1,0 +1,28 @@
+pkgname=openpam-modules
+pkgver=001
+pkgrel=1
+pkgdesc="A set of PAM modules"
+arch=("x86_64")
+url=""
+license=('BSD')
+
+depends=('glibc' 'openpam')
+
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/wolfbox/openpam-modules/archive/${pkgver}.tar.gz
+        other.pam)
+sha256sums=('36cf1f280d5edf2a6833c2c83722065f3b3ecd2dbea491becc517b1d377a9934'
+            '4902920671abb084ab6301302c62718fe22cdb38563f5f95771d54ac7aa70385')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH}/security
+    mkdir -p "${pkgdir}"/usr/share/man/man8 
+    make DESTDIR="${pkgdir}" install SECUREDIR="${pkgdir}"/usr/lib/${MULTIARCH}/security \
+                                     MANDIR="${pkgdir}"/usr/share/man/man8
+    install -Dm644 ../other.pam "${pkgdir}"/etc/pam.d/other
+}

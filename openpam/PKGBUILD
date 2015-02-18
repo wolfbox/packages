@@ -1,0 +1,42 @@
+pkgname=openpam
+pkgver=20140912
+pkgrel=1
+pkgdesc="The standard OpenPAM security module implementation"
+arch=("x86_64")
+url="http://openpam.org"
+license=('BSD')
+
+depends=('glibc')
+
+source=(http://downloads.sourceforge.net/project/openpam/openpam/Ourouparia/openpam-${pkgver}.tar.gz{,.asc}
+        openpam-readword-fix.diff)
+sha256sums=('82bc29397fa68ce49742618e0affdaa9abd4341d9ffbe607f9b10cdf1242bc87'
+            'SKIP'
+            '6f20a95fc0226c9507bd27ae623bcce472cb1a2d3ba19a5fae5588abc0a2f391')
+validpgpkeys=('BB5722E5C9B677D173C38CFC92C843456DA6A66E') # Dag-Erling Smørgrav <des@freebsd.org>
+
+prepare() {
+    cd ${pkgname}-${pkgver}
+    patch -p3 -i ../openpam-readword-fix.diff
+}
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    # Fix module search path
+    export CPPFLAGS="${CPPFLAGS} -D OPENPAM_MODULES_DIRECTORY=\\\"/usr/lib/${MULTIARCH}/security\\\""
+
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --sysconfdir=/etc \
+                --with-modules-dir=/usr/lib/${MULTIARCH}/security
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+
+    # Don't include the sample pam_permit and pam_deny.
+    rm -rf "${pkgdir}"/usr/lib/${MULTIARCH}/security
+}

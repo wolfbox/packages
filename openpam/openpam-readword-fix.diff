@@ -1,0 +1,57 @@
+Index: /branches/nooath/lib/libpam/openpam_readword.c
+===================================================================
+--- /branches/nooath/lib/libpam/openpam_readword.c	(revision 824)
++++ /branches/nooath/lib/libpam/openpam_readword.c	(revision 825)
+@@ -56,5 +56,5 @@
+ 	char *word;
+ 	size_t size, len;
+-	int ch, comment, escape, quote;
++	int ch, escape, quote;
+ 	int serrno;
+ 
+@@ -62,10 +62,27 @@
+ 
+ 	/* skip initial whitespace */
+-	comment = 0;
+-	while ((ch = getc(f)) != EOF && ch != '\n') {
+-		if (ch == '#')
+-			comment = 1;
+-		if (!is_lws(ch) && !comment)
++	escape = quote = 0;
++	while ((ch = getc(f)) != EOF) {
++		if (ch == '\n') {
++			/* either EOL or line continuation */
++			if (!escape)
++				break;
++			if (lineno != NULL)
++				++*lineno;
++			escape = 0;
++		} else if (escape) {
++			/* escaped something else */
+ 			break;
++		} else if (ch == '#') {
++			/* comment: until EOL, no continuation */
++			while ((ch = getc(f)) != EOF)
++				if (ch == '\n')
++					break;
++			break;
++		} else if (ch == '\\') {
++			escape = 1;
++		} else if (!is_ws(ch)) {
++			break;
++		}
+ 	}
+ 	if (ch == EOF)
+@@ -77,5 +94,4 @@
+ 	word = NULL;
+ 	size = len = 0;
+-	escape = quote = 0;
+ 	while ((ch = fgetc(f)) != EOF && (!is_ws(ch) || quote || escape)) {
+ 		if (ch == '\\' && !escape && quote != '\'') {
+@@ -91,5 +107,5 @@
+ 			/* end quote */
+ 			quote = 0;
+-		} else if (ch == '\n' && escape && quote != '\'') {
++		} else if (ch == '\n' && escape) {
+ 			/* line continuation */
+ 			escape = 0;
