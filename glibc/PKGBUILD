@@ -1,5 +1,5 @@
 pkgname=glibc
-pkgver=2.20
+pkgver=2.21
 pkgrel=1
 pkgdesc="The GNU libc"
 arch=("x86_64")
@@ -10,21 +10,17 @@ options=('!strip')
 depends=('linux' 'tzdata')
 
 source=(ftp://ftp.gnu.org/gnu/libc/glibc-${pkgver}.tar.gz{,.sig}
-        glibc.hardening.diff
         glibc-2.10-dns-no-gethostbyname4.diff
-        glibc-2.20-roundup.patch
-        glibc.git-96611391ad8823ba58405325d78cefeae5cdf699-CVE-2010-3847b.patch
+        glibc-2.21-roundup.patch
         glibc.ldd.trace.through.dynamic.linker.diff
         glibc.locale.no-archive.diff
         glibc.nis-netgroups.diff
         glibc.ru_RU.CP1251.diff
         is_IS.diff)
-sha256sums=('37e1de410d572a19b707b99786db9822bb4775e9d70517d88937ab12e6d6debc'
+sha256sums=('8d8f78058f2e9c7237700f76fe4e0ae500db31470290cd0b8a9739c0c8ce9738'
             'SKIP'
-            '933d57324238b8656f06b0962354c4a9f04768117763e0c0d2564b4a1bea62c8'
             'b1faf214be20843c851f912d5c2ca14c7c7184658ba3f24fb8ce579c6c67d1d4'
-            '2835db5d624fa79236f97a8450e9ff0e452f6bb689b4a11e6a63d52e4efb997b'
-            'fdc677e3addee2126cb5e94027e7ff03970fcd388e6a702f86f3ec2ff35c7064'
+            '167a7bd9bdef06285ff737cf4ae4b66c88e6be72bd9306f64bc0a394764d6237'
             '9663b115474fd722d8f090a09a8ebbacfa19af3609437eae486a38edeccf2369'
             'b2c6b0cd7f10d11cb5754b48eeaca705cef414c9dce64efaad0bba2472096f34'
             'f45cb3f9982bc35bd6d6020db2834df3b5e509d6339416a9f37397ceb91db523'
@@ -33,83 +29,79 @@ sha256sums=('37e1de410d572a19b707b99786db9822bb4775e9d70517d88937ab12e6d6debc'
 validpgpkeys=(F37CDAB708E65EA183FD1AF625EF0A436C2A4AFF) # Carlos O'Donell <carlos@systemhalted.org>
 
 prepare() {
-	cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 
-	# Use old-style locale directories rather than a single (and strangely
-	# formatted) /usr/lib/locale/locale-archive file:
-	patch -p1 -i "${srcdir}"/glibc.locale.no-archive.diff
+    # Use old-style locale directories rather than a single (and strangely
+    # formatted) /usr/lib/locale/locale-archive file:
+    patch -p1 -i "${srcdir}"/glibc.locale.no-archive.diff
 
-	# The is_IS locale is causing a strange error about the "echn" command
-	# not existing.  This patch reverts is_IS to the version shipped in
-	# glibc-2.5:
-	patch -p1 -i "${srcdir}"/is_IS.diff
+    # The is_IS locale is causing a strange error about the "echn" command
+    # not existing.  This patch reverts is_IS to the version shipped in
+    # glibc-2.5:
+    patch -p1 -i "${srcdir}"/is_IS.diff
 
-	# Fix NIS netgroups:
-	patch -p1 -i "${srcdir}"/glibc.nis-netgroups.diff
+    # Fix NIS netgroups:
+    patch -p1 -i "${srcdir}"/glibc.nis-netgroups.diff
 
-	# Support ru_RU.CP1251 locale:
-	patch -p1 -i "${srcdir}"/glibc.ru_RU.CP1251.diff
+    # Support ru_RU.CP1251 locale:
+    patch -p1 -i "${srcdir}"/glibc.ru_RU.CP1251.diff
 
-	# Fix resolver problem with glibc-2.9:
-	patch -p0 -i "${srcdir}"/glibc-2.10-dns-no-gethostbyname4.diff
+    # Fix resolver problem with glibc-2.9:
+    patch -p0 -i "${srcdir}"/glibc-2.10-dns-no-gethostbyname4.diff
 
-	# This partial security patch still applies and might be needed:
-	patch -p1 -i "${srcdir}"/glibc.git-96611391ad8823ba58405325d78cefeae5cdf699-CVE-2010-3847b.patch
+    # Make it harder for people to trick ldd into running code:
+    patch -p1 -i "${srcdir}"/glibc.ldd.trace.through.dynamic.linker.diff
 
-	# Make it harder for people to trick ldd into running code:
-	patch -p1 -i "${srcdir}"/glibc.ldd.trace.through.dynamic.linker.diff
-
-	# unlink() hardening patch from Florian Weimer via Slackware
-	patch -p1 -i "${srcdir}"/glibc.hardening.diff
+    # From upstream, fix jump label
+    patch -p1 -i "${srcdir}"/glibc-2.21-roundup.patch
   
-	# Set some paths properly
-	echo slibdir=/lib/${MULTIARCH} > configparms
-	echo rtlddir=/lib/${MULTIARCH} >> configparms
-	echo sbindir=/usr/bin >> configparms
-	echo rootsbindir=/usr/bin >> configparms  
+    # Set some paths properly
+    echo slibdir=/lib/${MULTIARCH} > configparms
+    echo rtlddir=/lib/${MULTIARCH} >> configparms
+    echo sbindir=/usr/bin >> configparms
+    echo rootsbindir=/usr/bin >> configparms
 }
 
 build() {
-	cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 
-	mkdir -p build
-	cd build
+    mkdir -p build
+    cd build
 
-	cp ../configparms ./
+    cp ../configparms ./
 
-	# Hardening flags don't play nicely with glibc
-	export CPPFLAGS=""
-	export CFLAGS=""
-	export CXXFLAGS=""
+    # Hardening flags don't play nicely with glibc
+    unset CPPFLAGS
+    export CFLAGS=-O3
+    export CXXFLAGS=-O3
 
-	../configure \
-    	--prefix=/usr \
-    	--libdir=/usr/lib/${MULTIARCH} \
-    	--libexecdir=/usr/lib/${MULTIARCH} \
-    	--sbindir=/usr/bin \
-    	--with-headers=/usr/include \
-    	--enable-add-ons \
-    	--enable-obsolete-rpc \
-    	--enable-profile \
-    	--enable-stackguard-randomization \
-    	--infodir=/usr/share/info \
-    	--mandir=/usr/share/man \
-    	--with-tls \
-    	--with-__thread \
-    	--without-cvs
+    ../configure \
+        --prefix=/usr \
+        --libdir=/usr/lib/${MULTIARCH} \
+        --libexecdir=/usr/lib/${MULTIARCH} \
+        --sbindir=/usr/bin \
+        --enable-kernel=3.18 \
+        --with-headers=/usr/include \
+        --enable-add-ons \
+        --enable-obsolete-rpc \
+        --enable-profile \
+        --enable-stackguard-randomization \
+        --with-tls \
+        --with-__thread \
+        --without-cvs
 
-	make
+    make
 }
 
 package() {
-	cd ${pkgname}-${pkgver}/build
+    cd ${pkgname}-${pkgver}/build
 
-	make install install_root="${pkgdir}"
-	make localedata/install-locales install_root="${pkgdir}"
+    make install install_root="${pkgdir}"
+    make localedata/install-locales install_root="${pkgdir}"
 
-	# Install a link of ld-linux into /lib64 for compatibility
-	mkdir -p "${pkgdir}"/lib64
-	ln -s /lib/${MULTIARCH}/ld-linux-${CARCH/_/-}.so.2 "${pkgdir}"/lib64
+    # Install a link of ld-linux into /lib64 for compatibility
+    mkdir -p "${pkgdir}"/lib64
+    ln -s /lib/${MULTIARCH}/ld-linux-${CARCH/_/-}.so.2 "${pkgdir}"/lib64
 
     # Manually strip.  Removing debugging symbols is safe and doesn't break valgrind
     ( cd "${pkgdir}"
