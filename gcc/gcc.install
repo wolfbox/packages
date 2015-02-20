@@ -1,0 +1,8 @@
+post_install() {
+    # Prevent GCC from segfaulting with PCH files
+    setfattr -n user.pax.flags -v r /usr/lib/$(gcc -print-multiarch)/gcc/$(gcc -dumpmachine)/${1/-*/}/cc1*
+}
+
+post_upgrade() {
+    post_install ${1}
+}

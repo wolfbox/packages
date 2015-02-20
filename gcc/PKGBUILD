@@ -5,38 +5,44 @@ pkgrel=1
 pkgdesc="The GNU Compiler Collection"
 arch=("x86_64")
 url="http://gcc.gnu.org"
-license=(GPLv3)
+license=(GPL3)
 
 options=('strip')
-makedepends=('zlib')
+makedepends=('zlib' 'glibc' 'lib32-glibc')
+checkdepends=('autogen' 'dejagnu')
 
-source=(http://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2
-		gcc-no_fixincludes.diff.gz)
-
-sha256sums=(2020c98295856aa13fda0f2f3a4794490757fc24bcca918d52cc8b4917b972dd
-			cdf880bd4fc1a35f5f3c6ec7d2eb1ce7ab55bbf60aa64db495cb07071a7af40b)
+source=(http://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2{,.sig}
+		gcc-no_fixincludes.diff
+		t-linux64)
+sha256sums=('2020c98295856aa13fda0f2f3a4794490757fc24bcca918d52cc8b4917b972dd'
+            'SKIP'
+            'ed0565cc5cd1f4dd459b9a665447a85fb3a8293f8eecabf5c3065a4405465382'
+            'SKIP')
+validpgpkeys=('33C235A34C46AA3FFB293709A328C3A2C3C45C06') # Jakub Jelinek <jakub@redhat.com>
 
 _target_dir=usr/lib/${MULTIARCH}/gcc/${CHOST}/${pkgver}
 
+MULTIARCH32=i386-linux-gnu
+
 prepare() {
-	cd "${srcdir}"/gcc-${pkgver}
+	cd gcc-${pkgver}
 
 	# No fixincludes
-	zcat "${srcdir}"/gcc-no_fixincludes.diff.gz | patch -p1
+	patch -p1 -i "${srcdir}"/gcc-no_fixincludes.diff
 
-	# Fix libdir
-	sed -i "/m64=/s/lib64/${MULTIARCH}/" gcc/config/i386/t-linux64
+	# Fix libdirs
+	install -m644 ../t-linux64 gcc/config/i386/t-linux64
 	
 	mkdir -p "${srcdir}/build"
 }
 
 build() {
-	cd "${srcdir}/build"
+	cd build
 
-	# GCC doesn't work well with our hardening options.
-	export CPPFLAGS=""
-	export CCFLAGS="-O2"
-	export CXXFLAGS="-O2"
+	# GCC doesn't compile with D_FORTIFY_SOURCE
+	unset CPPFLAGS
+	unset CFLAGS
+	unset CXXFLAGS
 
 	../gcc-${pkgver}/configure --prefix=/usr \
 				--libexecdir=/usr/lib/${MULTIARCH} \
@@ -56,12 +62,21 @@ build() {
 				--with-gnu-ld \
 				--verbose \
 				--disable-gtktest \
-				--disable-multilib \
+				--enable-multilib \
 				--enable-multiarch \
 				--target=${CHOST} \
 				--build=${CHOST} \
 				--host=${CHOST}
 	make
+}
+
+check() {
+    cd build
+
+    # Some "failures" are expected; this just makes sure that the compiler
+    # hasn't gone wildly crazy-pants.
+    #make -k check || true
+    #${srcdir}/gcc-${pkgver}/contrib/test_summary
 }
 
 # Packaging functions
@@ -77,11 +92,13 @@ package_gcc-libs() {
 
 	# KLUDGE ALERT
 	# Avoid ldconfig error
-	rm -f "${srcdir}"/out/usr/lib/${MULTIARCH}/*gdb.py
+	rm -f "${srcdir}"/out/usr/lib/{${MULTIARCH},${MULTIARCH32}}/*gdb.py
 	
 	# Move runtime libraries
 	mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH}
+	mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH32}
 	mv "${srcdir}"/out/usr/lib/${MULTIARCH}/lib{asan,atomic,gcc_s,gfortran,gomp,itm,objc,quadmath,stdc++,tsan}.so* "${pkgdir}"/usr/lib/${MULTIARCH}
+	mv "${srcdir}"/out/usr/lib/${MULTIARCH32}/lib{asan,atomic,gcc_s,gfortran,gomp,itm,objc,quadmath,stdc++}.so* "${pkgdir}"/usr/lib/${MULTIARCH32}
 
 	# Info files
 	mkdir -p "${pkgdir}"/usr/share/info
@@ -99,10 +116,12 @@ package_gcc-libs() {
 }
 
 package_gcc() {
-	depends=('glibc' 'gcc-libs' 'binutils' 'libmpc')
+	depends=('glibc' 'gcc-libs' 'binutils' 'libmpc' 'attr')
+    install=gcc.install
 
 	mv "${srcdir}"/out/* "${pkgdir}"/
 
+	# Compatibility links
 	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/c89
 	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/c99
 	ln -s /usr/bin/gcc "${pkgdir}"/usr/bin/cc
