@@ -1,5 +1,5 @@
 pkgname=dbus
-pkgver=1.6.28
+pkgver=1.6.30
 pkgrel=1
 pkgdesc="The D-Bus userspace message bus system."
 arch=("x86_64")
@@ -13,7 +13,7 @@ source=(http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz{,.asc}
         30-dbus
         dbus
         dbus.filesystem)
-sha256sums=('f1dc56238b132923c34db0e6714a003773afbe724b738f0f0ab18b0ff745b1fe'
+sha256sums=('e1a0066942895e285e449feef3c4799ab969cca0bc3b4bf805c0b6daa4e16695'
             'SKIP'
             'cd35621e4cc56403e9bb6ca6b431c8ae04f8cb8c626df40953e6f0f1bb488f64'
             '54f7304b8857f39a06ae5da6854d395520da544e64b6bb6c492de648a7888380'
@@ -57,7 +57,8 @@ package() {
     cd "${srcdir}/${pkgname}-${pkgver}"
 
     make install DESTDIR="${pkgdir}"
-	
+    rm -f "${pkgdir}"/etc/rc.d/rc.messagebus
+
     mkdir -p "${pkgdir}"/etc/rc.d/events
     install -m755 "${srcdir}"/dbus "${pkgdir}"/etc/rc.d/
     install -m755 "${srcdir}"/dbus.filesystem "${pkgdir}"/etc/rc.d/events/
