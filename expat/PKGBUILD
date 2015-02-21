@@ -12,12 +12,12 @@ source=("http://downloads.sourceforge.net/project/expat/expat/${pkgver}/expat-${
 sha256sums=(823705472f816df21c8f6aa026dd162b280806838bb55b3432b0fb1fcca7eb86)
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man
-	make
+    cd expat-${pkgver}
+    ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --mandir=/usr/share/man
+    make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	make DESTDIR="${pkgdir}" install
+    cd expat-${pkgver}
+    make DESTDIR="${pkgdir}" install
 }

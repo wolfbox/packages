@@ -10,7 +10,7 @@ url="https://fedorahosted.org/elfutils/"
 license=('LGPL3' 'GPL' 'GPL3')
 options=('staticlibs')
 
-depends=('gcc-libs' 'zlib' 'bzip2' 'xz')
+depends=('gcc-libs' 'glibc' 'zlib' 'bzip2' 'xz')
 
 source=(https://fedorahosted.org/releases/e/l/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz2{,.sig})
 sha256sums=('741b556863c069ceab2d81eb54aeda8c34f46728859704eaf9baef8503e9a9d1'
@@ -18,7 +18,7 @@ sha256sums=('741b556863c069ceab2d81eb54aeda8c34f46728859704eaf9baef8503e9a9d1'
 validpgpkeys=('47CC0331081B8BC6D0FD4DA08370665B57816A6A')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd elfutils-${pkgver}
 
   CFLAGS+=" -g"  # required for test-suite success
   ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
@@ -28,7 +28,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd elfutils-${pkgver}
 
   make DESTDIR="${pkgdir}" install
 }

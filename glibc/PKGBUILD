@@ -1,3 +1,4 @@
+_pkgbase=glibc
 pkgname=glibc
 pkgver=2.21
 pkgrel=1
@@ -5,7 +6,7 @@ pkgdesc="The GNU libc"
 arch=("x86_64")
 url="http://www.gnu.org/s/libc/"
 license=(GPL2 LGPL2.1)
-options=('!strip')
+options=('!strip' '!emptydirs')
 
 depends=('linux' 'tzdata')
 
@@ -29,7 +30,7 @@ sha256sums=('8d8f78058f2e9c7237700f76fe4e0ae500db31470290cd0b8a9739c0c8ce9738'
 validpgpkeys=(F37CDAB708E65EA183FD1AF625EF0A436C2A4AFF) # Carlos O'Donell <carlos@systemhalted.org>
 
 prepare() {
-    cd ${pkgname}-${pkgver}
+    cd ${_pkgbase}-${pkgver}
 
     # Use old-style locale directories rather than a single (and strangely
     # formatted) /usr/lib/locale/locale-archive file:
@@ -63,7 +64,7 @@ prepare() {
 }
 
 build() {
-    cd ${pkgname}-${pkgver}
+    cd ${_pkgbase}-${pkgver}
 
     mkdir -p build
     cd build
@@ -94,7 +95,7 @@ build() {
 }
 
 package() {
-    cd ${pkgname}-${pkgver}/build
+    cd ${_pkgbase}-${pkgver}/build
 
     make install install_root="${pkgdir}"
     make localedata/install-locales install_root="${pkgdir}"

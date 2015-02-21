@@ -1,0 +1,65 @@
+. PKGBUILD
+
+pkgname=lib32-${pkgname}
+pkgdesc="${pkgdesc} - 32-bit support libraries"
+
+source+=('PKGBUILD')
+sha256sums+=('SKIP')
+
+export MULTIARCH64=x86_64-linux-gnu
+
+build() {
+    cd ${_pkgbase}-${pkgver}
+
+    mkdir -p build
+    cd build
+
+    cp ../configparms ./
+
+    # Hardening flags don't play nicely with glibc
+    unset CPPFLAGS
+    export CFLAGS="-O3"
+    export CXXFLAGS="-O3"
+
+    ../configure \
+        --prefix=/usr \
+        --libdir=/usr/lib/${MULTIARCH} \
+        --libexecdir=/usr/lib/${MULTIARCH} \
+        --sbindir=/usr/bin \
+        --enable-kernel=3.18 \
+        --with-headers=/usr/include \
+        --enable-add-ons \
+        --enable-obsolete-rpc \
+        --enable-profile \
+        --enable-stackguard-randomization \
+        --enable-multi-arch \
+        --with-tls \
+        --with-__thread \
+        --without-cvs \
+        i686-unknown-linux-gnu
+
+    make
+}
+
+package() {
+    cd ${_pkgbase}-${pkgver}/build
+
+    make install install_root="${pkgdir}"
+
+    rm -rf "${pkgdir}"/{etc,sbin,usr/{bin,sbin,share},var}
+    find "${pkgdir}"/usr/include -type f -not -name stubs-32.h -delete
+
+    # Install compatibility links
+    mkdir -p "${pkgdir}"/lib
+    ln -s /lib/${MULTIARCH}/ld-linux.so.2 "${pkgdir}"/lib/
+    ln -s ../lib/${MULTIARCH64}/locale "${pkgdir}"/usr/lib/${MULTIARCH}/locale
+
+    # Set up linker path
+    mkdir -p "${pkgdir}"/etc/ld.so.conf.d
+    echo "/usr/lib/${MULTIARCH}" > "${pkgdir}"/etc/ld.so.conf.d/lib32-glibc.conf
+
+    # Manually strip.  Removing debugging symbols is safe and doesn't break valgrind
+    ( cd "${pkgdir}"
+      strip -g "${pkgdir}"/lib/${MULTIARCH}/l*.so*
+      strip ${STRIP_STATIC} "${pkgdir}"/usr/lib/${MULTIARCH}/*.a )
+}

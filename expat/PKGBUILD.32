@@ -1,0 +1,15 @@
+. PKGBUILD
+pkgname=lib32-${pkgname}
+pkgdesc="${pkgdesc} - 32-bit support libraries"
+
+source+=('PKGBUILD')
+sha256sums+=('SKIP')
+
+depends=('lib32-glibc')
+
+package() {
+    cd expat-${pkgver}
+    make DESTDIR="${pkgdir}" install
+
+    rm -r "${pkgdir}"/usr/{bin,include,share}
+}
