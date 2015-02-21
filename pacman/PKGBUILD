@@ -1,5 +1,5 @@
 pkgname=pacman
-pkgver=4.2.0
+pkgver=4.2.1
 pkgrel=1
 pkgdesc="A simple and fast package manager"
 arch=("x86_64")
@@ -9,11 +9,13 @@ license=(GPLv2)
 backup=('etc/makepkg.conf' 'etc/pacman.conf')
 depends=('glibc' 'bash' 'libarchive' 'curl' 'gpgme' 'libxml2' 'fakeroot')
 
-source=(ftp://ftp.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz{,.sig}
-        makepkg.conf)
-sha256sums=('941aca897db3218f0cb4036de13422d74212afbcdbf4a7cd7074a7128e196a22'
+source=(https://sources.archlinux.org/other/pacman/pacman-${pkgver}.tar.gz{,.sig}
+        makepkg.conf
+        makepkg-i386.conf)
+sha256sums=('a142593c409ef21f6fde0075c7649a58a8ee0edbd2af3f82e4dc05cfc1d0b545'
             'SKIP'
-            'b222f593333296abdfcf5c2d8847df90a8ac73e8e60a016c9adc843d2ab5b5c1')
+            'b222f593333296abdfcf5c2d8847df90a8ac73e8e60a016c9adc843d2ab5b5c1'
+            'edd28d22911afc10c65baceff773538300d333c82624dda16bccdbb4820235c7')
 validpgpkeys=(6645B0A8C7005E78DB1D7864F99FFE0FEAE999BD) # Allan McRae
 
 build() {
@@ -33,6 +35,7 @@ package() {
 	make install DESTDIR="${pkgdir}"
 	make install -C contrib DESTDIR="${pkgdir}"
 	install -m644 "${srcdir}"/makepkg.conf "${pkgdir}"/etc/
+	install -m644 "${srcdir}"/makepkg-i386.conf "${pkgdir}"/etc/
 	
 	rm -rf "${pkgdir}"/etc/bash_completion.d
 }
