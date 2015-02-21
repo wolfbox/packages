@@ -1,0 +1,36 @@
+_pkgbase=s2tc
+pkgname=${_pkgbase}
+pkgver=1.0
+pkgrel=1
+pkgdesc="Super Simple Texture Compression (S2TC) library and tools"
+arch=("x86_64")
+url="https://github.com/divVerent/s2tc/wiki"
+license=('MIT')
+
+# This is a workaround shim providing poor-man's S3TC support. Quality will be
+# poor if an application actually uses it, but generally the card implements
+# S3TC directly.
+
+# In 2017 the patent will expire, and we can make the "real" mesa S3TC library
+# our libtxc_dxtn provider.
+
+provides=('libtxc_dxtn')
+conflicts=('libtxc_dxtn')
+makedepends=('mesa')
+depends=('glibc' 'gcc-libs')
+
+source=(${pkgname}-${pkgver}.tar.gz::https://github.com/divVerent/${pkgname}/archive/v${pkgver}.tar.gz)
+sha256sums=('a21c5babd3810af4f7d4e8099e830f545b4e5f5dc0aadf375ed09d23566c6e45')
+
+build() {
+	cd ${_pkgbase}-${pkgver}
+	./autogen.sh
+	./configure --prefix=/usr \
+	            --libdir=/usr/lib/${MULTIARCH}
+	make
+}
+
+package() {
+    cd ${_pkgbase}-${pkgver}
+    make DESTDIR="${pkgdir}" install	
+}

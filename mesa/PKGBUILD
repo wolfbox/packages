@@ -13,6 +13,7 @@ makedepends=('python2' 'libxml2' 'glproto' 'dri2proto' 'dri3proto'
 depends=('gcc-libs' 'glibc' 'expat' 'libdrm' 'libxcb' 'libx11' 'libxdamage'
          'libxshmfence' 'libxxf86vm' 'libxext' 'libxau' 'libxdmcp' 'llvm-libs'
          'libpciaccess' 'elfutils')
+optdepends=('libtxc_dxtn')
 provides=('libgl')
 replaces=('libgl')
 
