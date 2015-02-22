@@ -8,8 +8,10 @@ license=('MIT')
 
 depends=('glibc')
 
-source=("http://downloads.sourceforge.net/project/expat/expat/${pkgver}/expat-${pkgver}.tar.gz")
-sha256sums=(823705472f816df21c8f6aa026dd162b280806838bb55b3432b0fb1fcca7eb86)
+source=("http://downloads.sourceforge.net/project/expat/expat/${pkgver}/expat-${pkgver}.tar.gz"
+        PKGBUILD.32)
+sha256sums=(823705472f816df21c8f6aa026dd162b280806838bb55b3432b0fb1fcca7eb86
+            'SKIP')
 
 build() {
     cd expat-${pkgver}

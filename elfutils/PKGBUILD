@@ -12,8 +12,10 @@ options=('staticlibs')
 
 depends=('gcc-libs' 'glibc' 'zlib' 'bzip2' 'xz')
 
-source=(https://fedorahosted.org/releases/e/l/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz2{,.sig})
+source=(https://fedorahosted.org/releases/e/l/elfutils/${pkgver}/elfutils-${pkgver}.tar.bz2{,.sig}
+        'PKGBUILD.32')
 sha256sums=('741b556863c069ceab2d81eb54aeda8c34f46728859704eaf9baef8503e9a9d1'
+            'SKIP'
             'SKIP')
 validpgpkeys=('47CC0331081B8BC6D0FD4DA08370665B57816A6A')
 

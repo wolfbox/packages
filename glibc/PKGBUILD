@@ -17,7 +17,8 @@ source=(ftp://ftp.gnu.org/gnu/libc/glibc-${pkgver}.tar.gz{,.sig}
         glibc.locale.no-archive.diff
         glibc.nis-netgroups.diff
         glibc.ru_RU.CP1251.diff
-        is_IS.diff)
+        is_IS.diff
+        PKGBUILD.32)
 sha256sums=('8d8f78058f2e9c7237700f76fe4e0ae500db31470290cd0b8a9739c0c8ce9738'
             'SKIP'
             'b1faf214be20843c851f912d5c2ca14c7c7184658ba3f24fb8ce579c6c67d1d4'
@@ -26,7 +27,8 @@ sha256sums=('8d8f78058f2e9c7237700f76fe4e0ae500db31470290cd0b8a9739c0c8ce9738'
             'b2c6b0cd7f10d11cb5754b48eeaca705cef414c9dce64efaad0bba2472096f34'
             'f45cb3f9982bc35bd6d6020db2834df3b5e509d6339416a9f37397ceb91db523'
             '4bc95730d37f25a14b8259965abba249c2361da4bc28037408a8ac99fd98158e'
-            '6f47310a8f4d3727b4742fe385f9948e9da79a52602459c1517165de2488e48f')
+            '6f47310a8f4d3727b4742fe385f9948e9da79a52602459c1517165de2488e48f'
+            'SKIP')
 validpgpkeys=(F37CDAB708E65EA183FD1AF625EF0A436C2A4AFF) # Carlos O'Donell <carlos@systemhalted.org>
 
 prepare() {
@@ -57,8 +59,8 @@ prepare() {
     patch -p1 -i "${srcdir}"/glibc-2.21-roundup.patch
   
     # Set some paths properly
-    echo slibdir=/lib/${MULTIARCH} > configparms
-    echo rtlddir=/lib/${MULTIARCH} >> configparms
+    echo slibdir=/usr/lib/${MULTIARCH} > configparms
+    echo rtlddir=/usr/lib/${MULTIARCH} >> configparms
     echo sbindir=/usr/bin >> configparms
     echo rootsbindir=/usr/bin >> configparms
 }
@@ -102,11 +104,11 @@ package() {
 
     # Install a link of ld-linux into /lib64 for compatibility
     mkdir -p "${pkgdir}"/lib64
-    ln -s /lib/${MULTIARCH}/ld-linux-${CARCH/_/-}.so.2 "${pkgdir}"/lib64
+    ln -s /usr/lib/${MULTIARCH}/ld-linux-${CARCH/_/-}.so.2 "${pkgdir}"/lib64
 
     # Manually strip.  Removing debugging symbols is safe and doesn't break valgrind
     ( cd "${pkgdir}"
-      strip -g "${pkgdir}"/lib/${MULTIARCH}/l*.so*
+      find usr/lib/${MULTIARCH} | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip -g
       strip ${STRIP_STATIC} "${pkgdir}"/usr/lib/${MULTIARCH}/*.a
       find usr/bin/ | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip ${STRIP_BINARIES} 2>/dev/null )
 }

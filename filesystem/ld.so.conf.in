@@ -1,3 +1,5 @@
 /lib/@MULTIARCH@
 /usr/lib/@MULTIARCH@
 /usr/local/lib/@MULTIARCH@
+
+include /etc/ld.so.conf.d/*.conf

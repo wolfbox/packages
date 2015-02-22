@@ -3,9 +3,6 @@
 pkgname=lib32-${pkgname}
 pkgdesc="${pkgdesc} - 32-bit support libraries"
 
-source+=('PKGBUILD')
-sha256sums+=('SKIP')
-
 export MULTIARCH64=x86_64-linux-gnu
 
 build() {
@@ -51,7 +48,7 @@ package() {
 
     # Install compatibility links
     mkdir -p "${pkgdir}"/lib
-    ln -s /lib/${MULTIARCH}/ld-linux.so.2 "${pkgdir}"/lib/
+    ln -s /usr/lib/${MULTIARCH}/ld-linux.so.2 "${pkgdir}"/lib/
     ln -s ../lib/${MULTIARCH64}/locale "${pkgdir}"/usr/lib/${MULTIARCH}/locale
 
     # Set up linker path
@@ -60,6 +57,6 @@ package() {
 
     # Manually strip.  Removing debugging symbols is safe and doesn't break valgrind
     ( cd "${pkgdir}"
-      strip -g "${pkgdir}"/lib/${MULTIARCH}/l*.so*
+      find usr/lib/${MULTIARCH} | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip -g
       strip ${STRIP_STATIC} "${pkgdir}"/usr/lib/${MULTIARCH}/*.a )
 }
