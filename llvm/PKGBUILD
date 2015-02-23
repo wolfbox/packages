@@ -99,12 +99,24 @@ package_llvm() {
 
 	# Install static analyzer
 	(
+		mkdir -p "${pkgdir}"/usr/lib/${MULTIARCH}/clang-analyzer
 		cd "${srcdir}/${pkgname}-${pkgver}.src/tools/clang/tools"
-		for tool in scan-view scan-build; do
-			install -m755 ${tool}/${tool} "${pkgdir}"/usr/bin/
+		for _tool in scan-view scan-build; do
+			cp -r ${_tool} "${pkgdir}"/usr/lib/${MULTIARCH}/clang-analyzer
+			ln -s /usr/lib/${MULTIARCH}/clang-analyzer/${_tool}/${_tool} "${pkgdir}"/usr/bin
 		done
 		install -m755 scan-build/{ccc,c++}-analyzer "${pkgdir}"/usr/bin
 		install -m644 scan-build/scan-build.1 "${pkgdir}"/usr/share/man/man1/
+
+		# Fix python interpreter
+		sed -i \
+			-e 's|env python$|&2|' \
+			-e 's|/usr/bin/python$|&2|' \
+			"$pkgdir/usr/lib/${MULTIARCH}/clang-analyzer/scan-view/scan-view" \
+			"$pkgdir/usr/lib/${MULTIARCH}/clang-analyzer/scan-build/set-xcode-analyzer"
+
+		# Fix clang path
+		sed -i 's:"$RealBin/bin/clang":"/usr/bin/clang":' "${pkgdir}"/usr/lib/${MULTIARCH}/clang-analyzer/scan-build/scan-build
 	)
 
 	# Move runtime libraries into llvm-libs
