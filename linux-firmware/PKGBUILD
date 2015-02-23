@@ -1,0 +1,21 @@
+pkgname=linux-firmware
+_rev=17657c3
+pkgver=20150206.${_rev}
+pkgrel=1
+pkgdesc="Firmware needed by various hardware devices under Linux"
+arch=("x86_64")
+url="http://www.kernel.org"
+license=('GPL2' 'GPL3' 'custom')
+options=(!strip)
+
+source=(git+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git#commit=${_rev})
+sha256sums=('SKIP')
+
+package() {
+    cd linux-firmware
+    make DESTDIR="${pkgdir}" FIRMWAREDIR=/lib/firmware SHELL=/bin/bash install
+    rm "${pkgdir}/lib/firmware/"{Makefile,README,configure,GPL-3}
+
+    install -d "${pkgdir}/usr/share/doc/${pkgname}"
+    install -Dm644 LICEN* WHENCE "${pkgdir}/usr/share/doc/${pkgname}"
+}
