@@ -1,0 +1,15 @@
+pkgname=pam-session-connector-null
+pkgver=1
+pkgrel=1
+pkgdesc="PAM session connector that does nothing"
+arch=("x86_64")
+url=""
+license=('BSD')
+
+provides=('pam-session-connector')
+conflicts=('pam-session-connector')
+
+package() {
+    mkdir -p "${pkgdir}"/etc/pam.d
+    touch "${pkgdir}"/etc/pam.d/pam-session-connector
+}

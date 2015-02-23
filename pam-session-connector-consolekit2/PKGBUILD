@@ -1,0 +1,16 @@
+pkgname=pam-session-connector-consolekit2
+pkgver=1
+pkgrel=1
+pkgdesc="PAM session connector registers sessions with ConsoleKit2"
+arch=("x86_64")
+url=""
+license=('BSD')
+
+provides=('pam-session-connector')
+conflicts=('pam-session-connector')
+depends=('consolekit2')
+
+package() {
+    mkdir -p "${pkgdir}"/etc/pam.d
+    printf "session\t\toptional\t\tpam_ck_connector.so\n" > "${pkgdir}"/etc/pam.d/pam-session-connector
+}

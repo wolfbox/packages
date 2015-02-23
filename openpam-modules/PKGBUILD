@@ -7,7 +7,7 @@ url="https://github.com/fim/openpam-modules"
 license=('BSD')
 backup=('etc/pam.d/other' 'etc/pam.d/system-login' 'etc/pam.d/system-auth')
 
-depends=('glibc' 'openpam')
+depends=('glibc' 'openpam' 'pam-session-connector')
 
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/wolfbox/openpam-modules/archive/${pkgver}.tar.gz
         other)
@@ -29,4 +29,7 @@ package() {
     mkdir -p "${pkgdir}"/etc/pam.d
     install -m644 ../other "${pkgdir}"/etc/pam.d/
     install -m644 examples/pam.d/system-{login,auth} "${pkgdir}"/etc/pam.d/
+
+    # Add in a PAM session connector
+    printf "session\t\tinclude\t\tpam-session-connector" >> "${pkgdir}"/etc/pam.d/system-login
 }

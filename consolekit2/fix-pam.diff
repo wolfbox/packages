@@ -1,0 +1,36 @@
+diff --git a/configure.ac b/configure.ac
+index ff18e97..53ed5f4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -244,6 +244,7 @@ dnl Check for PAM
+ dnl ---------------------------------------------------------------------------
+ 
+ have_pam=no
++have_linuxpam=no
+ AC_CHECK_LIB(pam, pam_getenv, have_pam=yes)
+ AM_CONDITIONAL(HAVE_PAM, test x$have_pam = xyes)
+ if test "x$have_pam" = "xyes"; then
+@@ -269,6 +270,10 @@ if test "x$enable_pam_module" = "xyes"; then
+ fi
+ AM_CONDITIONAL(ENABLE_PAM_MODULE, test "x$enable_pam_module" = "xyes")
+ 
++#Check if we can build an optional test program
++AC_CHECK_LIB(pam_misc, misc_conv, have_linuxpam=yes)
++AM_CONDITIONAL(HAVE_LINUXPAM, test "x$have_linuxpam" = "xyes")
++
+ dnl ------------------------------------------------------------------------------
+ dnl udev-acl - apply ACLs for users with local forground sessions
+ dnl ------------------------------------------------------------------------------
+diff --git a/pam-ck-connector/Makefile.am b/pam-ck-connector/Makefile.am
+index 1568f8f..d0b1117 100644
+--- a/pam-ck-connector/Makefile.am
++++ b/pam-ck-connector/Makefile.am
+@@ -23,7 +23,7 @@ pam_ck_connector_la_LIBADD =  			\
+ 
+ man_MANS = pam_ck_connector.8
+ 
+-if CK_COMPILE_LINUX
++if HAVE_LINUXPAM
+ noinst_PROGRAMS = 				\
+ 	test-pam				\
+ 	$(NULL)

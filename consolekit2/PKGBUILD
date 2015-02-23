@@ -1,0 +1,41 @@
+pkgname=consolekit2
+pkgver=0.9.2
+pkgrel=1
+pkgdesc="Seat management daemon"
+arch=("x86_64")
+url="http://consolekit2.github.io/ConsoleKit2"
+license=('GPL2')
+
+depends=('glibc' 'glib2' 'dbus' 'libx11' 'openpam')
+
+source=(https://github.com/ConsoleKit2/ConsoleKit2/releases/download/${pkgver}/ConsoleKit2-${pkgver}.tar.bz2
+        'fix-pam.diff')
+sha256sums=('102aa07e0960e56740e235bba06a546c8e0e88f47546ef252ecda917935af41f'
+            '8dcfd65ac8f5ee1327464c269ab3c543bfda9c67e9394cb8ac96a7deea8350e6')
+
+prepare() {
+    cd ConsoleKit2-${pkgver}
+
+    # Fix building with OpenPAM on Linux. Upstream 2888dcf6cd8ad4d374fd50f17609871f7c1fb03c
+    patch -p1 -i ../fix-pam.diff
+}
+
+build() {
+    cd ConsoleKit2-${pkgver}
+    autoreconf -f
+    ./configure --prefix=/usr \
+                --sbindir=/usr/bin \
+                --sysconfdir=/etc \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --libexecdir=/usr/lib/${MULTIARCH} \
+                --localstatedir=/var \
+                --enable-pam-module \
+                --with-pam-module-dir=/usr/lib/${MULTIARCH}/security
+    make
+}
+
+package() {
+    cd ConsoleKit2-${pkgver}
+    make install DESTDIR="${pkgdir}"
+    rm -r "${pkgdir}"/var/run
+}
