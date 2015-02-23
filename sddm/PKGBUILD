@@ -9,33 +9,43 @@ backup=('etc/sddm.conf')
 install=sddm.install
 
 makdepends=('cmake' 'ninja')
-depends=('glibc' 'gcc-libs' 'qt5' 'libxcb' 'upower')
+depends=('glibc' 'gcc-libs' 'qt5' 'libxcb' 'upower' 'openpam-modules')
 
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/${pkgname}/${pkgname}/archive/v${pkgver}.tar.gz
+        fix-pam.diff
         sddm.conf
         sddm
-        sddm.start_dbus)
+        sddm.start_dbus
+        sddm-greeter.pam)
 sha256sums=('80d53f075c275f744bd547523d6d640baccfacb4e463a71ec0facb8231b832ce'
+            'f11673a8575880e410250a95b56df8b88cf796baba9911514c1e700c7c4f4d95'
             '1f9b5255981820969e302e32c960475c681e7757e4fed481154176f3fb8908e6'
             '196b80a1f8033ab190912ec439b55487bb659e92eafc6cf923183361a31ee6e6'
-            '632895ee606f52a62155e5e411b1cd5ce2a1de4935bb92c175c32a9b7a7cf1ca')
+            '632895ee606f52a62155e5e411b1cd5ce2a1de4935bb92c175c32a9b7a7cf1ca'
+            '2aed5ed6aaa7370e0a19ec19b13797e456eae3fea2b2149d9b070a06dd85ac2f')
 
 prepare() {
     mkdir -p build
+    
+    # Apply a2518750a0f031bf8695ed95ccf2b0b94ca73220 from upstream, fixing
+    # build with OpenPAM.
+    cd ${pkgname}-${pkgver}
+    patch -p1 -i ../fix-pam.diff
 }
 
 build() {
-	cd build
+    cd build
 
-	export CFLAGS="${CFLAGS} -fPIE"
-	export CXXFLAGS="${CXXFLAGS} -fPIE"
-	export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
+    export CFLAGS="${CFLAGS} -fPIE"
+    export CXXFLAGS="${CXXFLAGS} -fPIE"
+    export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
 
-	cmake ../${pkgname}-${pkgver} \
-	    -DCMAKE_INSTALL_PREFIX=/usr \
+    cmake ../${pkgname}-${pkgver} \
+        -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBEXECDIR=lib/${MULTIARCH} \
-	    -DENABLE_JOURNALD=OFF \
-	    -G Ninja
+        -DRUNTIME_DIR=/run/sddm \
+        -DENABLE_JOURNALD=OFF \
+        -G Ninja
     ninja
 }
 
@@ -46,4 +56,8 @@ package() {
     install -Dm644 ../sddm.conf "${pkgdir}"/etc/sddm.conf
     install -Dm755 ../sddm "${pkgdir}"/etc/rc.d/sddm
     install -Dm755 ../sddm.start_dbus "${pkgdir}"/etc/rc.d/events/sddm.start_dbus
+
+    # Clean up Linux-PAMisms
+    rm "${pkgdir}"/etc/pam.d/sddm-autologin
+    install -m644 ../sddm-greeter.pam "${pkgdir}"/etc/pam.d/sddm-greeter
 }

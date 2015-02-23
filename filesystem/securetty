@@ -1,0 +1,12 @@
+# /etc/securetty
+# A list of TTY devices that are considered safe for root.
+
+/dev/console
+/dev/tty1
+/dev/tty2
+/dev/tty3
+/dev/tty4
+/dev/tty5
+/dev/tty6
+/dev/ttyS0
+/dev/hvc0

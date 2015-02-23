@@ -5,7 +5,8 @@ pkgdesc="Basic filesystem links for Wolf Box."
 arch=('any')
 license=('MIT')
 backup=('etc/passwd' 'etc/group' 'etc/ld.so.conf' 'etc/shadow' 'etc/gshadow'
-        'etc/hosts' 'etc/hostname')
+        'etc/hosts' 'etc/hostname' 'etc/shells' 'etc/securetty' 'etc/motd' 
+        'etc/nsswitch.conf')
 
 source=('profile'
         'os-release'
@@ -16,6 +17,9 @@ source=('profile'
         'gshadow'
         'hosts'
         'hostname'
+        'shells'
+        'securetty'
+        'motd'
         'nsswitch.conf')
 sha256sums=('5c56e94f10e8a87a82954801459eb4cd588bcb234af354ea08dbf2761ea62f1e'
             'd176841d0f92e962d4d48f1a51f2445a6bb21af5750dc4696d5d4968fbc36ddc'
@@ -26,6 +30,9 @@ sha256sums=('5c56e94f10e8a87a82954801459eb4cd588bcb234af354ea08dbf2761ea62f1e'
             'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
             '1f2b341cf1f7caf4c9c137f511691cc82b31c82106e7ab111b29a557b58e1d02'
             'f86d965dfd9c291a8cc38b75f06be00157ecfc324b5301654f83a449a723ae2d'
+            '316c5f450db4a4062b419464f4586d88c11ae48fa81b13029eb0b022ddf64870'
+            'db016bfe2a4ba4cf210997d1386f1a9a2616f9578ef58a156355eed03c0d50b2'
+            'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
             'a750d4be838467410f2415999b5a79aa083f7779eedb439cd51b792c5a5f028e')
 
 package() {
@@ -58,6 +65,9 @@ package() {
 	install -m600 "${srcdir}"/gshadow etc/
 	install -m644 "${srcdir}"/hostname etc/
 	install -m644 "${srcdir}"/hosts etc/
+	install -m644 "${srcdir}"/shells etc/
+	install -m644 "${srcdir}"/securetty etc/
+	install -m644 "${srcdir}"/motd etc/
 	install -m644 "${srcdir}"/nsswitch.conf etc/
 	sed "s:@MULTIARCH@:${MULTIARCH}:" "${srcdir}"/ld.so.conf.in > etc/ld.so.conf
 }

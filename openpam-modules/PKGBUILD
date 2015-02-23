@@ -3,15 +3,16 @@ pkgver=001
 pkgrel=1
 pkgdesc="A set of PAM modules"
 arch=("x86_64")
-url=""
+url="https://github.com/fim/openpam-modules"
 license=('BSD')
+backup=('etc/pam.d/other' 'etc/pam.d/system-login' 'etc/pam.d/system-auth')
 
 depends=('glibc' 'openpam')
 
 source=(${pkgname}-${pkgver}.tar.gz::https://github.com/wolfbox/openpam-modules/archive/${pkgver}.tar.gz
-        other.pam)
-sha256sums=('36cf1f280d5edf2a6833c2c83722065f3b3ecd2dbea491becc517b1d377a9934'
-            '4902920671abb084ab6301302c62718fe22cdb38563f5f95771d54ac7aa70385')
+        other)
+sha256sums=('17eb62ae584923202e6ca9b41e82e0defd3227a75367577a7f0643194b42da0f'
+            '2c6a3576b5d2acee613ec946ab3f69156f3288f9d97a302787b8f913bf75bebf')
 
 build() {
     cd ${pkgname}-${pkgver}
@@ -24,5 +25,8 @@ package() {
     mkdir -p "${pkgdir}"/usr/share/man/man8 
     make DESTDIR="${pkgdir}" install SECUREDIR="${pkgdir}"/usr/lib/${MULTIARCH}/security \
                                      MANDIR="${pkgdir}"/usr/share/man/man8
-    install -Dm644 ../other.pam "${pkgdir}"/etc/pam.d/other
+
+    mkdir -p "${pkgdir}"/etc/pam.d
+    install -m644 ../other "${pkgdir}"/etc/pam.d/
+    install -m644 examples/pam.d/system-{login,auth} "${pkgdir}"/etc/pam.d/
 }

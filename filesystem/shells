@@ -1,0 +1,5 @@
+# /etc/shells
+# A list of valid login shells.
+
+/bin/sh
+/bin/bash
