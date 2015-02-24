@@ -1,5 +1,5 @@
 pkgname=util-linux
-pkgver=2.25.2
+pkgver=2.26
 pkgrel=1
 pkgdesc="A broad collection of Linux system utilities"
 arch=("x86_64")
@@ -7,36 +7,47 @@ url="https://www.kernel.org/pub/linux/utils/util-linux/"
 license=(GPL2)
 install=util-linux.install
 backup=('etc/sysctl.conf')
-options=(emptydirs)
+options=('emptydirs')
 
 depends=('glibc' 'ncurses')
 
-source=(https://www.kernel.org/pub/linux/utils/util-linux/v2.25/util-linux-${pkgver}.tar.xz
+source=(https://www.kernel.org/pub/linux/utils/util-linux/v2.26/util-linux-${pkgver}.tar{.xz,.sign}
         sysctl.conf)
-sha256sums=('e0457f715b73f4a349e1acb08cb410bf0edc9a74a3f75c357070f31f70e33cd6'
-            '2c557a432be353b099ac241e9f62d8be80a4b354e3f31635365e4eed1a576632')
+sha256sums=('a23c6f39dea0ed215ccd589509ffc7bb6f706f6e1a04760f493fb0fd7e93c489'
+            'SKIP'
+            '8b0fa8fe4444245e734695f60342edc5338c32ffe7a0a6488b6dfa514c0ac1cd')
+validpgpkeys=('B0C64D14301CC6EFAEDF60E4E4B71D5EEC39C284') # Karel Zak <kzak@redhat.com>
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --sysconfdir=/etc \
-				--localstatedir=/var --mandir=/usr/share/man --infodir=/usr/share/info \
-				--docdir=/usr/share/doc/util-linux --sbindir=/usr/bin \
-				--bindir=/usr/bin --disable-static --disable-uuidd \
-				--disable-login --disable-nologin --disable-sulogin
-	make
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --sysconfdir=/etc \
+                --localstatedir=/var \
+                --docdir=/usr/share/doc/util-linux \
+                --sbindir=/usr/bin \
+                --bindir=/usr/bin \
+                --disable-static \
+                --disable-uuidd \
+                --disable-login \
+                --disable-nologin \
+                --disable-sulogin \
+                --disable-su \
+                --disable-chfn-chsh
+    make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	make install DESTDIR="${pkgdir}"
+    cd ${pkgname}-${pkgver}
+    make install DESTDIR="${pkgdir}"
 
-	# Fix the binary paths
-	mv "${pkgdir}"/usr/sbin/* "${pkgdir}"/usr/bin
-	rmdir "${pkgdir}"/usr/sbin
+    # Fix the binary paths
+    mv "${pkgdir}"/usr/sbin/* "${pkgdir}"/usr/bin
+    rmdir "${pkgdir}"/usr/sbin
 
-	mkdir -p "${pkgdir}"/etc/sysctl.d
-	install -m600 "${srcdir}"/sysctl.conf "${pkgdir}"/etc/
+    mkdir -p "${pkgdir}"/etc/sysctl.d
+    install -m600 "${srcdir}"/sysctl.conf "${pkgdir}"/etc/
 
-	# Remove setuid-root permissions
-	chmod -s "${pkgdir}"/usr/bin/{mount,umount,wall}	
+    # Remove setuid-root permissions
+    chmod -s "${pkgdir}"/usr/bin/{mount,umount,wall}
 }
