@@ -1,0 +1,39 @@
+pkgbase=phonon-gstreamer
+pkgname=phonon-qt5-gstreamer
+pkgdesc="Phonon GStreamer backend for Qt5"
+pkgver=4.8.2
+pkgrel=1
+arch=('x86_64')
+url='http://phonon.kde.org/'
+license=('LGPL')
+
+provides=('phonon-qt5-backend')
+replaces=('phonon-gstreamer')
+conflicts=('phonon-gstreamer')
+
+makedepends=('gst-plugins-base' 'cmake' 'phonon-qt5')
+depends=('gst-plugins-base' 'pulseaudio')
+
+source=("http://download.kde.org/stable/phonon/phonon-backend-gstreamer/${pkgver}/src/phonon-backend-gstreamer-${pkgver}.tar.xz")
+sha256sums=('20e0f71f2beb4f859db8385079a13aef5473863ee6f27aad7b065aa7bfe931e0')
+
+prepare() {
+    mkdir -p build-qt5
+}
+
+build() {
+    cd build-qt5
+    cmake ../phonon-backend-gstreamer-${pkgver} \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DPHONON_BUILD_PHONON4QT5=ON \
+        -DCMAKE_INSTALL_LIBDIR=lib/${MULTIARCH}
+    make
+}
+
+package_phonon-qt5-gstreamer() {
+    cd build-qt5
+    make DESTDIR="${pkgdir}" install
+
+    # Those are not needed
+    rm -rf "${pkgdir}"/usr/share
+}
