@@ -1,0 +1,24 @@
+pkgname=wavpack
+pkgver=4.70.0
+pkgrel=1
+pkgdesc="Audio compression format with lossless, lossy and hybrid compression modes"
+arch=('x86_64')
+url="http://www.wavpack.com/"
+license=('BSD')
+
+depends=('glibc')
+
+source=(http://www.wavpack.com/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('2cade379b0aba99fbc4e442ccc6dac6c609f6212e46516a083e24c8c364430a4')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --enable-mmx
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    install -Dm644 COPYING "${pkgdir}/usr/share/doc/${pkgname}/LICENSE"
+}
