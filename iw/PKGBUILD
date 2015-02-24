@@ -1,0 +1,24 @@
+pkgname=iw
+pkgver=3.17
+pkgrel=1
+pkgdesc="nl80211 based CLI configuration utility for wireless devices"
+arch=("x86_64")
+url="http://wireless.kernel.org/en/users/Documentation/iw"
+license=("ISC")
+
+depends=("libnl")
+
+source=(https://www.kernel.org/pub/software/network/$pkgname/$pkgname-$pkgver.tar{.xz,.sign})
+sha256sums=('48a62eb5cd8e757c9617749df96b01f133c184f6c107f18be660ee08f155fa93'
+            'SKIP')
+validpgpkeys=('C0EBC440F6DA091C884D8532E0F373F37BF9099A') # Johannes Berg <johannes@sipsolutions.net>
+
+build() {
+    cd ${pkgname}-${pkgver}
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="$pkgdir" SBINDIR="/usr/bin" install
+}
