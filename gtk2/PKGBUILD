@@ -14,7 +14,7 @@ provides=('gtk-update-icon-cache')
 makedepends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
              'shared-mime-info' 'cairo' 'gdk-pixbuf2' 'gobject-introspection' 'python2')
 depends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 
-         'shared-mime-info' 'cairo' 'cups' 'gtk-update-icon-cache' 'gdk-pixbuf2')
+         'shared-mime-info' 'cairo' 'cups' 'gdk-pixbuf2')
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-$pkgver.tar.xz
         gtkrc xid-collision-debug.patch)
