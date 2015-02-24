@@ -1,0 +1,38 @@
+pkgname=pulseaudio
+pkgver=6.0
+pkgrel=1
+pkgdesc="A sound server"
+arch=("x86_64")
+url="http://www.freedesktop.org/wiki/Software/PulseAudio"
+license=('AGPL3' 'LGPL2.1')
+backup=(etc/pulse/client.conf)
+
+depends=('glibc' 'fftw' 'orc' 'webrtc-audio-processing' 'bluez' 'avahi')
+
+source=(http://freedesktop.org/software/pulseaudio/releases/pulseaudio-${pkgver}.tar.xz)
+sha256sums=('b50640e0b80b1607600accfad2e45aabb79d379bf6354c9671efa2065477f6f6')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --libexecdir=/usr/lib/${MULTIARCH} \
+                --disable-tcpwrap \
+                --disable-bluez4 \
+                --disable-samplerate \
+                --disable-rpath \
+                --disable-default-build-tests
+
+    # Fight unused direct deps
+    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make install DESTDIR="${pkgdir}"
+
+    mkdir -p "${pkgdir}"/etc/pulse
+    install -m644 src/client.conf "${pkgdir}"/etc/pulse/client.conf
+}

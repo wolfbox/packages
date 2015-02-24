@@ -9,7 +9,7 @@ license=('LGPL')
 options=('!emptydirs')
 
 makedepends=('cmake' 'qt5-tools')
-depends=('glibc' 'gcc-libs' 'qt5')
+depends=('glibc' 'gcc-libs' 'qt5' 'pulseaudio')
 
 source=("http://download.kde.org/stable/${pkgbase}/${pkgver}/src/${pkgbase}-${pkgver}.tar.xz")
 sha256sums=('a1149c961ca1570968d070bbd23671e614aa506f847ca93748960e309f85da16')
@@ -23,7 +23,7 @@ build() {
     -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON \
     -DPHONON_BUILD_PHONON4QT5=ON \
     -DCMAKE_INSTALL_LIBDIR=lib/${MULTIARCH} \
-    -DWITH_PulseAdio=NO
+    -DWITH_PulseAdio=YES
   make
 }
 
