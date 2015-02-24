@@ -1,0 +1,41 @@
+pkgname=gst-plugins-base
+pkgver=1.4.5
+pkgrel=1
+pkgdesc="GStreamer Multimedia Framework Base Plugins"
+arch=('x86_64')
+license=('LGPL2.1')
+options=(!emptydirs)
+url="http://gstreamer.freedesktop.org/"
+
+makedepends=('pkg-config' 'gobject-introspection' 'python2')
+depends=('gstreamer' 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual' 'libvorbis' 'libtheora' 'pango')
+
+source=(http://gstreamer.freedesktop.org/src/${pkgname}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('77bd8199e7a312d3d71de9b7ddf761a3b78560a2c2a80829d0815ca39cbd551d')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH} \
+                --sysconfdir=/etc \
+                --localstatedir=/var \
+                --disable-static \
+                --enable-experimental \
+                --with-package-name="GStreamer Base Plugins (Wolfbox Linux)" \
+                --with-package-origin="http://wolfbox.org"
+
+    # https://bugzilla.gnome.org/show_bug.cgi?id=655517
+    sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+    make
+
+    sed -e 's/^SUBDIRS_EXT =.*/SUBDIRS_EXT =/' -i Makefile
+}
+
+package_gst-plugins-base() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    make -C gst-libs DESTDIR="${pkgdir}" install
+    make -C ext DESTDIR="${pkgdir}" install
+}

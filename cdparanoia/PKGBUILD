@@ -1,0 +1,31 @@
+pkgname=cdparanoia
+pkgver=10.2
+pkgrel=1
+pkgdesc="Compact Disc Digital Audio extraction tool"
+arch=('x86_64')
+url="http://www.xiph.org/paranoia/"
+license=('GPL2' 'LGPL2.1')
+options=('!makeflags' '!staticlibs')
+
+depends=('glibc')
+
+source=(http://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-$pkgver.src.tgz
+        gcc.patch)
+sha256sums=('005db45ef4ee017f5c32ec124f913a0546e77014266c6a1c50df902a55fe64df'
+            '9a3f3802856e96080fb30562a10899ef3378723e85f289fa29619b21d6051575')
+
+prepare() {
+    cd ${pkgname}-III-${pkgver}
+    patch -p0 -i ${srcdir}/gcc.patch
+}
+
+build() {
+    cd ${pkgname}-III-${pkgver}
+    ./configure --prefix=/usr --mandir=/usr/share/man --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+package() {
+    cd ${pkgname}-III-${pkgver}
+    make prefix="${pkgdir}/usr" MANDIR="${pkgdir}/usr/share/man" LIBDIR="${pkgdir}"/usr/lib/${MULTIARCH} install
+}
