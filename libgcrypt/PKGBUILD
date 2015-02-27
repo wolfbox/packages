@@ -1,5 +1,5 @@
 pkgname=libgcrypt
-pkgver=1.6.2
+pkgver=1.6.3
 pkgrel=1
 pkgdesc="A low-level general-purpose cryptographic library"
 arch=('x86_64')
@@ -9,18 +9,18 @@ license=('GPL2' 'LGPL2.1')
 depends=('glibc' 'libgpg-error')
 
 source=(ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-${pkgver}.tar.bz2{,.sig})
-sha256sums=('de084492a6b38cdb27b67eaf749ceba76bf7029f63a9c0c3c1b05c88c9885c4c'
+sha256sums=('41b4917b93ae34c6a0e2127378d7a4d66d805a2a86a09911d4f9bd871db7025f'
             'SKIP')
-validpgpkeys=('D8692123C4065DEA5E0F3AB5249B39D24F25E3B6') # Werner Koch
-
+validpgpkeys=('D8692123C4065DEA5E0F3AB5249B39D24F25E3B6'  # Werner Koch
+              '031EC2536E580D8EA286A9F22071B08A33BD3F06') # NIIBE Yutaka
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 	./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} \
 	            --enable-shared=yes --enable-static=no
 	make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 	make DESTDIR="${pkgdir}" install
 }
