@@ -1,6 +1,6 @@
 pkgname=ruby
 pkgdesc='An object-oriented language for quick and easy programming'
-pkgver=2.2.0
+pkgver=2.2.1
 pkgrel=1
 arch=('x86_64')
 url='http://www.ruby-lang.org/en/'
@@ -12,7 +12,7 @@ depends=('gdbm' 'openssl' 'libffi' 'libyaml' 'gmp' 'zlib')
 
 source=("http://cache.ruby-lang.org/pub/ruby/2.2/ruby-${pkgver}.tar.xz"
         'gemrc')
-sha256sums=('848714e280fc5fb44dbac3b060b206e56c1947006324ee68a174d68b483ef8ca'
+sha256sums=('3b2852c07fdc12d0ba2b5698c7587ae2b46141539a526d143da5860b55a626c0'
             '4bb7eb2fe66e396ed16b589cdb656831407b39ad4e138d88536754c0448ac614')
 
 build() {
