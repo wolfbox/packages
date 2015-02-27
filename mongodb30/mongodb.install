@@ -1,0 +1,9 @@
+post_install() {
+    id mongodb &> /dev/null || \
+        useradd -r -U -d /var/lib/mongodb mongodb
+    chown -R mongodb:mongodb /var/lib/mongodb
+}
+
+post_upgrade() {
+	post_install
+}

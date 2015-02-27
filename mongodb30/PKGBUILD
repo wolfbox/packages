@@ -1,10 +1,11 @@
-pkgname=mongodb26
-pkgver=2.6.7
+pkgname=mongodb30
+pkgver=3.0.0
 pkgrel=1
 pkgdesc="A document database"
 arch=("x86_64")
 url="http://www.mongodb.org"
 license=("AGPL3")
+backup=('etc/mongodb.conf')
 
 depends=('glibc')
 provides=("mongodb=${pkgver}")
@@ -14,7 +15,7 @@ source=("http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${pkgver}.tgz"
         mongodb.conf
         mongodb
         mongodb.system_ready)
-sha256sums=('60400360652ebaf3c9c553a35dde58075187522bceec1264ab91c23575777925'
+sha256sums=('531f484914503069912bd6f655c07fa46b87c2e01284083bcac1a06d74b08552'
             '57b5da6779a5d08764b4353bab403572a446030954a1b0ed8c5a59ccd783d685'
             '0e05ba89b9845c60935cce43546160f5279eca4c10e3c12bb5bad7b8563ea2c9'
             '21f3883ea1dfdf0b76a91f99094d1b0e8e64ee4b1b1d161a35531d8120a799e2')
