@@ -1,16 +1,17 @@
 pkgname=kdelibs4support
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='Transitionary support package for porting applications from kdelibs to KF5'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kdesignerplugin' 'kparts' 'kunitconversion')
+depends=('glibc' 'gcc-libs' 'qt5' "kdesignerplugin>=${pkgver}" "kparts>=${pkgver}"
+         "kunitconversion>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.6/portingAids/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('896181e0d5e7a82117ac03407f8313cc7f196477207d9f82760f4db382dbff14')
+source=(http://download.kde.org/stable/frameworks/5.7/portingAids/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('652508f6e8efaa3923e525644ec0049eaaf3badb073bd3ec5a7f7ad016d086ee')
 
 build() {
   mkdir -p build && cd build

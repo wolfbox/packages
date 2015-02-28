@@ -1,5 +1,5 @@
 pkgname=kwallet
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE framework for storing passwords'
 arch=('x86_64')
@@ -9,10 +9,10 @@ license=('LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('gcc-libs' 'glibc' 'qt5' 'ki18n' 'kcoreaddons' 'kconfig'
          'kiconthemes' 'kservice' 'kdbusaddons' 'kwidgetsaddons'
-         'kwindowsystem' 'knotifications' 'libgcrypt')
+         'kwindowsystem' "knotifications>=${pkgver}" 'libgcrypt')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('33d8ed772fe2ba0d41d220e0579863d0d0ac5364d7384cf76a2f3627ca885e0c')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('30b06d87cc1e66728d0707cdf35aa6bf198b299b16d29a795f26ef060f6b75a5')
 
 build() {
   mkdir -p build && cd build

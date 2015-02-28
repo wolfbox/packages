@@ -1,5 +1,5 @@
 pkgname=kcmutils
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE framework for working with control modules'
 arch=('x86_64')
@@ -10,8 +10,8 @@ makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'ki18n' 'kconfig' 'kservice' 'kcoreaddons'
          'kiconthemes' 'kxmlgui' 'kauth' 'kwidgetsaddons' 'kconfigwidgets')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('cf0e2a16ebb3073e871139aab6bafcd530b747f3e27f4e14c100b56807eeff73')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('1a73e8b897e845be383e0fc12f66f15164427d8e85c8aad294672fe89bff19ac')
 
 build() {
   mkdir -p build && cd build

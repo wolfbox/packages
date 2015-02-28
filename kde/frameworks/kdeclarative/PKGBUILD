@@ -1,5 +1,5 @@
 pkgname=kdeclarative
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE and QML integration'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('GPLv2' 'LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'kconfig' 'ki18n' 'kio' 'kiconthemes')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('b4d064943cfb744eb997f38ebfb304b6715b85ce12aa4a25617ba0d1a49d2b11')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('afe4295bcb8e85b0ffee754b0db29056a7c422bf62934233991a812292bba18e')
 
 build() {
   mkdir -p build && cd build

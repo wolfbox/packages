@@ -1,16 +1,16 @@
 pkgname=kplotting
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='A KDE data-plotting widget'
 arch=('x86_64')
 url=''
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('gcc-libs' 'glibc' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('0ce404ec8d87a9dff8af544ab475490fc34ea01b289008e55e4ad90bf5374642')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('f1ce8e4585239037b59adefc2603a57d9fc53ef2446d40bdc8c501ec61f3a708')
 
 build() {
   mkdir -p build && cd build

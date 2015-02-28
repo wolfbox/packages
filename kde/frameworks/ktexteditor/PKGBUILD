@@ -1,15 +1,15 @@
 pkgname=ktexteditor
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='The KDE text editor component'
 arch=('x86_64')
 url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('fa7589930038a4dfc68e791355c30e42f175cf8c93123478274cac75f25da7e8')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('034f2401af66ff94e6ce1b8ecc99abce873ca146344a362ae5b8ef3f05572246')
 
 build() {
   mkdir -p build && cd build

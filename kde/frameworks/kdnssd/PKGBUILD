@@ -1,25 +1,24 @@
 pkgname=kdnssd
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE network service discovery with ZeroConf'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kdnssd'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
 makedepends=('cmake')
-depends=('glibc' 'gcc-libs' 'qt5')
+depends=('glibc' 'gcc-libs' 'qt5' 'avahi')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('584f59757ec47efab1a45811eca4432f34e4a6910d012c57123bd183db57ee32')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('be8d50b670603366e87b577b62f2c56e505c974c360f8c7ef9d23a8130651988')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_HTML_DOCS=OFF \
-    -DWITH_DOC=OFF
+    -DCMAKE_BUILD_TYPE=Release
+
   make
 }
 

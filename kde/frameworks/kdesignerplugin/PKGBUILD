@@ -1,16 +1,16 @@
 pkgname=kdesignerplugin
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='A set of KDE plugins for the Qt Designer'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kdesignerplugin'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'kconfig' 'kcoreaddons')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('c689f7160b5adead90a3c4304f02b3aceb95291896940f11f8a793ac3f66dd5a')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('f814bf2cdaee63be39e94d57ef72434276bd4146f730cc97a33745fc5395de78')
 
 build() {
   mkdir -p build && cd build

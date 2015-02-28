@@ -1,5 +1,5 @@
 pkgname=ktextwidgets
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE text editing widget component'
 arch=('x86_64')
@@ -7,12 +7,12 @@ url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('gcc-libs' 'glibc' 'qt5' 'ki18n' 'kservice' 'sonnet' 'kconfigwidgets'
-         'kwindowsystem' 'kiconthemes' 'kcompletion' 'kcoreaddons' 'kconfig'
+depends=('gcc-libs' 'glibc' 'qt5' 'ki18n' 'kservice' "sonnet>=${pkgver}" 'kconfigwidgets'
+         'kwindowsystem' 'kiconthemes' "kcompletion>=${pkgver}" 'kcoreaddons' 'kconfig'
          'kwidgetsaddons')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('5aefe67985171dd50535e6678ba35e8a79d8aac57261b1e088df49d7563dd82c')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('45c97495dabf59cb77e4b3d0388bc42aee1e82f75f13a398908b0afb58aa107a')
 
 build() {
   mkdir -p build && cd build

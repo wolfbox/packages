@@ -1,5 +1,5 @@
 pkgname=solid
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE hardware abstraction layer'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('gcc-libs' 'glibc' 'qt5' 'udev' 'upower' 'udisks2')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('847bee0fbef502050e8d4c4c5f9dea2e8c6d49d6dd331c3c7bea0b4d4630d6d2')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('24dc18630476db845af6a14553659c91a40b36d6c4ebbca470e061cbd9c2bf29')
 
 build() {
   mkdir -p build && cd build

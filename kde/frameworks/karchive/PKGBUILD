@@ -1,5 +1,5 @@
 pkgname=karchive
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='The KDE archive management component'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('GPLv2' 'LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('gcc-libs' 'glibc' 'qt5' 'zlib' 'bzip2' 'xz')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('f23b3d1873b5e5589453d4b69bd9d5f9faa986c9e0dc5fe19e648243ffe7af51')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('b8d66164eab8c262f1ee5da9f595c2b8de9878d5ac992070b2c9ad736825f85e')
 
 build() {
   mkdir -p build && cd build

@@ -1,17 +1,17 @@
 pkgname=kded
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='The KDE daemon'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kded'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kinit' 'kcoreaddons' 'kdbusaddons' 'kcrash'
+depends=('glibc' 'gcc-libs' 'qt5' "kinit>=${pkgver}" 'kcoreaddons' 'kdbusaddons' 'kcrash'
          'kconfig' 'kservice')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('d0129938cec5686f17f1fcb9d7c7ce84361b5ee17b06dd1e0a7e97ec8302f49b')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('e3fe0ef4adcf13b51944b52835ab886e8572dc82fa177a7d1fc4337563a38604')
 
 build() {
   mkdir -p build && cd build

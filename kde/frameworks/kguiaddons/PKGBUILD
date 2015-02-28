@@ -1,5 +1,5 @@
 pkgname=kguiaddons
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE GUI utility component'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('GPLv2' 'LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'libx11')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('7104ad239c4e8ae062ea252b3334391bef00838a86bcc0b84fad3100d90aad22')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('2b4be90bcbb5242acff007722b42d94a86d1702a9982c260ff4ef1e282ddc338')
 
 build() {
   mkdir -p build && cd build

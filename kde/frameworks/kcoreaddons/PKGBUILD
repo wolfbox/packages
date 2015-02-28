@@ -1,5 +1,5 @@
 pkgname=kcoreaddons
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='A collection of utilities building on top of Qt'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1')
 makedepends=('cmake')
 depends=('gcc-libs' 'glibc' 'qt5' 'gamin' 'shared-mime-info')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('1974420ae2ebbd6ac341087deea5de7a267e931c1f760eb57a95cbc8e34ee21f')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('cbe30fe049f45e861ffe4c59b2a50f2cd0c3254976e39a15a4fb8dcad7ec7e01')
 
 build() {
   mkdir -p build && cd build

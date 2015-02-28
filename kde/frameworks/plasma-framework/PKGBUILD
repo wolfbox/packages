@@ -1,19 +1,19 @@
 pkgname=plasma-framework
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='The base library for the KDE desktop'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/plasma-framework'
-license=('GPLv2' 'LGPLv2.1')
+license=('GPL2' 'LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kactivities' 'kservice' 'karchive'
+depends=('glibc' 'gcc-libs' 'qt5' "kactivities>=${pkgver}" 'kservice' 'karchive'
          'kguiaddons' 'ki18n' 'kio' 'kwindowsystem' 'kdeclarative' 'kxmlgui'
          'kglobalaccel' 'libxcb' 'kconfigwidgets' 'kconfig' 'kcoreaddons'
          'kpackage')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('380fe767aabd1738d38c0d9b639c73185745d5a8481b383a4f5c26812786ae9b')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('35345ced57cce80e1089b3172edfd277a0dc5ed4148b9c52a18c2ca0869eb364')
 
 build() {
   mkdir -p build && cd build

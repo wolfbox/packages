@@ -1,17 +1,17 @@
 pkgname=kactivities
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE infrastructure for managing user "activities"'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kactivities'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules' 'kcmutils' 'kdeclarative' 'boost')
-depends=('glibc' 'gcc-libs' 'qt5' 'kdbusaddons' 'kconfig' 'ki18n'
-         'kservice' 'kwindowsystem')
+makedepends=('cmake' 'extra-cmake-modules' "kcmutils>=${pkgver}" "kdeclarative>=${pkgver}" 'boost')
+depends=('glibc' 'gcc-libs' 'qt5' "kdbusaddons>=${pkgver}" 'kconfig' "ki18n>=${pkgver}"
+         'kservice' 'kwindowsystem' "kcoreaddons>=${pkgver}" "kio>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('31ece0c8f0282c0fd99ccb94ed67cc9ec6334ce65c6f9730db11f981783923d7')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('2978ab55a9ce484db5790a13fa1ae081bb1e3b3925c34c1ac91a9700148882b4')
 
 build() {
   mkdir -p build && cd build

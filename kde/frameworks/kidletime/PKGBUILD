@@ -1,24 +1,24 @@
 pkgname=kidletime
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='A KDE library for reporting on system idling'
 arch=('x86_64')
 url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
-license=('GPLv2' 'LGPLv2.1')
+license=('GPL2' 'LGPL2.1')
 
-makedepends=('cmake')
+makedepends=('cmake' 'extra-cmake-modules')
+depends=('qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('a54104fa410e20b6f11e8a042ae55d4d052627ecb9fc7186e715081f1392deaf')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('a317481483cbed2360225953bee3fe8bf120d4422a85d61520cc1aed8ecc2996')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_HTML_DOCS=OFF \
-    -DWITH_DOC=OFF
+    -DCMAKE_BUILD_TYPE=Release
+
   make
 }
 

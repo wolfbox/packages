@@ -1,5 +1,5 @@
 pkgname=kxmlgui
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE framework for managing menu and toolbar items'
 arch=('x86_64')
@@ -7,12 +7,12 @@ url='https://projects.kde.org/projects/frameworks/kxmlgui'
 license=('GPLv2' 'LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kconfig' 'ktextwidgets' 'kitemviews' 'ki18n'
-         'attica' 'kiconthemes' 'kwidgetsaddons' 'kglobalaccel' 'kwindowsystem'
+depends=('glibc' 'gcc-libs' 'qt5' 'kconfig' "ktextwidgets>=${pkgver}" 'kitemviews' 'ki18n'
+         'attica' 'kiconthemes' 'kwidgetsaddons' "kglobalaccel>=${pkgver}" 'kwindowsystem'
          'kcoreaddons')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('fc0f19fc00d509400433a690dcf955fd328bb46263f24e8aa5fde5e7f75aa4a1')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('0687ba5cf1a6dbd5cb699a48fa8793c132f8bbc9746662efc82610b4058cfcfe')
 
 build() {
   mkdir -p build && cd build

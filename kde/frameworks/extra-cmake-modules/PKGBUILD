@@ -1,5 +1,5 @@
 pkgname=extra-cmake-modules
-pkgver=1.6.0
+pkgver=1.7.0
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
@@ -8,8 +8,8 @@ license=('BSD')
 
 makedepends=('cmake')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('4697ffc09a06ac3675b84951673f9c9538a3eadd589802a912b72fb12a68ca22')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('c88de18f41fb9e5bb1f296bd4762315b2911fa5feb5c10aed8352d00fc08fdd1')
 
 build() {
   mkdir -p build && cd build

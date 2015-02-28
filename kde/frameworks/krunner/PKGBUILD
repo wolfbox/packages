@@ -1,5 +1,5 @@
 pkgname=krunner
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
@@ -7,11 +7,11 @@ url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'threadweaver' 'plasma-framework' 'kconfig'
-         'kservice' 'ki18n' 'solid' 'kcoreaddons' 'kio')
+depends=('glibc' 'gcc-libs' 'qt5' "threadweaver>=${pkgver}" "plasma-framework>=${pkgver}" 'kconfig'
+         'kservice' 'ki18n' 'solid' 'kcoreaddons' "kio>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.6/portingAids/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('4e17bed1eee6dc0ae1a9cf2171d8e651088d97d03dda0053a990f03b080b8125')
+source=(http://download.kde.org/stable/frameworks/5.7/portingAids/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ecac62be93e5ef0bbaf98cbb8f8a546bed4c1e593f5a52f0ec3d70b9ffef6b84')
 
 build() {
   mkdir -p build && cd build

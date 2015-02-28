@@ -1,5 +1,5 @@
 pkgname=kservice
-pkgver=5.6.0
+pkgver=5.7.0
 pkgrel=1
 pkgdesc='KDE plugin framework for handling desktop services'
 arch=('x86_64')
@@ -7,11 +7,11 @@ url='https://projects.kde.org/projects/frameworks/kservice'
 license=('GPLv2' 'LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('gcc-libs' 'glibc' 'qt5' 'kcrash' 'kdbusaddons' 'kconfig'
+depends=('gcc-libs' 'glibc' 'qt5' "kcrash>=${pkgver}" 'kdbusaddons' 'kconfig'
          'kcoreaddons' 'ki18n')
 
-source=(http://download.kde.org/stable/frameworks/5.6/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('ae5919de14b35e44ebfb91b17dc5dcd0daad619ea8097c86327991fcb7b9bcaa')
+source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('4a8ad09c9d5cf44bead302c0ea0a1b4ca749ff9f67c3c11815c0832c36f3f1ab')
 
 build() {
   mkdir -p build && cd build
