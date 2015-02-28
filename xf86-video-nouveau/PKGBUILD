@@ -9,8 +9,8 @@ arch=('x86_64')
 url="http://nouveau.freedesktop.org/"
 license=('GPL')
 depends=('libdrm' 'mesa')
-makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=18')
-conflicts=('xorg-server<1.16' 'X-ABI-VIDEODRV_VERSION<18' 'X-ABI-VIDEODRV_VERSION>=19')
+makedepends=('xorg-server-devel' 'X-ABI-VIDEODRV_VERSION=19')
+conflicts=('xorg-server<1.16' 'X-ABI-VIDEODRV_VERSION<19' 'X-ABI-VIDEODRV_VERSION>=20')
 groups=('xorg-drivers' 'xorg')
 
 source=(http://xorg.freedesktop.org/archive/individual/driver/$pkgname-$pkgver.tar.bz2)
