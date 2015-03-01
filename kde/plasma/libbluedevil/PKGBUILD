@@ -1,16 +1,16 @@
 pkgname=libbluedevil
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc='KDE bluetooth management library'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('09af625ccb72e68a900392bbad24fdbc7a6c2d846231638374de4fac929d0668')
+sha256sums=('b75919470432e538b7b218fd9eba49736c9a29ffc1bb731cf17f09daef0013f3')
 
 build() {
   mkdir -p build && cd build

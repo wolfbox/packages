@@ -1,5 +1,5 @@
 pkgname=ksshaskpass
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc='The KDE SSH password agent'
 arch=('x86_64')
@@ -10,7 +10,7 @@ makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5' 'ki18n' 'kwallet' 'kwidgetsaddons' 'kcoreaddons')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('7b2597fa8b5fa0a0ec08e006646a11dcdaa84cce0beca6dcef8d75fec2a2b29f')
+sha256sums=('a0da7fb85b8b018663c951d56e304b8740d2248d09ae3c73fee79ddd953d8aa3')
 
 build() {
   mkdir -p build && cd build

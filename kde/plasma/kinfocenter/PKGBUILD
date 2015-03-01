@@ -1,5 +1,5 @@
 pkgname=kinfocenter
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc='KDE system information center'
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('glibc' 'gcc-libs' 'qt5' 'libgl' 'wayland' 'pciutils' 'libraw1394')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz
         fix-libpci-segfault.patch)
-sha256sums=('89a976d2eb6aef02db02db82d645eacbf710f6e0c3ad9fdd932455c309a62e94'
+sha256sums=('289e902e0a59a9a604c677f1cad79ad2f3ffcb25b6060966efb642fbc29c3590'
             'e6666a521db60502ae630220c6a72e8fe1edbd585a6ed90df4902bae6265d21f')
 
 prepare() {

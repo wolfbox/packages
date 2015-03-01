@@ -1,10 +1,10 @@
 pkgname=powerdevil
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc='KDE power management daemon'
 arch=('x86_64')
 url='https://kde.org'
-license=('GPLv2')
+license=('GPL2')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'libx11' 'qt5' 'udev'
@@ -12,7 +12,7 @@ depends=('glibc' 'gcc-libs' 'libx11' 'qt5' 'udev'
          'knotifyconfig' 'kdelibs4support' 'plasma-workspace' 'libxcb')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('1a6a3e1732bb07c9f97409753fe7ef923b8c25eeaf903838c199bf4b6c0726d6')
+sha256sums=('d53ddb4702b3807f4b3c31827315652a70f572850e6c7eaef67d035ef9bff090')
 
 build() {
   mkdir -p build && cd build

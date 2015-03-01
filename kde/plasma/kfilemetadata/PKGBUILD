@@ -1,5 +1,5 @@
 pkgname=kfilemetadata
-pkgver=5.6.0
+pkgver=5.6.1
 pkgrel=1
 pkgdesc='Library for extracting data and metadata from files'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPL2.1' 'LGPL3')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/plasma/5.2.0/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('96a4b5dc68f30ca1f5db773c431d1c1963fe1c6c95f54847e9cb60d10ca3e96d')
+source=(http://download.kde.org/stable/plasma/5.2.1/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('83d375cef080fd9171b84c37229b8f090e69ae4d05196c7baee472f22cfccd70')
 
 build() {
   mkdir -p build && cd build

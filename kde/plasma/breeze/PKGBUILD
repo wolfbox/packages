@@ -1,5 +1,5 @@
 pkgname=breeze
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc='The Breeze theme set for KDE'
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('glibc' 'gcc-libs' 'qt5' 'kdecoration')
 optdepends=('orion: GTK+ themes')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('704e9bef93747eb3d8b2f159e874ef48f037edb3359b0cd669627d0d6d4003e9')
+sha256sums=('c5471268ca0fb4e9f0f2f27c3d4192c306f4bc259135c9aed027a15c4bd0b761')
 
 build() {
   mkdir -p build && cd build

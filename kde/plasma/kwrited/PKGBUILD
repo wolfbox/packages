@@ -1,16 +1,16 @@
 pkgname=kwrited
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
-pkgdesc=''
+pkgdesc='KDE daemon for reading and writing console output to X'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('LGPL2.1' 'GPL2')
 
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('eb4b36d0f82bc6668ccee349ff70cf2743635a43efa68809c55338530fade165')
+sha256sums=('ea60b42debaf8a2c7759400e1b88294912c97df63bcb996929ecf77b5842de00')
 
 build() {
   mkdir -p build && cd build

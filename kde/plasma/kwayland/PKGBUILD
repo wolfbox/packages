@@ -1,5 +1,5 @@
 pkgname=kwayland
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc='KDE library for working with the Wayland display server'
 arch=('x86_64')
@@ -10,7 +10,7 @@ makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'wayland')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('1e3fb615728db55f567eda2b7be455f3d74744887af466085f2f7130b51207f1')
+sha256sums=('145d20cdaf8b2a678d9bff20a7867175e0e353c431a047f394c55415354bf0b0')
 
 build() {
   mkdir -p build && cd build

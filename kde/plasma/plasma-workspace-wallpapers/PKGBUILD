@@ -1,15 +1,15 @@
 pkgname=plasma-workspace-wallpapers
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc='Wallpapers for the KDE Plasma desktop'
 arch=('x86_64')
 url='https://kde.org'
-license=('GPLv2')
+license=('GPL2')
 
 makedepends=('cmake' 'extra-cmake-modules')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('d583cb53693dc073d48bacf9b1dc05b71baf3112bb70af7c3756265f380065f5')
+sha256sums=('1db8ce7814068fbf060a898ef15fa259c130932042e1cce8fc5dfebe9ee70b36')
 
 build() {
   mkdir -p build && cd build

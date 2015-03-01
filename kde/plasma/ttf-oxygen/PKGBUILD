@@ -1,10 +1,10 @@
 pkgname=ttf-oxygen
-pkgver=5.2.0
+pkgver=5.2.1
 pkgrel=1
 pkgdesc='The Oxygen font set'
 arch=('any')
 url='https://kde.org'
-license=('LGPLv2.1' 'GPLv2')
+license=('LGPL2.1' 'GPL2')
 install=ttf-oxygen.install
 
 makedepends=('cmake' 'extra-cmake-modules' 'fontforge')
@@ -12,7 +12,7 @@ depends=('fontconfig')
 provides=('ttf-font')
 
 source=(http://download.kde.org/stable/plasma/${pkgver}/oxygen-fonts-${pkgver}.tar.xz)
-sha256sums=('71d2d5781921829c0489ff4b3e1c0902ab40aa0ebb1e247dd55e59322df35080')
+sha256sums=('950237428816bb22759699cc1aec7abd39f6f98a75b41a01d915465f4680d076')
 
 build() {
   mkdir -p build && cd build
