@@ -23,7 +23,8 @@ source=(http://pkg-shadow.alioth.debian.org/releases/shadow-${pkgver}.tar.xz{,.s
         newusers
         passwd
         su
-        login)
+        login
+        defaults.pam)
 sha256sums=('3b0893d1476766868cd88920f4f1231c4795652aa407569faff802bcda0f3d41'
             'SKIP'
             '8f3a37af0953aff2c067b3b87036422983e8f47277e8818111eb4d6a2fd5f5a2'
@@ -34,7 +35,8 @@ sha256sums=('3b0893d1476766868cd88920f4f1231c4795652aa407569faff802bcda0f3d41'
             '41e91678b673947f2eac75847d5a85a4289b9b8d01679a181708ee10ff1559cc'
             '2e3a1bbd1c8b4c77afc280e9fdfc9ffd2f74d3d7d50bf034d8a890ec108dc1b7'
             '70f0232f385066872fc13c3d134f6856d108bf272fc92fe104c69c84dc9627ee'
-            'a328cfdf8b4516d6f7a1b9e68e32b59ec312f04fad22f59fd8c482f3082c4ce5')
+            'a328cfdf8b4516d6f7a1b9e68e32b59ec312f04fad22f59fd8c482f3082c4ce5'
+            '4902920671abb084ab6301302c62718fe22cdb38563f5f95771d54ac7aa70385')
 validpgpkeys=('D5C2F9BFCA128BBA22A77218872F702C4D6E25A8') # Christian Perrier <bubulle@debian.org>
 
 prepare() {
@@ -83,6 +85,10 @@ package() {
     # Our default PAM modules are fine for most things. Install our own files for the rest.
     rm -r "${pkgdir}"/etc/pam.d/*
     install -m644 "${srcdir}"/{chgpasswd,chpasswd,newusers,passwd,su,login} "${pkgdir}"/etc/pam.d/
+    for file in chage groupadd groupdel groupmod shadow \
+                useradd usermod userdel; do
+        install -Dm644 "$srcdir/defaults.pam" "$pkgdir/etc/pam.d/$file"
+    done
 
     # Make permissions more strict on setuid
     find "${pkgdir}" -type f -perm 4755 -exec chmod 4711 "{}" \;
