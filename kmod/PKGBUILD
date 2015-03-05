@@ -1,5 +1,5 @@
 pkgname=kmod
-pkgver=19
+pkgver=20
 pkgrel=1
 pkgdesc="Kernel module tools and library"
 arch=("x86_64")
@@ -8,8 +8,10 @@ license=(LGPL2.1)
 
 depends=('glibc' 'xz' 'zlib')
 
-source=("https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${pkgver}.tar.xz")
-sha256sums=('3e7fee6eeff5435848b2dcc852bc8959066478d687d232284d67300c071e7b14')
+source=(https://www.kernel.org/pub/linux/utils/kernel/kmod/kmod-${pkgver}.tar{.xz,.sign})
+sha256sums=('89c1a1a2193c31f9ebe582640bfa2bd401341dc24119f5a7f702588116fadaa0'
+            'SKIP')
+validpgpkeys=('EAB33C9690013C733916AC839BA2A5A630CBEA53') # Lucas De Marchi <lucas.demarchi@intel.com>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
