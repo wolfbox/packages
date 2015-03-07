@@ -1,0 +1,29 @@
+pkgname=perl-xml-sax-base
+pkgver=1.08
+pkgrel=1
+pkgdesc="Base class SAX Drivers and Filters"
+arch=('any')
+url="http://search.cpan.org/dist/XML-SAX-Base"
+license=('GPL' 'PerlArtistic')
+options=('!emptydirs')
+
+depends=('perl')
+
+source=("http://www.cpan.org/authors/id/G/GR/GRANTM/XML-SAX-Base-$pkgver.tar.gz")
+sha256sums=('666270318b15f88b8427e585198abbc19bc2e6ccb36dc4c0a4f2d9807330219e')
+
+build() {
+    cd  XML-SAX-Base-$pkgver
+    PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+    make
+}
+
+check() {
+    cd  XML-SAX-Base-$pkgver
+    make test
+}
+
+package() {
+    cd  XML-SAX-Base-$pkgver
+    make install DESTDIR=$pkgdir
+}

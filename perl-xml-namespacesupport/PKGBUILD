@@ -1,0 +1,26 @@
+pkgname=perl-xml-namespacesupport
+pkgver=1.11
+pkgrel=3
+pkgdesc="Generic namespace helpers (ported from SAX2)"
+arch=('any')
+url="http://search.cpan.org/dist/XML-NamespaceSupport"
+license=('GPL')
+options=('!emptydirs')
+
+depends=('perl')
+
+source=("http://www.cpan.org/authors/id/P/PE/PERIGRIN/XML-NamespaceSupport-${pkgver}.tar.gz")
+sha256sums=('6d8151f0a3f102313d76b64bfd1c2d9ed46bfe63a16f038e7d860fda287b74ea')
+
+build() {
+    cd  XML-NamespaceSupport-${pkgver}
+
+    PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+    make
+}
+
+package() {
+    cd  XML-NamespaceSupport-${pkgver}
+
+    make install DESTDIR="${pkgdir}"
+}
