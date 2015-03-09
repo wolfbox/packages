@@ -1,5 +1,5 @@
 pkgname=cups-filters
-pkgver=1.0.61
+pkgver=1.0.66
 pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
@@ -14,7 +14,7 @@ optdepends=('foomatic-db: drivers use Ghostscript to convert PostScript to a pri
 	        'foomatic-db-nonfree: drivers use Ghostscript to convert PostScript to a printable form directly')
 
 source=(http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.xz)
-sha256sums=('f5285e3ee436ea42f2986cddfb8020d240ca8b0d7f8dc4b0718b6695ad4504af')
+sha256sums=('a46eea35d8c151f1f63c663c5dda290ba11a7f5951d48dba485a02f9146dfb1c')
 
 build() {
   cd $pkgname-$pkgver
