@@ -1,5 +1,5 @@
 pkgname=wget
-pkgver=1.16.1
+pkgver=1.16.3
 pkgrel=1
 pkgdesc="A tool for retrieving files over the network"
 arch=('x86_64')
@@ -10,7 +10,7 @@ backup=('etc/wgetrc')
 depends=('glibc' 'openssl' 'zlib' 'pcre' 'util-linux')
 
 source=(http://ftpmirror.gnu.org/wget/wget-${pkgver}.tar.xz{,.sig})
-sha256sums=('2b96c707ee15fe847f5bc2f872a7a530dca803b927a750419b44f50803e14d33'
+sha256sums=('67f7b7b0f5c14db633e3b18f53172786c001e153d545cfc85d82759c5c2ffb37'
             'SKIP')
 validpgpkeys=('AC404C1C0BF735C63FF4D562263D6DF2E163E1EA') # Giuseppe Scrivano <gscrivan@redhat.com>
 
