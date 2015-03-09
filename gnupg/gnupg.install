@@ -1,0 +1,3 @@
+post_upgrade() {
+    dirmngr </dev/null &>/dev/null || true
+}

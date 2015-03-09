@@ -5,6 +5,7 @@ pkgdesc="The GNU Privacy Guard cryptography tool"
 arch=("x86_64")
 url="http://gnupg.org"
 license=('GPL3' 'LGPL3')
+install=gnupg.install
 
 depends=('glibc' 'libgpg-error' 'libgcrypt>=1.6' 'npth' 'zlib' 'readline'
          'ncurses' 'libassuan' 'libksba' 'pinentry')
@@ -15,7 +16,7 @@ sha256sums=('404f5a43d591dfe41f0ffb204b49a1533b67d77bc1fd68febd7e447575616792'
 validpgpkeys=('031EC2536E580D8EA286A9F22071B08A33BD3F06'  # NIIBE Yutaka (GnuPG Release Key) <gniibe@fsij.org>
               'D8692123C4065DEA5E0F3AB5249B39D24F25E3B6') # Werner Koch
 build() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
 
     export CFLAGS="${CFLAGS} -fPIE"
     export LDFLAGS="${LDFLAGS} -Wl,-z,now -pie"
@@ -28,12 +29,19 @@ build() {
                 --libexecdir=/usr/lib/${MULTIARCH}/gnupg \
                 --enable-large-secmem \
                 --with-capabilities \
+                --enable-symcryptrun \
+                --enable-gpgtar \
                 --build=${CHOST}
     make
 }
 
+check() {
+    cd ${pkgname}-${pkgver}
+    make check
+}
+
 package() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
     make install DESTDIR="${pkgdir}"
 	
     # Link gpg to gpg2
@@ -41,4 +49,7 @@ package() {
       ln -s gpg2 bin/gpg
       ln -s gpgv2 bin/gpgv
       ln -s gpg2.1.gz share/man/man1/ )
+
+    # Redundant
+    rm "${pkgdir}"/usr/share/gnupg/com-certs.pem
 }
