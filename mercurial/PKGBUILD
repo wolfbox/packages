@@ -1,5 +1,5 @@
 pkgname=mercurial
-pkgver=3.2.4
+pkgver=3.3.2
 pkgrel=1
 pkgdesc="A free and fast distributed version control system."
 arch=('x86_64')
@@ -9,8 +9,10 @@ backup=('etc/mercurial/hgrc')
 
 depends=('python>=2.4' 'ca-certificates')
 
-source=(http://mercurial.selenic.com/release/mercurial-${pkgver}.tar.gz)
-sha256sums=('08d4169d02fd24819a7b3203ba85ccf5037dc646e082eb1b21b3c87ed576f6bc')
+source=(http://mercurial.selenic.com/release/mercurial-${pkgver}.tar.gz{,.asc})
+sha256sums=('67c617c740ac706f923371a26f02339b27cd6c36e5d3fb2ccad0dc02361527fa'
+            'SKIP')
+validpgpkeys=('FAD61395F642FC2B33C84B9A205781AC682A2D72') # Matthew Mackall <mpm@selenic.com>
 
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
