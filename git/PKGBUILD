@@ -1,5 +1,5 @@
 pkgname=git
-pkgver=2.2.2
+pkgver=2.3.2
 pkgrel=1
 pkgdesc="A free and fast distributed version control system."
 arch=("x86_64")
@@ -10,8 +10,10 @@ makedepends=('python2' 'asciidoc' 'xmlto' 'docbook-xsl' 'docbook-xml')
 depends=('glibc' 'zlib' 'openssl' 'perl' 'perl-error' 'curl' 'expat')
 optdepends=('python2' 'subversion')
 
-source=(http://www.kernel.org/pub/software/scm/git/git-${pkgver}.tar.xz)
-sha256sums=('aa6d2efcc0c7bb9b9edc6d56d90921706b833972f1d2abe70f71be7838f22d05')
+source=(http://www.kernel.org/pub/software/scm/git/git-${pkgver}.tar{.xz,.sign})
+sha256sums=('18eb8462026a55ab34a657282e894bdaad331ea59bfebeba5eb45b27b58cf825'
+            'SKIP')
+validpgpkeys=('96E07AF25771955980DAD10020D04E5A713660A7') # Junio C Hamano <jch@google.com>
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
