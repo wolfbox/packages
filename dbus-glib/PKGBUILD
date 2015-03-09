@@ -1,5 +1,5 @@
 pkgname=dbus-glib
-pkgver=0.102
+pkgver=0.104
 pkgrel=1
 pkgdesc="DBus bindings for GLib"
 arch=("x86_64")
@@ -28,3 +28,5 @@ package() {
 	mkdir -p "${pkgdir}"/usr/share/doc/${pkgname}
 	install -m644 COPYING "${pkgdir}"/usr/share/doc/${pkgname}/
 }
+sha256sums=('bfc1f1a82bfc3ec3ecafe04d0e87bab7e999f50dce4f4a34d0b89caf6bd821f6'
+            'SKIP')
