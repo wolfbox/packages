@@ -1,0 +1,23 @@
+pkgname=ttf-gillius
+pkgver=20110312
+pkgrel=1
+pkgdesc="Gillius font from the Arkandis Digital Foundry"
+arch=('any')
+license=('GPL2')
+url="http://arkandis.tuxfamily.org/"
+install=ttf-gillius.install
+
+source=(http://arkandis.tuxfamily.org/fonts/Gillius-Collection-20110312.zip
+	'75-ttf-gillius.conf')
+sha256sums=('a74f1c9ecbdeb4751ac410f77dbe7210379dc87300c7a3afa19dcc354513f0bd'
+            '9b99cd168c9d63afb9106b8bf60cfcb866d5f8759aeaa5693013c2fb569bd563')
+
+package() {
+    cd Gillius-Collection-${pkgver}
+
+    mkdir -p "${pkgdir}"/usr/share/fonts/truetype/adf
+    install -m644 OTF/GilliusADF*.otf "${pkgdir}"/usr/share/fonts/truetype/adf
+    install -Dm644 ${srcdir}/75-ttf-gillius.conf "${pkgdir}"/etc/fonts/conf.avail/75-ttf-gillius.conf
+
+    install -Dm644 NOTICE "${pkgdir}"/usr/share/doc/${pkgname}/NOTICE
+}

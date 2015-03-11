@@ -1,0 +1,21 @@
+_font_cache() {
+    echo -n "Updating font cache... "
+    fc-cache -s > /dev/null
+    mkfontscale usr/share/fonts/truetype
+    mkfontdir usr/share/fonts/truetype
+    echo "done."
+}
+
+post_install() {
+    ln -s etc/fonts/conf.avail/75-ttf-gillius.conf etc/fonts/conf.d/
+    _font_cache
+}
+
+post_upgrade() {
+    _font_cache
+}
+
+post_remove() {
+    rm -f etc/fonts/conf.d/75-ttf-gillius.conf
+    _font_cache
+}
