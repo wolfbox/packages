@@ -1,0 +1,33 @@
+pkgname=libgdiplus
+pkgver=3.12
+pkgrel=1
+pkgdesc="An Open Source Implementation of the GDI+ API"
+arch=('x86_64')
+license=('MPL' 'LGPL')
+url="http://www.mono-project.com"
+
+depends=('libtiff' 'cairo' 'giflib' 'glib2' 'libexif')
+
+source=(http://download.mono-project.com/sources/${pkgname}/${pkgname}-${pkgver}.tar.gz
+	libgdiplus0-giflib5.patch)
+sha256sums=('e61c4dc1bc2ba993e4f79029472efcf5760eb9e60eb20d9cd31f0ebe9113bfc9'
+            '3f6a035f671edae2b00ddd585158ba70cb0ff1efd6fde4fa5a486482a0e4c010')
+
+prepare() {
+    cd ${pkgname}-${pkgver}
+    patch -Np1 -i ../libgdiplus0-giflib5.patch
+
+    sed -i -e 's/-L\${libjpeg_prefix}\/lib -ljpeg/-ljpeg/' configure
+}
+
+build() {
+    cd ${pkgname}-${pkgver}
+    ./configure --prefix=/usr --libdir=/usr/lib/${MULTIARCH} --with-cairo=system
+
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
