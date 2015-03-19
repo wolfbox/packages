@@ -1,7 +1,7 @@
 # Maintainer: Andrew Aldridge <i80and@foxquill.com>
 
 pkgname=xf86-input-libinput
-pkgver=0.6.0
+pkgver=0.8.0
 pkgrel=1
 pkgdesc="X.org input driver using libinput"
 arch=('x86_64')
@@ -9,11 +9,11 @@ url="http://xorg.freedesktop.org/"
 license=('MIT')
 
 makedepends=('xorg-server-devel' 'resourceproto' 'scrnsaverproto')
-depends=('glibc' 'mtdev' 'libinput>=0.8.0')
+depends=('glibc' 'mtdev' 'libinput>=0.11.0')
 conflicts=('xorg-server<1.16.0' 'X-ABI-XINPUT_VERSION<21' 'X-ABI-XINPUT_VERSION>=22')
 
 source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2{,.sig})
-sha256sums=('2f29be1ed7f9b9c597b6f5c6ef24c37a244a0ba87ccd1c2586ffa4d08452ad79'
+sha256sums=('2152b0984feffe8151934ad9af29bde7fc621e0a54b0cdedbaf1abc367dea43a'
             'SKIP')
 validpgpkeys=('3C2C43D9447D5938EF4551EBE23B7E70B467F0BF') # Peter Hutterer (Who-T) <office@who-t.net>
 
