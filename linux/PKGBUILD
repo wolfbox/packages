@@ -1,5 +1,5 @@
 pkgname=linux
-pkgver=3.18.9
+pkgver=3.19.2
 pkgrel=1
 pkgdesc="The Linux kernel"
 arch=("x86_64")
@@ -10,47 +10,57 @@ options=(!strip)
 makedepends=('gcc' 'lz4' 'bc')
 depends=('linux-firmware' 'kmod')
 
-_grsecver=3.1-${pkgver}-201503071142
+_grsecver=3.1-${pkgver}-201503182219
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.{sign,xz}
         https://grsecurity.net/test/grsecurity-${_grsecver}.patch{,.sig}
         config
         x509.genkey)
 sha256sums=('SKIP'
-            'b1b7719a4bad027f2efc8477a19c6625d51d127640e3373fcd03b41334319501'
-            'a2bb4b8b13054cc3b37300bfc6277d18e00a45318b1b4173bbc81f81b6f99929'
+            '0c0ee420dc8d4f6239fab072351c7a2ce6a881028d5ab2d162ec667fdd750b2d'
+            'e86f5c073c907b12fa7c11e6f378b4130231d9afc93674cdd3d43c0f995e8987'
             'SKIP'
-            '186ac761b4ee344f429336c286b3f6019cf690a7907e02a7b90277b9dbd28ee7'
+            'd95eec6c65c9f70efb28576b35514030f0f2feeeabf768d492b68efae7d66a7e'
             'ca581821060e883b03f660d69ed0e9a7cbbf284dd757995bd31ffefa551ef316')
 validpgpkeys=(647F28654894E3BD457199BE38DBBDC86092693E # Greg K-H
               DE9452CE46F42094907F108B44D1C0F82525FE49) # Bradley Spengler
 
 prepare() {
-	cd ${pkgname}-${pkgver}
-	
-	patch -p1 -i ../grsecurity-${_grsecver}.patch
-	cp "${srcdir}/config" .config
-	cp "${srcdir}"/x509.genkey ./
+    cd ${pkgname}-${pkgver}
+
+    if [ ! -f /usr/src/linux/signing_key.priv ]; then
+        if [ ! -n "$GENERATE_KEY" ]; then
+            error 'No signing key found!'
+            msg 'Re-run with GENERATE_KEY=1 to generate one.'
+            return 1
+        fi
+    else
+        ln -s /usr/src/linux/signing_key.{priv,x509} ./
+    fi
+
+    patch -p1 -i ../grsecurity-${_grsecver}.patch
+    cp "${srcdir}/config" .config
+    cp "${srcdir}"/x509.genkey ./
 }
 
 build() {
-	cd ${pkgname}-${pkgver}
-	make ${MAKEFLAGS}
+    cd ${pkgname}-${pkgver}
+    make ${MAKEFLAGS}
 }
 
 package() {
-	cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 	
-	mkdir -p "${pkgdir}/boot"
+    mkdir -p "${pkgdir}/boot"
 	
-	install -m 644 arch/x86/boot/bzImage "${pkgdir}"/boot/vmlinuz-${pkgver}
-	make modules_install INSTALL_MOD_PATH="${pkgdir}"
-	make headers_install INSTALL_HDR_PATH="${pkgdir}/usr"
+    install -m 644 arch/x86/boot/bzImage "${pkgdir}"/boot/vmlinuz-${pkgver}
+    make modules_install INSTALL_MOD_PATH="${pkgdir}"
+    make headers_install INSTALL_HDR_PATH="${pkgdir}/usr"
 	
-	depmod -b "${pkgdir}" ${pkgver}-grsec
+    depmod -b "${pkgdir}" ${pkgver}-grsec
 
     # Remove firmware; we package it separately
     rm -r "${pkgdir}"/lib/firmware
 
-	# Remove broken "build" symlink
-	rm "${pkgdir}"/lib/modules/${pkgver}-grsec/build
+    # Remove broken "build" symlink
+    rm "${pkgdir}"/lib/modules/${pkgver}-grsec/build
 }
