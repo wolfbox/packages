@@ -42,7 +42,7 @@ package() {
 	install -d -m555 sys
 	install -d -m750 root
 	install -d -m777 tmp
-	
+
 	mkdir -p {boot,dev,home,mnt,media,opt,run,lib}
 	mkdir -p etc/{ld.so.conf.d,profile.d,skel}
 	mkdir -p usr/{bin,include,lib,lib/modprobe.d,man,info,share}
@@ -50,6 +50,8 @@ package() {
 	mkdir -p usr/local/{bin,lib,etc,share,man,info,include}
 	mkdir -p usr/local/share/man/man{1,2,3,4,5,6,7,8}
 	mkdir -p var/{lib,log}
+
+	install -dm777 var/tmp
 
 	ln -s /usr/bin bin
 	ln -s /usr/bin usr/sbin
