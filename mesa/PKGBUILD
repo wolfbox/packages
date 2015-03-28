@@ -2,7 +2,7 @@
 # Derived from Arch Linux
 
 pkgname=mesa
-pkgver=10.5.0
+pkgver=10.5.1
 pkgrel=1
 arch=('x86_64')
 url="http://mesa3d.sourceforge.net"
@@ -20,7 +20,7 @@ replaces=('libgl')
 source=(ftp://ftp.freedesktop.org/pub/mesa/${pkgver}/mesa-${pkgver}.tar.xz{,.sig}
         llvm-link-fix.patch
         LICENSE)
-sha256sums=('d7ca9f9044bbdd674377e3eebceef1fae339c8817b9aa435c2053e4fea44e5d3'
+sha256sums=('ffc51943d15c6812ee7611d053d8980a683fbd6a4986cff567b12cc66637d679'
             'SKIP'
             '0a0aebededec771ca11176b666aec129b1333b86037eb6d5db84219773ae371a'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
