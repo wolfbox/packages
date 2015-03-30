@@ -1,5 +1,5 @@
 pkgname=util-linux
-pkgver=2.26
+pkgver=2.26.1
 pkgrel=1
 pkgdesc="A broad collection of Linux system utilities"
 arch=("x86_64")
@@ -13,7 +13,7 @@ depends=('glibc' 'ncurses')
 
 source=(https://www.kernel.org/pub/linux/utils/util-linux/v2.26/util-linux-${pkgver}.tar{.xz,.sign}
         sysctl.conf)
-sha256sums=('a23c6f39dea0ed215ccd589509ffc7bb6f706f6e1a04760f493fb0fd7e93c489'
+sha256sums=('22dc1c957262e2cbdfb4d524a63d5cd4f219d3ac9b5eab570fc771076799bb6e'
             'SKIP'
             '8b0fa8fe4444245e734695f60342edc5338c32ffe7a0a6488b6dfa514c0ac1cd')
 validpgpkeys=('B0C64D14301CC6EFAEDF60E4E4B71D5EEC39C284') # Karel Zak <kzak@redhat.com>
