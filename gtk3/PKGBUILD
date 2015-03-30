@@ -1,5 +1,5 @@
 pkgname=gtk3
-pkgver=3.14.9
+pkgver=3.14.11
 pkgrel=1
 pkgdesc="The modern GTK+ widget toolkit"
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('atk' 'at-spi2-atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'lib
          'shared-mime-info' 'cairo' 'cups' 'gtk-update-icon-cache' 'colord' 'wayland' 'libxkbcommon')
 
 source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-$pkgver.tar.xz)
-sha256sums=('3be9560e6e99388d7706a168e3353ecd63fc30ec4f7f8bea23889e71ab7b6c64')
+sha256sums=('3fb59e99de38001b1b84a7f292553d0e2305991053d6989d6cd09acd1418f7c8')
 
 build() {
     cd gtk+-$pkgver
