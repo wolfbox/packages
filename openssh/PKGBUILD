@@ -1,5 +1,5 @@
 pkgname=openssh
-pkgver=6.7p1
+pkgver=6.8p1
 pkgrel=1
 pkgdesc="Secure Shell daemon and clients"
 arch=("x86_64")
@@ -7,18 +7,20 @@ url="https://www.openssh.com"
 license=('BSD')
 
 install=openssh.install
-backup=('etc/ssh/ssh_config' 'etc/ssh/sshd_config')
-depends=('glibc' 'openssl' 'libedit')
+backup=('etc/ssh/ssh_config' 'etc/ssh/sshd_config' 'etc/pam.d/sshd')
+depends=('glibc' 'openssl' 'libedit' 'openpam' 'openpam-modules')
 
 source=(ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz{,.asc}
+        sshd.pam
         openssh)
-sha256sums=('b2f8394eae858dabbdef7dac10b99aec00c95462753e80342e530bbb6f725507'
+sha256sums=('3ff64ce73ee124480b5bf767b9830d7d3c03bbcb6abe716b78f0192c37ce160e'
             'SKIP'
-            'SKIP')
+            '187622091488356c5b3cc0dc154fc2f269dd2e20e8bfca68429b29c12cdf4e03'
+            'f8f1c24b692d821eb47c60e6130468367d5d7f794b4c4a09e5863b9082c657dc')
 validpgpkeys=('59C2118ED206D927E667EBE3D3E5F56B6D920D30')
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 	
 	# Build PIE and with immediate symbol binding for security
 	export CFLAGS="${CFLAGS} -fPIE"
@@ -27,7 +29,7 @@ build() {
 	./configure --prefix=/usr --sbindir=/usr/bin \
 	            --libexecdir=/usr/lib/${MULTIARCH}/ssh \
 	            --sysconfdir=/etc/ssh \
-	            --without-pam \
+	            --with-pam \
 	            --with-libedit \
 	            --with-default-path=/usr/local/bin:/usr/bin \
 	            --with-privsep-path=/var/empty \
@@ -37,10 +39,11 @@ build() {
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 
 	make install DESTDIR="${pkgdir}"
 
 	mkdir -p "${pkgdir}"/etc/rc.d
 	install -m755 "${srcdir}"/openssh "${pkgdir}"/etc/rc.d/
+	install -Dm644 "${srcdir}"/sshd.pam "${pkgdir}"/etc/pam.d/sshd
 }

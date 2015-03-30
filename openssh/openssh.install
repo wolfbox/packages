@@ -1,6 +1,6 @@
 post_install() {
-    groupadd -r sshd
-    useradd -r -g sshd -s /bin/nologin sshd
+    groupadd -r -g 34 sshd
+    useradd -r -g sshd -u 34 -s /bin/nologin sshd
 }
 
 post_remove() {
