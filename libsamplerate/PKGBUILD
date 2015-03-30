@@ -1,0 +1,33 @@
+pkgname=libsamplerate
+pkgver=0.1.8
+pkgrel=1
+pkgdesc="Sample Rate Converter for audio"
+arch=('x86_64')
+url="http://www.mega-nerd.com/SRC/index.html"
+license=('GPL2')
+
+checkdepends=('fftw')
+depends=('libsndfile')
+
+source=(http://www.mega-nerd.com/SRC/libsamplerate-${pkgver}.tar.gz{,.asc})
+sha256sums=('93b54bdf46d5e6d2354b7034395fe329c222a966790de34520702bb9642f1c06'
+            'SKIP')
+validpgpkeys=('73571E85C19F4281D8C97AA86CA41A7743B8D6C8')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    ./configure --prefix=/usr \
+                --libdir=/usr/lib/${MULTIARCH}
+    make
+}
+
+check() {
+    cd ${pkgname}-${pkgver}
+    make check
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
