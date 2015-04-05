@@ -1,7 +1,6 @@
-# Derived from Arch Linux
 
 pkgname=firefox
-pkgver=36.0.4
+pkgver=37.0.1
 pkgrel=1
 pkgdesc="The fast and secure web browser from Mozilla"
 arch=('x86_64')
@@ -19,83 +18,20 @@ makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa'
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'gst-plugins-good: h.264 video')
 
-source=(https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.bz2{,.asc}
-        mozconfig.in firefox.desktop firefox-install-dir.patch vendor.js rhbz-966424.patch)
-sha256sums=('9143bddc64746bf6471b5ae55b9013586b0ffd6c5515c5566b4015e0bf1e16ab'
-            'SKIP'
-            'ffd183d99f9fe2f897f796ca5a07a6bfb0d2f6381aadef6b807e560a4eba3918'
+source=("${pkgname}-${pkgver}.tar.bz2::https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/linux-x86_64/en-US/firefox-${pkgver}.tar.bz2"
+        firefox.desktop vendor.js)
+sha256sums=('0466ed94d1350d6366b54f0d3a2b8ef0b7698e0464c97e087b32cd560e8dab02'
             'd1980760155fa1e2da773727fa5393f2f106d56dcfbe7131856722eef22fc008'
-            'd86e41d87363656ee62e12543e2f5181aadcff448e406ef3218e91865ae775cd'
-            '4b50e9aec03432e21b44d18c4c97b2630bace606b033f7d556c9d3e3eb0f4fa4'
-            '4f0046b39a8d98f6e4fc3360ec490cb2416e38c7b3e92699f7e511c206c2c961')
-validpgpkeys=('2B90598A745E992F315E22C58AB132963A06537A') # Mozilla Software Releases <releases@mozilla.org>
-
-# The official Firefox release is compiled at -O3, so let's do that too
-export CFLAGS="${CFLAGS}"
-export CXXFLAGS="${CXXFLAGS} -O3"
-export LDFLAGS="${LDFLAGS} -O3"
-
-prepare() {
-  cd mozilla-release
-
-  sed "s:@MULTIARCH@:${MULTIARCH}:" ../mozconfig.in > ./.mozconfig
-  patch -Np1 -i ../firefox-install-dir.patch
-
-  # https://bugs.archlinux.org/task/41689
-  patch -Np2 -i ../rhbz-966424.patch
-
-  mkdir -p "$srcdir/path"
-
-  # WebRTC build tries to execute "python" and expects Python 2
-  ln -sf /usr/bin/python2 "$srcdir/path/python"
-
-  # Use gold, as Mozilla can use some of its features, such as safe ICF
-  ln -sf /usr/bin/ld.gold "$srcdir/path/ld"
-
-  # configure script misdetects the preprocessor without an optimization level
-  # https://bugs.archlinux.org/task/34644
-  sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure
-}
-
-build() {
-  cd mozilla-release
-
-  export PATH="$srcdir/path:$PATH"
-  export PYTHON="/usr/bin/python2"
-
-  # Do PGO
-  xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
-    make -f client.mk build MOZ_PGO=1
-}
+            '4b50e9aec03432e21b44d18c4c97b2630bace606b033f7d556c9d3e3eb0f4fa4')
 
 package() {
-  cd mozilla-release
-  make -f client.mk DESTDIR="$pkgdir" INSTALL_SDK= install
+    mkdir -p "${pkgdir}"/opt/firefox-${pkgver}
+    cp -R firefox/* "${pkgdir}/opt/firefox-${pkgver}/"
 
-  install -Dm644 ../vendor.js "${pkgdir}"/usr/lib/${MULTIARCH}/firefox/browser/defaults/preferences/vendor.js
+    install -Dm644 vendor.js "${pkgdir}"/opt/firefox-${pkgver}/browser/defaults/preferences/vendor.js
 
-  for i in 16 22 24 32 48 256; do
-      install -Dm644 browser/branding/official/default$i.png \
-        "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
-  done
-  install -Dm644 browser/branding/official/content/icon64.png \
-    "$pkgdir/usr/share/icons/hicolor/64x64/apps/firefox.png"
-  install -Dm644 browser/branding/official/mozicon128.png \
-    "$pkgdir/usr/share/icons/hicolor/128x128/apps/firefox.png"
-  install -Dm644 browser/branding/official/content/about-logo.png \
-    "$pkgdir/usr/share/icons/hicolor/192x192/apps/firefox.png"
-  install -Dm644 browser/branding/official/content/about-logo@2x.png \
-    "$pkgdir/usr/share/icons/hicolor/384x384/apps/firefox.png"
+    install -Dm644 firefox.desktop "${pkgdir}/usr/share/applications/firefox.desktop"
 
-  install -Dm644 ../firefox.desktop \
-    "$pkgdir/usr/share/applications/firefox.desktop"
-
-  # Use system-provided dictionaries
-  rm -rf "$pkgdir"/usr/lib/${MULTIARCH}/firefox/{dictionaries,hyphenation}
-  ln -s /usr/share/hunspell "$pkgdir/usr/lib/${MULTIARCH}/firefox/dictionaries"
-  ln -s /usr/share/hyphen "$pkgdir/usr/lib/${MULTIARCH}/firefox/hyphenation"
-
-  #workaround for now
-  #https://bugzilla.mozilla.org/show_bug.cgi?id=658850
-  ln -sf firefox "$pkgdir/usr/lib/${MULTIARCH}/firefox/firefox-bin"
+    mkdir -p "${pkgdir}"/usr/bin
+    ln -s /opt/firefox-${pkgver}/firefox "${pkgdir}/usr/bin/firefox"
 }
