@@ -1,5 +1,5 @@
 pkgname=linux
-pkgver=3.19.4
+pkgver=3.19.5
 pkgrel=1
 pkgdesc="The Linux kernel"
 arch=("x86_64")
@@ -10,14 +10,14 @@ options=(!strip)
 makedepends=('gcc' 'lz4' 'bc')
 depends=('linux-firmware' 'kmod')
 
-_grsecver=3.1-${pkgver}-201504141933
+_grsecver=3.1-${pkgver}-201504190814
 source=(https://www.kernel.org/pub/linux/kernel/v3.x/linux-${pkgver}.tar.{sign,xz}
         https://grsecurity.net/test/grsecurity-${_grsecver}.patch{,.sig}
         config
         x509.genkey)
 sha256sums=('SKIP'
-            '91b281fe404fd0413391a0f082383b7f5113d40bfaf51d4ed31a62943fa53ae3'
-            'ab37cfe707149991d16aa781edb800b075089f90a0792894834a3cda6ff4f096'
+            '3d36d9d3643f3dd8e395a192c112dcde55732734e52185a4131fe819a68f5e68'
+            'e05f098b2f7dc7bc58481b306617523eb00a75ac2304084358816858635f4972'
             'SKIP'
             'd95eec6c65c9f70efb28576b35514030f0f2feeeabf768d492b68efae7d66a7e'
             'ca581821060e883b03f660d69ed0e9a7cbbf284dd757995bd31ffefa551ef316')
