@@ -1,5 +1,5 @@
 pkgname=musl
-pkgver=1.1.6
+pkgver=1.1.8
 pkgrel=1
 pkgdesc="A lightweight, fast, simple, free, and correct libc"
 arch=("x86_64")
@@ -8,7 +8,7 @@ license=("BSD")
 options=('staticlibs')
 
 source=(http://www.musl-libc.org/releases/musl-${pkgver}.tar.gz)
-sha256sums=('5a0160c55c540d5b90158617a57647f1b03209f58d9ee70dbce19d1115b4f1b4')
+sha256sums=('fa928506415b9c555977daaf874c190eaf7fbbd16028cc5c5f33a00a83227813')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
