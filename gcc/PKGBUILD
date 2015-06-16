@@ -1,6 +1,6 @@
 pkgbase=gcc
 pkgname=(gcc-libs gcc)
-pkgver=4.9.2
+pkgver=4.9.3
 pkgrel=1
 pkgdesc="The GNU Compiler Collection"
 arch=("x86_64")
@@ -14,10 +14,10 @@ checkdepends=('autogen' 'dejagnu')
 source=(http://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2{,.sig}
 		gcc-no_fixincludes.diff
 		t-linux64)
-sha256sums=('2020c98295856aa13fda0f2f3a4794490757fc24bcca918d52cc8b4917b972dd'
+sha256sums=('2332b2a5a321b57508b9031354a8503af6fdfb868b8c1748d33028d100a8b67e'
             'SKIP'
             'ed0565cc5cd1f4dd459b9a665447a85fb3a8293f8eecabf5c3065a4405465382'
-            'SKIP')
+            '282ffd08d1401dfd6a873274721de9a4f5bb3a6ce8ee65fd2ce4a6ace03fb00e')
 validpgpkeys=('33C235A34C46AA3FFB293709A328C3A2C3C45C06') # Jakub Jelinek <jakub@redhat.com>
 
 _target_dir=usr/lib/${MULTIARCH}/gcc/${CHOST}/${pkgver}

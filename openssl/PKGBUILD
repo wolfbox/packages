@@ -1,6 +1,6 @@
 pkgname=openssl
-_ver=1.0.2a
-pkgver=1.0.2.a
+_ver=1.0.2d
+pkgver=1.0.2.d
 pkgrel=1
 pkgdesc="A legacy cryptography toolkit"
 arch=("x86_64")
@@ -14,7 +14,7 @@ backup=('etc/ssl/openssl.cnf')
 
 source=(http://www.openssl.org/source/openssl-${_ver}.tar.gz{,.asc}
 		openssl.soname.diff.gz)
-sha256sums=('15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a'
+sha256sums=('671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8'
             'SKIP'
             '866b84408c72d4362f39b10a91bfe2582b2db5d21afc007cb2d53a5fccd9cf76')
 validpgpkeys=('8657ABB260F056B1E5190839D9C4D26D0E604491') # Matt Caswell <matt@openssl.org>
