@@ -1,6 +1,6 @@
 
 pkgname=firefox
-pkgver=37.0.2
+pkgver=39.0
 pkgrel=1
 pkgdesc="The fast and secure web browser from Mozilla"
 arch=('x86_64')
@@ -20,7 +20,7 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
 
 source=("${pkgname}-${pkgver}.tar.bz2::https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${pkgver}/linux-x86_64/en-US/firefox-${pkgver}.tar.bz2"
         firefox.desktop vendor.js)
-sha256sums=('caa8988dd36eb0907d43be6b7529b1a43ea5ab5e7c6d490efdd8633c77edf87e'
+sha256sums=('ebb727c7642468bd463d0cbe91c840910ddba3f726fa3d17972b9d160dbef10b'
             'd1980760155fa1e2da773727fa5393f2f106d56dcfbe7131856722eef22fc008'
             '6f92c762d4d0f8175d0f5c1d53a4d42b2eff8a913672a515eba8502eea44b63c')
 
