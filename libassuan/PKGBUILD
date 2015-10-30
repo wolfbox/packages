@@ -1,5 +1,5 @@
 pkgname=libassuan
-pkgver=2.1.2
+pkgver=2.3.0
 pkgrel=1
 pkgdesc="Inter-process communication library for GPG"
 arch=("x86_64")
@@ -9,7 +9,7 @@ license=("GPL3")
 depends=('glibc' 'libgpg-error')
 
 source=("ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-${pkgver}.tar.bz2")
-sha256sums=(39f8a7c9349aaaf7ccd937b90660153ec4d2d4df2465018754e5bcae5b1db77b)
+sha256sums=('87c999f572047fa22a79ab5de4c8a1a5a91f292561b69573965cac7751320452')
 
 build() {
 	cd "${srcdir}/libassuan-${pkgver}"
