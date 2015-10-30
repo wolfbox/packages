@@ -1,5 +1,5 @@
 pkgname=libgcrypt
-pkgver=1.6.3
+pkgver=1.6.4
 pkgrel=1
 pkgdesc="A low-level general-purpose cryptographic library"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('GPL2' 'LGPL2.1')
 depends=('glibc' 'libgpg-error')
 
 source=(ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-${pkgver}.tar.bz2{,.sig})
-sha256sums=('41b4917b93ae34c6a0e2127378d7a4d66d805a2a86a09911d4f9bd871db7025f'
+sha256sums=('c9bc2c7fe2e5f4ea13b0c74f9d24bcbb1ad889bb39297d8082aebf23f4336026'
             'SKIP')
 validpgpkeys=('D8692123C4065DEA5E0F3AB5249B39D24F25E3B6'  # Werner Koch
               '031EC2536E580D8EA286A9F22071B08A33BD3F06') # NIIBE Yutaka
