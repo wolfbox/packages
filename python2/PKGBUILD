@@ -1,5 +1,5 @@
 pkgname=python2
-pkgver=2.7.9
+pkgver=2.7.10
 pkgrel=1
 pkgdesc="The Python 2 (legacy) programming langauge."
 arch=("x86_64")
@@ -12,11 +12,11 @@ optdepends=('ncurses' 'readline' 'gdbm' 'db48' 'xz' 'openssl' 'sqlite3' 'tk')
 
 source=(https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz
         python-libdir.diff.xz)
-sha256sums=('90d27e14ea7e03570026850e2e50ba71ad20b7eb31035aada1cf3def8f8d4916'
+sha256sums=('1cd3730781b91caf0fa1c4d472dc29274186480161a150294c42ce9b5c5effc0'
             '8d7807d3eda9913f565b95e6c6404a309814d3219290336ac5ed6376812a7c6e')
 
 prepare() {
-	cd "${srcdir}"/Python-${pkgver}
+	cd Python-${pkgver}
 
  	# Fix libdir
 	cat ../python-libdir.diff | patch -p1
@@ -24,7 +24,8 @@ prepare() {
 }
 
 build() {
-	cd "${srcdir}/Python-${pkgver}"
+	cd Python-${pkgver}
+	export OPT="${CFLAGS}"
 	./configure --prefix=/usr --mandir=/usr/share/man --libdir=/usr/lib/${MULTIARCH} \
 	            --with-threads --enable-ipv6 --enable-shared
 
@@ -32,7 +33,7 @@ build() {
 }
 
 package() {
-	cd "${srcdir}/Python-${pkgver}"
+	cd Python-${pkgver}
 
 	make install DESTDIR="${pkgdir}"
 	
