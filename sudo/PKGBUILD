@@ -1,5 +1,5 @@
 pkgname=sudo
-pkgver=1.8.12
+pkgver=1.8.14p3
 pkgrel=1
 pkgdesc="A tool for giving and logging limited root privileges to select users"
 arch=('x86_64')
@@ -9,12 +9,10 @@ license=('ISC')
 backup=('etc/sudoers' 'etc/pam.d/sudo')
 depends=('glibc' 'openpam' 'shadow')
 
-source=(http://www.courtesan.com/sudo/dist/sudo-${pkgver}.tar.gz{,.sig}
+source=(http://www.courtesan.com/sudo/dist/sudo-${pkgver}.tar.gz
         sudoers.conf)
-sha256sums=('163b51841de8ad19276581a6782d61f5948f1f72a0a843371a1c167d3dc4f3b0'
-            'SKIP'
+sha256sums=('a8a697cbb113859058944850d098464618254804cf97961dee926429f00a1237'
             'edde4ddd9a5daaf56a4f4047645cc742a431177fd7bec2797742fd61addc6c05')
-validpgpkeys=('CCB24BE9E9481B15D34159535A89DFA27EE470C4') # Todd C. Miller <Todd.Miller@courtesan.com>
 
 build() {
     cd ${pkgname}-${pkgver}
@@ -52,9 +50,6 @@ package() {
     chmod 4711 "${pkgdir}"/usr/bin/sudo
     chmod 600 "${pkgdir}"/etc/sudoers
     chmod 700 "${pkgdir}"/etc/sudoers.d
-
-    # Fix install path
-    mv "${pkgdir}"/usr/share/examples "${pkgdir}"/usr/share/doc/examples
 
     # Set up PAM file
     mkdir -p "${pkgdir}"/etc/pam.d
