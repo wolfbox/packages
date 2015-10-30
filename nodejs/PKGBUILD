@@ -1,5 +1,5 @@
 pkgname=nodejs
-pkgver=0.10.33
+pkgver=5.0.0
 pkgrel=1
 pkgdesc="A server-side JavaScript environment"
 arch=("x86_64")
@@ -9,18 +9,21 @@ license=('custom')
 depends=('gcc-libs' 'glibc' 'zlib' 'openssl')
 
 source=(http://nodejs.org/dist/v${pkgver}/node-v${pkgver}.tar.gz)
-sha256sums=(75dc26c33144e6d0dc91cb0d68aaf0570ed0a7e4b0c35f3a7a726b500edd081e)
+sha256sums=('698d9662067ae6a20a2586e5c09659735fc0050769a0d8f76f979189ceaccdf4')
 
 prepare() {
 	cd "${srcdir}"/node-v${pkgver}
 	
 	# sed incantations taken from Arch
 	msg "Fixing up python2"
-	find -type f -exec sed \
-		-e 's_^#!/usr/bin/env python$_&2_' \
-		-e 's_^\(#!/usr/bin/python2\).[45]$_\1_' \
-		-e 's_^#!/usr/bin/python$_&2_' \
-		-e "s_'python'_'python2'_" -i {} \;
+        find -type f -exec sed \
+             -e 's_^#!/usr/bin/env python$_&2_' \
+             -e 's_^\(#!/usr/bin/python2\).[45]$_\1_' \
+             -e 's_^#!/usr/bin/python$_&2_' \
+             -e 's_^\( *exec \+\)python\( \+.*\)$_\1python2\2_'\
+             -e 's_^\(.*\)python\( \+-c \+.*\)$_\1python2\2_'\
+             -e "s_'python'_'python2'_" -i {} \;
+        find test/ -type f -exec sed 's_python _python2 _' -i {} \;
 }
 
 build() {
