@@ -2,7 +2,7 @@
 # Derived from Arch Linux
 
 pkgname=pango
-pkgver=1.36.8
+pkgver=1.38.1
 pkgrel=1
 pkgdesc="A library for layout and rendering of text"
 arch=('x86_64')
@@ -14,7 +14,7 @@ depends=('libthai' 'cairo' 'libxft' 'harfbuzz')
 install=pango.install
 
 source=(http://download.gnome.org/sources/${pkgname}/${pkgver:0:4}/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('18dbb51b8ae12bae0ab7a958e7cf3317c9acfc8a1e1103ec2f147164a0fc2d07')
+sha256sums=('1320569f6c6d75d6b66172b2d28e59c56ee864ee9df202b76799c4506a214eb7')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -22,7 +22,7 @@ build() {
   rm -f pango-view/pango-view.1.in
 
   ./configure --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib/${MULTIARCH} \
-      --localstatedir=/var --with-included-modules=basic-fc
+      --localstatedir=/var
   make
 }
 
