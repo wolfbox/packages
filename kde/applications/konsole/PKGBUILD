@@ -1,5 +1,5 @@
 pkgname=konsole
-pkgver=14.12.1
+pkgver=15.08.2
 pkgrel=1
 pkgdesc='The KDE terminal emulator'
 arch=('x86_64')
@@ -10,7 +10,7 @@ makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
 source=(http://download.kde.org/stable/applications/${pkgver}/src/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('12956509c1b7fb33f18e4cb3cc675fd1c06010b00e7fd135f8f7d2773563f544')
+sha256sums=('e850bfe10e979f73fd95e294c5a9b6e8e053b0f30ceb4888810d726a743cb5a4')
 
 build() {
   mkdir -p build && cd build
