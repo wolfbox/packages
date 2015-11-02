@@ -1,6 +1,6 @@
 pkgname=sqlite3
-pkgver=3.8.9
-_amalver=3080900
+pkgver=3.9.1
+_amalver=3090100
 pkgrel=1
 pkgdesc="A lightweight embedded SQL database engine"
 arch=("x86_64")
@@ -11,7 +11,7 @@ depends=('glibc' 'ncurses' 'readline')
 provides=("sqlite=${pkgver}")
 
 source=(http://www.sqlite.org/2015/sqlite-autoconf-${_amalver}.tar.gz)
-sha256sums=('76ebb6392cd2289fbff903af7ff67f3e49bd01ff30544b8028ecededd60269a2')
+sha256sums=('d89d0e1d93deafebd0aa067d20d9029d9914ccde244920d9dd09ea51944e1c6c')
 
 build() {
 	cd sqlite-autoconf-${_amalver}
