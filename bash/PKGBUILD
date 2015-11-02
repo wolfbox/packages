@@ -1,5 +1,5 @@
 pkgname=bash
-_patchlevel=33
+_patchlevel=42
 _basever=4.3
 pkgver=${_basever}.${_patchlevel}
 pkgrel=1
@@ -46,7 +46,16 @@ source=(${MIRROR}/bash-${_basever}.tar.gz{,.sig}
 		${PATCH_DIR}/bash43-030{,.sig}
 		${PATCH_DIR}/bash43-031{,.sig}
 		${PATCH_DIR}/bash43-032{,.sig}
-		${PATCH_DIR}/bash43-033{,.sig})
+		${PATCH_DIR}/bash43-033{,.sig}
+		${PATCH_DIR}/bash43-034{,.sig}
+		${PATCH_DIR}/bash43-035{,.sig}
+		${PATCH_DIR}/bash43-036{,.sig}
+		${PATCH_DIR}/bash43-037{,.sig}
+		${PATCH_DIR}/bash43-038{,.sig}
+		${PATCH_DIR}/bash43-039{,.sig}
+		${PATCH_DIR}/bash43-040{,.sig}
+		${PATCH_DIR}/bash43-041{,.sig}
+		${PATCH_DIR}/bash43-042{,.sig})
 sha256sums=('afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4'
             'SKIP'
             '3704950247921ed070af979377d60ddd6c71ec7550f27593e4d948325eb11489'
@@ -115,6 +124,24 @@ sha256sums=('afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4'
             '889357d29a6005b2c3308ca5b6286cb223b5e9c083219e5db3156282dd554f4a'
             'SKIP'
             'fb2a7787a13fbe027a7335aca6eb3c21cdbd813e9edc221274b6a9d8692eaa16'
+            'SKIP'
+            'f1694f04f110defe1330a851cc2768e7e57ddd2dfdb0e3e350ca0e3c214ff889'
+            'SKIP'
+            '370d85e51780036f2386dc18c5efe996eba8e652fc1973f0f4f2ab55a993c1e3'
+            'SKIP'
+            'ac5f82445b36efdb543dbfae64afed63f586d7574b833e9aa9cd5170bc5fd27c'
+            'SKIP'
+            '33f170dd7400ab3418d749c55c6391b1d161ef2de7aced1873451b3a3fca5813'
+            'SKIP'
+            'adbeaa500ca7a82535f0e88d673661963f8a5fcdc7ad63445e68bf5b49786367'
+            'SKIP'
+            'ab94dced2215541097691f60c3eb323cc28ef2549463e6a5334bbcc1e61e74ec'
+            'SKIP'
+            '84bb396b9262992ca5424feab6ed3ec39f193ef5c76dfe4a62b551bd8dd9d76b'
+            'SKIP'
+            '4ec432966e4198524a7e0cd685fe222e96043769c9613e66742ac475db132c1a'
+            'SKIP'
+            'b75a53141ab3d8fff3fa74b5f3dc76468b01eae299f50bbc2bc71ae395d690af'
             'SKIP')
 validpgpkeys=('7C0135FB088AAF6C66C650B9BB5869F064EA74AB') # Chet Ramey <chet@cwru.edu>
 
