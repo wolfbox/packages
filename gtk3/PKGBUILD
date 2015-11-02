@@ -1,5 +1,5 @@
 pkgname=gtk3
-pkgver=3.14.11
+pkgver=3.18.2
 pkgrel=1
 pkgdesc="The modern GTK+ widget toolkit"
 arch=('x86_64')
@@ -7,11 +7,11 @@ url="http://www.gtk.org/"
 license=('LGPL2')
 
 makedepends=('python2' 'gobject-introspection')
-depends=('atk' 'at-spi2-atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 
+depends=('atk' 'at-spi2-atk' 'pango>=1.37.3' 'glib2>=2.45.8' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
          'shared-mime-info' 'cairo' 'cups' 'gtk-update-icon-cache' 'colord' 'wayland' 'libxkbcommon')
 
-source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-$pkgver.tar.xz)
-sha256sums=('3fb59e99de38001b1b84a7f292553d0e2305991053d6989d6cd09acd1418f7c8')
+source=(http://ftp.gnome.org/pub/gnome/sources/gtk+/3.18/gtk+-$pkgver.tar.xz)
+sha256sums=('5dbec561c4a00070073bf9cf4cfdd61fab4a14c8ff5b15d700bd378f8185e152')
 
 build() {
     cd gtk+-$pkgver
