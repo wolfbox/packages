@@ -1,5 +1,5 @@
 pkgname=libpng
-pkgver=1.6.16
+pkgver=1.6.18
 pkgrel=1
 pkgdesc="A library for working with the PNG image format"
 arch=("x86_64")
@@ -9,7 +9,7 @@ license=('custom')
 depends=('glibc' 'zlib')
 
 source=(http://downloads.sourceforge.net/project/libpng/libpng16/${pkgver}/libpng-${pkgver}.tar.xz{,.asc})
-sha256sums=('42f754df633e4e700544e5913cbe2fd4928bbfccdc07708a5cf84e59827fbe60'
+sha256sums=('2e10c13b7949883ac961db6177c516d778184432d440317e9f0391305c360963'
             'SKIP')
 validpgpkeys=(8048643BA2C840F4F92A195FF54984BFA16C640F) # Glenn Randers-Pehrson (libpng) <glennrp@users.sourceforge.net>
 
