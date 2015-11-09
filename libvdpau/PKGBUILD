@@ -2,7 +2,7 @@
 # Maintainer: Andrew Aldridge <i80and@foxquill.com>
 
 pkgname=libvdpau
-pkgver=0.8
+pkgver=1.1.1
 pkgrel=1
 pkgdesc="Nvidia VDPAU library"
 arch=('x86_64')
@@ -13,7 +13,7 @@ makedepends=('dri2proto')
 depends=('gcc-libs' 'libxext')
 
 source=(http://people.freedesktop.org/~aplattner/vdpau/${pkgname}-${pkgver}.tar.gz)
-sha256sums=('73a7d11cc1abed8bcaf1392bd361fc00fd43bd85bbeafb12a64bdd0bcb4101ed')
+sha256sums=('5fe093302432ef05086ca2ee429c789b7bf843e166d482d166e56859b08bef55')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
