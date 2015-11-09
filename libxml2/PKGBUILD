@@ -1,7 +1,7 @@
 pkgname=libxml2
 pkgver=2.9.2
-pkgrel=1
-pkgdesc="XML parser library."
+pkgrel=2
+pkgdesc="XML parser library"
 arch=("x86_64")
 url="http://xmlsoft.org"
 license=('custom')
@@ -10,30 +10,47 @@ makedepends=('python2')
 depends=('glibc' 'xz' 'zlib')
 
 source=(ftp://xmlsoft.org/libxml2/libxml2-${pkgver}.tar.gz{,.asc}
+                http://www.w3.org/XML/Test/xmlts20080827.tar.gz
 		libxml2.do-not-check-crc.diff.xz
-		fix-CVE-2014-3660.patch)
+		fix-CVE-2014-3660.patch
+                revert-catalog-initialize.patch)
 sha256sums=('5178c30b151d044aefb1b08bf54c3003a0ac55c59c866763997529d60770d5bc'
             'SKIP'
+            '96151685cec997e1f9f3387e3626d61e6284d4d6e66e0e440c209286c03e9cc7'
             'c195673ede058de75c24d94bf42b5ac971a5877131c839bbd55fbc84eac495fe'
-            '8973ec46f0567f2ed961ec37e00281b7bbbaa2029e7ddb0d1a527c4bedda67e5')
+            '8973ec46f0567f2ed961ec37e00281b7bbbaa2029e7ddb0d1a527c4bedda67e5'
+            '160258250f519b9d71e7d4ba913df6b2ba6109e1ac533bd19a3061ffbe82cd18')
 validpgpkeys=('C74415BA7C9C7F78F02E1DC34606B8A5DE95BC1F') # Daniel Veillard <Daniel.Veillard@w3.org>
 
 prepare() {
 	cd ${pkgname}-${pkgver}
 	
 	# From Slackware. Is this a good idea?
-	xzcat ../libxml2.do-not-check-crc.diff.xz | patch -p1
+	# xzcat ../libxml2.do-not-check-crc.diff.xz | patch -p1
 
 	# Fix entity substitution. See GNOME Bugzilla 738805
 	patch -p1 -i ../fix-CVE-2014-3660.patch
+
+	# Fix catalog corruption and segfault in doctools.
+	patch -p1 -i ../revert-catalog-initialize.patch
+
+	# Get testing file
+	mv ../xmlconf ./
 }
 
 build() {
 	cd ${pkgname}-${pkgver}
 	./configure --prefix=/usr \
+	            --with-threads \
+	            --with-history \
 	            --libdir=/usr/lib/${MULTIARCH} \
 	            --with-python=/usr/bin/python2
 	make
+}
+
+check() {
+	cd ${pkgname}-${pkgver}
+	make check
 }
 
 package() {
