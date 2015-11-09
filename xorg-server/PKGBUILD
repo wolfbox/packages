@@ -3,7 +3,7 @@
 
 pkgbase=xorg-server
 pkgname=('xorg-server' 'xorg-server-xephyr' 'xorg-server-xdmx' 'xorg-server-xvfb' 'xorg-server-xnest' 'xorg-server-xwayland' 'xorg-server-common' 'xorg-server-devel')
-pkgver=1.17.1
+pkgver=1.17.4
 pkgrel=1
 arch=('x86_64')
 license=('custom')
@@ -15,19 +15,16 @@ makedepends=('pixman' 'libx11' 'mesa' 'xf86driproto' 'xcmiscproto' 'xtrans' 'big
              'xorg-xkbcomp' 'xorg-util-macros' 'xorg-font-util' 'glproto' 'dri2proto' 'libgcrypt' 'libepoxy'
              'xcb-util' 'xcb-util-image' 'xcb-util-wm' 'xcb-util-keysyms' 'xcb-util-renderutil' 'dri3proto'
              'libxshmfence' 'wayland')
-source=(${url}/releases/individual/xserver/${pkgbase}-${pkgver}.tar.bz2{,.sig}
+source=(${url}/releases/individual/xserver/${pkgbase}-${pkgver}.tar.bz2
         autoconfig-sis.patch
         nvidia-drm-outputclass.conf
         xvfb-run
         xvfb-run.1)
-sha256sums=('2bf8e9f6f0a710dec1d2472467bff1f4e247cb6dcd76eb469aafdc8a2d7db2ab'
-            'SKIP'
+sha256sums=('0c4b45c116a812a996eb432d8508cf26c2ec8c3916ff2a50781796882f8d6457'
             'd027776fac1f7675b0a9ee817502290b1c45f9c09b0f0a6bb058c35f92361e84'
             'af1c3d2ea5de7f6a6b5f7c60951a189a4749d1495e5462f3157ae7ac8fe1dc56'
             'ff0156309470fc1d378fd2e104338020a884295e285972cc88e250e031cc35b9'
             '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776')
-validpgpkeys=('C383B778255613DFDB409D91DB221A6900000011'  # Packard <keithp@freedesktop.org>
-              '7B27A3F1A6E18CD9588B4AE8310180050905E40C') # Julien Cristau <julien.cristau@ens-lyon.org>
 
 prepare() {
   cd "${pkgbase}-${pkgver}"
