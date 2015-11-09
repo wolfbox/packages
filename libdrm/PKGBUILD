@@ -2,7 +2,7 @@
 # Maintainer: Andrew Aldridge <i80and@foxquill.com>
 
 pkgname=libdrm
-pkgver=2.4.59
+pkgver=2.4.65
 pkgrel=1
 pkgdesc="Userspace access to DRM"
 arch=("x86_64")
@@ -12,9 +12,9 @@ license=('x11')
 depends=('glibc' 'libpciaccess')
 
 source=(http://dri.freedesktop.org/libdrm/libdrm-${pkgver}.tar.bz2{,.sig})
-sha256sums=('68d26e1fd85582f4243d66864f9b43ca4ee93662825de32b5506fc8e181ea41b'
+sha256sums=('71960ac8bde7d710992b1bc8879935e8300a870c36bd06f22412d0447e3d96c4'
             'SKIP')
-validpgpkeys=('B97BD6A80CAC4981091AE547FE558C72A67013C3') # Maarten Lankhorst <maarten.lankhorst@canonical.com>
+validpgpkeys=('D6285B5E899299F3DA746184191C9B905522B045') # Rob Clark <robclark@freedesktop.org>
 
 prepare() {
     cd "${srcdir}"/${pkgname}-${pkgver}
@@ -29,7 +29,7 @@ build() {
     ./configure --prefix=/usr \
                 --libdir=/usr/lib/${MULTIARCH} \
                 --enable-udev
-    make
+    make V=1 VERBOSE=1
 }
 
 package() {
