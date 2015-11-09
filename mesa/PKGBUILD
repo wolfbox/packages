@@ -2,15 +2,15 @@
 # Derived from Arch Linux
 
 pkgname=mesa
-pkgver=10.5.9
+pkgver=11.0.4
 pkgrel=1
 arch=('x86_64')
 url="http://mesa3d.sourceforge.net"
 license=('custom')
 
 makedepends=('python2' 'python2-mako' 'libxml2' 'glproto' 'dri2proto' 'dri3proto'
-             'presentproto' 'libvdpau' 'llvm' 'libclc' 'wayland' 'libva')
-depends=('gcc-libs' 'glibc' 'expat' 'libdrm' 'libxcb' 'libx11' 'libxdamage'
+             'presentproto' 'libvdpau>=1.1' 'llvm' 'libclc' 'wayland' 'libva')
+depends=('gcc-libs' 'glibc' 'expat' 'libdrm>=2.4.60' 'libxcb' 'libx11' 'libxdamage'
          'libxshmfence' 'libxxf86vm' 'libxext' 'libxau' 'libxdmcp' 'llvm-libs'
          'libpciaccess' 'elfutils')
 optdepends=('libtxc_dxtn')
@@ -20,7 +20,7 @@ replaces=('libgl')
 source=(ftp://ftp.freedesktop.org/pub/mesa/${pkgver}/mesa-${pkgver}.tar.xz{,.sig}
         llvm-link-fix.patch
         LICENSE)
-sha256sums=('71c69f31d3dbc35cfa79950e58a01d27030378d8c7ef1259a0b31d4d0487f4ec'
+sha256sums=('40201bf7fc6fa12a6d9edfe870b41eb4dd6669154e3c42c48a96f70805f5483d'
             'SKIP'
             '0a0aebededec771ca11176b666aec129b1333b86037eb6d5db84219773ae371a'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
