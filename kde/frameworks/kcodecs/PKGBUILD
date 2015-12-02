@@ -1,16 +1,16 @@
 pkgname=kcodecs
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='The KDE string encoding component'
 arch=('x86_64')
 url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('GPLv2' 'LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules' 'qt5-tools')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}" 'qt5-tools')
 depends=('gcc-libs' 'glibc' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('1262cd0411c962332006bce18c9d1bc5e05d5220be3d84b78b14d526cb20ce5e')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('97d10cc6166b75da514c1d62f42226edccdcdae50fb65e76a2f02c7cab919e98')
 
 build() {
   mkdir -p build && cd build

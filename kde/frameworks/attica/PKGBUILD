@@ -1,16 +1,16 @@
 pkgname=attica
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='Qt implementation of the Open Collaboration Services API'
 arch=('x86_64')
 url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
 depends=('glibc' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('906f480e181ee31a141e9e9b839d084f17800657faf639d8b5c5ec250c18adf7')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('bc24370e43061d6fb555a030f82c51cc907113b8420c4207a0fb6d9190bb699c')
 
 build() {
   mkdir -p build && cd build

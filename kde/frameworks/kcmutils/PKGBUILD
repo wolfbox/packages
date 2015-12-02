@@ -1,17 +1,19 @@
 pkgname=kcmutils
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE framework for working with control modules'
 arch=('x86_64')
-url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
-license=('LGPLv2.1')
+url='https://projects.kde.org/projects/frameworks/kcmutils'
+license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'ki18n' 'kconfig' 'kservice' 'kcoreaddons'
-         'kiconthemes' 'kxmlgui' 'kauth' 'kwidgetsaddons' 'kconfigwidgets')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "ki18n>=${pkgver}" "kconfig>=${pkgver}"
+         "kservice>=${pkgver}" "kcoreaddons>=${pkgver}" "kiconthemes>=${pkgver}"
+         "kxmlgui>=${pkgver}" "kauth>=${pkgver}" "kwidgetsaddons>=${pkgver}"
+         "kconfigwidgets>=${pkgver}" "kdeclarative>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('1a73e8b897e845be383e0fc12f66f15164427d8e85c8aad294672fe89bff19ac')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('341330dba9cc50cfa035460c94f79892f5908e116f7a0f084be36e53f9a3e3b3')
 
 build() {
   mkdir -p build && cd build

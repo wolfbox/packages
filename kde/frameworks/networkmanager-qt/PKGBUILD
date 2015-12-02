@@ -1,16 +1,16 @@
 pkgname=networkmanager-qt
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='A Qt binding for NetworkManager'
 arch=('x86_64')
 url='https://kde.org'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
 depends=('glibc' 'gcc-libs' 'qt>=5.0' 'networkmanager')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('535e6b04fa041c38bb9af1bf4aea293ee5ae4f9883df7dd1cb0e1671b5dca1d3')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('5bba3687514a57e28edb0842dd139ee909d11c78cdacc818a3cd04b74210b984')
 
 build() {
   mkdir -p build && cd build

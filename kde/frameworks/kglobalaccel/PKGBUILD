@@ -1,16 +1,16 @@
 pkgname=kglobalaccel
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE component for keyboard hotkey handling'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kglobalaccel'
 license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
 depends=('gcc-libs' 'glibc' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('3e0996ca5a1f29ef9c0ff2ba503cde4a395d898702594237f1a91ff0c6b4934a')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('bb8e7c1ef7db0ecf9886388834707f7851bf49225fb277331e5f8db250841d8a')
 
 build() {
   mkdir -p build && cd build

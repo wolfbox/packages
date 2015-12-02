@@ -1,5 +1,5 @@
 pkgname=kdbusaddons
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE convenience methods on top of the Qt DBus framework'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('7b64c858e8871ab2deb6739c9a6aae79e634f8fc34043f46025341cbbd57c5ae')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ea9b6c4059c0e4205347c6e72f2fe3f175eb1aebe32c1d6d822a7a1d617d6e7a')
 
 build() {
   mkdir -p build && cd build

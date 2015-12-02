@@ -1,5 +1,5 @@
 pkgname=kitemmodels
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE item model'
 arch=('x86_64')
@@ -7,9 +7,10 @@ url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('LGPL2.1')
 
 makedepends=('cmake')
+depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('f0d2a736acac531ad6f06c1abf36c68bf448e8a663fd32c2ce1610988f8e7f78')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('e2b527bd13bbdbe7ccda38ec0b31efb7b2047ec72b3c8e92c117c3df1422a9ae')
 
 build() {
   mkdir -p build && cd build

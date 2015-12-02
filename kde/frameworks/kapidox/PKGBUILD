@@ -1,5 +1,5 @@
 pkgname=kapidox
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE tools for generating API documentation'
 arch=('any')
@@ -9,8 +9,8 @@ license=('BSD')
 makedepends=('cmake')
 depends=('python')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('8dfb597b4e8d8123bcdb8cca01270140f807fc31ecb828c2ca017e8a8c0a69ff')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('4405e8b2e8df3cce10a25b864067f7a7fec1452bde94a426b36eb6b9b4b6dd3d')
 
 build() {
   mkdir -p build && cd build

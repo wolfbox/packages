@@ -1,16 +1,18 @@
 pkgname=kdewebkit
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='Integration between QtWebKit and KDE'
 arch=('x86_64')
-url='https://projects.kde.org/projects/frameworks/kded'
+url='https://projects.kde.org/projects/frameworks/kdewebkit'
 license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "kparts>=${pkgver}" "kio>=${pkgver}"
+         "kconfig>=${pkgver}" "kservice>=${pkgver}" "kwallet>=${pkgver}"
+         "kcoreaddons>=${pkgver}" "kjobwidgets>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('bf4f68adbeeea32f8d179dc8b1b266dd53fee7870101776fb73121d98c12eb13')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('8a9b7a57e6f86cddfd4d75123dbe8226a805f6669fbd5601b9e9b636669006db')
 
 build() {
   mkdir -p build && cd build

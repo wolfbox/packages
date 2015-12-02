@@ -1,16 +1,16 @@
 pkgname=threadweaver
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/threadweaver'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('eaaa4ba735810728532f87afc835184c1372b94df3dc3374b64f50ca150262a9')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('9e7841e81eabaa4a9ae38dee5b3e724af919ff7e2795e805c77c2f43dd97daaa')
 
 build() {
   mkdir -p build && cd build

@@ -1,17 +1,18 @@
 pkgname=kinit
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE initialization helpers'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kinit'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kcrash' 'kwindowsystem' 'libx11' "kio>=${pkgver}"
-         'ki18n' 'kservice' 'kconfig' 'kcoreaddons')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'libcap' 'libx11' 'qt5' "kcrash>=${pkgver}"
+         "kwindowsystem>=${pkgver}" "kio>=${pkgver}" "ki18n>=${pkgver}"
+         "kservice>=${pkgver}" "kconfig>=${pkgver}" "kcoreaddons>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('a2eb4b356cd940018afa975fd3ddd81384a44aa46a27aa2611c19d83f08ff5bb')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('e001df052765712b53b817a2a0ade6a18fee4deb013952d096f248baaeef97ba')
 
 build() {
   mkdir -p build && cd build

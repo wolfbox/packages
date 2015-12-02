@@ -1,26 +1,24 @@
 pkgname=knotifyconfig
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='Embeddable configuration dialog for desktop notifications'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/knotifyconfig'
 license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'ki18n' 'kio' 'phonon-qt5' 'kservice'
-         'kcompletion')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "ki18n>=${pkgver}" "kio>=${pkgver}"
+         'phonon-qt5' "kservice>=${pkgver}" "kcompletion>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('dae21941999cbcceeabfa2310cef4cca1c7362872070c9e2d004b473cd145b5f')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ac6209391ca01ed8e0f1a58225f0abb2e0d721cfd25aa276a232c15008d14555')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_HTML_DOCS=OFF \
-    -DWITH_DOC=OFF
+    -DCMAKE_BUILD_TYPE=Release
   make
 }
 

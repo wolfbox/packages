@@ -1,17 +1,18 @@
 pkgname=kactivities
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE infrastructure for managing user "activities"'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kactivities'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules' "kcmutils>=${pkgver}" "kdeclarative>=${pkgver}" 'boost')
-depends=('glibc' 'gcc-libs' 'qt5' "kdbusaddons>=${pkgver}" 'kconfig' "ki18n>=${pkgver}"
-         'kservice' 'kwindowsystem' "kcoreaddons>=${pkgver}" "kio>=${pkgver}")
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}" "kcmutils>=${pkgver}"
+             "kdeclarative>=${pkgver}" 'boost')
+depends=('glibc' 'gcc-libs' 'qt5' "kdbusaddons>=${pkgver}" "kconfig>=${pkgver}" "ki18n>=${pkgver}"
+         "kservice>=${pkgver}" "kwindowsystem>=${pkgver}" "kcoreaddons>=${pkgver}" "kio>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('2978ab55a9ce484db5790a13fa1ae081bb1e3b3925c34c1ac91a9700148882b4')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('b563eb83b0d01ae5bc8e71e7d23bc95d2c59a9b73bd8d6ae4c793cf857f7002b')
 
 build() {
   mkdir -p build && cd build

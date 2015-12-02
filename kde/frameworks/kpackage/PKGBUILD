@@ -1,16 +1,16 @@
 pkgname=kpackage
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='A KDE framework for installing non-binary script/asset packages'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kpackage/'
-license=('LGPLv2.1')
+license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
 depends=('gcc-libs' 'glibc' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('f8f53cb74f123b8219f67dbb781b60b524e16304d34f38fc96a9da293496d470')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('57e5dc4a8e084bb1140e519f97a808ef76c8ae01071cc62db666190fde6a474b')
 
 build() {
   mkdir -p build && cd build

@@ -1,5 +1,5 @@
 pkgname=knotifications
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE desktop notifications component'
 arch=('x86_64')
@@ -7,11 +7,12 @@ url='https://projects.kde.org/projects/frameworks/knotifications'
 license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'phonon-qt5' 'libx11' 'libxtst' 'kiconthemes'
-         'kservice' 'kconfig' 'kwindowsystem' 'kcodecs')
+depends=('glibc' 'gcc-libs' 'qt5' 'phonon-qt5' 'libx11' 'libxtst'
+         "kiconthemes>=${pkgver}" "kservice>=${pkgver}" "kconfig>=${pkgver}"
+         "kwindowsystem>=${pkgver}" "kcodecs>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('43242ba806feedb226b77c414bcc5fc20cbb37c83ac006949725265b83d02b7d')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('aa1013ab1bd82d431dd80ed849af38d156e471de264c566fb5792b271432d92d')
 
 build() {
   mkdir -p build && cd build

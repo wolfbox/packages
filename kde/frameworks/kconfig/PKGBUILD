@@ -1,16 +1,16 @@
 pkgname=kconfig
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE configuration framework'
 arch=('x86_64')
 url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules' 'qt5-tools')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}" 'qt5-tools')
 depends=('glibc' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('f065f8fc2368bd529c0ebb0cec5b95857a1fa2b78fd2e363df61e1df77f96d57')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('aefe6845bf70d4cff938e0ad7878049ffbba2251cbd3afad938a7c326b8fe1a0')
 
 build() {
   mkdir -p build && cd build

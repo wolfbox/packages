@@ -1,25 +1,23 @@
 pkgname=kjs
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='The KDE JavaScript engine'
 arch=('x86_64')
-url='https://projects.kde.org/projects/frameworks/kservice'
+url='https://projects.kde.org/projects/frameworks/kjs'
 license=('GPL2' 'LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
 depends=('gcc-libs' 'glibc' 'qt5' 'pcre')
 
-source=(http://download.kde.org/stable/frameworks/5.7/portingAids/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('30f95c643cd9e39c9c497137f6dc8ed3a91938a803d3ffd82a05235f24a150f2')
+source=(http://download.kde.org/stable/frameworks/5.16/portingAids/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('5b4f39e626d2924e64a2a4babcfab050db0e22540b91afe9f78595ce53bf457e')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_HTML_DOCS=OFF \
-    -DWITH_DOC=OFF
+    -DCMAKE_BUILD_TYPE=Release
   make
 }
 

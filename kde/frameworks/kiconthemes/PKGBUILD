@@ -1,5 +1,5 @@
 pkgname=kiconthemes
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE component for icon theme handling'
 arch=('x86_64')
@@ -7,10 +7,11 @@ url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('qt5' "kitemviews>=${pkgver}" 'kconfig' 'kconfigwidgets' 'ki18n' 'kwidgetsaddons')
+depends=('qt5' "kitemviews>=${pkgver}" "ki18n>=${pkgver}" "kcoreaddons>=${pkgver}"
+         "kconfig>=${pkgver}" "kconfigwidgets>=${pkgver}" "kwidgetsaddons>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('4f06c930303761fc9985422cc0bb0c474f6430235adbf61378c1e943866c3984')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('537b58f69ca22ae5493b5a206e266ef7775bfd9510268ba8ec46fddac8cfc983')
 
 build() {
   mkdir -p build && cd build

@@ -1,19 +1,27 @@
 pkgname=plasma-framework
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='The base library for the KDE desktop'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/plasma-framework'
 license=('GPL2' 'LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' "kactivities>=${pkgver}" 'kservice' 'karchive'
-         'kguiaddons' 'ki18n' 'kio' 'kwindowsystem' 'kdeclarative' 'kxmlgui'
-         'kglobalaccel' 'libxcb' 'kconfigwidgets' 'kconfig' 'kcoreaddons'
-         'kpackage')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' 'libxcb' "kactivities>=${pkgver}" "kservice>=${pkgver}"
+         "karchive>=${pkgver}" "kguiaddons>=${pkgver}" "ki18n>=${pkgver}"
+         "kio>=${pkgver}" "kwindowsystem>=${pkgver}" "kdeclarative>=${pkgver}"
+         "kxmlgui>=${pkgver}" "kglobalaccel>=${pkgver}" "kconfigwidgets>=${pkgver}"
+         "kconfig>=${pkgver}" "kcoreaddons>=${pkgver}" 	"kpackage>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('35345ced57cce80e1089b3172edfd277a0dc5ed4148b9c52a18c2ca0869eb364')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz
+        'bug355577.patch::https://quickgit.kde.org/?p=plasma-framework.git&a=commitdiff&h=9ccc62&o=plain')
+sha256sums=('e37e1c890cd8b0d1522a8baabc120bfac29912d52c14ee34222c099ba281d1ea'
+            'ca1a3c70446299e7802e3c6022eb7e45e78efc2a5df50c7562cd18048877ce0c')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ../bug355577.patch
+}
 
 build() {
   mkdir -p build && cd build

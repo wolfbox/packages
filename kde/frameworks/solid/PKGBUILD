@@ -1,5 +1,5 @@
 pkgname=solid
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE hardware abstraction layer'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('gcc-libs' 'glibc' 'qt5' 'udev' 'upower' 'udisks2')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('24dc18630476db845af6a14553659c91a40b36d6c4ebbca470e061cbd9c2bf29')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('540350b1ad1438b15c1b4d40b868d26653647391b2e6c72f154fe1cad0b2a4ce')
 
 build() {
   mkdir -p build && cd build
@@ -20,9 +20,7 @@ build() {
     -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
     -DQML_INSTALL_DIR=lib/${MULTIARCH}/qt/qml \
     -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_HTML_DOCS=OFF \
-    -DWITH_DOC=OFF
+    -DCMAKE_BUILD_TYPE=Release
   make
 }
 

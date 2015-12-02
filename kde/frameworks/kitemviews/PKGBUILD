@@ -1,5 +1,5 @@
 pkgname=kitemviews
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE component for item views'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('GPLv2' 'LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules' 'qt5-tools')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('0619256e295038173d7f028a281cd59ed8125599e61e492855046d7b248566c5')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('caf4db11b25e8a0d61be476318a877ce97df354057f2c97913d00f27230d64af')
 
 build() {
   mkdir -p build && cd build

@@ -1,16 +1,16 @@
 pkgname=kcompletion
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE autocompletion component'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kcompletion'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kconfig' 'kwidgetsaddons')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "kconfig>=${pkgver}" "kwidgetsaddons>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('d0f9fd0b18953943c50f56680d95c0f62dc39a096f5a6961adedcc96d11218b5')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('4230e44395ec59e855fd4e70ebfd1d7a62fd1182c2a07d0cc4cee5234bc39620')
 
 build() {
   mkdir -p build && cd build

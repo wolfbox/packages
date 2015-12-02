@@ -1,17 +1,17 @@
 pkgname=krunner
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='The KDE launcher framework'
 arch=('x86_64')
-url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
-license=('LGPLv2.1')
+url='https://userbase.kde.org/Plasma/Krunner'
+license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' "threadweaver>=${pkgver}" "plasma-framework>=${pkgver}" 'kconfig'
-         'kservice' 'ki18n' 'solid' 'kcoreaddons' "kio>=${pkgver}")
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "threadweaver>=${pkgver}" "plasma-framework>=${pkgver}" "kconfig>=${pkgver}"
+         "kservice>=${pkgver}" "ki18n>=${pkgver}" "solid>=${pkgver}" "kcoreaddons>=${pkgver}" "kio>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/portingAids/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('ecac62be93e5ef0bbaf98cbb8f8a546bed4c1e593f5a52f0ec3d70b9ffef6b84')
+source=(http://download.kde.org/stable/frameworks/5.16/portingAids/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('b710586ba8b4cd1078a59b864c4ff99ca49b7dcb17a2b42d6e66eb21a79167e6')
 
 build() {
   mkdir -p build && cd build

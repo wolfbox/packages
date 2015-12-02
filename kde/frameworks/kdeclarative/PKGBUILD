@@ -1,16 +1,17 @@
 pkgname=kdeclarative
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE and QML integration'
 arch=('x86_64')
-url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
-license=('GPLv2' 'LGPLv2.1')
+url='http://api.kde.org/frameworks-api/frameworks5-apidocs/kdeclarative/html/index.html'
+license=('GPL2' 'LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kconfig' 'ki18n' 'kio' 'kiconthemes')
+depends=('glibc' 'gcc-libs' 'qt5' "kconfig>=${pkgver}" "ki18n>=${pkgver}"
+         "kio>=${pkgver}" "kiconthemes>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('afe4295bcb8e85b0ffee754b0db29056a7c422bf62934233991a812292bba18e')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('a42d1f1900902cab4ba28d8c374c358fbd6697500eb18f004448fcd4b6e06832')
 
 build() {
   mkdir -p build && cd build

@@ -1,5 +1,5 @@
 pkgname=kdoctools
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE DocBook documentation generator'
 arch=('x86_64')
@@ -7,11 +7,11 @@ url='https://projects.kde.org/projects/frameworks/kdoctools'
 license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'karchive' 'ki18n' 'docbook-xsl' 'libxml2'
+depends=('glibc' 'gcc-libs' "karchive>=${pkgver}" "ki18n>=${pkgver}" 'docbook-xsl' 'libxml2'
          'libxslt')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('b125d7b2654cbbe6ba0f5eaf7773f688c54ba4bd048046f7a2134b3954869a06')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ebd187ee31c8c2e58f17e373d0218c50920eaa998bd7ac39e570e9f77213c8e1')
 
 build() {
   mkdir -p build && cd build

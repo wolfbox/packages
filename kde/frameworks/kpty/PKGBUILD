@@ -1,5 +1,5 @@
 pkgname=kpty
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE interface to pseudo-terminal devices'
 arch=('x86_64')
@@ -7,10 +7,11 @@ url='https://projects.kde.org/projects/frameworks/kpty'
 license=('GPL2' 'LGPL2.1')
 
 makedepends=('cmake')
-depends=('glibc' 'gcc-libs' 'libutempter' 'qt5' 'kcoreaddons' 'ki18n')
+depends=('glibc' 'gcc-libs' 'libutempter' 'qt5' "kcoreaddons>=${pkgver}"
+         "ki18n>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('602b305ade4e2499cbc29273e3ecb54c315925652ba3b657c7bed597ff0de169')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('6c7b9d5803196f3873a51eb5ac3a95cbacc7fa4b142e26284840cb9d87e69a1c')
 
 build() {
   mkdir -p build && cd build

@@ -1,5 +1,5 @@
 pkgname=extra-cmake-modules
-pkgver=1.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc=''
 arch=('x86_64')
@@ -8,17 +8,15 @@ license=('BSD')
 
 makedepends=('cmake')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('c88de18f41fb9e5bb1f296bd4762315b2911fa5feb5c10aed8352d00fc08fdd1')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('09dec88b8ce75831aee9257e15b982b88dba7f89ad626005e4bae52957afae1b')
 
 build() {
   mkdir -p build && cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
     -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_HTML_DOCS=OFF \
-    -DWITH_DOC=OFF
+    -DBUILD_HTML_DOCS=OFF
   make
 }
 

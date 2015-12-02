@@ -1,16 +1,16 @@
 pkgname=khtml
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE HTML library'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/khtml'
 license=('GPL3' 'LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('giflib' 'kparts' 'kjs')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('giflib' "kparts>=${pkgver}" "kjs>=${pkgver}")
 
 source=("http://download.kde.org/stable/frameworks/${pkgver%.*}/portingAids/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('260ab3bfd6214e3d03fc1c58a22bad05f964ebef3f77f8448145736b3e46993a')
+sha256sums=('73255ece3a7be180263bdc9fafa35cd56f6355f4e05422f361b26a0a0f340687')
 
 prepare() {
   mkdir -p build

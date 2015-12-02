@@ -1,16 +1,16 @@
 pkgname=kidletime
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='A KDE library for reporting on system idling'
 arch=('x86_64')
-url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
+url='http://api.kde.org/frameworks-api/frameworks5-apidocs/kidletime/html/index.html'
 license=('GPL2' 'LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
 depends=('qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('a317481483cbed2360225953bee3fe8bf120d4422a85d61520cc1aed8ecc2996')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('a7e4d9ea87e315419c1958450a567ffb17ff44c22add436f3b0d9428eceaa1e8')
 
 build() {
   mkdir -p build && cd build

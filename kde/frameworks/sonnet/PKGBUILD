@@ -1,16 +1,16 @@
 pkgname=sonnet
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='A Qt-based spell checking framework'
 arch=('x86_64')
 url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
 depends=('glibc' 'gcc-libs' 'qt5' 'hunspell')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('197093983dc2cda20f444b82afe4892b7e9ac8cbe5b2c6484a5aeecaaefb0087')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('2762716e5be36989b17ef4f9b3a4804f39af961e82019878cf6d53266312c7ba')
 
 build() {
   mkdir -p build && cd build

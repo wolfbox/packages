@@ -1,5 +1,5 @@
 pkgname=kcrash
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='A KDE framework for intercepting application crashes'
 arch=('x86_64')
@@ -7,10 +7,10 @@ url='https://projects.kde.org/projects/frameworks/kcrash/'
 license=('LGPLv2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('gcc-libs' 'glibc' 'qt5' 'kcoreaddons' "kwindowsystem>=${pkgver}")
+depends=('gcc-libs' 'glibc' 'qt5' "kcoreaddons>=${pkgver}" "kwindowsystem>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('1f79d51599c9fb198783c5dbf007011d2c73569af007951d92f5efcc22ce044b')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('4971dc462af809e443ef7c374a9404d70ec59f3cab52e0e330d6e8fee96e67ae')
 
 build() {
   mkdir -p build && cd build

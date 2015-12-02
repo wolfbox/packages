@@ -1,16 +1,16 @@
 pkgname=kwidgetsaddons
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE add-on widgets and classes for the Qt toolkit'
 arch=('x86_64')
 url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules' 'qt5-tools')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}" 'qt5-tools')
 depends=('glibc' 'gcc-libs' 'qt5')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('1d6b67418b4d07f3145bb06ea3ee500942b9ef2f48eb687cae9360df4ae6e5a7')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('4385540afdf74f696271dbf78a34a1c5e9509094a6a201b96f3a9471f98cfe6f')
 
 build() {
   mkdir -p build && cd build

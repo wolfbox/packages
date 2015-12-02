@@ -1,5 +1,5 @@
 pkgname=kconfigwidgets
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE widgets for configuration dialogs'
 arch=('x86_64')
@@ -10,8 +10,8 @@ makedepends=('cmake' 'extra-cmake-modules' "kdoctools>=${pkgver}")
 depends=('glibc' 'gcc-libs' 'qt5' 'kconfig' "kauth>=${pkgver}" "kcodecs>=${pkgver}"
          "kguiaddons>=${pkgver}" "kwidgetsaddons>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('fb3d04efebb0ac570defd92eff778cc78052ca8a33c2e5b88b415c02e2d9791c')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('26ae840357c230c824789efde5892abc2c78d067ca474a90487f5b5c9248f486')
 
 build() {
   mkdir -p build && cd build

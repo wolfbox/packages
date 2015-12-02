@@ -1,16 +1,17 @@
 pkgname=kdesu
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE UI for running commands as root'
 arch=('x86_64')
-url='https://projects.kde.org/projects/kdesupport/extra-cmake-modules'
+url='https://projects.kde.org/projects/frameworks/kdesu'
 license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kpty' 'kcoreaddons' 'kservice' 'kconfig')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "kpty>=${pkgver}" "kcoreaddons>=${pkgver}"
+         "kservice>=${pkgver}" "kconfig>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('adab63b45de0b5b614a4b5185658782d5ae1a6ef0c96792927b3ff3adf9f5b2e')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('a6ce23a1f65e5e82964fd1f9de1207f94b8b9e1c675894006c2b4281d1dbe781')
 
 build() {
   mkdir -p build && cd build

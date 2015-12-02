@@ -1,16 +1,20 @@
 pkgname=kdesignerplugin
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='A set of KDE plugins for the Qt Designer'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kdesignerplugin'
 license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kconfig' 'kcoreaddons')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}" "kdoctools>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "kconfig>=${pkgver}" "kcoreaddons>=${pkgver}"
+         "kio>=${pkgver}" "kdewebkit>=${pkgver}" "kcompletion>=${pkgver}"
+         "kconfigwidgets>=${pkgver}" "kiconthemes>=${pkgver}"
+         "kitemviews>=${pkgver}" "kplotting>=${pkgver}" "ktextwidgets>=${pkgver}"
+         "kwidgetsaddons>=${pkgver}" "kxmlgui>=${pkgver}" "sonnet>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('f814bf2cdaee63be39e94d57ef72434276bd4146f730cc97a33745fc5395de78')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('c5a463a850c1830dbe92455b0595bad4797c434adb424e5a65d36f6fc16953f4')
 
 build() {
   mkdir -p build && cd build

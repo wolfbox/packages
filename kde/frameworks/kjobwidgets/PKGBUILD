@@ -1,16 +1,16 @@
 pkgname=kjobwidgets
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE component for displaying progress of asynchronous jobs'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kjobwidgets'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'kcoreaddons' 'kwidgetsaddons')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "kcoreaddons>=${pkgver}" "kwidgetsaddons>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('3e2b38800ac2a39b3343c84154d4034f7f97e3ad5ad55ef164ff21d62a337e0c')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('aa4f90d776ab6d0d3cc668d5287f5e233f867f723abcb9876224898218a7ac1d')
 
 build() {
   mkdir -p build && cd build

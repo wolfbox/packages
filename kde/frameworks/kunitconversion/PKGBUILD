@@ -1,16 +1,16 @@
 pkgname=kunitconversion
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE library for converting physical units'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kunitconversion'
 license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' 'ki18n')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' "ki18n>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('3a12803dea3a91a2f02eaac99bba38f2fbbf78d96f699cd3330de021561310ba')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('945a005a667ef47f8bd1a288a4b1f7591c248edfedf0601dd469c2f083aaf5de')
 
 build() {
   mkdir -p build && cd build

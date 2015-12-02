@@ -1,5 +1,5 @@
 pkgname=kauth
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE component for executing privileged actions'
 arch=('x86_64')
@@ -7,10 +7,10 @@ url='https://projects.kde.org/projects/frameworks/kauth'
 license=('LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('kcoreaddons' 'qt5' 'polkit-qt5' "kcoreaddons>=${pkgver}")
+depends=('qt5' 'polkit-qt5' "kcoreaddons>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('e2c1830c04f677389dbaaf8fc42360b8157bc03ab933e9da6de3b2fbd4caa488')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('c36ab0caddf1c3120546cff825098513585d461a27f94da78547b2792a61e2a4')
 
 build() {
   mkdir -p build && cd build

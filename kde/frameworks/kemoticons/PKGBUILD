@@ -1,5 +1,5 @@
 pkgname=kemoticons
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE library for converting text emoticons to graphical emoticons'
 arch=('x86_64')
@@ -7,10 +7,11 @@ url='https://projects.kde.org/projects/frameworks/kemoticons'
 license=('LGPL2.1')
 
 makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5')
+depends=('glibc' 'gcc-libs' 'qt5' "karchive>=${pkgver}" "kconfig>=${pkgver}"
+         "kservice>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('bb6db7dd33a617446570b19b62cd6eeb3f7cfa14fe7e6a4cef643bc0ba19a4cc')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ba4ec30be11629fc046f1727eaa2c6ee80c26c23d953cf08214e6e600251d498')
 
 build() {
   mkdir -p build && cd build

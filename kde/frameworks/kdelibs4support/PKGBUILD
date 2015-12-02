@@ -1,17 +1,23 @@
 pkgname=kdelibs4support
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='Transitionary support package for porting applications from kdelibs to KF5'
 arch=('x86_64')
 url='https://kde.org'
 license=('LGPL2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('glibc' 'gcc-libs' 'qt5' "kdesignerplugin>=${pkgver}" "kparts>=${pkgver}"
-         "kunitconversion>=${pkgver}")
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('glibc' 'gcc-libs' 'qt5' 'networkmanager'
+         "kcompletion>=${pkgver}" "kconfig>=${pkgver}" "kconfigwidgets>=${pkgver}"
+         "kcrash>=${pkgver}" "kdesignerplugin>=${pkgver}" "kglobalaccel>=${pkgver}"
+         "kdoctools>=${pkgver}" "kguiaddons>=${pkgver}" "ki18n>=${pkgver}"
+         "kiconthemes>=${pkgver}" "kio>=${pkgver}" "knotifications>=${pkgver}"
+         "kparts>=${pkgver}" "kservice>=${pkgver}" "ktextwidgets>=${pkgver}"
+         "kunitconversion>=${pkgver}" "kwidgetsaddons>=${pkgver}" "kwindowsystem>=${pkgver}"
+         "kxmlgui>=${pkgver}" "kdbusaddons>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/portingAids/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('652508f6e8efaa3923e525644ec0049eaaf3badb073bd3ec5a7f7ad016d086ee')
+source=(http://download.kde.org/stable/frameworks/5.16/portingAids/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('ac4d64070aa26cd95caacd0818546b4e49dbe60ce395b46983c7c674e0315578')
 
 build() {
   mkdir -p build && cd build
@@ -20,9 +26,7 @@ build() {
     -DKDE_INSTALL_USE_QT_SYS_PATHS=on \
     -DLIB_INSTALL_DIR=lib/${MULTIARCH} \
     -DLIBEXEC_INSTALL_DIR=lib/${MULTIARCH} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_HTML_DOCS=OFF \
-    -DWITH_DOC=OFF
+    -DCMAKE_BUILD_TYPE=Release
   make
 }
 
@@ -30,3 +34,4 @@ package() {
   cd build
   make DESTDIR="${pkgdir}" install
 }
+

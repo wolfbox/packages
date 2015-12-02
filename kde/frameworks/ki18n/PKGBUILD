@@ -1,5 +1,5 @@
 pkgname=ki18n
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE component for gettext-based internationalization'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPLv2.1')
 makedepends=('cmake' 'extra-cmake-modules')
 depends=('gcc-libs' 'glibc' 'qt5' 'gettext')
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('ecf25edc6ff0b1e5e9b55f9f473977ab3fdb7b36a3af0a66a1afc850334c7f9b')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('fc0adac69568672e26fd4daa201a33a2e9c4e854460dd1f3bd64a10eba8d1d22')
 
 build() {
   mkdir -p build && cd build

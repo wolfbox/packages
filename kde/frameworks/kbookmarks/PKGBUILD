@@ -1,17 +1,18 @@
 pkgname=kbookmarks
-pkgver=5.7.0
+pkgver=5.16.0
 pkgrel=1
 pkgdesc='KDE bookmark management library'
 arch=('x86_64')
 url='https://projects.kde.org/projects/frameworks/kbookmarks'
 license=('LGPLv2.1')
 
-makedepends=('cmake' 'extra-cmake-modules')
-depends=('gcc-libs' 'glibc' 'qt5' 'kglobalaccel' "kxmlgui>=${pkgver}" "kiconthemes>=${pkgver}"
-         'kcodecs' 'kcoreaddons' 'kconfig' 'kwidgetsaddons')
+makedepends=('cmake' "extra-cmake-modules>=${pkgver}")
+depends=('gcc-libs' 'glibc' 'qt5' "kglobalaccel>=${pkgver}"
+         "kxmlgui>=${pkgver}" "kiconthemes>=${pkgver}" "kcodecs>=${pkgver}"
+         "kcoreaddons>=${pkgver}" "kconfig>=${pkgver}" "kwidgetsaddons>=${pkgver}")
 
-source=(http://download.kde.org/stable/frameworks/5.7/${pkgname}-${pkgver}.tar.xz)
-sha256sums=('14297ff266c260e81dc94d2d882583f4dc35399926afacae5025ebaf73e463ef')
+source=(http://download.kde.org/stable/frameworks/5.16/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('f220611b7df9a629a36dfb012a98f66e82558604d326cb60f82751e286a63e01')
 
 build() {
   mkdir -p build && cd build
