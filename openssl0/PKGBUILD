@@ -1,5 +1,5 @@
 pkgname=openssl0
-pkgver=0.9.8zg
+pkgver=0.9.8zh
 pkgrel=1
 pkgdesc="A legacy cryptography toolkit - compatibility libraries"
 arch=("x86_64")
@@ -11,10 +11,10 @@ depends=('glibc')
 provides=("openssl=${pkgver}")
 
 source=(http://www.openssl.org/source/openssl-${pkgver}.tar.gz{,.asc}
-		openssl.soname.diff.gz)
-sha256sums=('06500060639930e471050474f537fcd28ec934af92ee282d78b52460fbe8f580'
+		openssl.soname.diff)
+sha256sums=('f1d9f3ed1b85a82ecf80d0e2d389e1fda3fca9a4dba0bf07adbf231e1a5e2fd6'
             'SKIP'
-            '922d68e43c06ccd56bd430a81d7ad752f620b5fb1b37e857d9a3662273c11d46')
+            'd75bcbb9566d0f7d5f9c8b5e06a44c676b79089b90f9ba324fc046978209a9f4')
 validpgpkeys=('8657ABB260F056B1E5190839D9C4D26D0E604491') # Matt Caswell <matt@openssl.org>
 
 prepare() {
@@ -25,7 +25,7 @@ prepare() {
 	sed -i "s/#define OPENSSL_VERSION_NUMBER.*/\/* Use 0x009080efL (0.9.8o) below to avoid pointlessly breaking the ABI *\/\n#define OPENSSL_VERSION_NUMBER 0x009080efL/g" crypto/opensslv.h 
 	
 	# Use .so.1, not .so.1.0.0:
-	zcat "${srcdir}"/openssl.soname.diff.gz | patch -p1 --backup --verbose --suffix=.orig
+	patch -p1 -i ../openssl.soname.diff --backup --verbose --suffix=.orig
 }
 
 build() {
