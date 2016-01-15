@@ -1,5 +1,5 @@
 pkgname=openssh
-pkgver=6.8p1
+pkgver=7.1p2
 pkgrel=1
 pkgdesc="Secure Shell daemon and clients"
 arch=("x86_64")
@@ -13,7 +13,7 @@ depends=('glibc' 'openssl' 'libedit' 'openpam' 'openpam-modules')
 source=(ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-${pkgver}.tar.gz{,.asc}
         sshd.pam
         openssh)
-sha256sums=('3ff64ce73ee124480b5bf767b9830d7d3c03bbcb6abe716b78f0192c37ce160e'
+sha256sums=('dd75f024dcf21e06a0d6421d582690bf987a1f6323e32ad6619392f3bfde6bbd'
             'SKIP'
             '187622091488356c5b3cc0dc154fc2f269dd2e20e8bfca68429b29c12cdf4e03'
             'f8f1c24b692d821eb47c60e6130468367d5d7f794b4c4a09e5863b9082c657dc')
